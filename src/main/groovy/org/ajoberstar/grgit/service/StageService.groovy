@@ -17,6 +17,7 @@ package org.ajoberstar.grgit.service
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.operation.AddOp
+import org.ajoberstar.grgit.operation.ResetOp
 import org.ajoberstar.grgit.operation.RmOp
 import org.ajoberstar.grgit.util.ConfigureUtil
 

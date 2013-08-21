@@ -26,7 +26,7 @@ import org.eclipse.jgit.api.Git
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
-class RmOpSpec extends Specification {
+class ResetOpSpec extends Specification {
 	@Rule TemporaryFolder tempDir = new TemporaryFolder()
 
 	RepositoryService grgit
