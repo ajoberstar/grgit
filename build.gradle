@@ -1,7 +1,52 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url 'https://oss.sonatype.org/content/groups/public/' }
+	}
+	dependencies {
+		classpath 'org.ajoberstar:gradle-git:0.6.2'
+		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.6.0'
+	}
+}
+
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'jacoco'
+apply plugin: 'github-pages'
+apply from: rootProject.file('gradle/publishing.gradle')
+apply from: rootProject.file('gradle/license.gradle')
+
+group = 'org.ajoberstar'
 description = 'Groovy layer over JGit.'
 version = '0.1.0-SNAPSHOT'
 
+sourceCompatibility = '1.5'
+
+repositories { mavenCentral() }
+
 dependencies {
+	compile localGroovy()
 	compile 'org.eclipse.jgit:org.eclipse.jgit:2.2.0.201212191850-r'
 	compile 'org.eclipse.jgit:org.eclipse.jgit.ui:2.2.0.201212191850-r'
+	testCompile 'junit:junit:4.10'
+	testCompile('org.spockframework:spock-core:0.7-groovy-1.8') { exclude group: 'org.codehaus.groovy' }
+}
+
+
+githubPages {
+	repoUri = 'git@github.com:ajoberstar/gradle-git.git'
+	pages {
+		from 'src/gh-pages'
+		from(javadoc.outputs.files) {
+			into 'docs/javadoc'
+		}
+		from(groovydoc.outputs.files) {
+			into 'docs/groovydoc'
+		}
+	}
+}
+
+wrapper {
+	gradleVersion = '1.7'
 }
