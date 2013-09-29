@@ -68,7 +68,7 @@ class JGitUtilSpec extends Specification {
 
 	def 'resolveObject works for current commit'() {
 		expect:
-		JGitUtil.resolveObject(repo, 'master^0') == commits[3]	
+		JGitUtil.resolveObject(repo, 'master^0') == commits[3]
 	}
 
 	def 'resolveObject works for n-th parent'() {
@@ -115,6 +115,11 @@ class JGitUtilSpec extends Specification {
 	def setup() {
 		File repoDir = tempDir.newFolder('repo')
 		Git git = Git.init().setDirectory(repoDir).call()
+		git.repo.config.with {
+			setString('user', null, 'name', 'Bruce Wayne')
+			setString('user', null, 'email', 'bruce.wayne@wayneindustries.com')
+			save()
+		}
 		File testFile = new File(repoDir, '1.txt')
 		testFile << '1\n'
 		git.add().addFilepattern(testFile.name).call()
