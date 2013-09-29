@@ -17,6 +17,7 @@ package org.ajoberstar.grgit.service
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.operation.AddOp
+import org.ajoberstar.grgit.operation.ApplyOp
 import org.ajoberstar.grgit.operation.ResetOp
 import org.ajoberstar.grgit.operation.RmOp
 import org.ajoberstar.grgit.util.ConfigureUtil
@@ -64,7 +65,15 @@ class StageService {
 		reset.call()
 	}
 
-	void apply(Map parms) {
+	void apply(Map parms = [:]) {
+		ApplyOp apply = new ApplyOp(repository)
+		ConfigureUtil.configure(apply, parms)
+		apply.call()
+	}
 
+	void apply(Closure config) {
+		ApplyOp apply = new ApplyOp(repository)
+		ConfigureUtil.configure(apply, config)
+		apply.call()
 	}
 }
