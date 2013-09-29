@@ -18,8 +18,10 @@ package org.ajoberstar.grgit.operation
 import spock.lang.Specification
 
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.service.RepositoryService
 import org.ajoberstar.grgit.service.ServiceFactory
+import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.Git
 
@@ -30,6 +32,7 @@ class ResetOpSpec extends Specification {
 	@Rule TemporaryFolder tempDir = new TemporaryFolder()
 
 	RepositoryService grgit
+	List commits = []
 
 	def setup() {
 		File repoDir = tempDir.newFolder('repo')
@@ -43,22 +46,106 @@ class ResetOpSpec extends Specification {
 		repoFile('test/4.txt') << '4'
 		repoFile('test/other/5.txt') << '5'
 		grgit.stage.add(patterns:['.'])
-		grgit.repository.git.commit().setMessage('Test').call()
+		commits << JGitUtil.convertCommit(grgit.repository.git.commit().setMessage('Test').call())
+		repoFile('1.bat') << '2'
+		repoFile('test/3.bat') << '4'
+		grgit.stage.add(patterns:['.'])
+		commits << JGitUtil.convertCommit(grgit.repository.git.commit().setMessage('Test').call())
+		repoFile('1.bat') << '3'
+		repoFile('something/2.txt') << '2'
+		grgit.stage.add(patterns:['.'])
+		repoFile('test/other/5.txt') << '6'
+		repoFile('test/4.txt') << '5'
 	}
 
-	def 'reset soft changes HEAD only'() {}
+	def 'reset soft changes HEAD only'() {
+		when:
+		grgit.stage.reset(mode:ResetOp.Mode.SOFT, commit:commits[0].id)
+		then:
+		commits[0] == grgit.head()
+		grgit.status() == new Status(
+			[] as Set,
+			['1.bat', 'test/3.bat', 'something/2.txt'] as Set,
+			[] as Set,
+			[] as Set,
+			['test/4.txt', 'test/other/5.txt'] as Set,
+			[] as Set
+		)
+	}
 
-	def 'reset mixed changes HEAD and index'() {}
+	def 'reset mixed changes HEAD and index'() {
+		when:
+		grgit.stage.reset(mode:ResetOp.Mode.MIXED, commit:commits[0].id)
+		then:
+		commits[0] == grgit.head()
+		grgit.status() == new Status(
+			[] as Set,
+			[] as Set,
+			[] as Set,
+			[] as Set,
+			['1.bat', 'test/3.bat', 'test/4.txt', 'something/2.txt', 'test/other/5.txt'] as Set,
+			[] as Set
+		)
+	}
 
-	def 'reset hard changes HEAD, index, and working tree'() {}
+	def 'reset hard changes HEAD, index, and working tree'() {
+		when:
+		grgit.stage.reset(mode:ResetOp.Mode.HARD, commit:commits[0].id)
+		then:
+		commits[0] == grgit.head()
+		grgit.status() == new Status(
+			[] as Set,
+			[] as Set,
+			[] as Set,
+			[] as Set,
+			[] as Set,
+			[] as Set
+		)
+	}
 
-	def 'reset merge changes HEAD, index, and working tree but not unstaged changes'() {}
+	def 'reset merge not supported by JGit'() {
+		when:
+		grgit.stage.reset(mode:ResetOp.Mode.MERGE, commit:commits[0].id)
+		then:
+		thrown(UnsupportedOperationException)
+	}
 
-	def 'reset merge aborts when unstaged changes to file that differs between commit and index'() {}
+	def 'reset keep not supported by JGit'() {
+		when:
+		grgit.stage.reset(mode:ResetOp.Mode.KEEP, commit:commits[0].id)
+		then:
+		thrown(UnsupportedOperationException)
+	}
 
-	def 'reset keep changes HEAD, index, and working tree if no unstaged changes'() {}
+	def 'reset with paths changes index only'() {
+		when:
+		grgit.stage.reset(paths:['something/2.txt'])
+		then:
+		commits[1] == grgit.head()
+		grgit.status() == new Status(
+			[] as Set,
+			['1.bat'] as Set,
+			[] as Set,
+			[] as Set,
+			['test/4.txt', 'something/2.txt', 'test/other/5.txt'] as Set,
+			[] as Set
+		)
+	}
 
-	def 'reset keep aborts if any unstaged changes different from commit'() {}
+	def 'reset with paths and mode set not supported'() {
+		when:
+		grgit.stage.reset(mode:ResetOp.Mode.HARD, paths:['.'])
+		then:
+		thrown(IllegalStateException)
+	}
+
+	// def 'reset merge changes HEAD, index, and working tree but not unstaged changes'() {}
+
+	// def 'reset merge aborts when unstaged changes to file that differs between commit and index'() {}
+
+	// def 'reset keep changes HEAD, index, and working tree if no unstaged changes'() {}
+
+	// def 'reset keep aborts if any unstaged changes different from commit'() {}
 
 	private File repoFile(String path, boolean makeDirs = true) {
 		def file = new File(grgit.repository.rootDir, path)

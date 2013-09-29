@@ -15,10 +15,12 @@
  */
 package org.ajoberstar.grgit.service
 
+import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.operation.StatusOp
 import org.ajoberstar.grgit.util.ConfigureUtil
+import org.ajoberstar.grgit.util.JGitUtil
 
 /**
  *
@@ -49,6 +51,10 @@ class RepositoryService {
 		this.stashes = null
 		this.tags = null
 		this.status = null
+	}
+
+	Commit head() {
+		return JGitUtil.resolveCommit(repository, 'HEAD')
 	}
 
 	Status status(Map parms = [:]) {

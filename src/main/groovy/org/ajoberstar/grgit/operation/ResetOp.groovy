@@ -35,10 +35,19 @@ class ResetOp implements Callable<Void> {
 	}
 
 	Void call() {
+		if (!paths.empty && mode != Mode.MIXED) {
+			throw new IllegalStateException('Cannot set mode when resetting paths.')
+		}
+
 		ResetCommand cmd = repo.git.reset()
 		paths.each { cmd.addPath(it) }
-		cmd.ref = commit
-		cmd.mode = mode.toJGit()
+		if (commit) {
+			cmd.ref = commit
+		}
+		if (paths.empty) {
+			cmd.mode = mode.toJGit()
+		}
+
 		try {
 			cmd.call()
 			return null

@@ -27,6 +27,7 @@ import org.eclipse.jgit.errors.RevisionSyntaxException
 import org.eclipse.jgit.lib.PersonIdent
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.revwalk.RevCommit
+import org.eclipse.jgit.revwalk.RevWalk
 
 class JGitUtil {
 	private JGitUtil() {
@@ -50,6 +51,16 @@ class JGitUtil {
 		} catch (IOException e) {
 			throw new GrGitException("Problem resolving revision string: ${revstr}", e)
 		}
+	}
+
+	static Commit resolveCommit(Repository repo, String revstr) {
+		ObjectId id = resolveObject(repo, revstr)
+		return resolveCommit(repo, id)
+	}
+
+	static Commit resolveCommit(Repository repo, ObjectId id) {
+		RevWalk walk = new RevWalk(repo.git.repository)
+		return convertCommit(walk.parseCommit(id))
 	}
 
 	/**
