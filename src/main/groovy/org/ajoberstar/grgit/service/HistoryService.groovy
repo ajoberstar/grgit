@@ -19,6 +19,7 @@ import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.operation.CommitOp
 import org.ajoberstar.grgit.operation.LogOp
+import org.ajoberstar.grgit.operation.RevertOp
 import org.ajoberstar.grgit.util.ConfigureUtil
 
 class HistoryService {
@@ -57,8 +58,16 @@ class HistoryService {
 		return commit.call()
 	}
 
-	void revert(Map parms) {
+	Commit revert(Map parms = [:]) {
+		RevertOp revert = new RevertOp(repository)
+		ConfigureUtil.configure(revert, parms)
+		return revert.call()
+	}
 
+	Commit revert(Closure config) {
+		RevertOp revert = new RevertOp(repository)
+		ConfigureUtil.configure(revert, config)
+		return revert.call()
 	}
 
 	void cherryPick(Map parms) {
