@@ -17,6 +17,7 @@ package org.ajoberstar.grgit.service
 
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.operation.CommitOp
 import org.ajoberstar.grgit.operation.LogOp
 import org.ajoberstar.grgit.util.ConfigureUtil
 
@@ -35,7 +36,7 @@ class HistoryService {
 		return log.call()
 	}
 
-	List<Commit> log(Closure config) {		
+	List<Commit> log(Closure config) {
 		LogOp log = new LogOp(repository)
 		ConfigureUtil.configure(log, config)
 		return log.call()
@@ -44,8 +45,16 @@ class HistoryService {
 	// List<RefLogEntry> reflog(Map parms)
 	// BlameResult blame(Map parms)
 
-	void commit(Map parms) {
+	Commit commit(Map parms = [:]) {
+		CommitOp commit = new CommitOp(repository)
+		ConfigureUtil.configure(commit, parms)
+		return commit.call()
+	}
 
+	Commit commit(Closure config) {
+		CommitOp commit = new CommitOp(repository)
+		ConfigureUtil.configure(commit, config)
+		return commit.call()
 	}
 
 	void revert(Map parms) {
@@ -61,6 +70,6 @@ class HistoryService {
 	}
 
 	void rebase(Map parms) {
-		
+
 	}
 }
