@@ -43,23 +43,23 @@ class RevertOpSpec extends Specification {
 
 		5.times {
 			repoFile("${it}.txt") << "1"
-			grgit.stage.add(patterns:['.'])
-			commits << grgit.history.commit(message:'Test', all: true)
+			grgit.add(patterns:['.'])
+			commits << grgit.commit(message:'Test', all: true)
 		}
 	}
 
 	def 'revert with no commits does nothing'() {
 		when:
-		grgit.history.revert()
+		grgit.revert()
 		then:
-		grgit.history.log().size() == 5
+		grgit.log().size() == 5
 	}
 
 	def 'revert with commits removes associated changes'() {
 		when:
-		grgit.history.revert(commits:[1, 3].collect { commits[it].id })
+		grgit.revert(commits:[1, 3].collect { commits[it].id })
 		then:
-		grgit.history.log().size() == 7
+		grgit.log().size() == 7
 		repoFile('.').listFiles().collect { it.name }.findAll { !it.startsWith('.') } as Set == [0, 2, 4].collect { "${it}.txt" } as Set
 	}
 

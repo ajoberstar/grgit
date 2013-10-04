@@ -42,7 +42,7 @@ class RmOpSpec extends Specification {
 		repoFile('test/3.bat') << '3'
 		repoFile('test/4.txt') << '4'
 		repoFile('test/other/5.txt') << '5'
-		grgit.stage.add(patterns:['.'])
+		grgit.add(patterns:['.'])
 		grgit.repository.git.commit().setMessage('Test').call()
 	}
 
@@ -50,7 +50,7 @@ class RmOpSpec extends Specification {
 		given:
 		def paths = ['1.bat'] as Set
 		when:
-		grgit.stage.remove(patterns:['1.bat'])
+		grgit.remove(patterns:['1.bat'])
 		then:
 		def status = grgit.repository.git.status().call()
 		status.removed == paths
@@ -61,7 +61,7 @@ class RmOpSpec extends Specification {
 		given:
 		def paths = ['test/3.bat', 'test/4.txt', 'test/other/5.txt'] as Set
 		when:
-		grgit.stage.remove(patterns:['test'])
+		grgit.remove(patterns:['test'])
 		then:
 		def status = grgit.repository.git.status().call()
 		status.removed == paths
@@ -72,7 +72,7 @@ class RmOpSpec extends Specification {
 		given:
 		def paths = ['1.bat', 'something/2.txt', 'test/3.bat', 'test/4.txt', 'test/other/5.txt'] as Set
 		when:
-		grgit.stage.remove(patterns:['**/*.txt'])
+		grgit.remove(patterns:['**/*.txt'])
 		then:
 		def status = grgit.repository.git.status().call()
 		/*
@@ -87,7 +87,7 @@ class RmOpSpec extends Specification {
 		given:
 		def paths = ['something/2.txt'] as Set
 		when:
-		grgit.stage.remove(patterns:['something'], cached:true)
+		grgit.remove(patterns:['something'], cached:true)
 		then:
 		def status = grgit.repository.git.status().call()
 		status.removed == paths

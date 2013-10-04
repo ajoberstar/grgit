@@ -50,7 +50,7 @@ class CommitOpSpec extends Specification {
 		repoFile('folderA/2.txt') << '1'
 		repoFile('folderB/1.txt') << '1'
 		repoFile('folderC/1.txt') << '1'
-		grgit.stage.add(patterns:['.'])
+		grgit.add(patterns:['.'])
 		grgit.repository.git.commit().setMessage('Test').call()
 		repoFile('1.txt') << '2'
 		repoFile('folderA/1.txt') << '2'
@@ -61,11 +61,11 @@ class CommitOpSpec extends Specification {
 
 	def 'commit with all false commits changes from index'() {
 		given:
-		grgit.stage.add(patterns:['folderA'])
+		grgit.add(patterns:['folderA'])
 		when:
-		grgit.history.commit(message:'Test2')
+		grgit.commit(message:'Test2')
 		then:
-		grgit.history.log().size() == 2
+		grgit.log().size() == 2
 		grgit.status() == new Status(
 			[] as Set,
 			[] as Set,
@@ -77,9 +77,9 @@ class CommitOpSpec extends Specification {
 
 	def 'commit with all true commits changes in previously tracked files'() {
 		when:
-		grgit.history.commit(message:'Test2', all: true)
+		grgit.commit(message:'Test2', all: true)
 		then:
-		grgit.history.log().size() == 2
+		grgit.log().size() == 2
 		grgit.status() == new Status(
 			[] as Set,
 			[] as Set,
@@ -91,11 +91,11 @@ class CommitOpSpec extends Specification {
 
 	def 'commit amend changes the previous commit'() {
 		given:
-		grgit.stage.add(patterns:['folderA'])
+		grgit.add(patterns:['folderA'])
 		when:
-		grgit.history.commit(message:'Test2', amend: true)
+		grgit.commit(message:'Test2', amend: true)
 		then:
-		grgit.history.log().size() == 1
+		grgit.log().size() == 1
 		grgit.status() == new Status(
 			[] as Set,
 			[] as Set,
@@ -107,11 +107,11 @@ class CommitOpSpec extends Specification {
 
 	def 'commit with paths only includes the specified paths from the index'() {
 		given:
-		grgit.stage.add(patterns:['.'])
+		grgit.add(patterns:['.'])
 		when:
-		grgit.history.commit(message:'Test2', paths:['folderA'])
+		grgit.commit(message:'Test2', paths:['folderA'])
 		then:
-		grgit.history.log().size() == 2
+		grgit.log().size() == 2
 		grgit.status() == new Status(
 			['folderB/2.txt'] as Set,
 			['1.txt', 'folderB/1.txt'] as Set,
@@ -123,13 +123,13 @@ class CommitOpSpec extends Specification {
 
 	def 'commit without specific committer or author uses repo config'() {
 		given:
-		grgit.stage.add(patterns:['folderA'])
+		grgit.add(patterns:['folderA'])
 		when:
-		def commit = grgit.history.commit(message:'Test2')
+		def commit = grgit.commit(message:'Test2')
 		then:
 		commit.committer == new Person('Alfred Pennyworth', 'alfred.pennyworth@wayneindustries.com')
 		commit.author == new Person('Alfred Pennyworth', 'alfred.pennyworth@wayneindustries.com')
-		grgit.history.log().size() == 2
+		grgit.log().size() == 2
 		grgit.status() == new Status(
 			[] as Set,
 			[] as Set,
@@ -141,11 +141,11 @@ class CommitOpSpec extends Specification {
 
 	def 'commit with specific committer and author uses those'() {
 		given:
-		grgit.stage.add(patterns:['folderA'])
+		grgit.add(patterns:['folderA'])
 		def bruce = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
 		def lucius = new Person('Lucius Fox', 'lucius.fox@wayneindustries.com')
 		when:
-		def commit = grgit.history.commit {
+		def commit = grgit.commit {
 			message = 'Test2'
 			committer = lucius
 			author = bruce
@@ -153,7 +153,7 @@ class CommitOpSpec extends Specification {
 		then:
 		commit.committer == lucius
 		commit.author == bruce
-		grgit.history.log().size() == 2
+		grgit.log().size() == 2
 		grgit.status() == new Status(
 			[] as Set,
 			[] as Set,

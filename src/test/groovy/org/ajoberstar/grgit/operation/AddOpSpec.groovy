@@ -44,7 +44,7 @@ class AddOpSpec extends Specification {
 		repoFile('2.txt') << '2'
 		repoFile('test/3.txt') << '3'
 		when:
-		grgit.stage.add(patterns:['1.txt'])
+		grgit.add(patterns:['1.txt'])
 		then:
 		def status = grgit.repository.git.status().call()
 		status.added == ['1.txt'] as Set
@@ -59,7 +59,7 @@ class AddOpSpec extends Specification {
 		repoFile('test/4.txt') << '4'
 		repoFile('test/other/5.txt') << '5'
 		when:
-		grgit.stage.add(patterns:['test'])
+		grgit.add(patterns:['test'])
 		then:
 		def status = grgit.repository.git.status().call()
 		status.added == ['test/3.txt', 'test/4.txt', 'test/other/5.txt'] as Set
@@ -74,7 +74,7 @@ class AddOpSpec extends Specification {
 		repoFile('test/4.txt') << '4'
 		repoFile('test/other/5.txt') << '5'
 		when:
-		grgit.stage.add(patterns:['**/*.txt'])
+		grgit.add(patterns:['**/*.txt'])
 		then:
 		def status = grgit.repository.git.status().call()
 		/*
@@ -91,7 +91,7 @@ class AddOpSpec extends Specification {
 		repoFile('1.bat') << '1'
 		repoFile('something/2.txt') << '2'
 		repoFile('test/3.bat') << '3'
-		grgit.stage.add(patterns:['.'])
+		grgit.add(patterns:['.'])
 		grgit.repository.git.commit().setMessage('Test').call()
 		repoFile('1.bat') << '1'
 		repoFile('something/2.txt') << '2'
@@ -99,7 +99,7 @@ class AddOpSpec extends Specification {
 		repoFile('test/4.txt') << '4'
 		repoFile('test/other/5.txt') << '5'
 		when:
-		grgit.stage.add(patterns:['.'], update:true)
+		grgit.add(patterns:['.'], update:true)
 		then:
 		def status = grgit.repository.git.status().call()
 		status.changed == ['1.bat', 'something/2.txt'] as Set

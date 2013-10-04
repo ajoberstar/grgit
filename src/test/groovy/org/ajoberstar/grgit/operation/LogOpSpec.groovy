@@ -65,28 +65,28 @@ class LogOpSpec extends Specification {
 
 	def 'log with no arguments returns all commits'() {
 		expect:
-		grgit.history.log().collect { it.id } == [5, 4, 3, 1, 2, 0].collect(intToCommit)
+		grgit.log().collect { it.id } == [5, 4, 3, 1, 2, 0].collect(intToCommit)
 	}
 
 	def 'log with max commits returns that number of commits'() {
 		expect:
-		grgit.history.log(maxCommits:2).collect { it.id } == [5, 4].collect(intToCommit)
+		grgit.log(maxCommits:2).collect { it.id } == [5, 4].collect(intToCommit)
 	}
 
 	def 'log with skip commits does not return the first x commits'() {
 		expect:
-		grgit.history.log(skipCommits:2).collect { it.id } == [3, 1, 2, 0].collect(intToCommit)
+		grgit.log(skipCommits:2).collect { it.id } == [3, 1, 2, 0].collect(intToCommit)
 	}
 
 	def 'log with range returns only the commits in that range'() {
 		expect:
-		grgit.history.log {
+		grgit.log {
 			range intToCommit(2), intToCommit(4)
 		}.collect { it.id } == [4, 3, 1].collect(intToCommit)
 	}
 
 	def 'log with path includes only commits with changes for that path'() {
 		expect:
-		grgit.history.log(paths:['2.txt']).collect { it.id } == [5, 0].collect(intToCommit)
+		grgit.log(paths:['2.txt']).collect { it.id } == [5, 0].collect(intToCommit)
 	}
 }

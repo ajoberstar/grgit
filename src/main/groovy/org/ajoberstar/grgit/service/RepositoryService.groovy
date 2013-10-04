@@ -18,6 +18,13 @@ package org.ajoberstar.grgit.service
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
+import org.ajoberstar.grgit.operation.AddOp
+import org.ajoberstar.grgit.operation.ApplyOp
+import org.ajoberstar.grgit.operation.CommitOp
+import org.ajoberstar.grgit.operation.LogOp
+import org.ajoberstar.grgit.operation.RmOp
+import org.ajoberstar.grgit.operation.ResetOp
+import org.ajoberstar.grgit.operation.RevertOp
 import org.ajoberstar.grgit.operation.StatusOp
 import org.ajoberstar.grgit.util.ConfigureUtil
 import org.ajoberstar.grgit.util.JGitUtil
@@ -28,10 +35,14 @@ import org.ajoberstar.grgit.util.JGitUtil
  * @author Andrew Oberstar
  */
 class RepositoryService {
-	final Repository repository
+	private static final Map COMMANDS = [
+		status: StatusOp, add: AddOp, remove: RmOp, reset: ResetOp, apply: ApplyOp,
+		/*pull: PullOp, push: PushOp, fetch: FetchOp,
+		checkout: CheckoutOp,*/
+		log: LogOp, commit: CommitOp, revert: RevertOp/*,
+		cherryPick: CherryPickOp, merge: MergeOp, rebase: RebaseOp*/].asImmutable()
 
-	final HistoryService history
-	final StageService stage
+	final Repository repository
 
 	final BranchService branches
 	final NoteService notes
@@ -39,34 +50,28 @@ class RepositoryService {
 	final StashService stashes
 	final TagService tags
 
-	final Status status
-
 	RepositoryService(Repository repository) {
 		this.repository = repository
-		this.history = new HistoryService(repository)
-		this.stage = new StageService(repository)
 		this.branches = null
 		this.notes = null
 		this.remotes = null
 		this.stashes = null
 		this.tags = null
-		this.status = null
 	}
 
 	Commit head() {
 		return JGitUtil.resolveCommit(repository, 'HEAD')
 	}
 
-	Status status(Map parms = [:]) {
-		StatusOp status = new StatusOp(repository)
-		ConfigureUtil.configure(status, parms)
-		return status.call()
-	}
-
-	Status status(Closure config) {
-		StatusOp status = new StatusOp(repository)
-		ConfigureUtil.configure(status, config)
-		return status.call()
+	def methodMissing(String name, args) {
+		if (name in COMMANDS && args.size() < 2) {
+			def op = COMMANDS[name].newInstance(repository)
+			def config = args.size() == 0 ? [:] : args[0]
+			ConfigureUtil.configure(op, config)
+			op.call()
+		} else {
+			throw new MissingMethodException(name, this.class, args)
+		}
 	}
 
 	boolean isBare() {

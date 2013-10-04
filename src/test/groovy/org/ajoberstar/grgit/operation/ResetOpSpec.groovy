@@ -45,22 +45,22 @@ class ResetOpSpec extends Specification {
 		repoFile('test/3.bat') << '3'
 		repoFile('test/4.txt') << '4'
 		repoFile('test/other/5.txt') << '5'
-		grgit.stage.add(patterns:['.'])
+		grgit.add(patterns:['.'])
 		commits << JGitUtil.convertCommit(grgit.repository.git.commit().setMessage('Test').call())
 		repoFile('1.bat') << '2'
 		repoFile('test/3.bat') << '4'
-		grgit.stage.add(patterns:['.'])
+		grgit.add(patterns:['.'])
 		commits << JGitUtil.convertCommit(grgit.repository.git.commit().setMessage('Test').call())
 		repoFile('1.bat') << '3'
 		repoFile('something/2.txt') << '2'
-		grgit.stage.add(patterns:['.'])
+		grgit.add(patterns:['.'])
 		repoFile('test/other/5.txt') << '6'
 		repoFile('test/4.txt') << '5'
 	}
 
 	def 'reset soft changes HEAD only'() {
 		when:
-		grgit.stage.reset(mode:ResetOp.Mode.SOFT, commit:commits[0].id)
+		grgit.reset(mode:ResetOp.Mode.SOFT, commit:commits[0].id)
 		then:
 		commits[0] == grgit.head()
 		grgit.status() == new Status(
@@ -75,7 +75,7 @@ class ResetOpSpec extends Specification {
 
 	def 'reset mixed changes HEAD and index'() {
 		when:
-		grgit.stage.reset(mode:ResetOp.Mode.MIXED, commit:commits[0].id)
+		grgit.reset(mode:ResetOp.Mode.MIXED, commit:commits[0].id)
 		then:
 		commits[0] == grgit.head()
 		grgit.status() == new Status(
@@ -90,7 +90,7 @@ class ResetOpSpec extends Specification {
 
 	def 'reset hard changes HEAD, index, and working tree'() {
 		when:
-		grgit.stage.reset(mode:ResetOp.Mode.HARD, commit:commits[0].id)
+		grgit.reset(mode:ResetOp.Mode.HARD, commit:commits[0].id)
 		then:
 		commits[0] == grgit.head()
 		grgit.status() == new Status(
@@ -105,21 +105,21 @@ class ResetOpSpec extends Specification {
 
 	def 'reset merge not supported by JGit'() {
 		when:
-		grgit.stage.reset(mode:ResetOp.Mode.MERGE, commit:commits[0].id)
+		grgit.reset(mode:ResetOp.Mode.MERGE, commit:commits[0].id)
 		then:
 		thrown(UnsupportedOperationException)
 	}
 
 	def 'reset keep not supported by JGit'() {
 		when:
-		grgit.stage.reset(mode:ResetOp.Mode.KEEP, commit:commits[0].id)
+		grgit.reset(mode:ResetOp.Mode.KEEP, commit:commits[0].id)
 		then:
 		thrown(UnsupportedOperationException)
 	}
 
 	def 'reset with paths changes index only'() {
 		when:
-		grgit.stage.reset(paths:['something/2.txt'])
+		grgit.reset(paths:['something/2.txt'])
 		then:
 		commits[1] == grgit.head()
 		grgit.status() == new Status(
@@ -134,7 +134,7 @@ class ResetOpSpec extends Specification {
 
 	def 'reset with paths and mode set not supported'() {
 		when:
-		grgit.stage.reset(mode:ResetOp.Mode.HARD, paths:['.'])
+		grgit.reset(mode:ResetOp.Mode.HARD, paths:['.'])
 		then:
 		thrown(IllegalStateException)
 	}

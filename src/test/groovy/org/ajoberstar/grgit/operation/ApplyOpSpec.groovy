@@ -40,7 +40,7 @@ class ApplyOpSpec extends Specification {
 
 	def 'apply with no patch fails'() {
 		when:
-		grgit.stage.apply()
+		grgit.apply()
 		then:
 		thrown(IllegalStateException)
 	}
@@ -49,14 +49,14 @@ class ApplyOpSpec extends Specification {
 		given:
 		repoFile('1.txt') << 'something'
 		repoFile('2.txt') << 'something else\n'
-		grgit.stage.add(patterns:['.'])
+		grgit.add(patterns:['.'])
 		grgit.repository.git.commit().setMessage('Test').call()
 		def patch = tempDir.newFile()
 		this.class.getResourceAsStream('/org/ajoberstar/grgit/operation/sample.patch').withStream { stream ->
 			patch << stream
 		}
 		when:
-		grgit.stage.apply(patch: patch)
+		grgit.apply(patch: patch)
 		then:
 		repoFile('1.txt').text == 'something'
 		repoFile('2.txt').text == 'something else\nis being added\n'
