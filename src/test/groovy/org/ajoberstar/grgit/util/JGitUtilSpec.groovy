@@ -16,10 +16,10 @@
 package org.ajoberstar.grgit.util
 
 import org.ajoberstar.grgit.Commit
+import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrGitException
-import org.ajoberstar.grgit.service.ServiceFactory
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.errors.AmbiguousObjectException
 import org.eclipse.jgit.errors.IncorrectObjectTypeException
@@ -133,6 +133,6 @@ class JGitUtilSpec extends Specification {
 		commits << git.commit().setMessage('third commit').call()
 		git.checkout().setName('master').call()
 		commits << git.merge().include(commits[2]).setStrategy(MergeStrategy.OURS).call().newHead
-		repo = ServiceFactory.createRepository(repoDir)
+		repo = Grgit.open(repoDir).repository
 	}
 }

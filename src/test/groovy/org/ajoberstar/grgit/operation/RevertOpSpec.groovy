@@ -17,12 +17,12 @@ package org.ajoberstar.grgit.operation
 
 import spock.lang.Specification
 
+import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.exception.GrGitException
 import org.ajoberstar.grgit.service.RepositoryService
-import org.ajoberstar.grgit.service.ServiceFactory
 
 import org.eclipse.jgit.api.Git
 
@@ -38,8 +38,7 @@ class RevertOpSpec extends Specification {
 	def setup() {
 		File repoDir = tempDir.newFolder('repo')
 		Git git = Git.init().setDirectory(repoDir).call()
-		Repository repo = ServiceFactory.createRepository(repoDir)
-		grgit = ServiceFactory.createService(repo)
+		grgit = Grgit.open(repoDir)
 
 		5.times {
 			repoFile("${it}.txt") << "1"

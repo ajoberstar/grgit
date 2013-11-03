@@ -17,9 +17,9 @@ package org.ajoberstar.grgit.operation
 
 import spock.lang.Specification
 
+import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.service.RepositoryService
-import org.ajoberstar.grgit.service.ServiceFactory
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.merge.MergeStrategy
@@ -59,8 +59,7 @@ class LogOpSpec extends Specification {
 		testFile2 << '2.2\n'
 		git.add().addFilepattern(testFile2.name).call()
 		commits << git.commit().setMessage('sixth commit').call()
-		Repository repo = ServiceFactory.createRepository(repoDir)
-		grgit = ServiceFactory.createService(repo)
+		grgit = Grgit.open(repoDir)
 	}
 
 	def 'log with no arguments returns all commits'() {

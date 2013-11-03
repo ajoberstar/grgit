@@ -19,12 +19,12 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import org.ajoberstar.grgit.Commit
+import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.exception.GrGitException
 import org.ajoberstar.grgit.service.RepositoryService
-import org.ajoberstar.grgit.service.ServiceFactory
 import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.Git
@@ -42,7 +42,7 @@ class PushOpSpec extends Specification {
 	def setup() {
 		File remoteRepoDir = tempDir.newFolder('remote')
 		Git.init().setDirectory(remoteRepoDir).call()
-		remoteGrgit = createService(remoteRepoDir)
+		remoteGrgit = Grgit.open(remoteRepoDir)
 
 		repoFile(remoteGrgit, '1.txt') << '1'
 		remoteGrgit.commit(message: 'do', all: true)
@@ -59,7 +59,7 @@ class PushOpSpec extends Specification {
 			cloneAllBranches = true
 			delegate.call()
 		}
-		localGrgit = createService(localRepoDir)
+		localGrgit = Grgit.open(localRepoDir)
 
 		localGrgit.repository.git.checkout().with {
 			name = 'my-branch'
@@ -87,11 +87,6 @@ class PushOpSpec extends Specification {
 			name = 'tag2'
 			delegate.call()
 		}
-	}
-
-	private RepositoryService createService(File dir) {
-		Repository repo = ServiceFactory.createRepository(dir)
-		return ServiceFactory.createService(repo)
 	}
 
 	def 'push to non-existent remote fails'() {

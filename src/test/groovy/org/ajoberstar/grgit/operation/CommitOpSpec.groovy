@@ -17,11 +17,11 @@ package org.ajoberstar.grgit.operation
 
 import spock.lang.Specification
 
+import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.service.RepositoryService
-import org.ajoberstar.grgit.service.ServiceFactory
 
 import org.eclipse.jgit.api.Git
 
@@ -41,8 +41,7 @@ class CommitOpSpec extends Specification {
 			setString('user', null, 'email', 'alfred.pennyworth@wayneindustries.com')
 			save()
 		}
-		Repository repo = ServiceFactory.createRepository(repoDir)
-		grgit = ServiceFactory.createService(repo)
+		grgit = Grgit.open(repoDir)
 
 		repoFile('1.txt') << '1'
 		repoFile('2.txt') << '1'
