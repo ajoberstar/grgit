@@ -21,34 +21,35 @@ import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.auth.TransportOpUtil
 import org.ajoberstar.grgit.exception.GrGitException
 
-import org.eclipse.jgit.api.FetchCommand
+import org.eclipse.jgit.api.PushCommand
 import org.eclipse.jgit.api.errors.GitAPIException
-import org.eclipse.jgit.transport.RefSpec
 
-class FetchOp implements Callable<Void> {
+class PushOp implements Callable<Void> {
 	private Repository repo
 
 	String remote = 'origin'
-	List refSpecs = []
-	boolean prune = false
-	TagMode tagMode = TagMode.AUTO
+	List refsOrSpecs = []
+	boolean all = false
+	boolean tags = false
+	boolean force = false
 
-	FetchOp(Repository repo) {
+	PushOp(Repository repo) {
 		this.repo = repo
 	}
 
 	Void call() {
-		FetchCommand cmd = repo.git.fetch()
+		PushCommand cmd = repo.git.push()
 		TransportOpUtil.configure(cmd, null)
 		cmd.remote = remote
-		cmd.refSpecs = refSpecs.collect { new RefSpec(it) }
-		cmd.removeDeletedRefs = prune
-		cmd.tagOpt = tagMode.jgit
+		refsOrSpecs.each { cmd.add(it) }
+		if (all) cmd.setPushAll()
+		if (tags) cmd.setPushTags()
+		cmd.force = force
 		try {
 			cmd.call()
 			return null
 		} catch (GitAPIException e) {
-			throw new GrGitException('Problem fetching from remote.', e)
+			throw new GrGitException('Problem pushing to remote.', e)
 		}
 	}
 }

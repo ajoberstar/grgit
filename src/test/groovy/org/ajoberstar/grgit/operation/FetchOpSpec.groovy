@@ -157,9 +157,9 @@ class FetchOpSpec extends Specification {
 		assert tags(localGrgit) == expectedTags
 		where:
 		mode  | expectedTags
-		FetchOp.TagMode.NONE | []
-		FetchOp.TagMode.AUTO | ['reachable-tag']
-		FetchOp.TagMode.ALL  | ['reachable-tag', 'unreachable-tag']
+		TagMode.NONE | []
+		TagMode.AUTO | ['reachable-tag']
+		TagMode.ALL  | ['reachable-tag', 'unreachable-tag']
 	}
 
 	def 'fetch with refspecs fetches those branches'() {
