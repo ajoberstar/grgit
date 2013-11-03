@@ -1,13 +1,19 @@
 buildscript {
 	repositories {
+		jcenter()
 		mavenCentral()
 		maven { url 'https://oss.sonatype.org/content/groups/public/' }
 	}
 	dependencies {
 		classpath 'org.ajoberstar:gradle-git:0.6.2'
 		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.6.0'
+		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
 	}
 }
+
+group = 'org.ajoberstar'
+description = 'Groovy layer over JGit.'
+version = '0.1.0-SNAPSHOT'
 
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
@@ -16,10 +22,6 @@ apply plugin: 'jacoco'
 apply plugin: 'github-pages'
 apply from: rootProject.file('gradle/publishing.gradle')
 apply from: rootProject.file('gradle/license.gradle')
-
-group = 'org.ajoberstar'
-description = 'Groovy layer over JGit.'
-version = '0.1.0-SNAPSHOT'
 
 sourceCompatibility = '1.5'
 
@@ -33,9 +35,23 @@ dependencies {
 	testCompile('org.spockframework:spock-core:0.7-groovy-1.8') { exclude group: 'org.codehaus.groovy' }
 }
 
+task sourcesJar(type:Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+task javadocJar(type:Jar) {
+	classifier = 'javadoc'
+	from javadoc.outputs.files
+}
+
+task groovydocJar(type:Jar) {
+	classifier = 'groovydoc'
+	from groovydoc.outputs.files
+}
 
 githubPages {
-	repoUri = 'git@github.com:ajoberstar/gradle-git.git'
+	repoUri = 'git@github.com:ajoberstar/grgit.git'
 	pages {
 		from 'src/gh-pages'
 		from(javadoc.outputs.files) {
@@ -48,5 +64,5 @@ githubPages {
 }
 
 wrapper {
-	gradleVersion = '1.7'
+	gradleVersion = '1.8'
 }
