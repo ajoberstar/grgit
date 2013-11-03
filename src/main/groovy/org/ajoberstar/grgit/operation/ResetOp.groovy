@@ -45,7 +45,7 @@ class ResetOp implements Callable<Void> {
 			cmd.ref = commit
 		}
 		if (paths.empty) {
-			cmd.mode = mode.toJGit()
+			cmd.mode = mode.jgit
 		}
 
 		try {
@@ -56,21 +56,17 @@ class ResetOp implements Callable<Void> {
 		}
 	}
 
-	enum Mode {
+	static enum Mode {
 		HARD(ResetCommand.ResetType.HARD),
 		KEEP(ResetCommand.ResetType.KEEP),
 		MERGE(ResetCommand.ResetType.MERGE),
 		MIXED(ResetCommand.ResetType.MIXED),
 		SOFT(ResetCommand.ResetType.SOFT)
 
-		private final ResetCommand.ResetType jgit
+		protected final ResetCommand.ResetType jgit
 
 		private Mode(ResetCommand.ResetType jgit) {
 			this.jgit = jgit
-		}
-
-		private ResetCommand.ResetType toJGit() {
-			return jgit
 		}
 	}
 }

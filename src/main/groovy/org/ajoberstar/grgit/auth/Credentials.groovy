@@ -13,20 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ajoberstar.grgit.service
+package org.ajoberstar.grgit.auth
 
-import org.ajoberstar.grgit.Remote
+import groovy.transform.Immutable
 
-class RemoteService {
-	void add(Map parms) {
-
-	}
-
-	void remove(Map parms) {
-
-	}
-
-	Set<Remote> list(Map parms) {
-
-	}
+@Immutable
+class Credentials {
+	String username
+	String password
 }

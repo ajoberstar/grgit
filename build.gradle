@@ -23,7 +23,7 @@ apply plugin: 'github-pages'
 apply from: rootProject.file('gradle/publishing.gradle')
 apply from: rootProject.file('gradle/license.gradle')
 
-sourceCompatibility = '1.5'
+sourceCompatibility = '1.7'
 
 repositories { mavenCentral() }
 
@@ -31,6 +31,13 @@ dependencies {
 	compile localGroovy()
 	compile 'org.eclipse.jgit:org.eclipse.jgit:3.0.0.201306101825-r'
 	compile 'org.eclipse.jgit:org.eclipse.jgit.ui:3.0.0.201306101825-r'
+
+	['jsch', 'pageant', 'sshagent', 'usocket-jna'].each {
+		compile "com.jcraft:jsch.agentproxy.${it}:0.0.6"
+	}
+
+	compile 'org.slf4j:slf4j-api:1.7.2'
+
 	testCompile 'junit:junit:4.10'
 	testCompile('org.spockframework:spock-core:0.7-groovy-1.8') { exclude group: 'org.codehaus.groovy' }
 }

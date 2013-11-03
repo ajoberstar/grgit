@@ -21,6 +21,7 @@ import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.operation.AddOp
 import org.ajoberstar.grgit.operation.ApplyOp
 import org.ajoberstar.grgit.operation.CommitOp
+import org.ajoberstar.grgit.operation.FetchOp
 import org.ajoberstar.grgit.operation.LogOp
 import org.ajoberstar.grgit.operation.RmOp
 import org.ajoberstar.grgit.operation.ResetOp
@@ -37,8 +38,8 @@ import org.ajoberstar.grgit.util.JGitUtil
 class RepositoryService {
 	private static final Map COMMANDS = [
 		status: StatusOp, add: AddOp, remove: RmOp, reset: ResetOp, apply: ApplyOp,
-		/*pull: PullOp, push: PushOp, fetch: FetchOp,
-		checkout: CheckoutOp,*/
+		/*pull: PullOp, push: PushOp,*/ fetch: FetchOp,
+		/*checkout: CheckoutOp,*/
 		log: LogOp, commit: CommitOp, revert: RevertOp/*,
 		cherryPick: CherryPickOp, merge: MergeOp, rebase: RebaseOp*/].asImmutable()
 
