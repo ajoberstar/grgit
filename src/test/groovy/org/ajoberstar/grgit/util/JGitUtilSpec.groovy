@@ -19,7 +19,7 @@ import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.errors.AmbiguousObjectException
 import org.eclipse.jgit.errors.IncorrectObjectTypeException
@@ -85,7 +85,7 @@ class JGitUtilSpec extends Specification {
 		when:
 		JGitUtil.resolveObject(repo, 'unreal')
 		then:
-		def e = thrown(GrGitException)
+		def e = thrown(GrgitException)
 		e.cause == null
 	}
 
@@ -93,7 +93,7 @@ class JGitUtilSpec extends Specification {
 		when:
 		JGitUtil.resolveObject(repo, 'lkj!)#(*')
 		then:
-		def e = thrown(GrGitException)
+		def e = thrown(GrgitException)
 		e.cause instanceof RevisionSyntaxException
 	}
 

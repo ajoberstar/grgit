@@ -20,7 +20,7 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.CommitCommand
@@ -56,7 +56,7 @@ class CommitOp implements Callable<Commit> {
 			RevCommit commit = cmd.call()
 			return JGitUtil.convertCommit(commit)
 		} catch (GitAPIException e) {
-			throw new GrGitException('Problem committing changes.', e)
+			throw new GrgitException('Problem committing changes.', e)
 		}
 	}
 }

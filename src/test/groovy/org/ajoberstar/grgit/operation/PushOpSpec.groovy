@@ -23,7 +23,7 @@ import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.service.RepositoryService
 import org.ajoberstar.grgit.util.JGitUtil
 
@@ -93,7 +93,7 @@ class PushOpSpec extends Specification {
 		when:
 		localGrgit.push(remote: 'fake')
 		then:
-		thrown(GrGitException)
+		thrown(GrgitException)
 	}
 
 	def 'push without other settings pushes correct commits'() {

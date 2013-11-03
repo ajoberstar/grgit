@@ -18,7 +18,7 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 
 import org.eclipse.jgit.api.RmCommand
 import org.eclipse.jgit.api.errors.GitAPIException
@@ -41,7 +41,7 @@ class RmOp implements Callable<Void> {
 			cmd.call()
 			return null
 		} catch (GitAPIException e) {
-			throw new GrGitException('Problem removing files from index.', e)
+			throw new GrgitException('Problem removing files from index.', e)
 		}
 	}
 }

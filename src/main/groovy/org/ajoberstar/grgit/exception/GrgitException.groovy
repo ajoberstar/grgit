@@ -18,4 +18,4 @@ package org.ajoberstar.grgit.exception
 import groovy.transform.InheritConstructors
 
 @InheritConstructors
-class GrGitException extends RuntimeException {}
+class GrgitException extends RuntimeException {}

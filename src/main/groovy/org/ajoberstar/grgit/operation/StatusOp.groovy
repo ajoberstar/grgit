@@ -19,7 +19,7 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.StatusCommand
@@ -37,7 +37,7 @@ class StatusOp implements Callable<Status> {
 		try {
 			return JGitUtil.convertStatus(cmd.call())
 		} catch (GitAPIException e) {
-			throw new GrGitException('Problem retrieving status.', e)
+			throw new GrgitException('Problem retrieving status.', e)
 		}
 	}
 }

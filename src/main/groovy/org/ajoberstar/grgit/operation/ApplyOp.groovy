@@ -18,7 +18,7 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 
 import org.eclipse.jgit.api.ApplyCommand
 import org.eclipse.jgit.api.errors.GitAPIException
@@ -43,7 +43,7 @@ class ApplyOp implements Callable<Void> {
 				cmd.call()
 				return null
 			} catch (GitAPIException e) {
-				throw new GrGitException('Problem applying patch.', e)
+				throw new GrgitException('Problem applying patch.', e)
 			}
 		}
 	}

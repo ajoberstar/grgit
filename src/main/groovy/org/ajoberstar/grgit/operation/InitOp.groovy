@@ -18,7 +18,7 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.service.RepositoryService
 
 import org.eclipse.jgit.api.Git
@@ -37,7 +37,7 @@ class InitOp implements Callable<RepositoryService> {
 			cmd.call()
 			return Grgit.open(dir)
 		} catch (GitAPIException e) {
-			throw new GrGitException('Problem initializing repository.', e)
+			throw new GrgitException('Problem initializing repository.', e)
 		}
 	}
 }

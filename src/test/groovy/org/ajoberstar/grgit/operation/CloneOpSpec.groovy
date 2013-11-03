@@ -19,7 +19,7 @@ import spock.lang.Specification
 
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.service.RepositoryService
 
 import org.eclipse.jgit.api.Git
@@ -77,7 +77,7 @@ class CloneOpSpec extends Specification {
 		when:
 		Grgit.clone(dir: repoDir, uri: 'file:///bad/uri')
 		then:
-		thrown(GrGitException)
+		thrown(GrgitException)
 	}
 
 	def 'clone with default settings clones as expected'() {

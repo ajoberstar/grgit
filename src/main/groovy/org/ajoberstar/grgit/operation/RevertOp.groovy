@@ -20,7 +20,7 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.RevertCommand
@@ -45,11 +45,11 @@ class RevertOp implements Callable<Commit> {
 		try {
 			RevCommit commit = cmd.call()
 			if (commit == null) {
-				throw new GrGitException("Problem reverting commits.")
+				throw new GrgitException("Problem reverting commits.")
 			}
 			return JGitUtil.convertCommit(commit)
 		} catch (GitAPIException e) {
-			throw new GrGitException('Problem reverting commits.', e)
+			throw new GrgitException('Problem reverting commits.', e)
 		}
 	}
 }

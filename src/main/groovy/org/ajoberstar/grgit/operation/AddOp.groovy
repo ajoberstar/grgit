@@ -18,7 +18,7 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 
 import org.eclipse.jgit.api.AddCommand
 import org.eclipse.jgit.api.errors.GitAPIException
@@ -41,7 +41,7 @@ class AddOp implements Callable<Void> {
 			cmd.call()
 			return null
 		} catch (GitAPIException e) {
-			throw new GrGitException('Problem adding changes to index.', e)
+			throw new GrgitException('Problem adding changes to index.', e)
 		}
 	}
 }

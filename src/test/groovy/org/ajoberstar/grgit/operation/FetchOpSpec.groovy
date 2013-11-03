@@ -22,7 +22,7 @@ import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.service.RepositoryService
 import org.ajoberstar.grgit.util.JGitUtil
 
@@ -111,7 +111,7 @@ class FetchOpSpec extends Specification {
 		when:
 		localGrgit.fetch(remote: 'fake')
 		then:
-		thrown(GrGitException)
+		thrown(GrgitException)
 	}
 
 	def 'fetch without other settings, brings down correct commits'() {

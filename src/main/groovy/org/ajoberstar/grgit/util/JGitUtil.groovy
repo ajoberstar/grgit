@@ -19,7 +19,7 @@ import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.errors.AmbiguousObjectException
 import org.eclipse.jgit.errors.IncorrectObjectTypeException
@@ -38,18 +38,18 @@ class JGitUtil {
 		try {
 			ObjectId object = repo.git.repository.resolve(revstr)
 			if (object == null) {
-				throw new GrGitException("No commit found for revision string: ${revstr}")
+				throw new GrgitException("No commit found for revision string: ${revstr}")
 			} else {
 				return object
 			}
 		} catch (AmbiguousObjectException e) {
-			throw new GrGitException("Revision string is ambiguous: ${revstr}", e)
+			throw new GrgitException("Revision string is ambiguous: ${revstr}", e)
 		} catch (RevisionSyntaxException e) {
-			throw new GrGitException("Revision string syntax isn't supported: ${revstr}", e)
+			throw new GrgitException("Revision string syntax isn't supported: ${revstr}", e)
 		} catch (IncorrectObjectTypeException e) {
-			throw new GrGitException("Revision string did not point to a commit: ${revstr}", e)
+			throw new GrgitException("Revision string did not point to a commit: ${revstr}", e)
 		} catch (IOException e) {
-			throw new GrGitException("Problem resolving revision string: ${revstr}", e)
+			throw new GrgitException("Problem resolving revision string: ${revstr}", e)
 		}
 	}
 

@@ -19,7 +19,7 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.util.JGitUtil
 import org.eclipse.jgit.api.LogCommand
 import org.eclipse.jgit.api.errors.GitAPIException
@@ -66,7 +66,7 @@ class LogOp implements Callable<List<Commit>> {
 		try {
 			return cmd.call().collect { JGitUtil.convertCommit(it) }.asImmutable()
 		} catch (GitAPIException e) {
-			throw new GrGitException('Problem retrieving log.', e)
+			throw new GrgitException('Problem retrieving log.', e)
 		}
 	}
 }

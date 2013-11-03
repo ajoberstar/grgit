@@ -18,7 +18,7 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 
 import org.eclipse.jgit.api.ResetCommand
 import org.eclipse.jgit.api.errors.GitAPIException
@@ -52,7 +52,7 @@ class ResetOp implements Callable<Void> {
 			cmd.call()
 			return null
 		} catch (GitAPIException e) {
-			throw new GrGitException('Problem running reset.', e)
+			throw new GrgitException('Problem running reset.', e)
 		}
 	}
 

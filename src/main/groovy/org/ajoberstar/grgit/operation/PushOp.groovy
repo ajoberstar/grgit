@@ -19,7 +19,7 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.auth.TransportOpUtil
-import org.ajoberstar.grgit.exception.GrGitException
+import org.ajoberstar.grgit.exception.GrgitException
 
 import org.eclipse.jgit.api.PushCommand
 import org.eclipse.jgit.api.errors.GitAPIException
@@ -49,7 +49,7 @@ class PushOp implements Callable<Void> {
 			cmd.call()
 			return null
 		} catch (GitAPIException e) {
-			throw new GrGitException('Problem pushing to remote.', e)
+			throw new GrgitException('Problem pushing to remote.', e)
 		}
 	}
 }
