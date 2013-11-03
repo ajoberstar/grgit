@@ -100,7 +100,7 @@ class CheckoutOpSpec extends Specification {
 		when:
 		grgit.checkout(createBranch: true)
 		then:
-		thrown(GrgitException)
+		thrown(IllegalArgumentException)
 	}
 
 	private File repoFile(String path, boolean makeDirs = true) {
