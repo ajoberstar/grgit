@@ -75,16 +75,4 @@ class RepositoryService {
 			throw new MissingMethodException(name, this.class, args)
 		}
 	}
-
-	boolean isBare() {
-
-	}
-
-	void clean(Map parms) {
-
-	}
-
-	void garbageCollect(Map parms) {
-
-	}
 }
