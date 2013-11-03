@@ -28,16 +28,14 @@ import org.ajoberstar.grgit.operation.RmOp
 import org.ajoberstar.grgit.operation.ResetOp
 import org.ajoberstar.grgit.operation.RevertOp
 import org.ajoberstar.grgit.operation.StatusOp
-import org.ajoberstar.grgit.util.ConfigureUtil
 import org.ajoberstar.grgit.util.JGitUtil
+import org.ajoberstar.grgit.util.OpSyntaxUtil
 
 /**
  *
- * @since 0.7.0
- * @author Andrew Oberstar
  */
 class RepositoryService {
-	private static final Map COMMANDS = [
+	private static final Map OPERATIONS = [
 		status: StatusOp, add: AddOp, remove: RmOp, reset: ResetOp, apply: ApplyOp,
 		/*pull: PullOp,*/ push: PushOp, fetch: FetchOp,
 		/*checkout: CheckoutOp,*/
@@ -62,17 +60,14 @@ class RepositoryService {
 	}
 
 	Commit head() {
-		return JGitUtil.resolveCommit(repository, 'HEAD')
+		return resolveCommit('HEAD')
+	}
+
+	Commit resolveCommit(String revstr) {
+		return JGitUtil.resolveCommit(repository, revstr)
 	}
 
 	def methodMissing(String name, args) {
-		if (name in COMMANDS && args.size() < 2) {
-			def op = COMMANDS[name].newInstance(repository)
-			def config = args.size() == 0 ? [:] : args[0]
-			ConfigureUtil.configure(op, config)
-			op.call()
-		} else {
-			throw new MissingMethodException(name, this.class, args)
-		}
+		OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
 	}
 }

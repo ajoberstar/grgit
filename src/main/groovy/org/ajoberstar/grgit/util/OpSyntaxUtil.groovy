@@ -13,30 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ajoberstar.grgit
+package org.ajoberstar.grgit.util
 
-import org.ajoberstar.grgit.operation.CloneOp
-import org.ajoberstar.grgit.operation.InitOp
-import org.ajoberstar.grgit.service.RepositoryService
-import org.ajoberstar.grgit.util.OpSyntaxUtil
-
-import org.eclipse.jgit.api.Git
-
-class Grgit {
-	private static final Map OPERATIONS = [init: InitOp, clone: CloneOp]
-
-	static {
-		Grgit.metaClass.static.methodMissing = { name, args ->
-			OpSyntaxUtil.tryOp(Grgit, OPERATIONS, [] as Object[], name, args)
-		}
-	}
-
-	private Grgit() {
+class OpSyntaxUtil {
+	private OpSyntaxUtil() {
 		throw new AssertionError('Cannot instantiate this class.')
 	}
 
-	static RepositoryService open(File rootDir) {
-		def repo = new Repository(rootDir, Git.open(rootDir))
-		return new RepositoryService(repo)
+	static def tryOp(Class service, Map supportedOps, Object[] classArgs, String methodName, Object[] methodArgs) {
+		if (methodName in supportedOps && methodArgs.size() < 2) {
+			def op = supportedOps[methodName].newInstance(classArgs)
+			def config = methodArgs.size() == 0 ? [:] : methodArgs[0]
+			ConfigureUtil.configure(op, config)
+			return op.call()
+		} else {
+			throw new MissingMethodException(methodName, service, methodArgs)
+		}
 	}
 }

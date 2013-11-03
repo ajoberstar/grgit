@@ -13,30 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ajoberstar.grgit
+package org.ajoberstar.grgit.operation
 
-import org.ajoberstar.grgit.operation.CloneOp
-import org.ajoberstar.grgit.operation.InitOp
+import java.util.concurrent.Callable
+
+import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.exception.GrGitException
 import org.ajoberstar.grgit.service.RepositoryService
-import org.ajoberstar.grgit.util.OpSyntaxUtil
 
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.InitCommand
+import org.eclipse.jgit.api.errors.GitAPIException
 
-class Grgit {
-	private static final Map OPERATIONS = [init: InitOp, clone: CloneOp]
+class InitOp implements Callable<RepositoryService> {
+	boolean bare = false
+	File dir
 
-	static {
-		Grgit.metaClass.static.methodMissing = { name, args ->
-			OpSyntaxUtil.tryOp(Grgit, OPERATIONS, [] as Object[], name, args)
+	RepositoryService call() {
+		InitCommand cmd = Git.init()
+		cmd.bare = bare
+		cmd.directory = dir
+		try {
+			cmd.call()
+			return Grgit.open(dir)
+		} catch (GitAPIException e) {
+			throw new GrGitException('Problem initializing repository.', e)
 		}
-	}
-
-	private Grgit() {
-		throw new AssertionError('Cannot instantiate this class.')
-	}
-
-	static RepositoryService open(File rootDir) {
-		def repo = new Repository(rootDir, Git.open(rootDir))
-		return new RepositoryService(repo)
 	}
 }
