@@ -10,6 +10,19 @@ Grgit is a way to interact with Git repositories with a fairly fluent Groovy API
 
 Grgit will also be the base for a rewrite of the [gradle-git plugin](https://github.com/ajoberstar/gradle-git).
 
+## Where do I get it from?
+
+Grgit is published on Bintray. The [package](https://bintray.com/ajoberstar/libraries/grgit) will be available on JCenter as soon as its approved.
+
+```groovy
+repositories { jcenter() }
+
+dependencies {
+	compile 'org.ajoberstar:grgit:<version>'
+}
+
+```
+
 ## How do I use it?
 
 ### Getting a repository
