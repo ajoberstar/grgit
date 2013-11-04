@@ -35,6 +35,10 @@ class Grgit {
 		throw new AssertionError('Cannot instantiate this class.')
 	}
 
+	static RepositoryService open(String rootDirPath) {
+		return open(new File(rootDir))
+	}
+
 	static RepositoryService open(File rootDir) {
 		def repo = new Repository(rootDir, Git.open(rootDir))
 		return new RepositoryService(repo)
