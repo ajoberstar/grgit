@@ -59,6 +59,12 @@ task groovydocJar(type:Jar) {
 	from groovydoc.outputs.files
 }
 
+artifacts {
+	archives sourcesJar
+	archives javadocJar
+	archives groovydocJar
+}
+
 githubPages {
 	repoUri = 'git@github.com:ajoberstar/grgit.git'
 	pages {
