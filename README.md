@@ -12,10 +12,13 @@ Grgit will also be the base for a rewrite of the [gradle-git plugin](https://git
 
 ## Where do I get it from?
 
-Grgit is published on Bintray. The [package](https://bintray.com/ajoberstar/libraries/grgit) will be available on JCenter as soon as its approved.
+Grgit is published on Bintray. The [package](https://bintray.com/ajoberstar/libraries/grgit) is available on JCenter, though some of the dependencies are on Maven Central.
 
 ```groovy
-repositories { jcenter() }
+repositories { 
+	jcenter()
+	mavenCentral()
+}
 
 dependencies {
 	compile 'org.ajoberstar:grgit:<version>'
