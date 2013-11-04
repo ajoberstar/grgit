@@ -13,7 +13,7 @@ buildscript {
 
 group = 'org.ajoberstar'
 description = 'Groovy layer over JGit.'
-version = '0.1.0-SNAPSHOT'
+version = '0.1.0'
 
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
