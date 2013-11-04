@@ -36,7 +36,7 @@ class Grgit {
 	}
 
 	static RepositoryService open(String rootDirPath) {
-		return open(new File(rootDir))
+		return open(new File(rootDirPath))
 	}
 
 	static RepositoryService open(File rootDir) {
