@@ -20,8 +20,13 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'jacoco'
 apply plugin: 'github-pages'
+apply plugin: 'sonar-runner'
 apply from: rootProject.file('gradle/publishing.gradle')
 apply from: rootProject.file('gradle/license.gradle')
+
+sonarRunner.sonarProperties {
+	property 'sonar.language', 'grvy'
+}
 
 sourceCompatibility = '1.7'
 
