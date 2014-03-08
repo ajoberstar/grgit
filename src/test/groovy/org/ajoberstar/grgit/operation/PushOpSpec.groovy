@@ -15,7 +15,6 @@
  */
 package org.ajoberstar.grgit.operation
 
-import spock.lang.Specification
 import spock.lang.Unroll
 
 import org.ajoberstar.grgit.Commit
@@ -24,6 +23,8 @@ import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.fixtures.GitTestUtil
+import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
 import org.ajoberstar.grgit.util.JGitUtil
 
@@ -33,16 +34,14 @@ import org.eclipse.jgit.api.ListBranchCommand.ListMode
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
-class PushOpSpec extends Specification {
-	@Rule TemporaryFolder tempDir = new TemporaryFolder()
-
+class PushOpSpec extends MultiGitOpSpec {
 	RepositoryService localGrgit
 	RepositoryService remoteGrgit
 
 	def setup() {
-		File remoteRepoDir = tempDir.newFolder('remote')
-		Git.init().setDirectory(remoteRepoDir).call()
-		remoteGrgit = Grgit.open(remoteRepoDir)
+		// TODO: Conver to Grgit after branch and tag
+
+		remoteGrgit = init('remote')
 
 		repoFile(remoteGrgit, '1.txt') << '1'
 		remoteGrgit.commit(message: 'do', all: true)
@@ -52,20 +51,8 @@ class PushOpSpec extends Specification {
 			delegate.call()
 		}
 
-		File localRepoDir = tempDir.newFolder('local')
-		Git.cloneRepository().with {
-			directory = localRepoDir
-			uri = remoteRepoDir.toURI()
-			cloneAllBranches = true
-			delegate.call()
-		}
-		localGrgit = Grgit.open(localRepoDir)
-
-		localGrgit.repository.git.checkout().with {
-			name = 'my-branch'
-			createBranch = true
-			delegate.call()
-		}
+		localGrgit = clone('local', remoteGrgit)
+		localGrgit.checkout(branch: 'my-branch', createBranch: true)
 
 		repoFile(localGrgit, '1.txt') << '1.5'
 		localGrgit.commit(message: 'do', all: true)
@@ -75,10 +62,7 @@ class PushOpSpec extends Specification {
 			delegate.call()
 		}
 
-		localGrgit.repository.git.checkout().with {
-			name = 'master'
-			delegate.call()
-		}
+		localGrgit.checkout(branch: 'master')
 
 		repoFile(localGrgit, '1.txt') << '2'
 		localGrgit.commit(message: 'do', all: true)
@@ -100,59 +84,45 @@ class PushOpSpec extends Specification {
 		when:
 		localGrgit.push()
 		then:
-		head(localGrgit, 'refs/heads/master') == head(remoteGrgit, 'refs/heads/master')
-		head(localGrgit, 'refs/heads/my-branch') != head(remoteGrgit, 'refs/heads/my-branch')
-		!tags(remoteGrgit)
+		GitTestUtil.resolve(localGrgit, 'refs/heads/master') == GitTestUtil.resolve(remoteGrgit, 'refs/heads/master')
+		GitTestUtil.resolve(localGrgit, 'refs/heads/my-branch') != GitTestUtil.resolve(remoteGrgit, 'refs/heads/my-branch')
+		!GitTestUtil.tags(remoteGrgit)
 	}
 
 	def 'push with all true pushes all branches'() {
 		when:
 		localGrgit.push(all: true)
 		then:
-		head(localGrgit, 'refs/heads/master') == head(remoteGrgit, 'refs/heads/master')
-		head(localGrgit, 'refs/heads/my-branch') == head(remoteGrgit, 'refs/heads/my-branch')
-		!tags(remoteGrgit)
+		GitTestUtil.resolve(localGrgit, 'refs/heads/master') == GitTestUtil.resolve(remoteGrgit, 'refs/heads/master')
+		GitTestUtil.resolve(localGrgit, 'refs/heads/my-branch') == GitTestUtil.resolve(remoteGrgit, 'refs/heads/my-branch')
+		!GitTestUtil.tags(remoteGrgit)
 	}
 
 	def 'push with tags true pushes all tags'() {
 		when:
 		localGrgit.push(tags: true)
 		then:
-		head(localGrgit, 'refs/heads/master') != head(remoteGrgit, 'refs/heads/master')
-		head(localGrgit, 'refs/heads/my-branch') != head(remoteGrgit, 'refs/heads/my-branch')
-		tags(localGrgit) == tags(remoteGrgit)
+		GitTestUtil.resolve(localGrgit, 'refs/heads/master') != GitTestUtil.resolve(remoteGrgit, 'refs/heads/master')
+		GitTestUtil.resolve(localGrgit, 'refs/heads/my-branch') != GitTestUtil.resolve(remoteGrgit, 'refs/heads/my-branch')
+		GitTestUtil.tags(localGrgit) == GitTestUtil.tags(remoteGrgit)
 	}
 
 	def 'push with refs only pushes those refs'() {
 		when:
 		localGrgit.push(refsOrSpecs: ['my-branch'])
 		then:
-		head(localGrgit, 'refs/heads/master') != head(remoteGrgit, 'refs/heads/master')
-		head(localGrgit, 'refs/heads/my-branch') == head(remoteGrgit, 'refs/heads/my-branch')
-		!tags(remoteGrgit)
+		GitTestUtil.resolve(localGrgit, 'refs/heads/master') != GitTestUtil.resolve(remoteGrgit, 'refs/heads/master')
+		GitTestUtil.resolve(localGrgit, 'refs/heads/my-branch') == GitTestUtil.resolve(remoteGrgit, 'refs/heads/my-branch')
+		!GitTestUtil.tags(remoteGrgit)
 	}
 
 	def 'push with refSpecs only pushes those refs'() {
 		when:
 		localGrgit.push(refsOrSpecs: ['+refs/heads/my-branch:refs/heads/other-branch'])
 		then:
-		head(localGrgit, 'refs/heads/master') != head(remoteGrgit, 'refs/heads/master')
-		head(localGrgit, 'refs/heads/my-branch') != head(remoteGrgit, 'refs/heads/my-branch')
-		head(localGrgit, 'refs/heads/my-branch') == head(remoteGrgit, 'refs/heads/other-branch')
-		!tags(remoteGrgit)
-	}
-
-	private File repoFile(RepositoryService grgit, String path, boolean makeDirs = true) {
-		def file = new File(grgit.repository.rootDir, path)
-		if (makeDirs) file.parentFile.mkdirs()
-		return file
-	}
-
-	private Commit head(RepositoryService grgit, String ref) {
-		return JGitUtil.resolveCommit(grgit.repository, ref)
-	}
-
-	private List tags(RepositoryService grgit) {
-		return grgit.repository.git.tagList().call().collect { it.name }
+		GitTestUtil.resolve(localGrgit, 'refs/heads/master') != GitTestUtil.resolve(remoteGrgit, 'refs/heads/master')
+		GitTestUtil.resolve(localGrgit, 'refs/heads/my-branch') != GitTestUtil.resolve(remoteGrgit, 'refs/heads/my-branch')
+		GitTestUtil.resolve(localGrgit, 'refs/heads/my-branch') == GitTestUtil.resolve(remoteGrgit, 'refs/heads/other-branch')
+		!GitTestUtil.tags(remoteGrgit)
 	}
 }

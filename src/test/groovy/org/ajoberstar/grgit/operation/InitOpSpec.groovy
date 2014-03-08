@@ -19,6 +19,7 @@ import spock.lang.Specification
 
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.service.RepositoryService
 
 import org.eclipse.jgit.api.Git
@@ -39,19 +40,13 @@ class InitOpSpec extends Specification {
 		when:
 		def grgit = Grgit.init(dir: repoDir, bare: true)
 		then:
-		!repoFile(grgit, '.', false).listFiles().collect { it.name }.contains('.git')
+		!GitTestUtil.repoFile(grgit, '.', false).listFiles().collect { it.name }.contains('.git')
 	}
 
 	def 'init with bare false has a working tree'() {
 		when:
 		def grgit = Grgit.init(dir: repoDir, bare: false)
 		then:
-		repoFile(grgit, '.', false).listFiles().collect { it.name } == ['.git']
-	}
-
-	private File repoFile(RepositoryService grgit, String path, boolean makeDirs = true) {
-		def file = new File(grgit.repository.rootDir, path)
-		if (makeDirs) file.parentFile.mkdirs()
-		return file
+		GitTestUtil.repoFile(grgit, '.', false).listFiles().collect { it.name } == ['.git']
 	}
 }

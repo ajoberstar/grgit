@@ -42,8 +42,8 @@ final class GitTestUtil {
 		return RemoteConfig.getAllRemoteConfigs(jgitConfig).collect { it.name}
 	}
 
-	static Commit resolve(RepositoryService grgit, String ref) {
-		return JGitUtil.resolveCommit(grgit.repository, ref)
+	static Commit resolve(RepositoryService grgit, String revstr) {
+		return JGitUtil.resolveCommit(grgit.repository, revstr)
 	}
 
 	static void configure(RepositoryService grgit, Closure closure) {
