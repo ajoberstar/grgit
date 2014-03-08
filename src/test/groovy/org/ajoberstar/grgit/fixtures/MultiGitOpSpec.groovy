@@ -19,6 +19,14 @@ class MultiGitOpSpec extends Specification {
 		return Grgit.open(repoDir)
 	}
 
+	protected RepositoryService clone(String name, RepositoryService remote) {
+		File repoDir = tempDir.newFolder(name)
+		return Grgit.clone {
+			dir = repoDir
+			uri = remote.repository.rootDir.toURI()
+		}
+	}
+
 	protected File repoFile(RepositoryService grgit, String path, boolean makeDirs = true) {
 		return GitTestUtil.repoFile(grgit, path, makeDirs)
 	}

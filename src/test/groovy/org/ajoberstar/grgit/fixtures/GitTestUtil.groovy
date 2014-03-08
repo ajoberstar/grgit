@@ -17,15 +17,24 @@ final class GitTestUtil {
 		return file
 	}
 
-	static List branches(RepositoryService grgit) {
+	static List branches(RepositoryService grgit, boolean trim = true) {
 		return grgit.repository.git.branchList().with {
 			listMode = ListMode.ALL
 			delegate.call()
-		}.collect { it.name }
+		}.collect { trim ? it.name - 'refs/heads/' : it.name }
+	}
+
+	static List remoteBranches(RepositoryService grgit) {
+		return grgit.repository.git.branchList().with {
+			listMode = ListMode.REMOTE
+			delegate.call()
+		}.collect { it.name - 'refs/remotes/origin/' }
 	}
 
 	static List tags(RepositoryService grgit) {
-		return grgit.repository.git.tagList().call().collect { it.name }
+		return grgit.repository.git.tagList().call().collect {
+			it.name - 'refs/tags/'
+		}
 	}
 
 	static List remotes(RepositoryService grgit) {
@@ -33,7 +42,7 @@ final class GitTestUtil {
 		return RemoteConfig.getAllRemoteConfigs(jgitConfig).collect { it.name}
 	}
 
-	static Commit head(RepositoryService grgit, String ref) {
+	static Commit resolve(RepositoryService grgit, String ref) {
 		return JGitUtil.resolveCommit(grgit.repository, ref)
 	}
 
