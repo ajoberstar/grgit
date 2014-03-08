@@ -37,8 +37,8 @@ class CloneOpSpec extends MultiGitOpSpec {
 	RepositoryService remoteGrgit
 	String remoteUri
 
-	def remoteBranchesFilter = { it =~ $/^refs/remotes/origin/$}
-	def localBranchesFilter = { it =~ $/^refs/heads/$}
+	def remoteBranchesFilter = { it =~ $/^refs/remotes/origin/$ }
+	def localBranchesFilter = { it =~ $/^refs/heads/$ }
 	def lastName = { it.split('/')[-1] }
 
 	def setup() {

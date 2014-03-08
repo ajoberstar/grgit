@@ -114,11 +114,11 @@ class FetchOpSpec extends MultiGitOpSpec {
 
 	def 'fetch with prune true, removes refs deleted in the remote'() {
 		given:
-		assert GitTestUtil.remoteBranches(localGrgit) - GitTestUtil.branches(remoteGrgit)
+		assert GitTestUtil.remoteBranches(localGrgit) - GitTestUtil.branches(remoteGrgit, true)
 		when:
 		localGrgit.fetch(prune: true)
 		then:
-		GitTestUtil.remoteBranches(localGrgit) == GitTestUtil.branches(remoteGrgit)
+		GitTestUtil.remoteBranches(localGrgit) == GitTestUtil.branches(remoteGrgit, true)
 	}
 
 	@Unroll('fetch with tag mode #mode fetches #expectedTags')
@@ -138,14 +138,14 @@ class FetchOpSpec extends MultiGitOpSpec {
 
 	def 'fetch with refspecs fetches those branches'() {
 		given:
-		assert GitTestUtil.branches(localGrgit, false) == [
+		assert GitTestUtil.branches(localGrgit) == [
 			'refs/heads/master',
 			'refs/remotes/origin/master',
 			'refs/remotes/origin/my-branch']
 		when:
 		localGrgit.fetch(refSpecs: ['+refs/heads/sub/*:refs/remotes/origin/banana/*'])
 		then:
-		GitTestUtil.branches(localGrgit, false) == [
+		GitTestUtil.branches(localGrgit) == [
 			'refs/heads/master',
 			'refs/remotes/origin/banana/mine1',
 			'refs/remotes/origin/banana/mine2',

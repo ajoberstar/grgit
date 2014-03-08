@@ -32,7 +32,7 @@ final class GitTestUtil {
 		return file
 	}
 
-	static List branches(RepositoryService grgit, boolean trim = true) {
+	static List branches(RepositoryService grgit, boolean trim = false) {
 		return grgit.repository.git.branchList().with {
 			listMode = ListMode.ALL
 			delegate.call()

@@ -31,8 +31,8 @@ import org.junit.rules.TemporaryFolder
 class StatusOpSpec extends SimpleGitOpSpec {
 	def setup() {
 		4.times { repoFile("${it}.txt") << "1" }
-		git.add(patterns: ['.'])
-		git.commit(message: 'Test')
+		grgit.add(patterns: ['.'])
+		grgit.commit(message: 'Test')
 	}
 
 	def 'with no changes all methods return empty list'() {
