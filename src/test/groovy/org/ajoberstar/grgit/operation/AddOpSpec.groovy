@@ -15,10 +15,9 @@
  */
 package org.ajoberstar.grgit.operation
 
-import spock.lang.Specification
-
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
 
 import org.eclipse.jgit.api.Git
@@ -26,17 +25,7 @@ import org.eclipse.jgit.api.Git
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
-class AddOpSpec extends Specification {
-	@Rule TemporaryFolder tempDir = new TemporaryFolder()
-
-	RepositoryService grgit
-
-	def setup() {
-		File repoDir = tempDir.newFolder('repo')
-		Git git = Git.init().setDirectory(repoDir).call()
-		grgit = Grgit.open(repoDir)
-	}
-
+class AddOpSpec extends SimpleGitOpSpec {
 	def 'adding specific file only adds that file'() {
 		given:
 		repoFile('1.txt') << '1'
@@ -45,9 +34,9 @@ class AddOpSpec extends Specification {
 		when:
 		grgit.add(patterns:['1.txt'])
 		then:
-		def status = grgit.repository.git.status().call()
-		status.added == ['1.txt'] as Set
-		status.untracked == ['2.txt', 'test/3.txt'] as Set
+		def status = grgit.status()
+		status.staged.newFiles == ['1.txt'] as Set
+		status.unstaged.newFiles == ['2.txt', 'test/3.txt'] as Set
 	}
 
 	def 'adding specific directory adds all files within it'() {
@@ -60,9 +49,9 @@ class AddOpSpec extends Specification {
 		when:
 		grgit.add(patterns:['test'])
 		then:
-		def status = grgit.repository.git.status().call()
-		status.added == ['test/3.txt', 'test/4.txt', 'test/other/5.txt'] as Set
-		status.untracked == ['1.txt', 'something/2.txt'] as Set
+		def status = grgit.status()
+		status.staged.newFiles == ['test/3.txt', 'test/4.txt', 'test/other/5.txt'] as Set
+		status.unstaged.newFiles == ['1.txt', 'something/2.txt'] as Set
 	}
 
 	def 'adding file pattern does not work due to lack of JGit support'() {
@@ -75,14 +64,14 @@ class AddOpSpec extends Specification {
 		when:
 		grgit.add(patterns:['**/*.txt'])
 		then:
-		def status = grgit.repository.git.status().call()
+		def status = grgit.status()
 		/*
 		 * TODO: get it to work like this
 		 * status.added == ['something/2.txt', 'test/4.txt', 'test/other/5.txt'] as Set
 		 * status.untracked == ['1.bat', 'test/3.bat'] as Set
 		 */
-		 status.added.empty
-		 status.untracked == ['1.bat', 'test/3.bat', 'something/2.txt', 'test/4.txt', 'test/other/5.txt'] as Set
+		 status.staged.newFiles.empty
+		 status.unstaged.newFiles == ['1.bat', 'test/3.bat', 'something/2.txt', 'test/4.txt', 'test/other/5.txt'] as Set
 	}
 
 	def 'adding with update true only adds/removes files already in the index'() {
@@ -100,16 +89,9 @@ class AddOpSpec extends Specification {
 		when:
 		grgit.add(patterns:['.'], update:true)
 		then:
-		def status = grgit.repository.git.status().call()
-		status.changed == ['1.bat', 'something/2.txt'] as Set
-		status.removed == ['test/3.bat'] as Set
-		status.untracked == ['test/4.txt', 'test/other/5.txt'] as Set
-	}
-
-
-	private File repoFile(String path, boolean makeDirs = true) {
-		def file = new File(grgit.repository.rootDir, path)
-		if (makeDirs) file.parentFile.mkdirs()
-		return file
+		def status = grgit.status()
+		status.staged.modifiedFiles == ['1.bat', 'something/2.txt'] as Set
+		status.staged.deletedFiles == ['test/3.bat'] as Set
+		status.unstaged.newFiles == ['test/4.txt', 'test/other/5.txt'] as Set
 	}
 }
