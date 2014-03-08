@@ -20,6 +20,7 @@ import spock.lang.Specification
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
 import org.ajoberstar.grgit.util.JGitUtil
 
@@ -28,28 +29,21 @@ import org.eclipse.jgit.api.Git
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
-class ResetOpSpec extends Specification {
-	@Rule TemporaryFolder tempDir = new TemporaryFolder()
-
-	RepositoryService grgit
+class ResetOpSpec extends SimpleGitOpSpec {
 	List commits = []
 
 	def setup() {
-		File repoDir = tempDir.newFolder('repo')
-		Git git = Git.init().setDirectory(repoDir).call()
-		grgit = Grgit.open(repoDir)
-
 		repoFile('1.bat') << '1'
 		repoFile('something/2.txt') << '2'
 		repoFile('test/3.bat') << '3'
 		repoFile('test/4.txt') << '4'
 		repoFile('test/other/5.txt') << '5'
 		grgit.add(patterns:['.'])
-		commits << JGitUtil.convertCommit(grgit.repository.git.commit().setMessage('Test').call())
+		commits << grgit.commit(message: 'Test')
 		repoFile('1.bat') << '2'
 		repoFile('test/3.bat') << '4'
 		grgit.add(patterns:['.'])
-		commits << JGitUtil.convertCommit(grgit.repository.git.commit().setMessage('Test').call())
+		commits << grgit.commit(message: 'Test')
 		repoFile('1.bat') << '3'
 		repoFile('something/2.txt') << '2'
 		grgit.add(patterns:['.'])
@@ -145,10 +139,4 @@ class ResetOpSpec extends Specification {
 	// def 'reset keep changes HEAD, index, and working tree if no unstaged changes'() {}
 
 	// def 'reset keep aborts if any unstaged changes different from commit'() {}
-
-	private File repoFile(String path, boolean makeDirs = true) {
-		def file = new File(grgit.repository.rootDir, path)
-		if (makeDirs) file.parentFile.mkdirs()
-		return file
-	}
 }

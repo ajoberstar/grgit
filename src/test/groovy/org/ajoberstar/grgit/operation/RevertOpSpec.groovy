@@ -21,6 +21,7 @@ import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.service.RepositoryService
 
@@ -29,17 +30,10 @@ import org.eclipse.jgit.api.Git
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
-class RevertOpSpec extends Specification {
-	@Rule TemporaryFolder tempDir = new TemporaryFolder()
-
-	RepositoryService grgit
+class RevertOpSpec extends SimpleGitOpSpec {
 	List commits = []
 
 	def setup() {
-		File repoDir = tempDir.newFolder('repo')
-		Git git = Git.init().setDirectory(repoDir).call()
-		grgit = Grgit.open(repoDir)
-
 		5.times {
 			repoFile("${it}.txt") << "1"
 			grgit.add(patterns:['.'])
@@ -60,11 +54,5 @@ class RevertOpSpec extends Specification {
 		then:
 		grgit.log().size() == 7
 		repoFile('.').listFiles().collect { it.name }.findAll { !it.startsWith('.') } as Set == [0, 2, 4].collect { "${it}.txt" } as Set
-	}
-
-	private File repoFile(String path, boolean makeDirs = true) {
-		def file = new File(grgit.repository.rootDir, path)
-		if (makeDirs) file.parentFile.mkdirs()
-		return file
 	}
 }

@@ -20,6 +20,7 @@ import spock.lang.Specification
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
 
 import org.eclipse.jgit.api.Git
@@ -27,18 +28,11 @@ import org.eclipse.jgit.api.Git
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
-class StatusOpSpec extends Specification {
-	@Rule TemporaryFolder tempDir = new TemporaryFolder()
-
-	RepositoryService grgit
-
+class StatusOpSpec extends SimpleGitOpSpec {
 	def setup() {
-		File repoDir = tempDir.newFolder('repo')
-		Git git = Git.init().setDirectory(repoDir).call()
-		grgit = Grgit.open(repoDir)
 		4.times { repoFile("${it}.txt") << "1" }
-		git.add().addFilepattern('.').call()
-		git.commit().setMessage('Test').call()
+		git.add(patterns: ['.'])
+		git.commit(message: 'Test')
 	}
 
 	def 'with no changes all methods return empty list'() {
@@ -79,7 +73,7 @@ class StatusOpSpec extends Specification {
 		repoFile('5.txt') << '5'
 		repoFile('6.txt') << '6'
 		when:
-		grgit.repository.git.add().addFilepattern('.').call()
+		grgit.add(patterns: ['.'])
 		then:
 		grgit.status() == new Status(['5.txt', '6.txt'] as Set, [] as Set, [] as Set,
 			[] as Set, [] as Set, [] as Set)
@@ -90,7 +84,7 @@ class StatusOpSpec extends Specification {
 		repoFile('1.txt') << '5'
 		repoFile('2.txt') << '6'
 		when:
-		grgit.repository.git.add().addFilepattern('.').call()
+		grgit.add(patterns: ['.'])
 		then:
 		grgit.status() == new Status([] as Set, ['1.txt', '2.txt'] as Set, [] as Set,
 			[] as Set, [] as Set, [] as Set)
@@ -101,13 +95,9 @@ class StatusOpSpec extends Specification {
 		assert repoFile('3.txt').delete()
 		assert repoFile('0.txt').delete()
 		when:
-		grgit.repository.git.add().addFilepattern('.').setUpdate(true).call()
+		grgit.add(patterns: ['.'], update: true)
 		then:
 		grgit.status() == new Status([] as Set, [] as Set, ['3.txt', '0.txt'] as Set,
 			[] as Set, [] as Set, [] as Set)
-	}
-
-	private File repoFile(String path) {
-		return new File(grgit.repository.rootDir, path)
 	}
 }

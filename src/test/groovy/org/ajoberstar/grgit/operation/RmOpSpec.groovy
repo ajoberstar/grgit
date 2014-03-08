@@ -19,6 +19,7 @@ import spock.lang.Specification
 
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
 
 import org.eclipse.jgit.api.Git
@@ -26,23 +27,15 @@ import org.eclipse.jgit.api.Git
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
-class RmOpSpec extends Specification {
-	@Rule TemporaryFolder tempDir = new TemporaryFolder()
-
-	RepositoryService grgit
-
+class RmOpSpec extends SimpleGitOpSpec {
 	def setup() {
-		File repoDir = tempDir.newFolder('repo')
-		Git git = Git.init().setDirectory(repoDir).call()
-		grgit = Grgit.open(repoDir)
-
 		repoFile('1.bat') << '1'
 		repoFile('something/2.txt') << '2'
 		repoFile('test/3.bat') << '3'
 		repoFile('test/4.txt') << '4'
 		repoFile('test/other/5.txt') << '5'
 		grgit.add(patterns:['.'])
-		grgit.repository.git.commit().setMessage('Test').call()
+		grgit.commit(message: 'Test')
 	}
 
 	def 'removing specific file only removes that file'() {
@@ -51,8 +44,8 @@ class RmOpSpec extends Specification {
 		when:
 		grgit.remove(patterns:['1.bat'])
 		then:
-		def status = grgit.repository.git.status().call()
-		status.removed == paths
+		def status = grgit.status()
+		status.staged.deletedFiles == paths
 		paths.every { !repoFile(it).exists() }
 	}
 
@@ -62,8 +55,8 @@ class RmOpSpec extends Specification {
 		when:
 		grgit.remove(patterns:['test'])
 		then:
-		def status = grgit.repository.git.status().call()
-		status.removed == paths
+		def status = grgit.status()
+		status.staged.deletedFiles == paths
 		paths.every { !repoFile(it).exists() }
 	}
 
@@ -73,12 +66,12 @@ class RmOpSpec extends Specification {
 		when:
 		grgit.remove(patterns:['**/*.txt'])
 		then:
-		def status = grgit.repository.git.status().call()
+		def status = grgit.status()
 		/*
 		 * TODO: get it to work like this
 		 * status.removed == ['something/2.txt', 'test/4.txt', 'test/other/5.txt'] as Set
 		 */
-		 status.removed.empty
+		 status.staged.deletedFiles.empty
 		 paths.every { repoFile(it).exists() }
 	}
 
@@ -88,15 +81,8 @@ class RmOpSpec extends Specification {
 		when:
 		grgit.remove(patterns:['something'], cached:true)
 		then:
-		def status = grgit.repository.git.status().call()
-		status.removed == paths
+		def status = grgit.status()
+		status.staged.deletedFiles == paths
 		paths.every { repoFile(it).exists() }
-	}
-
-
-	private File repoFile(String path, boolean makeDirs = true) {
-		def file = new File(grgit.repository.rootDir, path)
-		if (makeDirs) file.parentFile.mkdirs()
-		return file
 	}
 }
