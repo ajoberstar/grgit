@@ -1,0 +1,2 @@
+# Ensure patch files are created with LF line endings
+*.patch text eol=lf
