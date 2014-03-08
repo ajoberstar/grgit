@@ -21,6 +21,8 @@ import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
+import org.ajoberstar.grgit.fixtures.GitTestUtil
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
 
 import org.eclipse.jgit.api.Git
@@ -28,20 +30,12 @@ import org.eclipse.jgit.api.Git
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
-class CommitOpSpec extends Specification {
-	@Rule TemporaryFolder tempDir = new TemporaryFolder()
-
-	RepositoryService grgit
-
+class CommitOpSpec extends SimpleGitOpSpec {
 	def setup() {
-		File repoDir = tempDir.newFolder('repo')
-		Git git = Git.init().setDirectory(repoDir).call()
-		git.repo.config.with {
+		GitTestUtil.configure(grgit) {
 			setString('user', null, 'name', 'Alfred Pennyworth')
 			setString('user', null, 'email', 'alfred.pennyworth@wayneindustries.com')
-			save()
 		}
-		grgit = Grgit.open(repoDir)
 
 		repoFile('1.txt') << '1'
 		repoFile('2.txt') << '1'
@@ -50,7 +44,7 @@ class CommitOpSpec extends Specification {
 		repoFile('folderB/1.txt') << '1'
 		repoFile('folderC/1.txt') << '1'
 		grgit.add(patterns:['.'])
-		grgit.repository.git.commit().setMessage('Test').call()
+		grgit.commit(message: 'Test')
 		repoFile('1.txt') << '2'
 		repoFile('folderA/1.txt') << '2'
 		repoFile('folderA/2.txt') << '2'
@@ -160,11 +154,5 @@ class CommitOpSpec extends Specification {
 			['folderB/2.txt'] as Set,
 			['1.txt', 'folderB/1.txt'] as Set,
 			[] as Set)
-	}
-
-	private File repoFile(String path, boolean makeDirs = true) {
-		def file = new File(grgit.repository.rootDir, path)
-		if (makeDirs) file.parentFile.mkdirs()
-		return file
 	}
 }

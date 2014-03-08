@@ -20,6 +20,8 @@ import spock.lang.Specification
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.fixtures.GitTestUtil
+import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
 
 import org.eclipse.jgit.api.Git
@@ -29,9 +31,7 @@ import org.eclipse.jgit.transport.RemoteConfig
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
-class CloneOpSpec extends Specification {
-	@Rule TemporaryFolder tempDir = new TemporaryFolder()
-
+class CloneOpSpec extends MultiGitOpSpec {
 	File repoDir
 
 	RepositoryService remoteGrgit
@@ -42,11 +42,11 @@ class CloneOpSpec extends Specification {
 	def lastName = { it.split('/')[-1] }
 
 	def setup() {
-		repoDir = tempDir.newFolder('repo')
+		// TODO: Convert branching and tagging to Grgit.
+		repoDir = tempDir.newFolder('local')
 
-		File remoteRepoDir = tempDir.newFolder('remote')
-		remoteGrgit = Grgit.init(dir: remoteRepoDir)
-		remoteUri = remoteRepoDir.toURI()
+		remoteGrgit = init('remote')
+		remoteUri = remoteGrgit.repository.rootDir.toURI()
 
 		repoFile(remoteGrgit, '1.txt') << '1'
 		remoteGrgit.commit(message: 'do', all: true)
@@ -85,17 +85,17 @@ class CloneOpSpec extends Specification {
 		def grgit = Grgit.clone(dir: repoDir, uri: remoteUri)
 		then:
 		grgit.head() == remoteGrgit.head()
-		branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == branches(remoteGrgit).collect(lastName)
-		branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['master']
-		tags(grgit).collect(lastName) == ['tag1']
-		remotes(grgit) == ['origin']
+		GitTestUtil.branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == GitTestUtil.branches(remoteGrgit).collect(lastName)
+		GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['master']
+		GitTestUtil.tags(grgit).collect(lastName) == ['tag1']
+		GitTestUtil.remotes(grgit) == ['origin']
 	}
 
 	def 'clone with different remote does not use origin'() {
 		when:
 		def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, remote: 'oranges')
 		then:
-		remotes(grgit) == ['oranges']
+		GitTestUtil.remotes(grgit) == ['oranges']
 	}
 
 	def 'clone with bare true does not have a working tree'() {
@@ -124,10 +124,10 @@ class CloneOpSpec extends Specification {
 		def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, refToCheckout: 'branch1')
 		then:
 		grgit.head() == remoteGrgit.resolveCommit('branch1')
-		branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == branches(remoteGrgit).collect(lastName)
-		branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['branch1']
-		tags(grgit).collect(lastName) == ['tag1']
-		remotes(grgit) == ['origin']
+		GitTestUtil.branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == GitTestUtil.branches(remoteGrgit).collect(lastName)
+		GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['branch1']
+		GitTestUtil.tags(grgit).collect(lastName) == ['tag1']
+		GitTestUtil.remotes(grgit) == ['origin']
 	}
 
 	def 'clone with refToCheckout set to simple tag name works'() {
@@ -135,10 +135,10 @@ class CloneOpSpec extends Specification {
 		def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, refToCheckout: 'tag1')
 		then:
 		grgit.head() == remoteGrgit.resolveCommit('tag1')
-		branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == branches(remoteGrgit).collect(lastName)
-		branches(grgit).findAll(localBranchesFilter).collect(lastName) == []
-		tags(grgit).collect(lastName) == ['tag1']
-		remotes(grgit) == ['origin']
+		GitTestUtil.branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == GitTestUtil.branches(remoteGrgit).collect(lastName)
+		GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == []
+		GitTestUtil.tags(grgit).collect(lastName) == ['tag1']
+		GitTestUtil.remotes(grgit) == ['origin']
 	}
 
 	def 'clone with refToCheckout set to full ref name works'() {
@@ -146,31 +146,9 @@ class CloneOpSpec extends Specification {
 		def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, refToCheckout: 'refs/heads/branch2')
 		then:
 		grgit.head() == remoteGrgit.resolveCommit('branch2')
-		branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == branches(remoteGrgit).collect(lastName)
-		branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['branch2']
-		tags(grgit).collect(lastName) == ['tag1']
-		remotes(grgit) == ['origin']
-	}
-
-	private File repoFile(RepositoryService grgit, String path, boolean makeDirs = true) {
-		def file = new File(grgit.repository.rootDir, path)
-		if (makeDirs) file.parentFile.mkdirs()
-		return file
-	}
-
-	private List branches(RepositoryService grgit) {
-		return grgit.repository.git.branchList().with {
-			listMode = ListMode.ALL
-			delegate.call()
-		}.collect { it.name }
-	}
-
-	private List tags(RepositoryService grgit) {
-		return grgit.repository.git.tagList().call().collect { it.name }
-	}
-
-	private List remotes(RepositoryService grgit) {
-		def jgitConfig = grgit.repository.git.repo.config
-		return RemoteConfig.getAllRemoteConfigs(jgitConfig).collect { it.name}
+		GitTestUtil.branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == GitTestUtil.branches(remoteGrgit).collect(lastName)
+		GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['branch2']
+		GitTestUtil.tags(grgit).collect(lastName) == ['tag1']
+		GitTestUtil.remotes(grgit) == ['origin']
 	}
 }

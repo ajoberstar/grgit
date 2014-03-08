@@ -15,7 +15,6 @@
  */
 package org.ajoberstar.grgit.operation
 
-import spock.lang.Specification
 import spock.lang.Unroll
 
 import org.ajoberstar.grgit.Grgit
@@ -23,6 +22,7 @@ import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
 import org.ajoberstar.grgit.util.JGitUtil
 
@@ -32,18 +32,10 @@ import org.eclipse.jgit.api.ListBranchCommand.ListMode
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
-class CheckoutOpSpec extends Specification {
-	@Rule TemporaryFolder tempDir = new TemporaryFolder()
-
-	RepositoryService grgit
-
+class CheckoutOpSpec extends SimpleGitOpSpec {
 	List commits = []
 
 	def setup() {
-		File repoDir = tempDir.newFolder('repo')
-		Git.init().setDirectory(repoDir).call()
-		grgit = Grgit.open(repoDir)
-
 		repoFile('1.txt') << '1'
 		commits << grgit.commit(message: 'do', all: true)
 
@@ -101,11 +93,5 @@ class CheckoutOpSpec extends Specification {
 		grgit.checkout(createBranch: true)
 		then:
 		thrown(IllegalArgumentException)
-	}
-
-	private File repoFile(String path, boolean makeDirs = true) {
-		def file = new File(grgit.repository.rootDir, path)
-		if (makeDirs) file.parentFile.mkdirs()
-		return file
 	}
 }
