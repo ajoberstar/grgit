@@ -1,6 +1,9 @@
 package org.ajoberstar.grgit.fixtures
 
+import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.service.RepositoryService
+import org.ajoberstar.grgit.util.JGitUtil
+import org.eclipse.jgit.transport.RemoteConfig
 
 final class GitTestUtil {
 	private GitTestUtil() {
