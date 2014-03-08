@@ -35,4 +35,10 @@ final class GitTestUtil {
 	static Commit head(RepositoryService grgit, String ref) {
 		return JGitUtil.resolveCommit(grgit.repository, ref)
 	}
+
+	static void configure(RepositoryService grgit, Closure closure) {
+		def config = grgit.repository.git.repo.config
+		config.with(closure)
+		config.save()
+	}
 }
