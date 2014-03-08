@@ -32,7 +32,7 @@ sourceCompatibility = '1.7'
 
 repositories { mavenCentral() }
 
-def jgitVersion = '3.2.0.201312181205-r'
+def jgitVersion = '3.3.0.201403021825-r'
 
 dependencies {
 	compile localGroovy()
