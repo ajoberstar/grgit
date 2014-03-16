@@ -71,7 +71,7 @@ class JGitUtil {
 	static Commit convertCommit(RevCommit rev) {
 		Map props = [:]
 		props.id = ObjectId.toString(rev.id)
-		props.abbreviatedId = props.id[0..6]
+		// props.abbreviatedId = props.id[0..6]
 		PersonIdent committer = rev.committerIdent
 		props.committer = new Person(committer.name, committer.emailAddress)
 		PersonIdent author = rev.authorIdent

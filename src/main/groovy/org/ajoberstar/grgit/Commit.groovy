@@ -30,11 +30,6 @@ class Commit {
 	String id
 
 	/**
-	 * The first 7 characters of the commit hash.
-	 */
-	String abbreviatedId
-
-	/**
 	 * The author of the changes in the commit.
 	 */
 	Person author
@@ -58,4 +53,13 @@ class Commit {
 	 * The shortened commit message.
 	 */
 	String shortMessage
+
+	/**
+	 * The first {@code length} characters of the commit hash.
+	 * @param length the number of characters to abbreviate the
+	 * hash to (defaults to 7)
+	 */
+	String getAbbreviatedId(int length = 7) {
+		return id[0..(length - 1)]
+	}
 }

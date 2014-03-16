@@ -103,7 +103,6 @@ class JGitUtilSpec extends Specification {
 		expect:
 		JGitUtil.convertCommit(commits[0]) == new Commit(
 			ObjectId.toString(commits[0]),
-			ObjectId.toString(commits[0])[0..6],
 			person,
 			person,
 			commits[0].commitTime,
