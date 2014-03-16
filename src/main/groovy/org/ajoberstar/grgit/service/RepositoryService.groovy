@@ -45,19 +45,19 @@ class RepositoryService {
 
 	final Repository repository
 
-	final BranchService branches
-	final NoteService notes
-	final RemoteService remotes
-	final StashService stashes
-	final TagService tags
+	final BranchService branch
+	final NoteService note
+	final RemoteService remote
+	final StashService stash
+	final TagService tag
 
 	RepositoryService(Repository repository) {
 		this.repository = repository
-		this.branches = null
-		this.notes = null
-		this.remotes = null
-		this.stashes = null
-		this.tags = null
+		this.branch = new BranchService(repository)
+		this.note = null
+		this.remote = null
+		this.stash = null
+		this.tag = null
 	}
 
 	Commit head() {

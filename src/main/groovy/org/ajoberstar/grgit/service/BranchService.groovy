@@ -16,21 +16,22 @@
 package org.ajoberstar.grgit.service
 
 import org.ajoberstar.grgit.Branch
+import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.operation.BranchAddOp
+import org.ajoberstar.grgit.operation.BranchListOp
+// import org.ajoberstar.grgit.operation.BranchRemoveOp
+import org.ajoberstar.grgit.util.OpSyntaxUtil
 
 class BranchService {
-	void add(Map parms) {
+	private static final Map OPERATIONS = [
+		list: BranchListOp, add: BranchAddOp/*, remote: BranchRemoveOp*/]
+	final Repository repository
 
+	BranchService(Repository repository) {
+		this.repository = repository
 	}
 
-	void remove(Map parms) {
-
-	}
-
-	Set<Branch> list(Map parms) {
-
-	}
-
-	void checkout(Map parms) {
-		
+	def methodMissing(String name, args) {
+		OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
 	}
 }

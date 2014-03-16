@@ -15,6 +15,15 @@
  */
 package org.ajoberstar.grgit
 
-class Branch {
+import groovy.transform.Immutable
 
+import org.eclipse.jgit.lib.Repository
+
+@Immutable
+class Branch {
+	String name
+
+	String getSimpleName() {
+		return Repository.shortenRefName(name)
+	}
 }
