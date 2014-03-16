@@ -13,25 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ajoberstar.grgit.service
+package org.ajoberstar.grgit.operation
+
+import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.operation.BranchAddOp
-import org.ajoberstar.grgit.operation.BranchListOp
-import org.ajoberstar.grgit.operation.BranchRemoveOp
-import org.ajoberstar.grgit.util.OpSyntaxUtil
+import org.ajoberstar.grgit.exception.GrgitException
 
-class BranchService {
-	private static final Map OPERATIONS = [
-		list: BranchListOp, add: BranchAddOp, remove: BranchRemoveOp]
-	final Repository repository
+import org.eclipse.jgit.api.DeleteBranchCommand
+import org.eclipse.jgit.api.errors.GitAPIException
+import org.eclipse.jgit.lib.Ref
 
-	BranchService(Repository repository) {
-		this.repository = repository
+class BranchRemoveOp implements Callable<List<String>> {
+	private Repository repo
+
+	List names = []
+	boolean force = false
+
+	BranchRemoveOp(Repository repo) {
+		this.repo = repo
 	}
 
-	def methodMissing(String name, args) {
-		OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
+	List<String> call() {
+		DeleteBranchCommand cmd = repo.git.branchDelete()
+		cmd.branchNames = names
+		cmd.force = force
+
+		try {
+			return cmd.call()
+		} catch (GitAPIException e) {
+			throw new GrgitException('Problem deleting branch(es).', e)
+		}
 	}
 }
