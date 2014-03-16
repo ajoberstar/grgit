@@ -43,7 +43,7 @@ class BranchListOp implements Callable<List<Branch>> {
 				new Branch(it.name)
 			}
 		} catch (GitAPIException e) {
-			throw new GrgitException('Problem creating branch.', e)
+			throw new GrgitException('Problem listing branches.', e)
 		}
 	}
 
