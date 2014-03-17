@@ -15,6 +15,39 @@
  */
 package org.ajoberstar.grgit
 
-class Tag {
+import groovy.transform.Immutable
 
+import org.eclipse.jgit.lib.Repository
+
+@Immutable
+class Tag {
+	/**
+	 * The commit this tag points to.
+	 */
+	Commit commit
+
+	/**
+	 * The person who created the tag.
+	 */
+	Person tagger
+
+	/**
+	 * The full name of this tag.
+	 */
+	String name
+
+	/**
+	 * The full tag message.
+	 */
+	String fullMessage
+
+	/**
+	 * The shortened tag message.
+	 */
+	String shortMessage
+
+
+	String getSimpleName() {
+		return Repository.shortenRefName(name)
+	}
 }

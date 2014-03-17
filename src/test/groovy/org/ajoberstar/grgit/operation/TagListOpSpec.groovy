@@ -1,0 +1,63 @@
+/*
+ * Copyright 2012-2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.ajoberstar.grgit.operation
+
+import spock.lang.Unroll
+
+import org.ajoberstar.grgit.Tag
+import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.Person
+import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.Status
+import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
+import org.ajoberstar.grgit.service.RepositoryService
+import org.ajoberstar.grgit.util.JGitUtil
+
+import org.eclipse.jgit.api.Git
+
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
+
+class TagListOpSpec extends SimpleGitOpSpec {
+	List commits = []
+
+	def setup() {
+		repoFile('1.txt') << '1'
+		commits << grgit.commit(message: 'do', all: true)
+		grgit.repository.git.tag().with {
+			name = 'tag1'
+			message = 'My message'
+			delegate.call()
+		}
+
+		repoFile('1.txt') << '2'
+		commits << grgit.commit(message: 'do', all: true)
+		grgit.repository.git.tag().with {
+			name = 'tag2'
+			message = 'My other\nmessage'
+			delegate.call()
+		}
+	}
+
+	def 'tag list lists all tags'() {
+		expect:
+		grgit.tag.list() == [
+			new Tag(commits[0], person, 'refs/tags/tag1', 'My message', 'My message'),
+			new Tag(commits[1], person, 'refs/tags/tag2', 'My other\nmessage', 'My other message')
+		]
+	}
+}

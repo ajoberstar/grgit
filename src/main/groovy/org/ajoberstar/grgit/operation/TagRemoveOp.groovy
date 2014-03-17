@@ -13,25 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ajoberstar.grgit.service
+package org.ajoberstar.grgit.operation
+
+import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.operation.TagAddOp
-import org.ajoberstar.grgit.operation.TagListOp
-import org.ajoberstar.grgit.operation.TagRemoveOp
-import org.ajoberstar.grgit.util.OpSyntaxUtil
+import org.ajoberstar.grgit.exception.GrgitException
 
-class TagService {
-	private static final Map OPERATIONS = [
-		list: TagListOp, add: TagAddOp, remove: TagRemoveOp]
-	final Repository repository
+import org.eclipse.jgit.api.DeleteTagCommand
+import org.eclipse.jgit.api.errors.GitAPIException
+import org.eclipse.jgit.lib.Ref
 
-	TagService(Repository repository) {
-		this.repository = repository
+class TagRemoveOp implements Callable<List<String>> {
+	private Repository repo
+
+	List names = []
+
+	TagRemoveOp(Repository repo) {
+		this.repo = repo
 	}
 
-	def methodMissing(String name, args) {
-		OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
+	List<String> call() {
+		DeleteTagCommand cmd = repo.git.tagDelete()
+		cmd.tags = names
+
+		try {
+			return cmd.call()
+		} catch (GitAPIException e) {
+			throw new GrgitException('Problem deleting tag(s).', e)
+		}
 	}
 }

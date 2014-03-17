@@ -19,6 +19,7 @@ import spock.lang.Specification
 
 import org.ajoberstar.grgit.service.RepositoryService
 import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.Person
 
 import org.eclipse.jgit.api.Git
 
@@ -28,9 +29,16 @@ import org.junit.rules.TemporaryFolder
 class MultiGitOpSpec extends Specification {
 	@Rule TemporaryFolder tempDir = new TemporaryFolder()
 
+	Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
+
 	protected RepositoryService init(String name) {
 		File repoDir = tempDir.newFolder(name)
 		Git git = Git.init().setDirectory(repoDir).call()
+		git.repo.config.with {
+			setString('user', null, 'name', person.name)
+			setString('user', null, 'email', person.email)
+			save()
+		}
 		return Grgit.open(repoDir)
 	}
 

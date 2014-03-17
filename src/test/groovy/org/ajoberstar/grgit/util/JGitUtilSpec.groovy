@@ -19,12 +19,15 @@ import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.errors.AmbiguousObjectException
 import org.eclipse.jgit.errors.IncorrectObjectTypeException
 import org.eclipse.jgit.errors.RevisionSyntaxException
 import org.eclipse.jgit.lib.ObjectId
+import org.eclipse.jgit.lib.Ref
+import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.merge.MergeStrategy
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
@@ -35,6 +38,8 @@ class JGitUtilSpec extends Specification {
 
 	Repository repo
 	List commits = []
+	Ref annotatedTag
+	Ref unannotatedTag
 
 	def 'resolveObject works for branch name'() {
 		expect:
@@ -111,6 +116,32 @@ class JGitUtilSpec extends Specification {
 		)
 	}
 
+	def 'resolveTag works for annotated tag ref'() {
+		given:
+		Person person = new Person(repo.git.repo.config.getString('user', null, 'name'), repo.git.repo.config.getString('user', null, 'email'))
+		expect:
+		JGitUtil.resolveTag(repo, annotatedTag) == new Tag(
+			JGitUtil.convertCommit(commits[0]),
+			person,
+			'refs/tags/v1.0.0',
+			'first tag\ntesting',
+			'first tag testing'
+		)
+	}
+
+	def 'resolveTag works for unannotated tag ref'() {
+		given:
+		Person person = new Person(repo.git.repo.config.getString('user', null, 'name'), repo.git.repo.config.getString('user', null, 'email'))
+		expect:
+		JGitUtil.resolveTag(repo, unannotatedTag) == new Tag(
+			JGitUtil.convertCommit(commits[0]),
+			null,
+			'refs/tags/v2.0.0',
+			null,
+			null
+		)
+	}
+
 	def setup() {
 		File repoDir = tempDir.newFolder('repo')
 		Git git = Git.init().setDirectory(repoDir).call()
@@ -123,6 +154,8 @@ class JGitUtilSpec extends Specification {
 		testFile << '1\n'
 		git.add().addFilepattern(testFile.name).call()
 		commits << git.commit().setMessage('first commit\ntesting').call()
+		annotatedTag = git.tag().setName('v1.0.0').setMessage('first tag\ntesting').call()
+		unannotatedTag = git.tag().setName('v2.0.0').setAnnotated(false).call()
 		testFile << '2\n'
 		git.add().addFilepattern(testFile.name).call()
 		commits << git.commit().setMessage('second commit').call()

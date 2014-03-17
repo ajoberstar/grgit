@@ -19,14 +19,19 @@ import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
+import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.errors.AmbiguousObjectException
 import org.eclipse.jgit.errors.IncorrectObjectTypeException
+import org.eclipse.jgit.errors.MissingObjectException
 import org.eclipse.jgit.errors.RevisionSyntaxException
 import org.eclipse.jgit.lib.PersonIdent
 import org.eclipse.jgit.lib.ObjectId
+import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.revwalk.RevCommit
+import org.eclipse.jgit.revwalk.RevObject
+import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.revwalk.RevWalk
 
 class JGitUtil {
@@ -53,6 +58,18 @@ class JGitUtil {
 		}
 	}
 
+	static RevObject resolveRevObject(Repository repo, String revstr) {
+		ObjectId id = resolveObject(repo, revstr)
+		RevWalk walk = new RevWalk(repo.git.repository)
+		try {
+			return walk.parseAny(id)
+		} catch (MissingObjectException e) {
+			throw new GrgitException("Supplied object does not exist: ${revstr}", e)
+		} catch (IOException e) {
+			throw new GrgitException("Could not read pack file or loose object for: ${revstr}", e)
+		}
+	}
+
 	static Commit resolveCommit(Repository repo, String revstr) {
 		ObjectId id = resolveObject(repo, revstr)
 		return resolveCommit(repo, id)
@@ -71,7 +88,6 @@ class JGitUtil {
 	static Commit convertCommit(RevCommit rev) {
 		Map props = [:]
 		props.id = ObjectId.toString(rev.id)
-		// props.abbreviatedId = props.id[0..6]
 		PersonIdent committer = rev.committerIdent
 		props.committer = new Person(committer.name, committer.emailAddress)
 		PersonIdent author = rev.authorIdent
@@ -80,6 +96,24 @@ class JGitUtil {
 		props.fullMessage = rev.fullMessage
 		props.shortMessage = rev.shortMessage
 		return new Commit(props)
+	}
+
+	static Tag resolveTag(Repository repo, Ref ref) {
+		Map props = [:]
+		props.name = ref.name
+		try {
+			RevWalk walk = new RevWalk(repo.git.repository)
+			RevTag rev = walk.parseTag(ref.objectId)
+			walk.parseBody(rev.object)
+			props.commit = convertCommit(rev.object)
+			PersonIdent tagger = rev.taggerIdent
+			props.tagger = new Person(tagger.name, tagger.emailAddress)
+			props.fullMessage = rev.fullMessage
+			props.shortMessage = rev.shortMessage
+		} catch (IncorrectObjectTypeException e) {
+			props.commit = resolveCommit(repo, ref.objectId)
+		}
+		return new Tag(props)
 	}
 
 	static Status convertStatus(org.eclipse.jgit.api.Status jgitStatus) {

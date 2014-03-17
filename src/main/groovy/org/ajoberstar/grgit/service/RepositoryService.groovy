@@ -57,7 +57,7 @@ class RepositoryService {
 		this.note = null
 		this.remote = null
 		this.stash = null
-		this.tag = null
+		this.tag = new TagService(repository)
 	}
 
 	Commit head() {
