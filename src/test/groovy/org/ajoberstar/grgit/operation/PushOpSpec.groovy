@@ -46,10 +46,7 @@ class PushOpSpec extends MultiGitOpSpec {
 		repoFile(remoteGrgit, '1.txt') << '1'
 		remoteGrgit.commit(message: 'do', all: true)
 
-		remoteGrgit.repository.git.branchCreate().with {
-			name = 'my-branch'
-			delegate.call()
-		}
+		remoteGrgit.branch.add(name: 'my-branch')
 
 		localGrgit = clone('local', remoteGrgit)
 		localGrgit.checkout(branch: 'my-branch', createBranch: true)
@@ -57,20 +54,14 @@ class PushOpSpec extends MultiGitOpSpec {
 		repoFile(localGrgit, '1.txt') << '1.5'
 		localGrgit.commit(message: 'do', all: true)
 
-		localGrgit.repository.git.tag().with {
-			name = 'tag1'
-			delegate.call()
-		}
+		localGrgit.tag.add(name: 'tag1')
 
 		localGrgit.checkout(branch: 'master')
 
 		repoFile(localGrgit, '1.txt') << '2'
 		localGrgit.commit(message: 'do', all: true)
 
-		localGrgit.repository.git.tag().with {
-			name = 'tag2'
-			delegate.call()
-		}
+		localGrgit.tag.add(name: 'tag2')
 	}
 
 	def 'push to non-existent remote fails'() {

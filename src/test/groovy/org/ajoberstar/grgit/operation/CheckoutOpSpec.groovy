@@ -42,10 +42,7 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		repoFile('1.txt') << '2'
 		commits << grgit.commit(message: 'do', all: true)
 
-		grgit.repository.git.branchCreate().with {
-			name = 'my-branch'
-			delegate.call()
-		}
+		grgit.branch.add(name: 'my-branch')
 
 		repoFile('1.txt') << '3'
 		commits << grgit.commit(message: 'do', all: true)

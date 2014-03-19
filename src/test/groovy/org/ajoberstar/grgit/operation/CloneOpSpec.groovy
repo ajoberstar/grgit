@@ -51,26 +51,17 @@ class CloneOpSpec extends MultiGitOpSpec {
 		repoFile(remoteGrgit, '1.txt') << '1'
 		remoteGrgit.commit(message: 'do', all: true)
 
-		remoteGrgit.repository.git.branchCreate().with {
-			name = 'branch1'
-			delegate.call()
-		}
+		remoteGrgit.branch.add(name: 'branch1')
 
 		repoFile(remoteGrgit, '1.txt') << '2'
 		remoteGrgit.commit(message: 'do', all: true)
 
-		remoteGrgit.repository.git.tag().with {
-			name = 'tag1'
-			delegate.call()
-		}
+		remoteGrgit.tag.add(name: 'tag1')
 
 		repoFile(remoteGrgit, '1.txt') << '3'
 		remoteGrgit.commit(message: 'do', all: true)
 
-		remoteGrgit.repository.git.branchCreate().with {
-			name = 'branch2'
-			delegate.call()
-		}
+		remoteGrgit.branch.add(name: 'branch2')
 	}
 
 	def 'clone with non-existent uri fails'() {

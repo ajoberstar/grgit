@@ -38,19 +38,11 @@ class TagListOpSpec extends SimpleGitOpSpec {
 	def setup() {
 		repoFile('1.txt') << '1'
 		commits << grgit.commit(message: 'do', all: true)
-		grgit.repository.git.tag().with {
-			name = 'tag1'
-			message = 'My message'
-			delegate.call()
-		}
+		grgit.tag.add(name: 'tag1', message: 'My message')
 
 		repoFile('1.txt') << '2'
 		commits << grgit.commit(message: 'do', all: true)
-		grgit.repository.git.tag().with {
-			name = 'tag2'
-			message = 'My other\nmessage'
-			delegate.call()
-		}
+		grgit.tag.add(name: 'tag2', message: 'My other\nmessage')
 	}
 
 	def 'tag list lists all tags'() {

@@ -44,25 +44,15 @@ class FetchOpSpec extends MultiGitOpSpec {
 		repoFile(remoteGrgit, '1.txt') << '1'
 		remoteGrgit.commit(message: 'do', all: true)
 
-		remoteGrgit.repository.git.branchCreate().with {
-			name = 'my-branch'
-			delegate.call()
-		}
+		remoteGrgit.branch.add(name: 'my-branch')
 
 		localGrgit = clone('local', remoteGrgit)
 
 		repoFile(remoteGrgit, '1.txt') << '2'
 		remoteGrgit.commit(message: 'do', all: true)
 
-		remoteGrgit.repository.git.tag().with {
-			name = 'reachable-tag'
-			delegate.call()
-		}
-
-		remoteGrgit.repository.git.branchCreate().with {
-			name = 'sub/mine1'
-			delegate.call()
-		}
+		remoteGrgit.tag.add(name: 'reachable-tag')
+		remoteGrgit.branch.add(name: 'sub/mine1')
 
 		remoteGrgit.checkout {
 			branch = 'unreachable-branch'
@@ -72,26 +62,15 @@ class FetchOpSpec extends MultiGitOpSpec {
 		repoFile(remoteGrgit, '1.txt') << '2.5'
 		remoteGrgit.commit(message: 'do-unreachable', all: true)
 
-		remoteGrgit.repository.git.tag().with {
-			name = 'unreachable-tag'
-			delegate.call()
-		}
+		remoteGrgit.tag.add(name: 'unreachable-tag')
 
 		remoteGrgit.checkout(branch: 'master')
 
 		repoFile(remoteGrgit, '1.txt') << '3'
 		remoteGrgit.commit(message: 'do', all: true)
 
-		remoteGrgit.repository.git.branchCreate().with {
-			name = 'sub/mine2'
-			delegate.call()
-		}
-
-		remoteGrgit.repository.git.branchDelete().with {
-			setBranchNames('my-branch', 'unreachable-branch')
-			force = true
-			delegate.call()
-		}
+		remoteGrgit.branch.add(name: 'sub/mine2')
+		remoteGrgit.branch.remove(names: ['my-branch', 'unreachable-branch'], force: true)
 	}
 
 	def 'fetch from non-existent remote fails'() {

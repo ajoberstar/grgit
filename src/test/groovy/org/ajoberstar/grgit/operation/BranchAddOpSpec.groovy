@@ -48,10 +48,7 @@ class BranchAddOpSpec extends MultiGitOpSpec {
 		repoFile(remoteGrgit, '1.txt') << '2'
 		commits << remoteGrgit.commit(message: 'do', all: true)
 
-		remoteGrgit.repository.git.branchCreate().with {
-			name = 'my-branch'
-			delegate.call()
-		}
+		remoteGrgit.branch.add(name: 'my-branch')
 
 		localGrgit = clone('local', remoteGrgit)
 	}

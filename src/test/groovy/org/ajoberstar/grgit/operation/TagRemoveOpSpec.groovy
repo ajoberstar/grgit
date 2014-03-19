@@ -55,13 +55,13 @@ class TagRemoveOpSpec extends SimpleGitOpSpec {
 		grgit.tag.list().collect { it.name } == ['refs/tags/tag1']
 	}
 
-	def 'tag remove with multiple tages remvoes tages'() {
+	def 'tag remove with multiple tags removes tags'() {
 		expect:
-		grgit.tag.remove(names: ['tag2', 'tag1']) == ['refs/tags/tag2', 'refs/tags/tag1']
+		grgit.tag.remove(names: ['tag2', 'tag1']) as Set == ['refs/tags/tag2', 'refs/tags/tag1'] as Set
 		grgit.tag.list() == []
 	}
 
-	def 'tag remove with invalid tages skips invalid and removes others'() {
+	def 'tag remove with invalid tags skips invalid and removes others'() {
 		expect:
 		grgit.tag.remove(names: ['tag2', 'blah4']) == ['refs/tags/tag2']
 		grgit.tag.list().collect { it.name } == ['refs/tags/tag1']
