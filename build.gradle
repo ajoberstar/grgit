@@ -30,11 +30,10 @@ sonarRunner.sonarProperties {
 
 sourceCompatibility = '1.7'
 
-jacoco.toolVersion = '0.7.0-beta-SNAPSHOT'
+jacoco.toolVersion = '0.7.0.201403182114'
 
 repositories {
 	mavenCentral()
-	maven { url = 'https://oss.sonatype.org/content/groups/public' }
 }
 
 def jgitVersion = '3.3.0.201403021825-r'

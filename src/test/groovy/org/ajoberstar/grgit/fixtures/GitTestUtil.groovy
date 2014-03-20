@@ -32,6 +32,12 @@ final class GitTestUtil {
 		return file
 	}
 
+	static File repoDir(RepositoryService grgit, String path) {
+		def file = new File(grgit.repository.rootDir, path)
+		file.mkdirs()
+		return file
+	}
+
 	static List branches(RepositoryService grgit, boolean trim = false) {
 		return grgit.repository.git.branchList().with {
 			listMode = ListMode.ALL

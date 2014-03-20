@@ -46,4 +46,8 @@ class SimpleGitOpSpec extends Specification {
 	protected File repoFile(String path, boolean makeDirs = true) {
 		return GitTestUtil.repoFile(grgit, path, makeDirs)
 	}
+
+	protected File repoDir(String path) {
+		return GitTestUtil.repoDir(grgit, path)
+	}
 }
