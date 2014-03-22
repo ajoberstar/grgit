@@ -57,11 +57,11 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 		Connector con = determineConnector()
 		if (con) {
 			IdentityRepository remoteRepo = new RemoteIdentityRepository(con)
-			if (!remoteRepo.identities.empty) {
+			if (remoteRepo.identities.empty) {
+				logger.info 'not using agent proxy: no identities found'
+			} else {
 				logger.info 'using agent proxy'
 				jsch.setIdentityRepository(remoteRepo)
-			} else {
-				logger.info 'not using agent proxy: no identities found'
 			}
 		} else {
 			logger.info 'jsch agent proxy not available'
@@ -74,53 +74,45 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 	 * @return the connector available at this time
 	 */
 	private Connector determineConnector() {
-		return [new SshAgentSelector(), new PageantSelector()].findResult { selector ->
-			selector.select()
+		return [sshAgentSelector, pageantSelector].findResult { selector ->
+			selector()
 		}
 	}
 
-	private interface AgentSelector {
-		public Connector select()
-	}
-
-	private class SshAgentSelector implements AgentSelector {
-		public Connector select() {
-			try {
-				if (SSHAgentConnector.isConnectorAvailable()) {
-					logger.info 'ssh-agent available'
-					USocketFactory usf = new JNAUSocketFactory()
-					return new SSHAgentConnector(usf)
-				} else {
-					logger.info 'ssh-agent not available'
-					return null
-				}
-			} catch (AgentProxyException e) {
-				logger.info 'ssh-agent could not be configured: {}', e.message
-				logger.debug 'ssh-agent failure details', e
-				return null
-			} catch (UnsatisfiedLinkError e) {
-				logger.info 'ssh-agent could not be configured: {}', e.message
-				logger.debug 'ssh-agent failure details', e
+	private Closure<Connector> sshAgentSelector = {
+		try {
+			if (SSHAgentConnector.isConnectorAvailable()) {
+				logger.info 'ssh-agent available'
+				USocketFactory usf = new JNAUSocketFactory()
+				return new SSHAgentConnector(usf)
+			} else {
+				logger.info 'ssh-agent not available'
 				return null
 			}
+		} catch (AgentProxyException e) {
+			logger.info 'ssh-agent could not be configured: {}', e.message
+			logger.debug 'ssh-agent failure details', e
+			return null
+		} catch (UnsatisfiedLinkError e) {
+			logger.info 'ssh-agent could not be configured: {}', e.message
+			logger.debug 'ssh-agent failure details', e
+			return null
 		}
 	}
 
-	private class PageantSelector implements AgentSelector {
-		public Connector select() {
-			try {
-				if (PageantConnector.isConnectorAvailable()) {
-					logger.info 'pageant available'
-					return new PageantConnector()
-				} else {
-					logger.info 'pageant not available'
-					return null
-				}
-			} catch (AgentProxyException e) {
-				logger.info 'pageant could not be configured: {}', e.message
-				logger.debug 'pageant failure details', e
+	private Closure<Connector> pageantSelector = {
+		try {
+			if (PageantConnector.isConnectorAvailable()) {
+				logger.info 'pageant available'
+				return new PageantConnector()
+			} else {
+				logger.info 'pageant not available'
 				return null
 			}
+		} catch (AgentProxyException e) {
+			logger.info 'pageant could not be configured: {}', e.message
+			logger.debug 'pageant failure details', e
+			return null
 		}
 	}
 }

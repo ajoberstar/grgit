@@ -26,7 +26,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.lib.Ref
 
 class BranchAddOp implements Callable<Branch> {
-	private Repository repo
+	private final Repository repo
 
 	String name
 	boolean force = false

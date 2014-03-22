@@ -24,7 +24,7 @@ import org.eclipse.jgit.api.ResetCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
 class ResetOp implements Callable<Void> {
-	private Repository repo
+	private final Repository repo
 
 	Set<String> paths = []
 	String commit
@@ -63,7 +63,7 @@ class ResetOp implements Callable<Void> {
 		MIXED(ResetCommand.ResetType.MIXED),
 		SOFT(ResetCommand.ResetType.SOFT)
 
-		protected final ResetCommand.ResetType jgit
+		private final ResetCommand.ResetType jgit
 
 		private Mode(ResetCommand.ResetType jgit) {
 			this.jgit = jgit

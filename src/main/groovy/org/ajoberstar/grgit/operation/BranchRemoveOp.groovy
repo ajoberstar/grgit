@@ -26,7 +26,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.lib.Ref
 
 class BranchRemoveOp implements Callable<List<String>> {
-	private Repository repo
+	private final Repository repo
 
 	List names = []
 	boolean force = false

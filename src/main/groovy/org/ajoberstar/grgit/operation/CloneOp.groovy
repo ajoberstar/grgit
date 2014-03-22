@@ -44,7 +44,7 @@ class CloneOp implements Callable<RepositoryService> {
 		cmd.remote = remote
 		cmd.bare = bare
 		cmd.noCheckout = !checkout
-		if (refToCheckout) cmd.branch = refToCheckout
+		if (refToCheckout) { cmd.branch = refToCheckout }
 
 		try {
 			cmd.call()

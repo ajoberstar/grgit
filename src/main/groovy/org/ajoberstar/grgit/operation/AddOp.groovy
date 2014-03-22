@@ -24,7 +24,7 @@ import org.eclipse.jgit.api.AddCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
 class AddOp implements Callable<Void> {
-	private Repository repo
+	private final Repository repo
 
 	Set<String> patterns = []
 	boolean update = false

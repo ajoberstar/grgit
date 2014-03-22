@@ -29,7 +29,7 @@ import org.eclipse.jgit.lib.PersonIdent
 import org.eclipse.jgit.revwalk.RevCommit
 
 class RevertOp implements Callable<Commit> {
-	private Repository repo
+	private final Repository repo
 
 	List<Object> commits = []
 
@@ -45,7 +45,7 @@ class RevertOp implements Callable<Commit> {
 		try {
 			RevCommit commit = cmd.call()
 			if (commit == null) {
-				throw new GrgitException("Problem reverting commits.")
+				throw new GrgitException('Problem reverting commits.')
 			}
 			return JGitUtil.convertCommit(commit)
 		} catch (GitAPIException e) {

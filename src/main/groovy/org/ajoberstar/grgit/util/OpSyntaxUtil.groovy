@@ -20,7 +20,7 @@ class OpSyntaxUtil {
 		throw new AssertionError('Cannot instantiate this class.')
 	}
 
-	static def tryOp(Class service, Map supportedOps, Object[] classArgs, String methodName, Object[] methodArgs) {
+	static Object tryOp(Class service, Map supportedOps, Object[] classArgs, String methodName, Object[] methodArgs) {
 		if (methodName in supportedOps && methodArgs.size() < 2) {
 			def op = supportedOps[methodName].newInstance(classArgs)
 			def config = methodArgs.size() == 0 ? [:] : methodArgs[0]

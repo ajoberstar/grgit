@@ -25,7 +25,7 @@ class TransportOpUtil {
 		throw new AssertionError('This class cannot be instantiated.')
 	}
 
-	public static void configure(TransportCommand cmd, Credentials creds) {
+	static void configure(TransportCommand cmd, Credentials creds) {
 		cmd.transportConfigCallback = new JschAgentProxyConfigCallback()
 	}
 

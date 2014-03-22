@@ -29,7 +29,7 @@ import org.eclipse.jgit.lib.PersonIdent
 import org.eclipse.jgit.revwalk.RevCommit
 
 class CheckoutOp implements Callable<Void> {
-	private Repository repo
+	private final Repository repo
 
 	String branch
 	boolean createBranch = false
@@ -46,7 +46,7 @@ class CheckoutOp implements Callable<Void> {
 			throw new IllegalArgumentException('Must specify branch name to create.')
 		}
 		CheckoutCommand cmd = repo.git.checkout()
-		if (branch) cmd.name = branch
+		if (branch) { cmd.name = branch }
 		cmd.createBranch = createBranch
 		cmd.startPoint = startPoint
 		try {

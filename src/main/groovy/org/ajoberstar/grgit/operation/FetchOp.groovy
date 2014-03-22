@@ -26,7 +26,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.transport.RefSpec
 
 class FetchOp implements Callable<Void> {
-	private Repository repo
+	private final Repository repo
 
 	String remote = 'origin'
 	List refSpecs = []

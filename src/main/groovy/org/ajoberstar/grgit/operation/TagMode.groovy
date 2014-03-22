@@ -22,7 +22,7 @@ enum TagMode {
 	ALL(TagOpt.FETCH_TAGS),
 	NONE(TagOpt.NO_TAGS)
 
-	protected final TagOpt jgit
+	final TagOpt jgit
 
 	private TagMode(TagOpt opt) {
 		this.jgit = opt

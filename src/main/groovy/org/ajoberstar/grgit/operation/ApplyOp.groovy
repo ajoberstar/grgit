@@ -24,7 +24,7 @@ import org.eclipse.jgit.api.ApplyCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
 class ApplyOp implements Callable<Void> {
-	private Repository repo
+	private final Repository repo
 
 	File patch
 

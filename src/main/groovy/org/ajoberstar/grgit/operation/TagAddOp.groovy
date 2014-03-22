@@ -29,7 +29,7 @@ import org.eclipse.jgit.lib.PersonIdent
 import org.eclipse.jgit.lib.Ref
 
 class TagAddOp implements Callable<Tag> {
-	private Repository repo
+	private final Repository repo
 
 	String name
 	String message

@@ -24,7 +24,7 @@ import org.eclipse.jgit.api.CleanCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
 class CleanOp implements Callable<Set<String>> {
-	private Repository repo
+	private final Repository repo
 
 	Set<String> paths
 	boolean directories = false

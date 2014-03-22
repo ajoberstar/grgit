@@ -29,7 +29,7 @@ import org.eclipse.jgit.lib.PersonIdent
 import org.eclipse.jgit.revwalk.RevCommit
 
 class CommitOp implements Callable<Commit> {
-	private Repository repo
+	private final Repository repo
 
 	String message
 	String reflogComment

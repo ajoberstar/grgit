@@ -31,7 +31,7 @@ import org.eclipse.jgit.lib.ObjectId
  * @author Andrew Oberstar
  */
 class LogOp implements Callable<List<Commit>> {
-	private Repository repo
+	private final Repository repo
 
 	List includes = []
 	List excludes = []

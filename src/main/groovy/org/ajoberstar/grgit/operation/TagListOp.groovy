@@ -27,7 +27,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.lib.Ref
 
 class TagListOp implements Callable<List<Tag>> {
-	private Repository repo
+	private final Repository repo
 
 	TagListOp(Repository repo) {
 		this.repo = repo

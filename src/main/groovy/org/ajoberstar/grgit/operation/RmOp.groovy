@@ -24,7 +24,7 @@ import org.eclipse.jgit.api.RmCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
 class RmOp implements Callable<Void> {
-	private Repository repo
+	private final Repository repo
 
 	Set<String> patterns = []
 	boolean cached = false

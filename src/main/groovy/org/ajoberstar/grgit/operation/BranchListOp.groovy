@@ -26,7 +26,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.lib.Ref
 
 class BranchListOp implements Callable<List<Branch>> {
-	private Repository repo
+	private final Repository repo
 
 	Mode mode = Mode.LOCAL
 
@@ -52,7 +52,7 @@ class BranchListOp implements Callable<List<Branch>> {
 		REMOTE(ListBranchCommand.ListMode.REMOTE),
 		LOCAL(null)
 
-		protected final ListBranchCommand.ListMode jgit
+		private final ListBranchCommand.ListMode jgit
 
 		private Mode(ListBranchCommand.ListMode jgit) {
 			this.jgit = jgit

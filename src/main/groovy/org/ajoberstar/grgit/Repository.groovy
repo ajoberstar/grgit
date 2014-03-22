@@ -37,6 +37,6 @@ class Repository {
 
 	@Override
 	String toString() {
-		return "Repository(${getRootDir().canonicalPath})"
+		return "Repository(${rootDir.canonicalPath})"
 	}
 }

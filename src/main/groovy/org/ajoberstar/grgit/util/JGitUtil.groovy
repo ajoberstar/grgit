@@ -100,7 +100,7 @@ class JGitUtil {
 
 	static Tag resolveTag(Repository repo, Ref ref) {
 		Map props = [:]
-		props.name = ref.name
+		props.fullName = ref.name
 		try {
 			RevWalk walk = new RevWalk(repo.git.repository)
 			RevTag rev = walk.parseTag(ref.objectId)

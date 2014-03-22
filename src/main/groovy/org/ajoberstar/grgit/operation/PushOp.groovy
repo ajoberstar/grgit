@@ -25,7 +25,7 @@ import org.eclipse.jgit.api.PushCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
 class PushOp implements Callable<Void> {
-	private Repository repo
+	private final Repository repo
 
 	String remote = 'origin'
 	List refsOrSpecs = []
@@ -42,8 +42,8 @@ class PushOp implements Callable<Void> {
 		TransportOpUtil.configure(cmd, null)
 		cmd.remote = remote
 		refsOrSpecs.each { cmd.add(it) }
-		if (all) cmd.setPushAll()
-		if (tags) cmd.setPushTags()
+		if (all) { cmd.setPushAll() }
+		if (tags) { cmd.setPushTags() }
 		cmd.force = force
 		try {
 			cmd.call()
