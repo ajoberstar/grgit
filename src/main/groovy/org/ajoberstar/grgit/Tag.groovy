@@ -34,7 +34,7 @@ class Tag {
 	/**
 	 * The full name of this tag.
 	 */
-	String name
+	String fullName
 
 	/**
 	 * The full tag message.
@@ -47,7 +47,7 @@ class Tag {
 	String shortMessage
 
 
-	String getSimpleName() {
-		return Repository.shortenRefName(name)
+	String getName() {
+		return Repository.shortenRefName(fullName)
 	}
 }

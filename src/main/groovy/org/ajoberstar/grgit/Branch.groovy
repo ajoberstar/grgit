@@ -21,9 +21,9 @@ import org.eclipse.jgit.lib.Repository
 
 @Immutable
 class Branch {
-	String name
+	String fullName
 
-	String getSimpleName() {
-		return Repository.shortenRefName(name)
+	String getName() {
+		return Repository.shortenRefName(fullName)
 	}
 }
