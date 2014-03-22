@@ -23,6 +23,8 @@ import org.eclipse.jgit.lib.Repository
 class Branch {
 	String fullName
 
+	Branch trackingBranch
+
 	String getName() {
 		return Repository.shortenRefName(fullName)
 	}

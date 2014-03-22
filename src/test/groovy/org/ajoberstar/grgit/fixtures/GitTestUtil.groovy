@@ -15,6 +15,7 @@
  */
 package org.ajoberstar.grgit.fixtures
 
+import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.service.RepositoryService
 import org.ajoberstar.grgit.util.JGitUtil
@@ -36,6 +37,11 @@ final class GitTestUtil {
 		def file = new File(grgit.repository.rootDir, path)
 		file.mkdirs()
 		return file
+	}
+
+	static Branch branch(String fullName, String trackingBranchFullName = null) {
+		Branch trackingBranch = trackingBranchFullName ? branch(trackingBranchFullName) : null
+		return new Branch(fullName, trackingBranch)
 	}
 
 	static List branches(RepositoryService grgit, boolean trim = false) {

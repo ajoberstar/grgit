@@ -23,6 +23,7 @@ import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
 import org.ajoberstar.grgit.util.JGitUtil
@@ -51,14 +52,14 @@ class BranchListOpSpec extends MultiGitOpSpec {
 	@Unroll('list branch with #arguments lists #expected')
 	def 'list branch without arguments only lists local'() {
 		given:
-		def expectedBranches = expected.collect { new Branch(it) }
+		def expectedBranches = expected.collect { GitTestUtil.branch(*it) }
 		expect:
 		localGrgit.branch.list(arguments) == expectedBranches
 		where:
 		arguments                        | expected
-		[:]                              | ['refs/heads/master']
-		[mode: BranchListOp.Mode.LOCAL]  | ['refs/heads/master']
-		[mode: BranchListOp.Mode.REMOTE] | ['refs/remotes/origin/master', 'refs/remotes/origin/my-branch']
-		[mode: BranchListOp.Mode.ALL]    | ['refs/heads/master', 'refs/remotes/origin/master', 'refs/remotes/origin/my-branch']
+		[:]                              | [['refs/heads/master', 'refs/remotes/origin/master']]
+		[mode: BranchListOp.Mode.LOCAL]  | [['refs/heads/master', 'refs/remotes/origin/master']]
+		[mode: BranchListOp.Mode.REMOTE] | [['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
+		[mode: BranchListOp.Mode.ALL]    | [['refs/heads/master', 'refs/remotes/origin/master'], ['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
 	}
 }

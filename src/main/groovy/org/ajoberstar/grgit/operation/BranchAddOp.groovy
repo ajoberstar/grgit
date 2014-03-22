@@ -20,6 +20,7 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.CreateBranchCommand
 import org.eclipse.jgit.api.errors.GitAPIException
@@ -46,7 +47,7 @@ class BranchAddOp implements Callable<Branch> {
 
 		try {
 			Ref ref = cmd.call()
-			return new Branch(name)
+			return JGitUtil.resolveBranch(repo, ref)
 		} catch (GitAPIException e) {
 			throw new GrgitException('Problem creating branch.', e)
 		}

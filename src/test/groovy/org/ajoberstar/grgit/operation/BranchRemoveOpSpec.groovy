@@ -23,6 +23,7 @@ import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
 import org.ajoberstar.grgit.util.JGitUtil
@@ -99,7 +100,7 @@ class BranchRemoveOpSpec extends SimpleGitOpSpec {
 		force << [true, false]
 	}
 
-	private List<Branch> branches(String... names) {
-		return names.collect { new Branch("refs/heads/${it}") }
+	private List<Branch> branches(String... branches) {
+		return branches.collect { GitTestUtil.branch("refs/heads/${it}") }
 	}
 }

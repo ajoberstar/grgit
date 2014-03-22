@@ -20,6 +20,7 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.ListBranchCommand
 import org.eclipse.jgit.api.errors.GitAPIException
@@ -40,7 +41,7 @@ class BranchListOp implements Callable<List<Branch>> {
 
 		try {
 			return cmd.call().collect {
-				new Branch(it.name)
+				JGitUtil.resolveBranch(repo, it.name)
 			}
 		} catch (GitAPIException e) {
 			throw new GrgitException('Problem listing branches.', e)

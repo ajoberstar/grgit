@@ -15,6 +15,7 @@
  */
 package org.ajoberstar.grgit.util
 
+import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
@@ -26,6 +27,8 @@ import org.eclipse.jgit.errors.AmbiguousObjectException
 import org.eclipse.jgit.errors.IncorrectObjectTypeException
 import org.eclipse.jgit.errors.MissingObjectException
 import org.eclipse.jgit.errors.RevisionSyntaxException
+import org.eclipse.jgit.lib.BranchConfig
+import org.eclipse.jgit.lib.Config
 import org.eclipse.jgit.lib.PersonIdent
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Ref
@@ -114,6 +117,24 @@ class JGitUtil {
 			props.commit = resolveCommit(repo, ref.objectId)
 		}
 		return new Tag(props)
+	}
+
+	static Branch resolveBranch(Repository repo, String name) {
+		Ref ref = repo.git.repository.getRef(name)
+		return resolveBranch(repo, ref)
+	}
+
+	static Branch resolveBranch(Repository repo, Ref ref) {
+		Map props = [:]
+		props.fullName = ref.name
+		String shortName = org.eclipse.jgit.lib.Repository.shortenRefName(props.fullName)
+		Config config = repo.git.repository.config
+		println config.toText()
+		BranchConfig branchConfig = new BranchConfig(config, shortName)
+		if (branchConfig.trackingBranch) {
+			props.trackingBranch = resolveBranch(repo, branchConfig.trackingBranch)
+		}
+		return new Branch(props)
 	}
 
 	static Status convertStatus(org.eclipse.jgit.api.Status jgitStatus) {
