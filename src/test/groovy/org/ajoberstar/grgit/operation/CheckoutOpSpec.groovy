@@ -53,6 +53,7 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		grgit.checkout(branch: 'my-branch')
 		then:
 		grgit.head() == grgit.resolveCommit('my-branch')
+		grgit.branch.current.fullName == 'refs/heads/my-branch'
 	}
 
 	def 'checkout with existing branch, createBranch true fails'() {
@@ -73,7 +74,7 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.checkout(branch: 'new-branch', createBranch: true)
 		then:
-		grgit.repository.git.repo.branch == 'new-branch'
+		grgit.branch.current.fullName == 'refs/heads/new-branch'
 		grgit.head() == grgit.resolveCommit('master')
 	}
 
@@ -81,7 +82,7 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.checkout(branch: 'new-branch', createBranch: true, startPoint: 'my-branch')
 		then:
-		grgit.repository.git.repo.branch == 'new-branch'
+		grgit.branch.current.fullName == 'refs/heads/new-branch'
 		grgit.head() == grgit.resolveCommit('my-branch')
 	}
 
