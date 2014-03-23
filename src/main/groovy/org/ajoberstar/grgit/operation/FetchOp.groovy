@@ -39,7 +39,7 @@ class FetchOp implements Callable<Void> {
 
 	Void call() {
 		FetchCommand cmd = repo.git.fetch()
-		TransportOpUtil.configure(cmd, null)
+		TransportOpUtil.configure(cmd, repo.credentials)
 		cmd.remote = remote
 		cmd.refSpecs = refSpecs.collect { new RefSpec(it) }
 		cmd.removeDeletedRefs = prune

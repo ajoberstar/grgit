@@ -39,7 +39,7 @@ class PushOp implements Callable<Void> {
 
 	Void call() {
 		PushCommand cmd = repo.git.push()
-		TransportOpUtil.configure(cmd, null)
+		TransportOpUtil.configure(cmd, repo.credentials)
 		cmd.remote = remote
 		refsOrSpecs.each { cmd.add(it) }
 		if (all) { cmd.setPushAll() }

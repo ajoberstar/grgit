@@ -18,6 +18,8 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.auth.Credentials
+import org.ajoberstar.grgit.auth.TransportOpUtil
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.service.RepositoryService
 
@@ -33,12 +35,16 @@ class CloneOp implements Callable<RepositoryService> {
 	boolean checkout = true
 	String refToCheckout
 
+	Credentials credentials
+
 	RepositoryService call() {
 		if (!checkout && refToCheckout) {
 			throw new IllegalArgumentException('Cannot specify a refToCheckout and set checkout to false.')
 		}
 
 		CloneCommand cmd = Git.cloneRepository()
+		TransportOpUtil.configure(cmd, credentials)
+
 		cmd.directory = dir
 		cmd.uri = uri
 		cmd.remote = remote

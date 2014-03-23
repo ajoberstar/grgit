@@ -15,6 +15,7 @@
  */
 package org.ajoberstar.grgit
 
+import org.ajoberstar.grgit.auth.Credentials
 import org.ajoberstar.grgit.operation.CloneOp
 import org.ajoberstar.grgit.operation.InitOp
 import org.ajoberstar.grgit.service.RepositoryService
@@ -35,12 +36,12 @@ class Grgit {
 		throw new AssertionError('Cannot instantiate this class.')
 	}
 
-	static RepositoryService open(String rootDirPath) {
-		return open(new File(rootDirPath))
+	static RepositoryService open(String rootDirPath, Credentials creds = null) {
+		return open(new File(rootDirPath), creds)
 	}
 
-	static RepositoryService open(File rootDir) {
-		def repo = new Repository(rootDir, Git.open(rootDir))
+	static RepositoryService open(File rootDir, Credentials creds = null) {
+		def repo = new Repository(rootDir, Git.open(rootDir), creds)
 		return new RepositoryService(repo)
 	}
 }

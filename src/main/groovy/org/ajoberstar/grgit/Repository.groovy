@@ -15,25 +15,33 @@
  */
 package org.ajoberstar.grgit
 
-import groovy.transform.TupleConstructor
+import groovy.transform.Canonical
+import org.ajoberstar.grgit.auth.Credentials
 import org.eclipse.jgit.api.Git
+
+// TODO: When Gradle is built with Groovy 2.0+, switch to @Immutable
 
 /**
  * Represents a Git repository.
  * @since 0.7.0
  * @author Andrew Oberstar
  */
-@TupleConstructor
+@Canonical
 class Repository {
 	/**
 	 * The directory the repository is contained in.
 	 */
-	final rootDir
+	final File rootDir
 
 	/**
 	 * The JGit instance opened for this repository.
 	 */
 	final Git git
+
+	/**
+	 * The credentials used when talking to remote repositories.
+	 */
+	final Credentials credentials
 
 	@Override
 	String toString() {
