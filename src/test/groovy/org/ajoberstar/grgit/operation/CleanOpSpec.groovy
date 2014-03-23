@@ -81,7 +81,6 @@ class CleanOpSpec extends SimpleGitOpSpec {
 	def 'clean with dry run true returns expected but does not delete them'() {
 		given:
 		def expected = ['3.txt', 'dir2/7.txt'] as Set
-		println grgit.status()
 		expect:
 		grgit.clean(dryRun: true) == expected
 		expected.every { repoFile(it).exists() }

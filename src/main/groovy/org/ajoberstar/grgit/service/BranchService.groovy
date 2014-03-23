@@ -17,16 +17,15 @@ package org.ajoberstar.grgit.service
 
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.operation.BranchAddOp
-import org.ajoberstar.grgit.operation.BranchListOp
-import org.ajoberstar.grgit.operation.BranchRemoveOp
+import org.ajoberstar.grgit.operation.*
 import org.ajoberstar.grgit.util.JGitUtil
 import org.ajoberstar.grgit.util.OpSyntaxUtil
 import org.eclipse.jgit.lib.Ref
 
 class BranchService {
 	private static final Map OPERATIONS = [
-		list: BranchListOp, add: BranchAddOp, remove: BranchRemoveOp]
+		list: BranchListOp, add: BranchAddOp, remove: BranchRemoveOp,
+		change: BranchChangeOp, status: BranchStatusOp]
 	final Repository repository
 
 	BranchService(Repository repository) {
@@ -37,8 +36,6 @@ class BranchService {
 		Ref ref = repository.git.repository.getRef('HEAD')?.target
 		return ref ? JGitUtil.resolveBranch(repository, ref) : null
 	}
-
-
 
 	def methodMissing(String name, args) {
 		OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)

@@ -27,24 +27,27 @@ import org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode
 import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.lib.Ref
 
-class BranchAddOp implements Callable<Branch> {
+class BranchChangeOp implements Callable<Branch> {
 	private final Repository repo
 
 	String name
 	String startPoint
 	Mode mode
 
-	BranchAddOp(Repository repo) {
+	BranchChangeOp(Repository repo) {
 		this.repo = repo
 	}
 
 	Branch call() {
-		if (mode && !startPoint) {
-			throw new IllegalStateException('Cannot set mode if no start point.')
+		if (!JGitUtil.resolveBranch(repo, name)) {
+			throw new GrgitException("Branch does not exist: ${name}")
+		}
+		if (!startPoint) {
+			throw new GrgitException('Must set new startPoint.')
 		}
 		CreateBranchCommand cmd = repo.git.branchCreate()
 		cmd.name = name
-		cmd.force = false
+		cmd.force = true
 		if (startPoint) { cmd.startPoint = startPoint }
 		if (mode) { cmd.upstreamMode = mode.jgit }
 
@@ -52,7 +55,7 @@ class BranchAddOp implements Callable<Branch> {
 			Ref ref = cmd.call()
 			return JGitUtil.resolveBranch(repo, ref)
 		} catch (GitAPIException e) {
-			throw new GrgitException('Problem creating branch.', e)
+			throw new GrgitException('Problem changing branch.', e)
 		}
 	}
 

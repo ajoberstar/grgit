@@ -125,11 +125,13 @@ class JGitUtil {
 	}
 
 	static Branch resolveBranch(Repository repo, Ref ref) {
+		if (ref == null) {
+			return null
+		}
 		Map props = [:]
 		props.fullName = ref.name
 		String shortName = org.eclipse.jgit.lib.Repository.shortenRefName(props.fullName)
 		Config config = repo.git.repository.config
-		println config.toText()
 		BranchConfig branchConfig = new BranchConfig(config, shortName)
 		if (branchConfig.trackingBranch) {
 			props.trackingBranch = resolveBranch(repo, branchConfig.trackingBranch)
