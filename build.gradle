@@ -60,6 +60,20 @@ tasks.withType(Test) {
 	}
 }
 
+test {
+	useJUnit {
+		excludeCategories 'org.ajoberstar.grgit.fixtures.PlatformSpecific'
+	}
+}
+
+['Windows', 'Linux', 'Mac'].each { platform ->
+	tasks.create("test${platform}", Test) {
+		useJUnit {
+			includeCategories "org.ajoberstar.grgit.fixtures.${platform}Specific"
+		}
+	}
+}
+
 task sourcesJar(type:Jar) {
 	classifier = 'sources'
 	from sourceSets.main.allSource
