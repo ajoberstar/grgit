@@ -54,6 +54,12 @@ dependencies {
 	testCompile('org.spockframework:spock-core:0.7-groovy-1.8') { exclude group: 'org.codehaus.groovy' }
 }
 
+tasks.withType(Test) {
+	reports {
+		junitXml.outputPerTestCase = true
+	}
+}
+
 task sourcesJar(type:Jar) {
 	classifier = 'sources'
 	from sourceSets.main.allSource

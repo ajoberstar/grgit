@@ -38,6 +38,11 @@ import org.slf4j.LoggerFactory
  */
 class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 	private static final Logger logger = LoggerFactory.getLogger(JschAgentProxySessionFactory)
+	private final AuthConfig config
+
+	JschAgentProxySessionFactory(AuthConfig config) {
+		this.config = config
+	}
 
 	/**
 	 * No actions performed by this.
@@ -81,7 +86,10 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 
 	private Closure<Connector> sshAgentSelector = {
 		try {
-			if (SSHAgentConnector.isConnectorAvailable()) {
+			if (!config.allows(AuthConfig.Option.SSHAGENT)) {
+				logger.info('ssh-agent option disabled')
+				return null
+			} else if (SSHAgentConnector.isConnectorAvailable()) {
 				logger.info 'ssh-agent available'
 				USocketFactory usf = new JNAUSocketFactory()
 				return new SSHAgentConnector(usf)
@@ -102,7 +110,10 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 
 	private Closure<Connector> pageantSelector = {
 		try {
-			if (PageantConnector.isConnectorAvailable()) {
+			if (!config.allows(AuthConfig.Option.PAGEANT)) {
+				logger.info('pageant option disabled')
+				return null
+			} else if (PageantConnector.isConnectorAvailable()) {
 				logger.info 'pageant available'
 				return new PageantConnector()
 			} else {
