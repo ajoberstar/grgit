@@ -30,6 +30,7 @@ class LinuxAuthenticationSpec extends Specification {
 		def username = System.properties['org.ajoberstar.grgit.test.username']
 		def password = System.properties['org.ajoberstar.grgit.test.password']
 		hardcodedCreds = new Credentials(username, password)
+		assert hardcodedCreds.username && hardcodedCreds.password
 	}
 
 	def cleanup() {
@@ -51,6 +52,7 @@ class LinuxAuthenticationSpec extends Specification {
 		method        | ssh   | creds
 		'hardcoded'   | false | hardcodedCreds
 		'interactive' | false | null
+		'interactive' | true  | null
 		'sshagent'    | true  | null
 	}
 
