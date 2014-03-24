@@ -39,7 +39,7 @@ class JschAgentProxyConfigCallback implements TransportConfigCallback {
 	 */
 	void configure(Transport transport) {
 		if (transport instanceof SshTransport) {
-			sshTransport.sshSessionFactory = new JschAgentProxySessionFactory(config)
+			transport.sshSessionFactory = new JschAgentProxySessionFactory(config)
 		}
 	}
 }

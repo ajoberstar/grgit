@@ -54,7 +54,7 @@ class CloneOp implements Callable<RepositoryService> {
 
 		try {
 			cmd.call()
-			return Grgit.open(dir)
+			return Grgit.open(dir, credentials)
 		} catch (GitAPIException e) {
 			throw new GrgitException('Problem cloning repository.', e)
 		}

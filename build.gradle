@@ -40,16 +40,23 @@ repositories {
 def jgitVersion = '3.3.0.201403021825-r'
 
 dependencies {
+	// groovy
 	compile localGroovy()
+
+	// jgit
 	compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
 	compile "org.eclipse.jgit:org.eclipse.jgit.ui:$jgitVersion"
 
+	// agentproxy
 	['jsch', 'pageant', 'sshagent', 'usocket-jna'].each {
 		compile "com.jcraft:jsch.agentproxy.${it}:0.0.7"
 	}
 
+	// logging
 	compile 'org.slf4j:slf4j-api:1.7.6'
+	testRuntime 'org.slf4j:slf4j-simple:1.7.6'
 
+	// testing
 	testCompile 'junit:junit:4.11'
 	testCompile('org.spockframework:spock-core:0.7-groovy-1.8') { exclude group: 'org.codehaus.groovy' }
 }
@@ -70,6 +77,11 @@ test {
 	tasks.create("test${platform}", Test) {
 		useJUnit {
 			includeCategories "org.ajoberstar.grgit.fixtures.${platform}Specific"
+		}
+		System.properties.each { key, value ->
+			if (key.startsWith('org.ajoberstar.grgit.test')) {
+				systemProperties((key): value)
+			}
 		}
 	}
 }

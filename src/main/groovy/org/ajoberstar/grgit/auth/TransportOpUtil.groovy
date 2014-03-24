@@ -38,8 +38,10 @@ class TransportOpUtil {
 
 	private static CredentialsProvider determineCredentialsProvider(AuthConfig config, Credentials creds) {
 		if (config.allows(AuthConfig.Option.HARDCODED) && creds?.username && creds?.password) {
+			logger.info('using hardcoded credentials')
 			return new UsernamePasswordCredentialsProvider(creds.username, creds.password)
 		} else if (config.allows(AuthConfig.Option.INTERACTIVE)) {
+			logger.info('using interactive credentials, if needed')
 			return new AwtCredentialsProvider()
 		} else {
 			return null
