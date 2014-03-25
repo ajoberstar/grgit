@@ -32,7 +32,7 @@ class RepositoryService {
 		/*pull: PullOp,*/ push: PushOp, fetch: FetchOp,
 		checkout: CheckoutOp,
 		log: LogOp, commit: CommitOp, revert: RevertOp/*,
-		cherryPick: CherryPickOp, merge: MergeOp, rebase: RebaseOp*/].asImmutable()
+		cherryPick: CherryPickOp*/, merge: MergeOp/*, rebase: RebaseOp*/].asImmutable()
 
 	final Repository repository
 
