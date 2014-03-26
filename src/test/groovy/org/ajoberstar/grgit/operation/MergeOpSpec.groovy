@@ -85,6 +85,8 @@ class MergeOpSpec extends MultiGitOpSpec {
 		localGrgit.merge(head: head, mode: mode)
 		then:
 		localGrgit.status().clean
+
+		// has a merge commit
 		localGrgit.log {
 			includes = ['HEAD']
 			excludes = [oldHead.id, mergeHead.id]
@@ -105,10 +107,7 @@ class MergeOpSpec extends MultiGitOpSpec {
 		localGrgit.merge(head: head, mode: mode)
 		then:
 		localGrgit.status() == status
-		localGrgit.log {
-			includes = ['HEAD']
-			excludes = [oldHead.id]
-		}.size() == 0
+		localGrgit.head() == oldHead
 		repoFile(localGrgit, '.git/MERGE_HEAD').text.trim() == mergeHead.id
 		where:
 		head           | mode      | status
@@ -123,10 +122,7 @@ class MergeOpSpec extends MultiGitOpSpec {
 		localGrgit.merge(head: head, mode: mode)
 		then:
 		localGrgit.status() == status
-		localGrgit.log {
-			includes = ['HEAD']
-			excludes = [oldHead.id]
-		}.size() == 0
+		localGrgit.head() == oldHead
 		!repoFile(localGrgit, '.git/MERGE_HEAD').exists()
 		where:
 		head           | mode   | status

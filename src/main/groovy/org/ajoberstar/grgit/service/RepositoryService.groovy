@@ -29,7 +29,7 @@ class RepositoryService {
 	private static final Map OPERATIONS = [
 		clean: CleanOp,
 		status: StatusOp, add: AddOp, remove: RmOp, reset: ResetOp, apply: ApplyOp,
-		/*pull: PullOp,*/ push: PushOp, fetch: FetchOp,
+		pull: PullOp, push: PushOp, fetch: FetchOp,
 		checkout: CheckoutOp,
 		log: LogOp, commit: CommitOp, revert: RevertOp/*,
 		cherryPick: CherryPickOp*/, merge: MergeOp/*, rebase: RebaseOp*/].asImmutable()
