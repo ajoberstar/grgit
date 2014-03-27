@@ -17,13 +17,11 @@ package org.ajoberstar.grgit.operation
 
 import java.util.concurrent.Callable
 
-import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
 
 import org.eclipse.jgit.api.DeleteTagCommand
 import org.eclipse.jgit.api.errors.GitAPIException
-import org.eclipse.jgit.lib.Ref
 
 class TagRemoveOp implements Callable<List<String>> {
 	private final Repository repo

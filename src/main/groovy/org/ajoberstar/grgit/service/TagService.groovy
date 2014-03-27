@@ -15,7 +15,6 @@
  */
 package org.ajoberstar.grgit.service
 
-import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.operation.TagAddOp
 import org.ajoberstar.grgit.operation.TagListOp

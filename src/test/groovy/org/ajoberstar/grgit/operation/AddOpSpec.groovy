@@ -15,15 +15,7 @@
  */
 package org.ajoberstar.grgit.operation
 
-import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
-import org.ajoberstar.grgit.service.RepositoryService
-
-import org.eclipse.jgit.api.Git
-
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 
 class AddOpSpec extends SimpleGitOpSpec {
 	def 'adding specific file only adds that file'() {

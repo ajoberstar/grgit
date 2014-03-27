@@ -15,16 +15,10 @@
  */
 package org.ajoberstar.grgit.operation
 
-import spock.lang.Unroll
-
 import org.ajoberstar.grgit.Commit
-import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.exception.GrgitException
-import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
-import org.ajoberstar.grgit.util.JGitUtil
 
 class PullOpSpec extends MultiGitOpSpec {
 	RepositoryService localGrgit

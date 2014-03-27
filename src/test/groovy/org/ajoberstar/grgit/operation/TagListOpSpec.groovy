@@ -15,22 +15,8 @@
  */
 package org.ajoberstar.grgit.operation
 
-import spock.lang.Unroll
-
 import org.ajoberstar.grgit.Tag
-import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.Person
-import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.Status
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
-import org.ajoberstar.grgit.service.RepositoryService
-import org.ajoberstar.grgit.util.JGitUtil
-
-import org.eclipse.jgit.api.Git
-
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 
 class TagListOpSpec extends SimpleGitOpSpec {
 	List commits = []

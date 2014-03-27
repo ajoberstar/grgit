@@ -20,6 +20,7 @@ import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.operation.*
 import org.ajoberstar.grgit.util.JGitUtil
 import org.ajoberstar.grgit.util.OpSyntaxUtil
+
 import org.eclipse.jgit.lib.Ref
 
 class BranchService {

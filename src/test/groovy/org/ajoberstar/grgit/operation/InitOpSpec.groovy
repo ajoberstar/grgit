@@ -15,17 +15,13 @@
  */
 package org.ajoberstar.grgit.operation
 
-import spock.lang.Specification
-
 import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.fixtures.GitTestUtil
-import org.ajoberstar.grgit.service.RepositoryService
-
-import org.eclipse.jgit.api.Git
 
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+
+import spock.lang.Specification
 
 class InitOpSpec extends Specification {
 	@Rule TemporaryFolder tempDir = new TemporaryFolder()

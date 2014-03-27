@@ -16,15 +16,10 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
-import org.ajoberstar.grgit.service.RepositoryService
 import org.ajoberstar.grgit.util.JGitUtil
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.lib.ObjectId
+
 import org.eclipse.jgit.merge.MergeStrategy
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 
 class LogOpSpec extends SimpleGitOpSpec {
 	List commits = []

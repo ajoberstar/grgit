@@ -19,7 +19,6 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
-import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.PullCommand
 import org.eclipse.jgit.api.PullResult

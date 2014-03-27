@@ -15,10 +15,10 @@
  */
 package org.ajoberstar.grgit.auth
 
+import static org.ajoberstar.grgit.auth.AuthConfig.Option.*
+
 import spock.lang.Specification
 import spock.lang.Unroll
-
-import static org.ajoberstar.grgit.auth.AuthConfig.Option.*
 
 class AuthConfigSpec extends Specification {
 	@Unroll('with #properties only #allowed are allowed')

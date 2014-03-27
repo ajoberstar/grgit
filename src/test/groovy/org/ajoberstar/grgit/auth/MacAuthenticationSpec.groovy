@@ -15,11 +15,11 @@
  */
 package org.ajoberstar.grgit.auth
 
-import spock.lang.Specification
-
 import org.ajoberstar.grgit.fixtures.MacSpecific
 
 import org.junit.experimental.categories.Category
+
+import spock.lang.Specification
 
 @Category(MacSpecific)
 class MacAuthenticationSpec extends Specification {

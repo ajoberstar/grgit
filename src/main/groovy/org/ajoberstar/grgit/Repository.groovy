@@ -16,7 +16,9 @@
 package org.ajoberstar.grgit
 
 import groovy.transform.Canonical
+
 import org.ajoberstar.grgit.auth.Credentials
+
 import org.eclipse.jgit.api.Git
 
 // TODO: When Gradle is built with Groovy 2.0+, switch to @Immutable

@@ -19,6 +19,7 @@ import org.eclipse.jgit.api.TransportCommand
 import org.eclipse.jgit.awtui.AwtCredentialsProvider
 import org.eclipse.jgit.transport.CredentialsProvider
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

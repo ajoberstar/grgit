@@ -21,16 +21,16 @@ import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.exception.GrgitException
+
 import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.errors.AmbiguousObjectException
-import org.eclipse.jgit.errors.IncorrectObjectTypeException
 import org.eclipse.jgit.errors.RevisionSyntaxException
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Ref
-import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.merge.MergeStrategy
+
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+
 import spock.lang.Specification
 
 class JGitUtilSpec extends Specification {

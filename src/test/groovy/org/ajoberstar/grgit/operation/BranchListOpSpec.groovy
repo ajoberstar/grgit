@@ -15,24 +15,11 @@
  */
 package org.ajoberstar.grgit.operation
 
-import spock.lang.Unroll
-
-import org.ajoberstar.grgit.Branch
-import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.Person
-import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.Status
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
-import org.ajoberstar.grgit.util.JGitUtil
 
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.api.ListBranchCommand.ListMode
-
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
+import spock.lang.Unroll
 
 class BranchListOpSpec extends MultiGitOpSpec {
 	RepositoryService localGrgit

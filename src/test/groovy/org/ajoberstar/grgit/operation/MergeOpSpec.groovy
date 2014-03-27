@@ -15,17 +15,14 @@
  */
 package org.ajoberstar.grgit.operation
 
-import spock.lang.Unroll
+import static org.ajoberstar.grgit.operation.MergeOp.Mode.*
 
-import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.exception.GrgitException
-import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
-import org.ajoberstar.grgit.util.JGitUtil
 
-import static org.ajoberstar.grgit.operation.MergeOp.Mode.*
+import spock.lang.Unroll
 
 class MergeOpSpec extends MultiGitOpSpec {
 	RepositoryService localGrgit

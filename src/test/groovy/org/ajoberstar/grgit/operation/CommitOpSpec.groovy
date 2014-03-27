@@ -15,20 +15,10 @@
  */
 package org.ajoberstar.grgit.operation
 
-import spock.lang.Specification
-
-import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
-import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
-import org.ajoberstar.grgit.service.RepositoryService
-
-import org.eclipse.jgit.api.Git
-
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 
 class CommitOpSpec extends SimpleGitOpSpec {
 	def setup() {

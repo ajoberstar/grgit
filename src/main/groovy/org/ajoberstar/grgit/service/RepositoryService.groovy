@@ -17,7 +17,6 @@ package org.ajoberstar.grgit.service
 
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.operation.*
 import org.ajoberstar.grgit.util.JGitUtil
 import org.ajoberstar.grgit.util.OpSyntaxUtil

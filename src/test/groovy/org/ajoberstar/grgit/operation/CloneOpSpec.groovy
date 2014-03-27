@@ -15,21 +15,11 @@
  */
 package org.ajoberstar.grgit.operation
 
-import spock.lang.Specification
-
 import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 import org.ajoberstar.grgit.service.RepositoryService
-
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.api.ListBranchCommand.ListMode
-import org.eclipse.jgit.transport.RemoteConfig
-
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 
 class CloneOpSpec extends MultiGitOpSpec {
 	File repoDir

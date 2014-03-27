@@ -15,9 +15,6 @@
  */
 package org.ajoberstar.grgit.auth
 
-import org.eclipse.jgit.transport.JschConfigSessionFactory
-import org.eclipse.jgit.transport.OpenSshConfig.Host
-import org.eclipse.jgit.util.FS
 import com.jcraft.jsch.IdentityRepository
 import com.jcraft.jsch.JSch
 import com.jcraft.jsch.JSchException
@@ -29,6 +26,11 @@ import com.jcraft.jsch.agentproxy.USocketFactory
 import com.jcraft.jsch.agentproxy.connector.PageantConnector
 import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector
 import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory
+
+import org.eclipse.jgit.transport.JschConfigSessionFactory
+import org.eclipse.jgit.transport.OpenSshConfig.Host
+import org.eclipse.jgit.util.FS
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

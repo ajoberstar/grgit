@@ -23,8 +23,8 @@ import org.ajoberstar.grgit.auth.TransportOpUtil
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.service.RepositoryService
 
-import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.CloneCommand
+import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.GitAPIException
 
 class CloneOp implements Callable<RepositoryService> {

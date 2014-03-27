@@ -24,7 +24,6 @@ import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.ListBranchCommand
 import org.eclipse.jgit.api.errors.GitAPIException
-import org.eclipse.jgit.lib.Ref
 
 class BranchListOp implements Callable<List<Branch>> {
 	private final Repository repo
