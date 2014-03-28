@@ -11,7 +11,8 @@ publishing {
 
 			pom.withXml {
 				asNode().with {
-					appendNode('description', project.description)
+					appendNode('name', 'grgit')
+					appendNode('description', 'The Groovy way to use Git.')
 					appendNode('url', 'http://github.com/ajoberstar/grgit')
 					appendNode('licenses').with {
 						appendNode('license').with {
@@ -29,7 +30,7 @@ publishing {
 					appendNode('scm').with {
 						appendNode('connection', 'git://github.com/ajoberstar/grgit.git')
 						appendNode('developerConnection', 'git@github.com:ajoberstar/grgit.git')
-						appendNode('url', 'http://github.com/ajoberstar/gradle-git')
+						appendNode('url', 'http://github.com/ajoberstar/grgit')
 					}
 				}
 			}
@@ -47,8 +48,8 @@ if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
 		publications = ['main']
 		pkg {
 			repo = 'libraries'
-			name = 'grgit'
-			desc = 'Groovy wrapper over JGit'
+			name = 'org.ajoberstar:grgit'
+			desc = 'The Groovy way to use Git.'
 			licenses = ['Apache-2.0']
 			labels = ['groovy', 'git']
 		}

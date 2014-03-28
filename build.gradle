@@ -5,14 +5,15 @@ buildscript {
 		maven { url 'https://oss.sonatype.org/content/groups/public/' }
 	}
 	dependencies {
-		classpath 'org.ajoberstar:gradle-git:0.6.3'
+		classpath 'org.ajoberstar:gradle-git:0.6.5'
+		classpath 'org.ajoberstar:gradle-imports:0.1.0'
 		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.6.0'
 		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
 	}
 }
 
 group = 'org.ajoberstar'
-description = 'Groovy layer over JGit.'
+description = 'The Groovy way to use Git.'
 version = '0.2.0-SNAPSHOT'
 
 apply plugin: 'groovy'
@@ -21,6 +22,7 @@ apply plugin: 'idea'
 apply plugin: 'jacoco'
 apply plugin: 'github-pages'
 apply plugin: 'sonar-runner'
+apply plugin: 'organize-imports'
 apply from: rootProject.file('gradle/publishing.gradle')
 apply from: rootProject.file('gradle/license.gradle')
 
@@ -121,5 +123,5 @@ githubPages {
 }
 
 wrapper {
-	gradleVersion = '1.10'
+	gradleVersion = '1.11'
 }
