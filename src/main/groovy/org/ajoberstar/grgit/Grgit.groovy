@@ -23,6 +23,80 @@ import org.ajoberstar.grgit.util.OpSyntaxUtil
 
 import org.eclipse.jgit.api.Git
 
+/**
+ * Provides support for performaing operations on and getting information about
+ * a Git repository.
+ *
+ * <p>A Grgit instance can be obtained via 3 methods.</p>
+ *
+ * <ul>
+ *   <li>
+ *     <p>{@link #open(String, Credentials) Open} an existing repository.</p>
+ *     <pre>def grgit = Grgit.open('path/to/my/repo')</pre>
+ *   </li>
+ *   <li>
+ *     <p>{@link org.ajoberstar.grgit.operation.InitOp Initialize} a new repository.</p>
+ *     <pre>def grgit = Grgit.init(dir: new File('path/to/my/repo'))</pre>
+ *   </li>
+ *   <li>
+ *     <p>{@link org.ajoberstar.grgit.operation.CloneOp Clone} an existing repository.</p>
+ *     <pre>def grgit = Grgit.open(dir: new File('path/to/my/repo'), uri: 'git@github.com:ajoberstar/grgit.git')</pre>
+ *   </li>
+ * </ul>
+ *
+ * <p>
+ *   Once obtained, operations can be called with two syntaxes.
+ * </p>
+ *
+ * <ul>
+ *   <li>
+ *     <p>Map syntax. Any public property on the {@code *Op} class can be provided as a Map entry.</p>
+ *     <pre>grgit.commit(message: 'Committing my code.', amend: true)</pre>
+ *   </li>
+ *   <li>
+ *     <p>Closure syntax. Any public property or method on the {@code *Op} class can be used.</p>
+ *     <pre>
+ * grgit.log {
+ *   range 'master', 'my-new-branch'
+ *   maxCommits = 5
+ * }
+ *     </pre>
+ *   </li>
+ * </ul>
+ *
+ * <p>
+ *   Details of each operation's properties and methods are available on the
+ *   doc page for the class. The following operations are supported directly on a
+ *   Grgit instance.
+ * </p>
+ *
+ * <ul>
+ *   <li>{@link org.ajoberstar.grgit.operation.AddOp add}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.ApplyOp apply}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.CheckoutOp checkout}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.CleanOp clean}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.CommitOp commit}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.FetchOp fetch}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.LogOp log}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.MergeOp merge}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.PullOp pull}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.PushOp push}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.RmOp remove}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.ResetOp reset}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.RevertOp revert}</li>
+ * </ul>
+ *
+ * <p>
+ *   And the following operations are supported statically on the Grgit class.
+ * </p>
+ *
+ * <ul>
+ *   <li>{@link org.ajoberstar.grgit.operation.CloneOp clone}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.InitOp init}</li>
+ * </ul>
+ *
+ * @since 0.1.0
+ */
 class Grgit {
 	private static final Map STATIC_OPERATIONS = [init: InitOp, clone: CloneOp]
 	private static final Map OPERATIONS = [
@@ -33,12 +107,25 @@ class Grgit {
 		log: LogOp, commit: CommitOp, revert: RevertOp/*,
 		cherryPick: CherryPickOp*/, merge: MergeOp/*, rebase: RebaseOp*/].asImmutable()
 
+	/**
+	 * The repository opened by this object.
+	 */
 	final Repository repository
 
+	/**
+	 * Supports operations on branches.
+	 */
 	final BranchService branch
+
 	// final NoteService note
+
 	// final RemoteService remote
+
 	// final StashService stash
+
+	/**
+	 * Supports operations on tags.
+	 */
 	final TagService tag
 
 	private Grgit(Repository repository) {
@@ -50,10 +137,24 @@ class Grgit {
 		this.tag = new TagService(repository)
 	}
 
+	/**
+	 * Returns the commit located at the current HEAD of the repository.
+	 * @return the current HEAD commit
+	 */
 	Commit head() {
 		return resolveCommit('HEAD')
 	}
 
+	/**
+	 * Resolves the given revision string to a commit given the current
+	 * state of the repository. Any
+	 * <a href="http://git-scm.com/docs/gitrevisions.html">Git revision string</a>
+	 * should be supported.
+	 * @param revstr a revision string representing the desired commit
+	 * @return the commit represented by {@code revstr}
+	 * @throws GrgitException if there was a problem finding the commit
+	 * @see <a href="http://git-scm.com/docs/gitrevisions.html">gitrevisions Manual Page</a>
+	 */
 	Commit resolveCommit(String revstr) {
 		return JGitUtil.resolveCommit(repository, revstr)
 	}
@@ -68,10 +169,26 @@ class Grgit {
 		}
 	}
 
+	/**
+	 * Opens a {@code Grgit} instance in {@code rootDirPath}. If credentials
+	 * are provided they will be used for all operations with using remotes.
+	 * @param rootDirPath path to the repository's root directory
+	 * @param creds harcoded credentials to use for remote operations
+	 * @throws GrgitException if an existing Git repository can't be opened
+	 * in {@code rootDirPath}
+	 */
 	static Grgit open(String rootDirPath, Credentials creds = null) {
 		return open(new File(rootDirPath), creds)
 	}
 
+	/**
+	 * Opens a {@code Grgit} instance in {@code rootDir}. If credentials
+	 * are provided they will be used for all operations with using remotes.
+	 * @param rootDir path to the repository's root directory
+	 * @param creds harcoded credentials to use for remote operations
+	 * @throws GrgitException if an existing Git repository can't be opened
+	 * in {@code rootDir}
+	 */
 	static Grgit open(File rootDir, Credentials creds = null) {
 		def repo = new Repository(rootDir, Git.open(rootDir), creds)
 		return new Grgit(repo)
