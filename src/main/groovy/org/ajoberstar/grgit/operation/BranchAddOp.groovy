@@ -42,7 +42,7 @@ class BranchAddOp implements Callable<Branch> {
 		if (mode && !startPoint) {
 			throw new IllegalStateException('Cannot set mode if no start point.')
 		}
-		CreateBranchCommand cmd = repo.git.branchCreate()
+		CreateBranchCommand cmd = repo.jgit.branchCreate()
 		cmd.name = name
 		cmd.force = false
 		if (startPoint) { cmd.startPoint = startPoint }

@@ -38,7 +38,7 @@ class FetchOp implements Callable<Void> {
 	}
 
 	Void call() {
-		FetchCommand cmd = repo.git.fetch()
+		FetchCommand cmd = repo.jgit.fetch()
 		TransportOpUtil.configure(cmd, repo.credentials)
 		cmd.remote = remote
 		cmd.refSpecs = refSpecs.collect { new RefSpec(it) }

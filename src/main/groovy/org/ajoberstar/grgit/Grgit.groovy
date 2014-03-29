@@ -16,32 +16,64 @@
 package org.ajoberstar.grgit
 
 import org.ajoberstar.grgit.auth.Credentials
-import org.ajoberstar.grgit.operation.CloneOp
-import org.ajoberstar.grgit.operation.InitOp
-import org.ajoberstar.grgit.service.RepositoryService
+import org.ajoberstar.grgit.operation.*
+import org.ajoberstar.grgit.service.*
+import org.ajoberstar.grgit.util.JGitUtil
 import org.ajoberstar.grgit.util.OpSyntaxUtil
 
 import org.eclipse.jgit.api.Git
 
 class Grgit {
-	private static final Map OPERATIONS = [init: InitOp, clone: CloneOp]
+	private static final Map STATIC_OPERATIONS = [init: InitOp, clone: CloneOp]
+	private static final Map OPERATIONS = [
+		clean: CleanOp,
+		status: StatusOp, add: AddOp, remove: RmOp, reset: ResetOp, apply: ApplyOp,
+		pull: PullOp, push: PushOp, fetch: FetchOp,
+		checkout: CheckoutOp,
+		log: LogOp, commit: CommitOp, revert: RevertOp/*,
+		cherryPick: CherryPickOp*/, merge: MergeOp/*, rebase: RebaseOp*/].asImmutable()
+
+	final Repository repository
+
+	final BranchService branch
+	// final NoteService note
+	// final RemoteService remote
+	// final StashService stash
+	final TagService tag
+
+	private Grgit(Repository repository) {
+		this.repository = repository
+		this.branch = new BranchService(repository)
+		// this.note = null
+		// this.remote = null
+		// this.stash = null
+		this.tag = new TagService(repository)
+	}
+
+	Commit head() {
+		return resolveCommit('HEAD')
+	}
+
+	Commit resolveCommit(String revstr) {
+		return JGitUtil.resolveCommit(repository, revstr)
+	}
+
+	def methodMissing(String name, args) {
+		OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
+	}
 
 	static {
 		Grgit.metaClass.static.methodMissing = { name, args ->
-			OpSyntaxUtil.tryOp(Grgit, OPERATIONS, [] as Object[], name, args)
+			OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], name, args)
 		}
 	}
 
-	private Grgit() {
-		throw new AssertionError('Cannot instantiate this class.')
-	}
-
-	static RepositoryService open(String rootDirPath, Credentials creds = null) {
+	static Grgit open(String rootDirPath, Credentials creds = null) {
 		return open(new File(rootDirPath), creds)
 	}
 
-	static RepositoryService open(File rootDir, Credentials creds = null) {
+	static Grgit open(File rootDir, Credentials creds = null) {
 		def repo = new Repository(rootDir, Git.open(rootDir), creds)
-		return new RepositoryService(repo)
+		return new Grgit(repo)
 	}
 }

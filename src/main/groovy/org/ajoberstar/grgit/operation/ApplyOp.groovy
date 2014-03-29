@@ -33,7 +33,7 @@ class ApplyOp implements Callable<Void> {
 	}
 
 	Void call() {
-		ApplyCommand cmd = repo.git.apply()
+		ApplyCommand cmd = repo.jgit.apply()
 		if (!patch) {
 			throw new IllegalStateException('Must set a patch file.')
 		}

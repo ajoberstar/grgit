@@ -34,7 +34,7 @@ class RmOp implements Callable<Void> {
 	}
 
 	Void call() {
-		RmCommand cmd = repo.git.rm()
+		RmCommand cmd = repo.jgit.rm()
 		patterns.each { cmd.addFilepattern(it) }
 		cmd.cached = cached
 		try {

@@ -36,7 +36,7 @@ class MergeOp implements Callable<Void> {
 	}
 
 	Void call() {
-		MergeCommand cmd = repo.git.merge()
+		MergeCommand cmd = repo.jgit.merge()
 		if (head) { cmd.include(JGitUtil.resolveObject(repo, head)) }
 		switch (mode) {
 			case Mode.ONLY_FF:

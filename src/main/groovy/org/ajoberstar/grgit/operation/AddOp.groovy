@@ -34,7 +34,7 @@ class AddOp implements Callable<Void> {
 	}
 
 	Void call() {
-		AddCommand cmd = repo.git.add()
+		AddCommand cmd = repo.jgit.add()
 		patterns.each { cmd.addFilepattern(it) }
 		cmd.update = update
 		try {

@@ -33,7 +33,7 @@ class StatusOp implements Callable<Status> {
 	}
 
 	Status call() {
-		StatusCommand cmd = repo.git.status()
+		StatusCommand cmd = repo.jgit.status()
 		try {
 			return JGitUtil.convertStatus(cmd.call())
 		} catch (GitAPIException e) {

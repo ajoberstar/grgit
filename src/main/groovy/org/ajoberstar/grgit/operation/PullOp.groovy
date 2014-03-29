@@ -34,7 +34,7 @@ class PullOp implements Callable<Void> {
 	}
 
 	Void call() {
-		PullCommand cmd = repo.git.pull()
+		PullCommand cmd = repo.jgit.pull()
 		cmd.rebase = rebase
 
 		try {

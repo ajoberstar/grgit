@@ -45,7 +45,7 @@ class BranchChangeOp implements Callable<Branch> {
 		if (!startPoint) {
 			throw new GrgitException('Must set new startPoint.')
 		}
-		CreateBranchCommand cmd = repo.git.branchCreate()
+		CreateBranchCommand cmd = repo.jgit.branchCreate()
 		cmd.name = name
 		cmd.force = true
 		if (startPoint) { cmd.startPoint = startPoint }

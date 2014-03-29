@@ -36,7 +36,7 @@ class RevertOp implements Callable<Commit> {
 	}
 
 	Commit call() {
-		RevertCommand cmd = repo.git.revert()
+		RevertCommand cmd = repo.jgit.revert()
 		commits.each {
 			cmd.include(JGitUtil.resolveObject(repo, it))
 		}

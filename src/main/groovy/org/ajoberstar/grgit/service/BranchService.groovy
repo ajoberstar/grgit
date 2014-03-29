@@ -34,7 +34,7 @@ class BranchService {
 	}
 
 	Branch getCurrent() {
-		Ref ref = repository.git.repository.getRef('HEAD')?.target
+		Ref ref = repository.jgit.repository.getRef('HEAD')?.target
 		return ref ? JGitUtil.resolveBranch(repository, ref) : null
 	}
 

@@ -35,7 +35,7 @@ class BranchListOp implements Callable<List<Branch>> {
 	}
 
 	List<Branch> call() {
-		ListBranchCommand cmd = repo.git.branchList()
+		ListBranchCommand cmd = repo.jgit.branchList()
 		cmd.listMode = mode.jgit
 
 		try {

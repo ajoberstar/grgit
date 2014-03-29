@@ -40,7 +40,7 @@ class CheckoutOp implements Callable<Void> {
 		} else if (createBranch && !branch) {
 			throw new IllegalArgumentException('Must specify branch name to create.')
 		}
-		CheckoutCommand cmd = repo.git.checkout()
+		CheckoutCommand cmd = repo.jgit.checkout()
 		if (branch) { cmd.name = branch }
 		cmd.createBranch = createBranch
 		cmd.startPoint = startPoint

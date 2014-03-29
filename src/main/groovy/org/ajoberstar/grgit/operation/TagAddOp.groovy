@@ -45,7 +45,7 @@ class TagAddOp implements Callable<Tag> {
 	}
 
 	Tag call() {
-		TagCommand cmd = repo.git.tag()
+		TagCommand cmd = repo.jgit.tag()
 		cmd.name = name
 		cmd.message = message
 		if (tagger) { cmd.tagger = new PersonIdent(tagger.name, tagger.email) }

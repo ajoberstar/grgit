@@ -16,16 +16,16 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.BranchStatus
+import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
-import org.ajoberstar.grgit.service.RepositoryService
 
 import spock.lang.Unroll
 
 class BranchStatusOpSpec extends MultiGitOpSpec {
-	RepositoryService localGrgit
-	RepositoryService remoteGrgit
+	Grgit localGrgit
+	Grgit remoteGrgit
 
 	def setup() {
 		remoteGrgit = init('remote')

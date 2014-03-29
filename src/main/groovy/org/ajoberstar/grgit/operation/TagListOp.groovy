@@ -33,7 +33,7 @@ class TagListOp implements Callable<List<Tag>> {
 	}
 
 	List<Tag> call() {
-		ListTagCommand cmd = repo.git.tagList()
+		ListTagCommand cmd = repo.jgit.tagList()
 
 		try {
 			return cmd.call().collect {

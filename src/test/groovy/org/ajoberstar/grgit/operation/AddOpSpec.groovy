@@ -72,7 +72,7 @@ class AddOpSpec extends SimpleGitOpSpec {
 		repoFile('something/2.txt') << '2'
 		repoFile('test/3.bat') << '3'
 		grgit.add(patterns:['.'])
-		grgit.repository.git.commit().setMessage('Test').call()
+		grgit.repository.jgit.commit().setMessage('Test').call()
 		repoFile('1.bat') << '1'
 		repoFile('something/2.txt') << '2'
 		assert repoFile('test/3.bat').delete()

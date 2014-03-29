@@ -17,7 +17,6 @@ package org.ajoberstar.grgit.fixtures
 
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
-import org.ajoberstar.grgit.service.RepositoryService
 
 import org.eclipse.jgit.api.Git
 
@@ -29,7 +28,7 @@ import spock.lang.Specification
 class SimpleGitOpSpec extends Specification {
 	@Rule TemporaryFolder tempDir = new TemporaryFolder()
 
-	RepositoryService grgit
+	Grgit grgit
 	Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
 
 	def setup() {

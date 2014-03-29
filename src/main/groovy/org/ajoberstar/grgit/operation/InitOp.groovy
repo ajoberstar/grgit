@@ -19,17 +19,16 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.exception.GrgitException
-import org.ajoberstar.grgit.service.RepositoryService
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.InitCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
-class InitOp implements Callable<RepositoryService> {
+class InitOp implements Callable<Grgit> {
 	boolean bare = false
 	File dir
 
-	RepositoryService call() {
+	Grgit call() {
 		InitCommand cmd = Git.init()
 		cmd.bare = bare
 		cmd.directory = dir

@@ -19,12 +19,11 @@ import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
-import org.ajoberstar.grgit.service.RepositoryService
 
 class CloneOpSpec extends MultiGitOpSpec {
 	File repoDir
 
-	RepositoryService remoteGrgit
+	Grgit remoteGrgit
 	String remoteUri
 
 	def remoteBranchesFilter = { it =~ $/^refs/remotes/origin/$ }

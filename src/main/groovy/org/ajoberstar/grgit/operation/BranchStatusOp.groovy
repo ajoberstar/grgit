@@ -39,7 +39,7 @@ class BranchStatusOp implements Callable<BranchStatus> {
 		try {
 			Branch realBranch = JGitUtil.resolveBranch(repo, branch)
 			if (realBranch.trackingBranch) {
-				BranchTrackingStatus status = BranchTrackingStatus.of(repo.git.repository, realBranch.fullName)
+				BranchTrackingStatus status = BranchTrackingStatus.of(repo.jgit.repository, realBranch.fullName)
 				if (status) {
 					return new BranchStatus(realBranch, status.aheadCount, status.behindCount)
 				} else {

@@ -104,7 +104,7 @@ class JGitUtilSpec extends Specification {
 
 	def 'convertCommit works for valid commit'() {
 		given:
-		Person person = new Person(repo.git.repo.config.getString('user', null, 'name'), repo.git.repo.config.getString('user', null, 'email'))
+		Person person = new Person(repo.jgit.repo.config.getString('user', null, 'name'), repo.jgit.repo.config.getString('user', null, 'email'))
 		expect:
 		JGitUtil.convertCommit(commits[0]) == new Commit(
 			ObjectId.toString(commits[0]),
@@ -118,7 +118,7 @@ class JGitUtilSpec extends Specification {
 
 	def 'resolveTag works for annotated tag ref'() {
 		given:
-		Person person = new Person(repo.git.repo.config.getString('user', null, 'name'), repo.git.repo.config.getString('user', null, 'email'))
+		Person person = new Person(repo.jgit.repo.config.getString('user', null, 'name'), repo.jgit.repo.config.getString('user', null, 'email'))
 		expect:
 		JGitUtil.resolveTag(repo, annotatedTag) == new Tag(
 			JGitUtil.convertCommit(commits[0]),
@@ -131,7 +131,7 @@ class JGitUtilSpec extends Specification {
 
 	def 'resolveTag works for unannotated tag ref'() {
 		given:
-		Person person = new Person(repo.git.repo.config.getString('user', null, 'name'), repo.git.repo.config.getString('user', null, 'email'))
+		Person person = new Person(repo.jgit.repo.config.getString('user', null, 'name'), repo.jgit.repo.config.getString('user', null, 'email'))
 		expect:
 		JGitUtil.resolveTag(repo, unannotatedTag) == new Tag(
 			JGitUtil.convertCommit(commits[0]),

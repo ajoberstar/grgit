@@ -50,7 +50,7 @@ class LogOp implements Callable<List<Commit>> {
 	}
 
 	List<Commit> call() {
-		LogCommand cmd = repo.git.log()
+		LogCommand cmd = repo.jgit.log()
 		includes.each { include ->
 			ObjectId object = JGitUtil.resolveObject(repo, include)
 			cmd.add(object)

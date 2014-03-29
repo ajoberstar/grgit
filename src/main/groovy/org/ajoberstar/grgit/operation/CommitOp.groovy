@@ -44,7 +44,7 @@ class CommitOp implements Callable<Commit> {
 	}
 
 	Commit call() {
-		CommitCommand cmd = repo.git.commit()
+		CommitCommand cmd = repo.jgit.commit()
 		cmd.message = message
 		cmd.reflogComment = reflogComment
 		if (committer) { cmd.committer = new PersonIdent(committer.name, committer.email) }

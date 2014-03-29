@@ -19,7 +19,6 @@ import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.WindowsSpecific
-import org.ajoberstar.grgit.service.RepositoryService
 
 import org.junit.Rule
 import org.junit.experimental.categories.Category
@@ -37,7 +36,7 @@ class WindowsAuthenticationSpec extends Specification {
 
 	@Rule TemporaryFolder tempDir = new TemporaryFolder()
 
-	RepositoryService grgit
+	Grgit grgit
 	Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
 
 
@@ -76,7 +75,7 @@ class WindowsAuthenticationSpec extends Specification {
 		File repoDir = tempDir.newFolder('repo')
 		String uri = ssh ? SSH_URI : HTTPS_URI
 		grgit = Grgit.clone(uri: uri, dir: repoDir, credentials: credentials)
-		grgit.repository.git.repo.config.with {
+		grgit.repository.jgit.repo.config.with {
 			setString('user', null, 'name', person.name)
 			setString('user', null, 'email', person.email)
 			save()

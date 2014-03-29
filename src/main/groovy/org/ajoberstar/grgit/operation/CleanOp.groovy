@@ -36,7 +36,7 @@ class CleanOp implements Callable<Set<String>> {
 	}
 
 	Set<String> call() {
-		CleanCommand cmd = repo.git.clean()
+		CleanCommand cmd = repo.jgit.clean()
 		if (paths) { cmd.paths = paths }
 		cmd.cleanDirectories = directories
 		cmd.dryRun = dryRun

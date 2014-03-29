@@ -39,7 +39,7 @@ class ResetOp implements Callable<Void> {
 			throw new IllegalStateException('Cannot set mode when resetting paths.')
 		}
 
-		ResetCommand cmd = repo.git.reset()
+		ResetCommand cmd = repo.jgit.reset()
 		paths.each { cmd.addPath(it) }
 		if (commit) {
 			cmd.ref = commit

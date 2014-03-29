@@ -17,7 +17,6 @@ package org.ajoberstar.grgit.fixtures
 
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
-import org.ajoberstar.grgit.service.RepositoryService
 
 import org.eclipse.jgit.api.Git
 
@@ -31,7 +30,7 @@ class MultiGitOpSpec extends Specification {
 
 	Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
 
-	protected RepositoryService init(String name) {
+	protected Grgit init(String name) {
 		File repoDir = tempDir.newFolder(name)
 		Git git = Git.init().setDirectory(repoDir).call()
 		git.repo.config.with {
@@ -42,7 +41,7 @@ class MultiGitOpSpec extends Specification {
 		return Grgit.open(repoDir)
 	}
 
-	protected RepositoryService clone(String name, RepositoryService remote) {
+	protected Grgit clone(String name, Grgit remote) {
 		File repoDir = tempDir.newFolder(name)
 		return Grgit.clone {
 			dir = repoDir
@@ -50,7 +49,7 @@ class MultiGitOpSpec extends Specification {
 		}
 	}
 
-	protected File repoFile(RepositoryService grgit, String path, boolean makeDirs = true) {
+	protected File repoFile(Grgit grgit, String path, boolean makeDirs = true) {
 		return GitTestUtil.repoFile(grgit, path, makeDirs)
 	}
 }

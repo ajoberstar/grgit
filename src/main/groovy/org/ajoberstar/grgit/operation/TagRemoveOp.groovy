@@ -33,7 +33,7 @@ class TagRemoveOp implements Callable<List<String>> {
 	}
 
 	List<String> call() {
-		DeleteTagCommand cmd = repo.git.tagDelete()
+		DeleteTagCommand cmd = repo.jgit.tagDelete()
 		cmd.tags = names
 
 		try {

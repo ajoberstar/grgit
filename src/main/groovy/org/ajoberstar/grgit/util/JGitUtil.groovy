@@ -44,7 +44,7 @@ class JGitUtil {
 
 	static ObjectId resolveObject(Repository repo, String revstr) {
 		try {
-			ObjectId object = repo.git.repository.resolve(revstr)
+			ObjectId object = repo.jgit.repository.resolve(revstr)
 			if (object == null) {
 				throw new GrgitException("No commit found for revision string: ${revstr}")
 			} else {
@@ -63,7 +63,7 @@ class JGitUtil {
 
 	static RevObject resolveRevObject(Repository repo, String revstr) {
 		ObjectId id = resolveObject(repo, revstr)
-		RevWalk walk = new RevWalk(repo.git.repository)
+		RevWalk walk = new RevWalk(repo.jgit.repository)
 		try {
 			return walk.parseAny(id)
 		} catch (MissingObjectException e) {
@@ -79,7 +79,7 @@ class JGitUtil {
 	}
 
 	static Commit resolveCommit(Repository repo, ObjectId id) {
-		RevWalk walk = new RevWalk(repo.git.repository)
+		RevWalk walk = new RevWalk(repo.jgit.repository)
 		return convertCommit(walk.parseCommit(id))
 	}
 
@@ -105,7 +105,7 @@ class JGitUtil {
 		Map props = [:]
 		props.fullName = ref.name
 		try {
-			RevWalk walk = new RevWalk(repo.git.repository)
+			RevWalk walk = new RevWalk(repo.jgit.repository)
 			RevTag rev = walk.parseTag(ref.objectId)
 			walk.parseBody(rev.object)
 			props.commit = convertCommit(rev.object)
@@ -120,7 +120,7 @@ class JGitUtil {
 	}
 
 	static Branch resolveBranch(Repository repo, String name) {
-		Ref ref = repo.git.repository.getRef(name)
+		Ref ref = repo.jgit.repository.getRef(name)
 		return resolveBranch(repo, ref)
 	}
 
@@ -131,7 +131,7 @@ class JGitUtil {
 		Map props = [:]
 		props.fullName = ref.name
 		String shortName = org.eclipse.jgit.lib.Repository.shortenRefName(props.fullName)
-		Config config = repo.git.repository.config
+		Config config = repo.jgit.repository.config
 		BranchConfig branchConfig = new BranchConfig(config, shortName)
 		if (branchConfig.trackingBranch) {
 			props.trackingBranch = resolveBranch(repo, branchConfig.trackingBranch)

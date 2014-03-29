@@ -25,7 +25,6 @@ import org.eclipse.jgit.api.Git
 
 /**
  * Represents a Git repository.
- * @since 0.7.0
  * @author Andrew Oberstar
  */
 @Canonical
@@ -38,7 +37,7 @@ class Repository {
 	/**
 	 * The JGit instance opened for this repository.
 	 */
-	final Git git
+	final Git jgit
 
 	/**
 	 * The credentials used when talking to remote repositories.

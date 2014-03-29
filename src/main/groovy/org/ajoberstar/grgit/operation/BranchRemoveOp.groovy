@@ -34,7 +34,7 @@ class BranchRemoveOp implements Callable<List<String>> {
 	}
 
 	List<String> call() {
-		DeleteBranchCommand cmd = repo.git.branchDelete()
+		DeleteBranchCommand cmd = repo.jgit.branchDelete()
 		cmd.branchNames = names
 		cmd.force = force
 

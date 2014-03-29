@@ -16,13 +16,13 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Commit
+import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
-import org.ajoberstar.grgit.service.RepositoryService
 
 class PullOpSpec extends MultiGitOpSpec {
-	RepositoryService localGrgit
-	RepositoryService remoteGrgit
+	Grgit localGrgit
+	Grgit remoteGrgit
 	Commit ancestorHead
 
 	def setup() {
