@@ -1,39 +1,30 @@
 buildscript {
 	repositories {
 		jcenter()
-		mavenCentral()
-		maven { url 'https://oss.sonatype.org/content/groups/public/' }
+		maven { url 'http://dl.bintray.com/ajoberstar/gradle-plugins' }
+		maven { url 'http://dl.bintray.com/ajoberstar/temp-forks' }
 	}
 	dependencies {
-		classpath 'org.ajoberstar:gradle-git:0.6.5'
-		classpath 'org.ajoberstar:gradle-imports:0.1.0'
-		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.6.0'
-		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
+		classpath 'org.ajoberstar:gradle-ajoberstar:0.1.1'
 	}
 }
 
 group = 'org.ajoberstar'
-description = 'The Groovy way to use Git.'
 version = '0.2.0-SNAPSHOT'
 
 apply plugin: 'groovy'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'jacoco'
-apply plugin: 'github-pages'
-apply plugin: 'sonar-runner'
-apply plugin: 'organize-imports'
-apply from: rootProject.file('gradle/publishing.gradle')
-apply from: rootProject.file('gradle/license.gradle')
+apply plugin: 'ajoberstar'
+
+ajoberstar {
+	friendlyName = 'GrGit'
+	description = 'The Groovy way to use Git.'
+}
 
 sonarRunner.sonarProperties {
-	property 'sonar.language', 'grvy'
 	property 'sonar.projectVersion', '0.2.0'
 }
 
 sourceCompatibility = '1.7'
-
-jacoco.toolVersion = '0.7.0.201403182114'
 
 repositories {
 	mavenCentral()
@@ -84,40 +75,6 @@ test {
 			if (key.startsWith('org.ajoberstar.grgit.test')) {
 				systemProperties((key): value)
 			}
-		}
-	}
-}
-
-task sourcesJar(type:Jar) {
-	classifier = 'sources'
-	from sourceSets.main.allSource
-}
-
-task javadocJar(type:Jar) {
-	classifier = 'javadoc'
-	from javadoc.outputs.files
-}
-
-task groovydocJar(type:Jar) {
-	classifier = 'groovydoc'
-	from groovydoc.outputs.files
-}
-
-artifacts {
-	archives sourcesJar
-	archives javadocJar
-	archives groovydocJar
-}
-
-githubPages {
-	repoUri = 'git@github.com:ajoberstar/grgit.git'
-	pages {
-		from 'src/gh-pages'
-		from(javadoc.outputs.files) {
-			into 'docs/javadoc'
-		}
-		from(groovydoc.outputs.files) {
-			into 'docs/groovydoc'
 		}
 	}
 }
