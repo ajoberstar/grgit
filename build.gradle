@@ -18,6 +18,9 @@ apply plugin: 'ajoberstar'
 ajoberstar {
 	friendlyName = 'GrGit'
 	description = 'The Groovy way to use Git.'
+	bintrayRepo = 'libraries'
+	bintrayLabels = ['groovy', 'git']
+	copyrightYears = '2012-2014'
 }
 
 sonarRunner.sonarProperties {
