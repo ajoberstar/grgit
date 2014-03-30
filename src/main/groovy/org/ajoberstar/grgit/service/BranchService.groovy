@@ -23,16 +23,40 @@ import org.ajoberstar.grgit.util.OpSyntaxUtil
 
 import org.eclipse.jgit.lib.Ref
 
+/**
+ * Provides support for performing branch-related operations on
+ * a Git repository.
+ *
+ * <p>
+ *   Details of each operation's properties and methods are available on the
+ *   doc page for the class. The following operations are supported directly on
+ *   this service instance.
+ * </p>
+ *
+ * <ul>
+ *   <li>{@link org.ajoberstar.grgit.operation.BranchAddOp add}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.BranchChangeOp change}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.BranchListOp list}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.BranchRemoveOp remove}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.BranchStatusOp status}</li>
+ * </ul>
+ *
+ * @since 0.2.0
+ */
 class BranchService {
 	private static final Map OPERATIONS = [
 		list: BranchListOp, add: BranchAddOp, remove: BranchRemoveOp,
 		change: BranchChangeOp, status: BranchStatusOp]
-	final Repository repository
+	private final Repository repository
 
 	BranchService(Repository repository) {
 		this.repository = repository
 	}
 
+	/**
+	 * Gets the branch associated with the current HEAD.
+	 * @return the branch or {@code null} if the HEAD is detached
+	 */
 	Branch getCurrent() {
 		Ref ref = repository.jgit.repository.getRef('HEAD')?.target
 		return ref ? JGitUtil.resolveBranch(repository, ref) : null
