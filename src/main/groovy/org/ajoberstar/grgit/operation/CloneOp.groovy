@@ -17,8 +17,8 @@ package org.ajoberstar.grgit.operation
 
 import java.util.concurrent.Callable
 
+import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.auth.Credentials
 import org.ajoberstar.grgit.auth.TransportOpUtil
 import org.ajoberstar.grgit.exception.GrgitException
 

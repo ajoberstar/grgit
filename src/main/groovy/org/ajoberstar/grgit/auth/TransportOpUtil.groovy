@@ -15,6 +15,8 @@
  */
 package org.ajoberstar.grgit.auth
 
+import org.ajoberstar.grgit.Credentials
+
 import org.eclipse.jgit.api.TransportCommand
 import org.eclipse.jgit.awtui.AwtCredentialsProvider
 import org.eclipse.jgit.transport.CredentialsProvider

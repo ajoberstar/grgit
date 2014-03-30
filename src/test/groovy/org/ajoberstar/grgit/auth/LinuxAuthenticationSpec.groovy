@@ -15,6 +15,7 @@
  */
 package org.ajoberstar.grgit.auth
 
+import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.fixtures.GitTestUtil

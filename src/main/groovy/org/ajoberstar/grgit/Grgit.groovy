@@ -15,7 +15,6 @@
  */
 package org.ajoberstar.grgit
 
-import org.ajoberstar.grgit.auth.Credentials
 import org.ajoberstar.grgit.operation.*
 import org.ajoberstar.grgit.service.*
 import org.ajoberstar.grgit.util.JGitUtil

@@ -17,7 +17,7 @@ package org.ajoberstar.grgit
 
 import groovy.transform.Canonical
 
-import org.ajoberstar.grgit.auth.Credentials
+import org.ajoberstar.grgit.Credentials
 
 import org.eclipse.jgit.api.Git
 
