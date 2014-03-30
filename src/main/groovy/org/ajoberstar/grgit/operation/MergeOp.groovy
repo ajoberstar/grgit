@@ -25,10 +25,39 @@ import org.eclipse.jgit.api.MergeCommand
 import org.eclipse.jgit.api.MergeResult
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Merges changes from a single head. This is a simplified version of
+ * merge. If any conflict occurs the merge will be aborted, leaving the
+ * current working tree as it was before, and throwing an exception.
+ *
+ * <p>Merge another head into the current branch.</p>
+ *
+ * <pre>
+ * grgit.merge(head: 'some-branch')
+ * </pre>
+ *
+ * <p>Merge with another mode.</p>
+ *
+ * <pre>
+ * grgit.merge(mode: MergeOp.Mode.ONLY_FF)
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-merge">git-merge Manual Page</a>.
+ *
+ * @since 0.2.0
+ * @see <a href="http://git-scm.com/docs/git-merge">git-merge Manual Page</a>
+ */
 class MergeOp implements Callable<Void> {
 	private final Repository repo
 
+	/**
+	 * The head to merge into the current HEAD.
+	 */
 	String head
+
+	/**
+	 * How to handle the merge.
+	 */
 	Mode mode
 
 	MergeOp(Repository repo) {
@@ -65,10 +94,31 @@ class MergeOp implements Callable<Void> {
 	}
 
 	static enum Mode {
+		/**
+		 * Fast-forwards if possible, creates a merge commit otherwise.
+		 * Behaves like --ff.
+		 */
 		DEFAULT,
+
+		/**
+		 * Only merges if a fast-forward is possible.
+		 * Behaves like --ff-only.
+		 */
 		ONLY_FF,
+
+		/**
+		 * Always creates a merge commit (even if a fast-forward is possible).
+		 * Behaves like --no-ff.
+		 */
 		CREATE_COMMIT,
+		/**
+		 * Squashes the merged changes into one set and leaves them uncommitted.
+		 * Behaves like --squash.
+		 */
 		SQUASH,
+		/**
+		 * Merges changes, but does not commit them. Behaves like --no-commit.
+		 */
 		NO_COMMIT
 	}
 }

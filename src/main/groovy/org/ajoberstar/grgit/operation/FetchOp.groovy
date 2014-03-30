@@ -25,12 +25,60 @@ import org.eclipse.jgit.api.FetchCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.transport.RefSpec
 
+/**
+ * Fetch changes from remotes.
+ *
+ * <p>To fetch changes from the {@code origin} remote.</p>
+ *
+ * <pre>
+ * grgit.fetch()
+ * </pre>
+ *
+ * <p>To remove branches locally that were removed from the remote.</p>
+ *
+ * <pre>
+ * grgit.fetch(prune: true)
+ * </pre>
+ *
+ * <p>To pull down all tags from the remote.</p>
+ *
+ * <pre>
+ * grgit.fetch(tagMode: TagMode.ALL)
+ * </pre>
+ *
+ * <p>To fetch without pulling down tags.</p>
+ *
+ * <pre>
+ * grgit.fetch(tagMode: TagMode.NONE)
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-fetch">git-fetch Manual Reference.</a>
+ *
+ * @since 0.2.0
+ * @see <a href="http://git-scm.com/docs/git-fetch">git-fetch Manual Reference.</a>
+ */
 class FetchOp implements Callable<Void> {
 	private final Repository repo
 
+	/**
+	 * Which remote should be fetched. Defaults to {@code origin}.
+	 */
 	String remote = 'origin'
+
+	/**
+	 * List of refspecs to fetch.
+	 */
 	List refSpecs = []
+
+	/**
+	 * {@code true} if branches removed by the remote should be
+	 * removed locally.
+	 */
 	boolean prune = false
+
+	/**
+	 * How should tags be handled.
+	 */
 	TagMode tagMode = TagMode.AUTO
 
 	FetchOp(Repository repo) {
