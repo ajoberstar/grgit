@@ -33,11 +33,18 @@ repositories {
 	mavenCentral()
 }
 
+configurations {
+	docFix
+}
+
 def jgitVersion = '3.3.0.201403021825-r'
 
 dependencies {
 	// groovy
 	compile localGroovy()
+
+	// to get around groovydoc bugs
+	docFix 'org.codehaus.groovy:groovy-all:2.2.1'
 
 	// jgit
 	compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
@@ -55,6 +62,10 @@ dependencies {
 	// testing
 	testCompile 'junit:junit:4.11'
 	testCompile('org.spockframework:spock-core:0.7-groovy-1.8') { exclude group: 'org.codehaus.groovy' }
+}
+
+groovydoc {
+	groovyClasspath = configurations.docFix
 }
 
 tasks.withType(Test) {
