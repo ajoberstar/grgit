@@ -25,13 +25,22 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class TransportOpUtil {
+/**
+ * Utility class that allows a JGit {@code TransportCommand} to be configured
+ * to use additional authentication options.
+ */
+final class TransportOpUtil {
 	private static final Logger logger = LoggerFactory.getLogger(TransportOpUtil)
 
 	private TransportOpUtil() {
 		throw new AssertionError('This class cannot be instantiated.')
 	}
 
+	/**
+	 * Configures the given transport command with the given credentials.
+	 * @param cmd the command to configure
+	 * @param creds the hardcoded credentials to use, if not {@code null}
+	 */
 	static void configure(TransportCommand cmd, Credentials creds) {
 		AuthConfig config = AuthConfig.fromSystemProperties()
 		logger.info('The following authentication options are allowed (though they may not be available): {}', config.allowed)

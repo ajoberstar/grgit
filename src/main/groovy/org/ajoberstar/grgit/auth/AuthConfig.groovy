@@ -17,19 +17,72 @@ package org.ajoberstar.grgit.auth
 
 import org.ajoberstar.grgit.exception.GrgitException
 
+/**
+ * Stores configuration options for how to authenticate with remote
+ * repositories.
+ *
+ * <p>
+ *   The following system properties can be set to configure how
+ *   authentication is performed with remote repositories. All "allow"
+ *   properties default to {@code true}.
+ * </p>
+ *
+ * <ul>
+ *   <li>{@code org.ajoberstar.grgit.auth.force={hardcoded|interactive|sshagent|pageant}}</li>
+ *   <li>{@code org.ajoberstar.grgit.auth.hardcoded.allow={true|false}}</li>
+ *   <li>{@code org.ajoberstar.grgit.auth.interactive.allow={true|false}}</li>
+ *   <li>{@code org.ajoberstar.grgit.auth.sshagent.allow={true|false}}</li>
+ *   <li>{@code org.ajoberstar.grgit.auth.pageant.allow={true|false}}</li>
+ * </ul>
+ *
+ * <p>
+ *   The following order is used to determine which authentication option
+ *   is used.
+ * </p>
+ *
+ * <ol>
+ *   <li>Hardcoded credentials, if provided.</li>
+ *   <li>Ssh-Agent, if available.</li>
+ *   <li>Pageant, if available.</li>
+ *   <li>Interactive credentials, if needed.</li>
+ * </ol>
+ *
+ * @since 0.2.0
+ */
 class AuthConfig {
+	/**
+	 * System property name used to force a specific authentication option.
+	 */
 	static final String FORCE_OPTION = 'org.ajoberstar.grgit.auth.force'
 
+	/**
+	 * Set of all authentication options that are allowed in this
+	 * configuration.
+	 */
 	final Set<Option> allowed
 
 	private AuthConfig(Set<Option> allowed) {
 		this.allowed = allowed.asImmutable()
 	}
 
+	/**
+	 * Test whether the given authentication option is allowed by this
+	 * configuration.
+	 * @param option the authentication option to test for
+	 * @return {@code true} if the given option is allowed, {@code false}
+	 * otherwise
+	 */
 	boolean allows(Option option) {
 		return allowed.contains(option)
 	}
 
+	/**
+	 * Factory method to construct an authentication configuration from the
+	 * given properties.
+	 * @param properties the properties to use in this configuration
+	 * @return the constructed configuration
+	 * @throws GrgitException if force is set to an invalid option
+	 */
 	static AuthConfig fromMap(Map properties) {
 		String forceSetting = properties[FORCE_OPTION]
 		if (forceSetting) {
@@ -47,16 +100,48 @@ class AuthConfig {
 		}
 	}
 
+	/**
+	 * Factory method to construct an authentication configuration from the
+	 * current system properties.
+	 * @return the constructed configuration
+	 * @throws GrgitException if force is set to an invalid option
+	 */
 	static AuthConfig fromSystemProperties() {
 		return fromMap(System.properties)
 	}
 
+	/**
+	 * Available authentication options.
+	 */
 	static enum Option {
+		/**
+		 * Use credentials provided directly to Grgit.
+		 */
 		HARDCODED,
+
+		/**
+		 * Will prompt for credentials using an AWT window, if needed.
+		 */
 		INTERACTIVE,
+
+		/**
+		 * Use SSH keys in the system's sshagent process.
+		 */
 		SSHAGENT,
+
+		/**
+		 * Use SSH keys in the system's pageant process.
+		 */
 		PAGEANT
 
+		/**
+		 * Gets the system property name used to configure whether this
+		 * option is allowed or not. By default, all are allowed.
+		 * The system properties are of the form
+		 * {@code org.ajoberstar.grgit.auth.<lowercase option name>.allow}
+		 * Can be set to {@code true} or {@code false}.
+		 * @return the system property name
+		 */
 		String getSystemPropertyName() {
 			return "org.ajoberstar.grgit.auth.${name().toLowerCase()}.allow"
 		}
