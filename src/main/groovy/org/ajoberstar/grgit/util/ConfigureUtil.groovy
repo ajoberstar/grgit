@@ -16,21 +16,32 @@
 package org.ajoberstar.grgit.util
 
 /**
- *
- * @since 0.7.0
- * @author Andrew Oberstar
+ * Utility class to configure objects.
+ * @since 0.1.0
  */
-class ConfigureUtil {
+final class ConfigureUtil {
 	private ConfigureUtil() {
 		throw new AssertionError('Cannot instantiate this class.')
 	}
 
+	/**
+	 * Configures the given object with the given map.
+	 * @param object the object to configure
+	 * @param map a map with properties available on the object. Each entry
+	 * will be set on the object
+	 */
 	static configure(Object object, Map map) {
 		map.each { key, value ->
 			object[key] = value
 		}
 	}
 
+	/**
+	 * Configures the given object with the given closure.
+	 * @param object the object to configure
+	 * @param closure a closure that accepts the object as an argument and
+	 * configures it
+	 */
 	static configure(Object object, Closure closure) {
 		Object originalDelegate = closure.delegate
 		closure.delegate = object

@@ -37,11 +37,22 @@ import org.eclipse.jgit.revwalk.RevObject
 import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.revwalk.RevWalk
 
+/**
+ * Utility class to perform operations against JGit objects.
+ * @since 0.1.0
+ */
 class JGitUtil {
 	private JGitUtil() {
 		throw new AssertionError('Cannot instantiate this class.')
 	}
 
+	/**
+	 * Resolves a JGit {@code ObjectId} using the given revision string.
+	 * @param repo the Grgit repository to resolve the object from
+	 * @param revstr the revision string to use
+	 * @return the resolved object
+	 * @throws GrgitException if the object cannot be resolved
+	 */
 	static ObjectId resolveObject(Repository repo, String revstr) {
 		try {
 			ObjectId object = repo.jgit.repository.resolve(revstr)
@@ -61,6 +72,13 @@ class JGitUtil {
 		}
 	}
 
+	/**
+	 * Resolves a JGit {@code RevObject} using the given revision string.
+	 * @param repo the Grgit repository to resolve the object from
+	 * @param revstr the revision string to use
+	 * @return the resolved object
+	 * @throws GrgitException if the object cannot be resolved
+	 */
 	static RevObject resolveRevObject(Repository repo, String revstr) {
 		ObjectId id = resolveObject(repo, revstr)
 		RevWalk walk = new RevWalk(repo.jgit.repository)
@@ -73,20 +91,34 @@ class JGitUtil {
 		}
 	}
 
+	/**
+	 * Resolves a Grgit {@code Commit} using the given revision string.
+	 * @param repo the Grgit repository to resolve the commit from
+	 * @param revstr the revision string to use
+	 * @return the resolved commit
+	 * @throws GrgitException if the commit cannot be resolved
+	 */
 	static Commit resolveCommit(Repository repo, String revstr) {
 		ObjectId id = resolveObject(repo, revstr)
 		return resolveCommit(repo, id)
 	}
 
+	/**
+	 * Resolves a Grgit {@code Commit} using the given object.
+	 * @param repo the Grgit repository to resolve the commit from
+	 * @param id the object id of the commit to resolve
+	 * @return the resolved commit
+	 * @throws GrgitException if the commit cannot be resolved
+	 */
 	static Commit resolveCommit(Repository repo, ObjectId id) {
 		RevWalk walk = new RevWalk(repo.jgit.repository)
 		return convertCommit(walk.parseCommit(id))
 	}
 
 	/**
-	 * Converts a JGit RevCommit to a Commit.
+	 * Converts a JGit commit to a Grgit commit.
 	 * @param rev the JGit commit to convert
-	 * @return a org.ajoberstar Commit
+	 * @return a corresponding Grgit commit
 	 */
 	static Commit convertCommit(RevCommit rev) {
 		Map props = [:]
@@ -101,6 +133,12 @@ class JGitUtil {
 		return new Commit(props)
 	}
 
+	/**
+	 * Resolves a Grgit Tag from a JGit ref.
+	 * @param repo the Grgit repository to resolve from
+	 * @param ref the JGit ref to resolve
+	 * @return the resolved tag
+	 */
 	static Tag resolveTag(Repository repo, Ref ref) {
 		Map props = [:]
 		props.fullName = ref.name
@@ -119,11 +157,25 @@ class JGitUtil {
 		return new Tag(props)
 	}
 
+	/**
+	 * Resolves a Grgit branch from a name.
+	 * @param repo the Grgit repository to resolve from
+	 * @param name the name of the branch to resolve
+	 * @return the resolved branch
+	 * @throws GrgitException if the branch cannot be resolved
+	 */
 	static Branch resolveBranch(Repository repo, String name) {
 		Ref ref = repo.jgit.repository.getRef(name)
 		return resolveBranch(repo, ref)
 	}
 
+	/**
+	 * Resolves a Grgit branch from a JGit ref.
+	 * @param repo the Grgit repository to resolve from
+	 * @param ref the JGit ref to resolve
+	 * @return the resolved branch or {@code null} if the {@code ref} is
+	 * {@code null}
+	 */
 	static Branch resolveBranch(Repository repo, Ref ref) {
 		if (ref == null) {
 			return null
@@ -139,6 +191,11 @@ class JGitUtil {
 		return new Branch(props)
 	}
 
+	/**
+	 * Converts a JGit status to a Grgit status.
+	 * @param jgitStatus the status to convert
+	 * @return the converted status
+	 */
 	static Status convertStatus(org.eclipse.jgit.api.Status jgitStatus) {
 		return new Status(
 			jgitStatus.added,
