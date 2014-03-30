@@ -198,12 +198,16 @@ class JGitUtil {
 	 */
 	static Status convertStatus(org.eclipse.jgit.api.Status jgitStatus) {
 		return new Status(
-			jgitStatus.added,
-			jgitStatus.changed,
-			jgitStatus.removed,
-			jgitStatus.untracked,
-			jgitStatus.modified,
-			jgitStatus.missing
+			staged: [
+				added: jgitStatus.added,
+				modified: jgitStatus.changed,
+				removed: jgitStatus.removed
+			],
+			unstaged: [
+				added: jgitStatus.untracked,
+				modified: jgitStatus.modified,
+				removed: jgitStatus.missing
+			]
 		)
 	}
 }

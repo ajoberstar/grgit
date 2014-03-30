@@ -17,6 +17,10 @@ package org.ajoberstar.grgit
 
 import groovy.transform.Immutable
 
+/**
+ * Credentials to use for remote operations.
+ * @since 0.2.0
+ */
 @Immutable
 class Credentials {
 	String username

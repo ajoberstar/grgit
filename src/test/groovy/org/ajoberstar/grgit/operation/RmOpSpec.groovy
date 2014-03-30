@@ -16,6 +16,7 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
+import org.ajoberstar.grgit.Status
 
 class RmOpSpec extends SimpleGitOpSpec {
 	def setup() {
@@ -34,8 +35,7 @@ class RmOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.remove(patterns:['1.bat'])
 		then:
-		def status = grgit.status()
-		status.staged.deletedFiles == paths
+		grgit.status() == new Status(staged: [removed: paths])
 		paths.every { !repoFile(it).exists() }
 	}
 
@@ -45,8 +45,7 @@ class RmOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.remove(patterns:['test'])
 		then:
-		def status = grgit.status()
-		status.staged.deletedFiles == paths
+		grgit.status() == new Status(staged: [removed: paths])
 		paths.every { !repoFile(it).exists() }
 	}
 
@@ -56,12 +55,11 @@ class RmOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.remove(patterns:['**/*.txt'])
 		then:
-		def status = grgit.status()
+		grgit.status().clean
 		/*
 		 * TODO: get it to work like this
 		 * status.removed == ['something/2.txt', 'test/4.txt', 'test/other/5.txt'] as Set
 		 */
-		 status.staged.deletedFiles.empty
 		 paths.every { repoFile(it).exists() }
 	}
 
@@ -71,8 +69,7 @@ class RmOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.remove(patterns:['something'], cached:true)
 		then:
-		def status = grgit.status()
-		status.staged.deletedFiles == paths
+		grgit.status() == new Status(staged: [removed: paths], unstaged: [added: paths])
 		paths.every { repoFile(it).exists() }
 	}
 }

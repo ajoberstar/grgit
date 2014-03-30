@@ -24,8 +24,8 @@ import org.eclipse.jgit.api.Git
 // TODO: When Gradle is built with Groovy 2.0+, switch to @Immutable
 
 /**
- * Represents a Git repository.
- * @author Andrew Oberstar
+ * A repository.
+ * @since 0.1.0
  */
 @Canonical
 class Repository {

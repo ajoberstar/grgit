@@ -16,6 +16,7 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
+import org.ajoberstar.grgit.Status
 
 class AddOpSpec extends SimpleGitOpSpec {
 	def 'adding specific file only adds that file'() {
@@ -26,9 +27,10 @@ class AddOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.add(patterns:['1.txt'])
 		then:
-		def status = grgit.status()
-		status.staged.newFiles == ['1.txt'] as Set
-		status.unstaged.newFiles == ['2.txt', 'test/3.txt'] as Set
+		grgit.status() == new Status(
+			staged: [added: ['1.txt']],
+			unstaged: [added: ['2.txt', 'test/3.txt']]
+		)
 	}
 
 	def 'adding specific directory adds all files within it'() {
@@ -41,9 +43,10 @@ class AddOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.add(patterns:['test'])
 		then:
-		def status = grgit.status()
-		status.staged.newFiles == ['test/3.txt', 'test/4.txt', 'test/other/5.txt'] as Set
-		status.unstaged.newFiles == ['1.txt', 'something/2.txt'] as Set
+		grgit.status() == new Status(
+			staged: [added: ['test/3.txt', 'test/4.txt', 'test/other/5.txt']],
+			unstaged: [added: ['1.txt', 'something/2.txt']]
+		)
 	}
 
 	def 'adding file pattern does not work due to lack of JGit support'() {
@@ -56,14 +59,14 @@ class AddOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.add(patterns:['**/*.txt'])
 		then:
-		def status = grgit.status()
+		grgit.status() == new Status(
+			unstaged: [added: ['1.bat', 'test/3.bat', 'something/2.txt', 'test/4.txt', 'test/other/5.txt']]
+		)
 		/*
 		 * TODO: get it to work like this
 		 * status.added == ['something/2.txt', 'test/4.txt', 'test/other/5.txt'] as Set
 		 * status.untracked == ['1.bat', 'test/3.bat'] as Set
 		 */
-		 status.staged.newFiles.empty
-		 status.unstaged.newFiles == ['1.bat', 'test/3.bat', 'something/2.txt', 'test/4.txt', 'test/other/5.txt'] as Set
 	}
 
 	def 'adding with update true only adds/removes files already in the index'() {
@@ -81,9 +84,9 @@ class AddOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.add(patterns:['.'], update:true)
 		then:
-		def status = grgit.status()
-		status.staged.modifiedFiles == ['1.bat', 'something/2.txt'] as Set
-		status.staged.deletedFiles == ['test/3.bat'] as Set
-		status.unstaged.newFiles == ['test/4.txt', 'test/other/5.txt'] as Set
+		grgit.status() == new Status(
+			staged: [modified: ['1.bat', 'something/2.txt'], removed: ['test/3.bat']],
+			unstaged: [added: ['test/4.txt', 'test/other/5.txt']]
+		)
 	}
 }

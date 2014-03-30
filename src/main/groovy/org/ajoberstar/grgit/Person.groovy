@@ -18,9 +18,8 @@ package org.ajoberstar.grgit
 import groovy.transform.Immutable
 
 /**
- * Represents a Git commit.
- * @since 0.7.0
- * @author Andrew Oberstar
+ * A person.
+ * @since 0.1.0
  */
  @Immutable
 class Person {

@@ -27,8 +27,7 @@ class StatusOpSpec extends SimpleGitOpSpec {
 
 	def 'with no changes all methods return empty list'() {
 		expect:
-		grgit.status() == new Status([] as Set, [] as Set, [] as Set,
-			[] as Set, [] as Set, [] as Set)
+		grgit.status() == new Status()
 	}
 
 	def 'new unstaged file detected'() {
@@ -36,8 +35,7 @@ class StatusOpSpec extends SimpleGitOpSpec {
 		repoFile('5.txt') << '5'
 		repoFile('6.txt') << '6'
 		expect:
-		grgit.status() == new Status([] as Set, [] as Set, [] as Set,
-			['5.txt', '6.txt'] as Set, [] as Set, [] as Set)
+		grgit.status() == new Status(unstaged: [added: ['5.txt', '6.txt']])
 	}
 
 	def 'unstaged modified files detected'() {
@@ -45,8 +43,7 @@ class StatusOpSpec extends SimpleGitOpSpec {
 		repoFile('2.txt') << '2'
 		repoFile('3.txt') << '3'
 		expect:
-		grgit.status() == new Status([] as Set, [] as Set, [] as Set,
-			[] as Set, ['2.txt', '3.txt'] as Set, [] as Set)
+		grgit.status() == new Status(unstaged: [modified: ['2.txt', '3.txt']])
 	}
 
 	def 'unstaged deleted files detected'() {
@@ -54,8 +51,7 @@ class StatusOpSpec extends SimpleGitOpSpec {
 		assert repoFile('1.txt').delete()
 		assert repoFile('2.txt').delete()
 		expect:
-		grgit.status() == new Status([] as Set, [] as Set, [] as Set,
-			[] as Set, [] as Set, ['1.txt', '2.txt'] as Set)
+		grgit.status() == new Status(unstaged: [removed: ['1.txt', '2.txt']])
 	}
 
 	def 'staged new files detected'() {
@@ -65,8 +61,7 @@ class StatusOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.add(patterns: ['.'])
 		then:
-		grgit.status() == new Status(['5.txt', '6.txt'] as Set, [] as Set, [] as Set,
-			[] as Set, [] as Set, [] as Set)
+		grgit.status() == new Status(staged: [added: ['5.txt', '6.txt']])
 	}
 
 	def 'staged modified files detected'() {
@@ -76,8 +71,7 @@ class StatusOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.add(patterns: ['.'])
 		then:
-		grgit.status() == new Status([] as Set, ['1.txt', '2.txt'] as Set, [] as Set,
-			[] as Set, [] as Set, [] as Set)
+		grgit.status() == new Status(staged: [modified: ['1.txt', '2.txt']])
 	}
 
 	def 'staged new files detected'() {
@@ -87,7 +81,6 @@ class StatusOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.add(patterns: ['.'], update: true)
 		then:
-		grgit.status() == new Status([] as Set, [] as Set, ['3.txt', '0.txt'] as Set,
-			[] as Set, [] as Set, [] as Set)
+		grgit.status() == new Status(staged: [removed: ['3.txt', '0.txt']])
 	}
 }

@@ -18,9 +18,8 @@ package org.ajoberstar.grgit
 import groovy.transform.Immutable
 
 /**
- * Represents a Git commit.
- * @since 0.7.0
- * @author Andrew Oberstar
+ * A commit.
+ * @since 0.1.0
  */
  @Immutable
 class Commit {
@@ -40,7 +39,7 @@ class Commit {
 	Person committer
 
 	/**
-	 * The time the commit was created.
+	 * The time the commit was created in seconds since "the epoch".
 	 */
 	int time
 
@@ -53,6 +52,15 @@ class Commit {
 	 * The shortened commit message.
 	 */
 	String shortMessage
+
+	/**
+	 * The time the commit was created.
+	 * @return the date
+	 */
+	Date getDate() {
+		long seconds = Integer.valueOf(time).longValue()
+		return new Date(seconds * 1000)
+	}
 
 	/**
 	 * The first {@code length} characters of the commit hash.

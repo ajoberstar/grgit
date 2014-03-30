@@ -19,6 +19,10 @@ import groovy.transform.Immutable
 
 import org.eclipse.jgit.lib.Repository
 
+/**
+ * A tag.
+ * @since 0.2.0
+ */
 @Immutable
 class Tag {
 	/**
@@ -46,7 +50,10 @@ class Tag {
 	 */
 	String shortMessage
 
-
+	/**
+	 * The simple name of this tag.
+	 * @return the simple name
+	 */
 	String getName() {
 		return Repository.shortenRefName(fullName)
 	}

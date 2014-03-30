@@ -17,47 +17,58 @@ package org.ajoberstar.grgit
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import groovy.transform.Canonical
+import groovy.transform.Immutable
 
+/**
+ * Status of the current working tree and index.
+ */
 @EqualsAndHashCode
 @ToString(includeNames=true)
 class Status {
 	final Changes staged
 	final Changes unstaged
 
-	Status(
-		Set<? extends String> stagedNewFiles,
-		Set<? extends String> stagedModifiedFiles,
-		Set<? extends String> stagedDeletedFiles,
-		Set<? extends String> unstagedNewFiles,
-		Set<? extends String> unstagedModifiedFiles,
-		Set<? extends String> unstagedDeletedFiles
-	) {
-		this.staged = new Changes(stagedNewFiles, stagedModifiedFiles, stagedDeletedFiles)
-		this.unstaged = new Changes(unstagedNewFiles, unstagedModifiedFiles, unstagedDeletedFiles)
+	Status(Map args = [:]) {
+		def invalidArgs = args.keySet() - ['staged', 'unstaged']
+		if (invalidArgs) {
+			throw new IllegalArgumentException("Following keys are not supported: ${invalidArgs}")
+		}
+		this.staged = 'staged' in args ? new Changes(args.staged) : new Changes()
+		this.unstaged = 'unstaged' in args ? new Changes(args.unstaged) : new Changes()
 	}
 
 	@EqualsAndHashCode
 	@ToString(includeNames=true)
 	class Changes {
-		final Set<String> newFiles
-		final Set<String> modifiedFiles
-		final Set<String> deletedFiles
+		final Set<String> added
+		final Set<String> modified
+		final Set<String> removed
 
-		private Changes(
-			Set<? extends String> newFiles,
-			Set<? extends String> modifiedFiles,
-			Set<? extends String> deletedFiles
-		) {
-			this.newFiles = newFiles
-			this.modifiedFiles = modifiedFiles
-			this.deletedFiles = deletedFiles
+		Changes(Map args = [:]) {
+			def invalidArgs = args.keySet() - ['added', 'modified', 'removed']
+			if (invalidArgs) {
+				throw new IllegalArgumentException("Following keys are not supported: ${invalidArgs}")
+			}
+			this.added = 'added' in args ? args.added : []
+			this.modified = 'modified' in args ? args.modified : []
+			this.removed = 'removed' in args ? args.removed : []
 		}
 
+		/**
+		 * Gets all changed files.
+		 * @return all changed files
+		 */
 		Set<String> getAllChanges() {
-			return newFiles + modifiedFiles + deletedFiles
+			return added + modified + removed
 		}
 	}
 
+	/**
+	 * Whether the repository has any changes.
+	 * @return {@code true} if there are no changes either staged or unstaged,
+	 * {@code false} otherwise
+	 */
 	boolean isClean() {
 		return (staged.allChanges + unstaged.allChanges).empty
 	}

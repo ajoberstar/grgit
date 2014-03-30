@@ -123,7 +123,7 @@ class MergeOpSpec extends MultiGitOpSpec {
 		repoFile(localGrgit, '.git/MERGE_HEAD').text.trim() == mergeHead.id
 		where:
 		head           | mode      | status
-		'origin/clean' | NO_COMMIT | new Status(['3.txt'] as Set, [] as Set, [] as Set, [] as Set, [] as Set, [] as Set)
+		'origin/clean' | NO_COMMIT | new Status(staged: [added: ['3.txt']])
 	}
 
 	@Unroll('merging #head with #mode squashes changes but leaves them uncommitted')
@@ -138,8 +138,8 @@ class MergeOpSpec extends MultiGitOpSpec {
 		!repoFile(localGrgit, '.git/MERGE_HEAD').exists()
 		where:
 		head           | mode   | status
-		'origin/ff'    | SQUASH | new Status([] as Set, ['1.txt'] as Set, [] as Set, [] as Set, [] as Set, [] as Set)
-		'origin/clean' | SQUASH | new Status(['3.txt'] as Set, [] as Set, [] as Set, [] as Set, [] as Set, [] as Set)
+		'origin/ff'    | SQUASH | new Status(staged: [modified: ['1.txt']])
+		'origin/clean' | SQUASH | new Status(staged: [added: ['3.txt']])
 	}
 
 	@Unroll('merging #head with #mode fails and leaves state as before')
