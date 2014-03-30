@@ -27,11 +27,56 @@ import org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode
 import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.lib.Ref
 
+/**
+ * Changes a branch's start point and/or upstream branch. Returns the changed {@link Branch}.
+ *
+ * <p>To change the branch to start at, but not track, a local start point.</p>
+ *
+ * <pre>
+ * grgit.branch.change(name: 'existing-branch', startPoint: 'local-branch')
+ * grgit.branch.change(name: 'existing-branch', startPoint: 'local-branch', mode: BranchChangeOp.Mode.NO_TRACK)
+ * </pre>
+ *
+ * <p>To change the branch to start at and track a local start point.</p>
+ *
+ * <pre>
+ * grgit.branch.change(name: 'existing-branch', startPoint: 'local-branch', mode: BranchChangeOp.Mode.TRACK)
+ * </pre>
+ *
+ * <p>To change the branch to start from and track a remote start point.</p>
+ *
+ * <pre>
+ * grgit.branch.change(name: 'existing-branch', startPoint: 'origin/remote-branch')
+ * grgit.branch.change(name: 'existing-branch', startPoint: 'origin/remote-branch', mode: BranchChangeOp.Mode.TRACK)
+ * </pre>
+ *
+ * <p>To change the branch to start from, but not track, a remote start point.</p>
+ *
+ * <pre>
+ * grgit.branch.change(name: 'existing-branch', startPoint: 'origin/remote-branch', mode: BranchChangeOp.Mode.NO_TRACK)
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>.
+ *
+ * @since 0.2.0
+ * @see <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>
+ */
 class BranchChangeOp implements Callable<Branch> {
 	private final Repository repo
 
+	/**
+	 * The name of the branch to change.
+	 */
 	String name
+
+	/**
+	 * The commit the branch should now start at.
+	 */
 	String startPoint
+
+	/**
+	 * The tracking mode to use.
+	 */
 	Mode mode
 
 	BranchChangeOp(Repository repo) {

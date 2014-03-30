@@ -23,10 +23,41 @@ import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.DeleteBranchCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Removes one or more branches from the repository. Returns a list of
+ * the fully qualified branch names that were removed.
+ *
+ * <p>Remove branches that have been merged.</p>
+ *
+ * <pre>
+ * def removedBranches = grgit.branch.remove(names: ['the-branch'])
+ * def removedBranches = grgit.branch.remove(names: ['the-branch', 'other-branch'], force: false)
+ * </pre>
+ *
+ * <p>Remove branches, even if they haven't been merged.</p>
+ *
+ * <pre>
+ * def removedBranches = grgit.branch.remove(names: ['the-branch'], force: true)
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>.
+ *
+ * @since 0.2.0
+ * @see <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>
+ */
 class BranchRemoveOp implements Callable<List<String>> {
 	private final Repository repo
 
+	/**
+	 * List of all branche names to remove.
+	 */
 	List names = []
+
+	/**
+	 * If {@code false} (the default), only remove branches that
+	 * are merged into another branch. If {@code true} will delete
+	 * regardless.
+	 */
 	boolean force = false
 
 	BranchRemoveOp(Repository repo) {

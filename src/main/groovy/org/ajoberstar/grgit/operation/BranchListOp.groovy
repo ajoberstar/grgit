@@ -25,9 +25,39 @@ import org.ajoberstar.grgit.util.JGitUtil
 import org.eclipse.jgit.api.ListBranchCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Lists branches in the repository. Returns a list of {@link Branch}.
+ *
+ * <p>To list local branches only.</p>
+ *
+ * <pre>
+ * grgit.branch.list()
+ * grgit.branch.list(BranchListOp.Mode.LOCAL)
+ * </pre>
+ *
+ * <p>To list remote branches only.</p>
+ *
+ * <pre>
+ * grgit.branch.list(BranchListOp.Mode.REMOTE)
+ * </pre>
+ *
+ * <p>To list all branches.</p>
+ *
+ * <pre>
+ * grgit.branch.list(BranchListOp.Mode.ALL)
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>.
+ *
+ * @since 0.2.0
+ * @see <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>
+ */
 class BranchListOp implements Callable<List<Branch>> {
 	private final Repository repo
 
+	/**
+	 * Which branches to return.
+	 */
 	Mode mode = Mode.LOCAL
 
 	BranchListOp(Repository repo) {

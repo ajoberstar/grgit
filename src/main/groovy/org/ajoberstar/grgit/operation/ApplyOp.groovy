@@ -23,9 +23,26 @@ import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.ApplyCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Apply a patch to the index.
+ *
+ * <p>To apply a patch to the index.</p>
+ *
+ * <pre>
+ * grgit.apply(path: patchFile)
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-apply">git-apply Manual Page</a>.
+ *
+ * @since 0.1.0
+ * @see <a href="http://git-scm.com/docs/git-apply">git-apply Manual Page</a>
+ */
 class ApplyOp implements Callable<Void> {
 	private final Repository repo
 
+	/**
+	 * The patch file to apply to the index.
+	 */
 	File patch
 
 	ApplyOp(Repository repo) {

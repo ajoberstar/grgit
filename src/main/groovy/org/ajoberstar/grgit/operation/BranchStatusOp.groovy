@@ -26,9 +26,21 @@ import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.lib.BranchTrackingStatus
 
+/**
+ * Gets the tracking status of a branch. Returns a {@link BranchStatus}.
+ *
+ * <pre>
+ * def status = grgit.branch.status(branch: 'the-branch')
+ * </pre>
+ *
+ * @since 0.2.0
+ */
 class BranchStatusOp implements Callable<BranchStatus> {
 	private final Repository repo
 
+	/**
+	 * The branch to get the status of.
+	 */
 	String branch
 
 	BranchStatusOp(Repository repo) {
