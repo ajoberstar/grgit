@@ -23,12 +23,69 @@ import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.CleanCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Remove untracked files from the working tree. Returns the list of
+ * file paths deleted.
+ *
+ * <p>To clean all untracked files, but not ignored ones or untracked directories.</p>
+ *
+ * <pre>
+ * def cleanedPaths = grgit.clean()
+ * </pre>
+ *
+ * <p>To clean all untracked files and directories.</p>
+ *
+ * <pre>
+ * def cleanedPaths = grgit.clean(directories: true)
+ * </pre>
+ *
+ * <p>To clean all untracked files, including ignored ones.</p>
+ *
+ * <pre>
+ * def cleanedPaths = grgit.clean(ignore: false)
+ * </pre>
+ *
+ * <p>To only return files that would be cleaned.</p>
+ *
+ * <pre>
+ * def cleanedPaths = grgit.clean(dryRun: true)
+ * </pre>
+ *
+ * <p>To clean specific untracked files.</p>
+ *
+ * <pre>
+ * def cleanedPaths = grgit.clean(paths: ['specific/file.txt'])
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-clean">git-clean Manual Page</a>.
+ *
+ * @since 0.2.0
+ * @see <a href="http://git-scm.com/docs/git-clean">git-clean Manual Page</a>
+ */
 class CleanOp implements Callable<Set<String>> {
 	private final Repository repo
 
+	/**
+	 * The paths to clean. {@code null} if all paths should be included.
+	 */
 	Set<String> paths
+
+	/**
+	 * {@code true} if untracked directories should also be deleted,
+	 * {@code false} (the default) otherwise
+	 */
 	boolean directories = false
+
+	/**
+	 * {@code true} if the files should be returned, but not deleted,
+	 * {@code false} (the default) otherwise
+	 */
 	boolean dryRun = false
+
+	/**
+	 * {@code false} if files ignored by {@code .gitignore} should
+	 * also be deleted, {@code true} (the default) otherwise
+	 */
 	boolean ignore = true
 
 	CleanOp(Repository repo) {

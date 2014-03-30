@@ -26,14 +26,63 @@ import org.eclipse.jgit.api.CloneCommand
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Clones an existing repository. Returns a {@link Grgit} pointing
+ * to the resulting repository.
+ *
+ * <p>To clone a repository, checking out the {@code master} branch.</p>
+ *
+ * <pre>
+ * def grgit = Grgit.clone(dir: 'gradle-git', uri: 'git@github.com:ajoberstar/gradle-git.git')
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-clone">git-clone Manual Reference.</a>
+ *
+ * @since 0.1.0
+ * @see <a href="http://git-scm.com/docs/git-clone">git-clone Manual Reference.</a>
+ */
 class CloneOp implements Callable<Grgit> {
+	/**
+	 * The directory to put the cloned repository.
+	 */
 	File dir
+
+	/**
+	 * The URI to the repository to be cloned.
+	 */
 	String uri
+
+	/**
+	 * The name of the remote for the upstream repository. Defaults
+	 * to {@code origin}.
+	 */
 	String remote = 'origin'
+
+	/**
+	 * {@code true} if the resulting repository should be bare,
+	 * {@code false} (the default) otherwise.
+	 */
 	boolean bare = false
+
+	/**
+	 * {@code true} (the default) if a working tree should be checked out,
+	 * {@code false} otherwise
+	 */
 	boolean checkout = true
+
+	/**
+	 * The remote ref that should be checked out after the repository is
+	 * cloned. Defaults to {@code master}.
+	 */
 	String refToCheckout
 
+	/**
+	 * The username and credentials to use when checking out the
+	 * repository and for subsequent remote operations on the
+	 * repository. This is only needed if hardcoded creds
+	 * should be used.
+	 * @see {@link org.ajoberstar.gradle.auth.AuthConfig}
+	 */
 	Credentials credentials
 
 	Grgit call() {
