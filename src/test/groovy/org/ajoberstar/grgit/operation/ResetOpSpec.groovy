@@ -68,20 +68,6 @@ class ResetOpSpec extends SimpleGitOpSpec {
 		grgit.status().clean
 	}
 
-	def 'reset merge not supported by JGit'() {
-		when:
-		grgit.reset(mode:ResetOp.Mode.MERGE, commit:commits[0].id)
-		then:
-		thrown(UnsupportedOperationException)
-	}
-
-	def 'reset keep not supported by JGit'() {
-		when:
-		grgit.reset(mode:ResetOp.Mode.KEEP, commit:commits[0].id)
-		then:
-		thrown(UnsupportedOperationException)
-	}
-
 	def 'reset with paths changes index only'() {
 		when:
 		grgit.reset(paths:['something/2.txt'])
@@ -99,12 +85,4 @@ class ResetOpSpec extends SimpleGitOpSpec {
 		then:
 		thrown(IllegalStateException)
 	}
-
-	// def 'reset merge changes HEAD, index, and working tree but not unstaged changes'() {}
-
-	// def 'reset merge aborts when unstaged changes to file that differs between commit and index'() {}
-
-	// def 'reset keep changes HEAD, index, and working tree if no unstaged changes'() {}
-
-	// def 'reset keep aborts if any unstaged changes different from commit'() {}
 }

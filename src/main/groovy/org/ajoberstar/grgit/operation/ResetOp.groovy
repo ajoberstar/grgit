@@ -23,11 +23,55 @@ import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.ResetCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Reset changes in the repository.
+ *
+ * <p>Reset the HEAD to a different commit.</p>
+ *
+ * <pre>
+ * grgit.reset(commit: 'HEAD~1', mode: ResetOp.Mode.SOFT)
+ * </pre>
+ *
+ * <p>Reset the HEAD, index, and working tree to a different commit.</p>
+ *
+ * <pre>
+ * grgit.reset(commit: 'other-branch', mode: ResetOp.Mode.HARD)
+ * </pre>
+ *
+ * <p>Reset the HEAD and index to a different commit.</p>
+ *
+ * <pre>
+ * grgit.reset(commit: 'HEAD~2')
+ * grgit.reset(commit: 'HEAD~2', mode: ResetOp.Mode.MIXED)
+ * </pre>
+ *
+ * <p>Reset the index for specific paths back to the HEAD</p>
+ *
+ * <pre>
+ * grgit.reset(paths: ['some/file.txt'])
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-reset">git-reset Manual Page</a>.
+ *
+ * @since 0.1.0
+ * @see <a href="http://git-scm.com/docs/git-reset">git-reset Manual Page</a>
+ */
 class ResetOp implements Callable<Void> {
 	private final Repository repo
 
+	/**
+	 * The paths to reset.
+	 */
 	Set<String> paths = []
+
+	/**
+	 * The commit to reset back to. Defaults to HEAD.
+	 */
 	String commit
+
+	/**
+	 * The mode to use when resetting.
+	 */
 	Mode mode = Mode.MIXED
 
 	ResetOp(Repository repo) {
@@ -57,10 +101,17 @@ class ResetOp implements Callable<Void> {
 	}
 
 	static enum Mode {
+		/**
+		 * Reset the index and working tree.
+		 */
 		HARD(ResetCommand.ResetType.HARD),
-		KEEP(ResetCommand.ResetType.KEEP),
-		MERGE(ResetCommand.ResetType.MERGE),
+		/**
+		 * Reset the index, but not the working tree.
+		 */
 		MIXED(ResetCommand.ResetType.MIXED),
+		/**
+		 * Only reset the HEAD. Leave the index and working tree as-is.
+		 */
 		SOFT(ResetCommand.ResetType.SOFT)
 
 		private final ResetCommand.ResetType jgit

@@ -23,10 +23,40 @@ import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.RmCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Remove files from the index and (optionally) delete them from the working tree.
+ * Note that wildcards are not supported.
+ *
+ * <p>Remove specific file or directory from both the index and working tree.</p>
+ *
+ * <pre>
+ * grgit.remove(patterns: ['1.txt', 'some/dir'])
+ * grgit.remove(patterns: ['1.txt', 'some/dir'], cached: false)
+ * </pre>
+ *
+ * <p>Remove specific file or directory from the index, but leave the in the working tree.</p>
+ *
+ * <pre>
+ * grgit.remove(patterns: ['1.txt', 'some/dir'], cached: true)
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-rm">git-rm Manual Page</a>.
+ *
+ * @since 0.1.0
+ * @see <a href="http://git-scm.com/docs/git-rm">git-rm Manual Page</a>
+ */
 class RmOp implements Callable<Void> {
 	private final Repository repo
 
+	/**
+	 * The file patterns to remove.
+	 */
 	Set<String> patterns = []
+
+	/**
+	 * {@code true} if files should only be removed from the index,
+	 * {@code false} (the default) otherwise.
+	 */
 	boolean cached = false
 
 	RmOp(Repository repo) {

@@ -24,9 +24,36 @@ import org.eclipse.jgit.api.PullCommand
 import org.eclipse.jgit.api.PullResult
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Pulls changes from the remote on the current branch. If the changes
+ * conflict, the pull will fail, leaving the working tree as-is, and
+ * throwing an exception.
+ *
+ * <p>Pull changes.</p>
+ *
+ * <pre>
+ * grgit.pull()
+ * grgit.pull(rebase: false)
+ * </pre>
+ *
+ * <p>Pull changes and rebase the current branch on top of the remote changes.</p>
+ *
+ * <pre>
+ * grgit.pull(rebase: true)
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-pull">git-pull Manual Page</a>.
+ *
+ * @since 0.2.0
+ * @see <a href="http://git-scm.com/docs/git-pull">git-pull Manual Page</a>
+ */
 class PullOp implements Callable<Void> {
 	private final Repository repo
 
+	/**
+	 * Rebase on top of the changes when they are pulled in, if
+	 * {@code true}. {@code false} (the default) otherwise.
+	 */
 	boolean rebase = false
 
 	PullOp(Repository repo) {

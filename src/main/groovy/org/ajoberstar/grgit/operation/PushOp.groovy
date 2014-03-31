@@ -24,13 +24,68 @@ import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.PushCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Push changes to a remote repository.
+ *
+ * <p>Push changes on the current branch. Fail if it wouldn't be a fast-forward.</p>
+ *
+ * <pre>
+ * grgit.push()
+ * grgit.push(all: false)
+ * </pre>
+ *
+ * <p>Push changes on all branches. Fail if it wouldn't be a fast-forward.</p>
+ *
+ * <pre>
+ * grgit.push(all: true)
+ * </pre>
+ *
+ * <p>Push tags to the remote.</p>
+ *
+ * <pre>
+ * grgit.push(tags: true)
+ * </pre>
+ *
+ * <p>Push changes on the current branch, even if it's not a fast-forward.</p>
+ *
+ * <pre>
+ * grgit.push(force: true)
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-push">git-push Manual Page</a>.
+ *
+ * @since 0.1.0
+ * @see <a href="http://git-scm.com/docs/git-push">git-push Manual Page</a>
+ */
 class PushOp implements Callable<Void> {
 	private final Repository repo
 
+	/**
+	 * The remote to push to. Defaults to {@code origin}.
+	 */
 	String remote = 'origin'
+
+	/**
+	 * The refs or refspecs to use when pushing. If {@code null}
+	 * and {@code all} is {@code false} only push the current branch.
+	 */
 	List refsOrSpecs = []
+
+	/**
+	 * {@code true} to push all branches, {@code false} (the default)
+	 * to only push the current one.
+	 */
 	boolean all = false
+
+	/**
+	 * {@code true} to push tags, {@code false} (the default) otherwise.
+	 */
 	boolean tags = false
+
+	/**
+	 * {@code true} if branches should be pushed even if they aren't
+	 * a fast-forward, {@code false} (the default) if it should fail.
+	 */
 	boolean force = false
 
 	PushOp(Repository repo) {
