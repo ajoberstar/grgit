@@ -28,16 +28,73 @@ import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.lib.PersonIdent
 import org.eclipse.jgit.lib.Ref
 
+/**
+ * Adds a tag to the repository. Returns the newly created {@link Tag}.
+ *
+ * <p>Add an annotated tag.</p>
+ *
+ * <pre>
+ * grgit.tag.add(name: 'new-tag')
+ * grgit.tag.add(name: 'new-tag', message: 'Some message')
+ * grgit.tag.add(name: 'new-tag', annotate: true)
+ * </pre>
+ *
+ * <p>Add an unannotated tag.</p>
+ *
+ * <pre>
+ * grgit.tag.add(name: 'new-tag', annotate: false)
+ * </pre>
+ *
+ * <p>Add a tag starting at a specific commit.</p>
+ *
+ * <pre>
+ * grgit.tag.add(name: 'new-tag', pointsTo: 'other-branch')
+ * </pre>
+ *
+ * <p>Overwrite an existing tag.</p>
+ *
+ * <pre>
+ * grgit.tag.add(name: 'existing-tag', force: true)
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>.
+ *
+ * @since 0.2.0
+ * @see <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>
+ */
 class TagAddOp implements Callable<Tag> {
 	private final Repository repo
 
+	/**
+	 * The name of the tag to create.
+	 */
 	String name
+
+	/**
+	 * The message to put on the tag.
+	 */
 	String message
+
+	/**
+	 * The person who created the tag.
+	 */
 	Person tagger
+
+	/**
+	 * {@code true} (the default) if an annotated tag should be
+	 * created, {@code false} otherwise.
+	 */
 	boolean annotate = true
-	// boolean sign = false
+
+	/**
+	 * {@code true} to overwrite an existing tag, {@code false}
+	 * (the default) otherwise
+	 */
 	boolean force = false
 
+	/**
+	 * The commit the tag should point to.
+	 */
 	String pointsTo
 
 	TagAddOp(Repository repo) {
@@ -50,7 +107,6 @@ class TagAddOp implements Callable<Tag> {
 		cmd.message = message
 		if (tagger) { cmd.tagger = new PersonIdent(tagger.name, tagger.email) }
 		cmd.annotated = annotate
-		// cmd.signed = sign
 		cmd.forceUpdate = force
 		if (pointsTo) { cmd.objectId = JGitUtil.resolveRevObject(repo, pointsTo) }
 

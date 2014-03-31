@@ -19,6 +19,7 @@ import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
+import org.ajoberstar.grgit.operation.FetchOp.TagMode
 
 import spock.lang.Unroll
 

@@ -23,9 +23,28 @@ import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.DeleteTagCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Removes one or more tags from the repository. Returns a list of
+ * the fully qualified tag names that were removed.
+ *
+ * <p>Remove tags.</p>
+ *
+ * <pre>
+ * def removedTags = grgit.tag.remove(names: ['the-tag'])
+ * def removedTags = grgit.tag.remove(names: ['the-tag', 'other-tag'], force: false)
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>.
+ *
+ * @since 0.2.0
+ * @see <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>
+ */
 class TagRemoveOp implements Callable<List<String>> {
 	private final Repository repo
 
+	/**
+	 * Names of tags to remove.
+	 */
 	List names = []
 
 	TagRemoveOp(Repository repo) {

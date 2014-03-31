@@ -24,6 +24,7 @@ import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.FetchCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.transport.RefSpec
+import org.eclipse.jgit.transport.TagOpt
 
 /**
  * Fetch changes from remotes.
@@ -43,13 +44,13 @@ import org.eclipse.jgit.transport.RefSpec
  * <p>To pull down all tags from the remote.</p>
  *
  * <pre>
- * grgit.fetch(tagMode: TagMode.ALL)
+ * grgit.fetch(tagMode: FetchOp.TagMode.ALL)
  * </pre>
  *
  * <p>To fetch without pulling down tags.</p>
  *
  * <pre>
- * grgit.fetch(tagMode: TagMode.NONE)
+ * grgit.fetch(tagMode: FetchOp.TagMode.NONE)
  * </pre>
  *
  * See <a href="http://git-scm.com/docs/git-fetch">git-fetch Manual Reference.</a>
@@ -97,6 +98,18 @@ class FetchOp implements Callable<Void> {
 			return null
 		} catch (GitAPIException e) {
 			throw new GrgitException('Problem fetching from remote.', e)
+		}
+	}
+
+	enum TagMode {
+		AUTO(TagOpt.AUTO_FOLLOW),
+		ALL(TagOpt.FETCH_TAGS),
+		NONE(TagOpt.NO_TAGS)
+
+		final TagOpt jgit
+
+		private TagMode(TagOpt opt) {
+			this.jgit = opt
 		}
 	}
 }

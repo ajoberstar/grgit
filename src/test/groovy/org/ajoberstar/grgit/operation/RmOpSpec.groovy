@@ -15,8 +15,8 @@
  */
 package org.ajoberstar.grgit.operation
 
-import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 import org.ajoberstar.grgit.Status
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 
 class RmOpSpec extends SimpleGitOpSpec {
 	def setup() {

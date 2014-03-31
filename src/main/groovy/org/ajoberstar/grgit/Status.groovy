@@ -17,8 +17,6 @@ package org.ajoberstar.grgit
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import groovy.transform.Canonical
-import groovy.transform.Immutable
 
 /**
  * Status of the current working tree and index.

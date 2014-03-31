@@ -25,6 +25,20 @@ import org.ajoberstar.grgit.util.JGitUtil
 import org.eclipse.jgit.api.ListTagCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Lists tags in the repository. Returns a list of {@link Tag}.
+ *
+ * <p>To list all tags.</p>
+ *
+ * <pre>
+ * def tags = grgit.tag.list()
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>.
+ *
+ * @since 0.2.0
+ * @see <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>
+ */
 class TagListOp implements Callable<List<Tag>> {
 	private final Repository repo
 

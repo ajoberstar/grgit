@@ -25,6 +25,20 @@ import org.ajoberstar.grgit.util.JGitUtil
 import org.eclipse.jgit.api.StatusCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
+/**
+ * Gets the current status of the repository. Returns an {@link Status}.
+ *
+ * <p>Get the current status.</p>
+ *
+ * <pre>
+ * def status = grgit.status()
+ * </pre>
+ *
+ * See <a href="http://git-scm.com/docs/git-status">git-status Manual Page</a>.
+ *
+ * @since 0.1.0
+ * @see <a href="http://git-scm.com/docs/git-status">git-status Manual Page</a>
+ */
 class StatusOp implements Callable<Status> {
 	private final Repository repo
 
