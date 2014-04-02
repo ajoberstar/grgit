@@ -50,14 +50,22 @@ class WindowsAuthenticationSpec extends Specification {
 
 	def cleanup() {
 		System.properties.remove(AuthConfig.FORCE_OPTION)
+		System.properties.remove(AuthConfig.USERNAME_OPTION)
+		System.properties.remove(AuthConfig.PASSWORD_OPTION)
 	}
 
-	@Unroll('#method works')
+	@Unroll('#method works using ssh? (#ssh) and creds? (#creds)')
 	def 'auth method works'() {
 		given:
 		assert System.properties[AuthConfig.FORCE_OPTION] == null, 'Force should not already be set.'
+		assert System.properties[AuthConfig.USERNAME_OPTION] == null, 'Username should not already be set.'
+		assert System.properties[AuthConfig.PASSWORD_OPTION] == null, 'Password should not already be set.'
 		System.properties[AuthConfig.FORCE_OPTION] = method
 		ready(ssh, creds)
+		if (!creds) {
+			System.properties[AuthConfig.USERNAME_OPTION] = hardcodedCreds.username
+			System.properties[AuthConfig.PASSWORD_OPTION] = hardcodedCreds.password
+		}
 		assert grgit.branch.status(branch: 'master').aheadCount == 1
 		when:
 		grgit.push()
@@ -66,6 +74,7 @@ class WindowsAuthenticationSpec extends Specification {
 		where:
 		method        | ssh   | creds
 		'hardcoded'   | false | hardcodedCreds
+		'hardcoded'   | false | null
 		'interactive' | false | null
 		'interactive' | true  | null
 		'sshagent'    | true  | null

@@ -15,6 +15,7 @@
  */
 package org.ajoberstar.grgit.auth
 
+import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.exception.GrgitException
 
 /**
@@ -36,6 +37,19 @@ import org.ajoberstar.grgit.exception.GrgitException
  * </ul>
  *
  * <p>
+ *   In order to set default hardocded credentials, use the following properties.
+ *   Note that unless hardcoded credentials are disabled, using these properties
+ *   will supersede the use of interactive creds, ssh-agent, or Pageant. However,
+ *   they will not take precedence over credentials provided directly to a
+ *   repository during the clone, init, or open.
+ * </p>
+ *
+ * <ul>
+ *   <li>{@code org.ajoberstar.grgit.auth.username=<username>}</li>
+ *   <li>{@code org.ajoberstar.grgit.auth.password=<password>}</li>
+ * </ul>
+ *
+ * <p>
  *   The following order is used to determine which authentication option
  *   is used.
  * </p>
@@ -54,6 +68,8 @@ class AuthConfig {
 	 * System property name used to force a specific authentication option.
 	 */
 	static final String FORCE_OPTION = 'org.ajoberstar.grgit.auth.force'
+	static final String USERNAME_OPTION = 'org.ajoberstar.grgit.auth.username'
+	static final String PASSWORD_OPTION = 'org.ajoberstar.grgit.auth.password'
 
 	/**
 	 * Set of all authentication options that are allowed in this
@@ -74,6 +90,23 @@ class AuthConfig {
 	 */
 	boolean allows(Option option) {
 		return allowed.contains(option)
+	}
+
+	/**
+	 * Constructs and returns a {@link Credentials} instance reflecting the
+	 * settings in the system properties, but only if both the username and
+	 * password are set.
+	 * @return a credentials instance reflecting the settings in the system
+	 * properties, or, if either one isn't set, {@code null}
+	 */
+	Credentials getHardcodedCreds() {
+		String username = System.properties[USERNAME_OPTION]
+		String password = System.properties[PASSWORD_OPTION]
+		if (username && password) {
+			return new Credentials(username, password)
+		} else {
+			return null
+		}
 	}
 
 	/**
