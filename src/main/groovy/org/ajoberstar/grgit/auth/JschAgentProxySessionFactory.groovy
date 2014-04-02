@@ -107,6 +107,10 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 			logger.info 'ssh-agent could not be configured: {}', e.message
 			logger.debug 'ssh-agent failure details', e
 			return null
+		} catch (NoClassDefFoundError e) {
+			logger.info("ssh-agent could not be configured: " + e.getMessage());
+			logger.debug("ssh-agent failure details", e);
+			return null;
 		}
 	}
 
