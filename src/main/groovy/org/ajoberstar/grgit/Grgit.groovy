@@ -158,6 +158,14 @@ class Grgit {
 		return JGitUtil.resolveCommit(repository, revstr)
 	}
 
+	/**
+	 * Release underlying resources used by this instance. After calling close
+	 * you should not use this instance anymore.
+	 */
+	void close() {
+		repository.jgit.close()
+	}
+
 	def methodMissing(String name, args) {
 		OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
 	}
