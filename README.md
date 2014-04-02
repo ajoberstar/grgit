@@ -50,6 +50,12 @@ If you're interested in a change, please submit an issue (or even better a pull 
 
 ## Release Notes
 
+### 0.2.1
+
+* Added `close()` method to `Grgit` to release resources.
+* Support system properties for hardcoded credentials.
+* Fix for some JNA issues when using ssh-agent.
+
 ### 0.2.0
 
 * Added a bunch of new operations. See the Groovydoc for details.
