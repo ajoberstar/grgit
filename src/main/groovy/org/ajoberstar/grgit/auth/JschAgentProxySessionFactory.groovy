@@ -26,6 +26,7 @@ import com.jcraft.jsch.agentproxy.USocketFactory
 import com.jcraft.jsch.agentproxy.connector.PageantConnector
 import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector
 import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory
+import com.jcraft.jsch.agentproxy.usocket.NCUSocketFactory
 
 import org.eclipse.jgit.transport.JschConfigSessionFactory
 import org.eclipse.jgit.transport.OpenSshConfig.Host
@@ -92,9 +93,14 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 				logger.info('ssh-agent option disabled')
 				return null
 			} else if (SSHAgentConnector.isConnectorAvailable()) {
-				logger.info 'ssh-agent available'
-				USocketFactory usf = new JNAUSocketFactory()
-				return new SSHAgentConnector(usf)
+				USocketFactory usf = determineUSocketFactory()
+				if (usf) {
+					logger.info 'ssh-agent available'
+					return new SSHAgentConnector(usf)
+				} else {
+					logger.info 'ssh-agent not available'
+					return null
+				}
 			} else {
 				logger.info 'ssh-agent not available'
 				return null
@@ -103,14 +109,6 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 			logger.info 'ssh-agent could not be configured: {}', e.message
 			logger.debug 'ssh-agent failure details', e
 			return null
-		} catch (UnsatisfiedLinkError e) {
-			logger.info 'ssh-agent could not be configured: {}', e.message
-			logger.debug 'ssh-agent failure details', e
-			return null
-		} catch (NoClassDefFoundError e) {
-			logger.info("ssh-agent could not be configured: " + e.getMessage());
-			logger.debug("ssh-agent failure details", e);
-			return null;
 		}
 	}
 
@@ -129,6 +127,41 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 		} catch (AgentProxyException e) {
 			logger.info 'pageant could not be configured: {}', e.message
 			logger.debug 'pageant failure details', e
+			return null
+		}
+	}
+
+	/**
+	 * Choose which socket factory to use.
+	 * @return a working socket factory or {@code null} if none is
+	 * available
+	 */
+	private USocketFactory determineUSocketFactory() {
+		return [jnaSelector, ncSelector].findResult { selector ->
+			selector()
+		}
+	}
+
+	private Closure<USocketFactory> jnaSelector = {
+		try {
+			return new JNAUSocketFactory()
+		} catch (UnsatisfiedLinkError e) {
+			logger.info 'JNA USocketFactory could not be configured: {}', e.message
+			logger.debug 'JNA USocketFactory failure details', e
+			return null
+		} catch (NoClassDefFoundError e) {
+			logger.info 'JNA USocketFactory could not be configured: {}', e.message
+			logger.debug 'JNA USocketFactory failure details', e
+			return null
+		}
+	}
+
+	private Closure<USocketFactory> ncSelector = {
+		try {
+			return new NCUSocketFactory()
+		} catch (AgentProxyException e) {
+			logger.info 'NetCat USocketFactory could not be configured: {}', e.message
+			logger.debug 'NetCat USocketFactory failure details', e
 			return null
 		}
 	}

@@ -10,7 +10,7 @@ buildscript {
 }
 
 group = 'org.ajoberstar'
-version = '0.2.1'
+version = '0.2.2-beta'
 
 apply plugin: 'groovy'
 apply plugin: 'ajoberstar'
@@ -51,7 +51,7 @@ dependencies {
 	compile "org.eclipse.jgit:org.eclipse.jgit.ui:$jgitVersion"
 
 	// agentproxy
-	['jsch', 'pageant', 'sshagent', 'usocket-jna'].each {
+	['jsch', 'pageant', 'sshagent', 'usocket-jna', 'usocket-nc'].each {
 		compile "com.jcraft:jsch.agentproxy.${it}:0.0.7"
 	}
 
