@@ -45,6 +45,7 @@ final class ConfigureUtil {
 	static configure(Object object, Closure closure) {
 		Object originalDelegate = closure.delegate
 		closure.delegate = object
+		closure.resolveStrategy = Closure.DELEGATE_FIRST
 		closure.call()
 		closure.delegate = originalDelegate
 	}
