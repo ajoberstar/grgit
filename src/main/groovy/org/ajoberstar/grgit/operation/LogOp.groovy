@@ -68,7 +68,7 @@ class LogOp implements Callable<List<Commit>> {
 	List includes = []
 	List excludes = []
 	List paths = []
-	int skipCommits = 0
+	int skipCommits = -1
 	int maxCommits = -1
 
 	LogOp(Repository repo) {
