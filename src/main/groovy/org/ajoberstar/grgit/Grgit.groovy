@@ -159,7 +159,7 @@ class Grgit {
 	boolean isAncestorOf(Object base, Object tip) {
 		String baseRevStr = resolve.toRevisionString(base)
 		String tipRevStr = resolve.toRevisionString(tip)
-		return JGitUtil.isAncestorOf(baseRevStr, tipRevStr)
+		return JGitUtil.isAncestorOf(repository, baseRevStr, tipRevStr)
 	}
 
 	/**
