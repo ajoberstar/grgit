@@ -17,7 +17,6 @@ package org.ajoberstar.grgit
 
 import org.ajoberstar.grgit.operation.*
 import org.ajoberstar.grgit.service.*
-import org.ajoberstar.grgit.util.JGitUtil
 import org.ajoberstar.grgit.util.OpSyntaxUtil
 
 import org.eclipse.jgit.api.Git
@@ -122,6 +121,8 @@ class Grgit {
 
 	// final StashService stash
 
+	final ResolveService resolve
+
 	/**
 	 * Supports operations on tags.
 	 */
@@ -134,6 +135,7 @@ class Grgit {
 		// this.remote = null
 		// this.stash = null
 		this.tag = new TagService(repository)
+		this.resolve = new ResolveService(repository)
 	}
 
 	/**
@@ -152,10 +154,12 @@ class Grgit {
 	 * @param revstr a revision string representing the desired commit
 	 * @return the commit represented by {@code revstr}
 	 * @throws GrgitException if there was a problem finding the commit
+	 * @deprecated replaced by {@link org.ajoberstar.grgit.service.ResolveService#toCommit(Object)}
 	 * @see <a href="http://git-scm.com/docs/gitrevisions.html">gitrevisions Manual Page</a>
 	 */
+	@Deprecated
 	Commit resolveCommit(String revstr) {
-		return JGitUtil.resolveCommit(repository, revstr)
+		return resolve.toCommit(revstr)
 	}
 
 	/**

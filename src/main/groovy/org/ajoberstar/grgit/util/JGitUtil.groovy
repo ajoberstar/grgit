@@ -134,6 +134,18 @@ class JGitUtil {
 	}
 
 	/**
+	 * Resolves a Grgit tag from a name.
+	 * @param repo the Grgit repository to resolve from
+	 * @param name the name of the tag to resolve
+	 * @return the resolved tag
+	 * @throws GrgitException if the tag cannot be resolved
+	 */
+	static Tag resolveTag(Repository repo, String name) {
+		Ref ref = repo.jgit.repository.getRef(name)
+		return resolveTag(repo, ref)
+	}
+
+	/**
 	 * Resolves a Grgit Tag from a JGit ref.
 	 * @param repo the Grgit repository to resolve from
 	 * @param ref the JGit ref to resolve
