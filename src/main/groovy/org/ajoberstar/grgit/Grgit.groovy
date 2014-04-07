@@ -121,6 +121,9 @@ class Grgit {
 
 	// final StashService stash
 
+	/**
+	 * Convenience methods for resolving various objects.
+	 */
 	final ResolveService resolve
 
 	/**
@@ -143,7 +146,7 @@ class Grgit {
 	 * @return the current HEAD commit
 	 */
 	Commit head() {
-		return resolveCommit('HEAD')
+		return resolve.toCommit('HEAD')
 	}
 
 	/**

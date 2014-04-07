@@ -32,15 +32,33 @@ class ResolveService {
 		this.repository = repository
 	}
 
+/**
+	 * Resolves the given revision string to a commit given the current
+	 * state of the repository. Any
+	 * <a href="http://git-scm.com/docs/gitrevisions.html">Git revision string</a>
+	 * should be supported.
+	 * @param revstr a revision string representing the desired commit
+	 * @return the commit represented by {@code revstr}
+	 * @throws GrgitException if there was a problem finding the commit
+	 * @deprecated replaced by {@link org.ajoberstar.grgit.service.ResolveService#toCommit(Object)}
+	 * @see <a href="http://git-scm.com/docs/gitrevisions.html">gitrevisions Manual Page</a>
+	 */
+
 	/**
 	 * Resolves a commit from the given object. Can handle any of the following
 	 * types:
+	 *
 	 * <ul>
 	 *   <li>{@link org.ajoberstar.grgit.Commit}</li>
 	 *   <li>{@link org.ajoberstar.grgit.Tag}</li>
 	 *   <li>{@link org.ajoberstar.grgit.Branch}</li>
 	 *   <li>{@link String}</li>
 	 * </ul>
+	 *
+	 * <p>
+	 * String arguments can be in the format of any
+	 * <a href="http://git-scm.com/docs/gitrevisions.html">Git revision string</a>.
+	 * </p>
 	 * @param object the object to resolve
 	 * @return the corresponding commit
 	 */
