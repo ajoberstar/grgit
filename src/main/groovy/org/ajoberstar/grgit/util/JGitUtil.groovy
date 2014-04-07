@@ -230,11 +230,11 @@ class JGitUtil {
 	 * @param tip the tip version
 	 * @since 0.2.2
 	 */
-	static boolean isAncestorOf(Repository repo, String base, String tip) {
+	static boolean isAncestorOf(Repository repo, Commit base, Commit tip) {
 		org.eclipse.jgit.lib.Repository jgit = repo.jgit.repo
 		RevWalk revWalk = new RevWalk(jgit)
-		RevCommit baseCommit = revWalk.lookupCommit(jgit.resolve(base))
-		RevCommit tipCommit = revWalk.lookupCommit(jgit.resolve(tip))
+		RevCommit baseCommit = revWalk.lookupCommit(jgit.resolve(base.id))
+		RevCommit tipCommit = revWalk.lookupCommit(jgit.resolve(tip.id))
 		return revWalk.isMergedInto(baseCommit, tipCommit)
 	}
 }
