@@ -222,4 +222,19 @@ class JGitUtil {
 			]
 		)
 	}
+
+	/**
+	 * Checks if {@code base} is an ancestor of {@code tip}.
+	 * @param repo the repository to look in
+	 * @param base the version that might be an ancestor
+	 * @param tip the tip version
+	 * @since 0.2.2
+	 */
+	static boolean isAncestorOf(Repository repo, String base, String tip) {
+		org.eclipse.jgit.lib.Repository jgit = repo.jgit.repo
+		RevWalk revWalk = new RevWalk(jgit)
+		RevCommit baseCommit = revWalk.lookupCommit(jgit.resolve(base))
+		RevCommit tipCommit = revWalk.lookupCommit(jgit.resolve(tip))
+		return revWalk.isMergedInto(baseCommit, tipCommit)
+	}
 }

@@ -17,6 +17,7 @@ package org.ajoberstar.grgit
 
 import org.ajoberstar.grgit.operation.*
 import org.ajoberstar.grgit.service.*
+import org.ajoberstar.grgit.util.JGitUtil
 import org.ajoberstar.grgit.util.OpSyntaxUtil
 
 import org.eclipse.jgit.api.Git
@@ -147,6 +148,18 @@ class Grgit {
 	 */
 	Commit head() {
 		return resolve.toCommit('HEAD')
+	}
+
+	/**
+	 * Checks if {@code base} is an ancestor of {@code tip}.
+	 * @param base the version that might be an ancestor
+	 * @param tip the tip version
+	 * @since 0.2.2
+	 */
+	boolean isAncestorOf(Object base, Object tip) {
+		String baseRevStr = resolve.toRevisionString(base)
+		String tipRevStr = resolve.toRevisionString(tip)
+		return JGitUtil.isAncestorOf(baseRevStr, tipRevStr)
 	}
 
 	/**
