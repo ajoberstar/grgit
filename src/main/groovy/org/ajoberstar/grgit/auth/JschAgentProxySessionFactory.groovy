@@ -137,7 +137,7 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 	 * available
 	 */
 	private USocketFactory determineUSocketFactory() {
-		return [jnaSelector, ncSelector].findResult { selector ->
+		return [ncSelector, jnaSelector].findResult { selector ->
 			selector()
 		}
 	}
