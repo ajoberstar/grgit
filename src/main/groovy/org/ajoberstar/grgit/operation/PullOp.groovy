@@ -15,6 +15,8 @@
  */
 package org.ajoberstar.grgit.operation
 
+import org.ajoberstar.grgit.auth.TransportOpUtil
+
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
@@ -63,6 +65,7 @@ class PullOp implements Callable<Void> {
 	Void call() {
 		PullCommand cmd = repo.jgit.pull()
 		cmd.rebase = rebase
+        TransportOpUtil.configure(cmd, repo.credentials)
 
 		try {
 			PullResult result = cmd.call()
