@@ -34,6 +34,7 @@ class WindowsAuthenticationSpec extends Specification {
 	private static final String HTTPS_URI = 'https://github.com/ajoberstar/grgit-test.git'
 
 	static Credentials hardcodedCreds
+	static Credentials partialCreds
 
 	@Rule TemporaryFolder tempDir = new TemporaryFolder()
 
@@ -45,6 +46,7 @@ class WindowsAuthenticationSpec extends Specification {
 		def username = System.properties['org.ajoberstar.grgit.test.username']
 		def password = System.properties['org.ajoberstar.grgit.test.password']
 		hardcodedCreds = new Credentials(username, password)
+		partialCreds = new Credentials(username, null)
 		assert hardcodedCreds.username && hardcodedCreds.password
 	}
 
@@ -74,6 +76,7 @@ class WindowsAuthenticationSpec extends Specification {
 		where:
 		method        | ssh   | creds
 		'hardcoded'   | false | hardcodedCreds
+		'hardcoded'   | false | partialCreds
 		'hardcoded'   | false | null
 		'interactive' | false | null
 		'interactive' | true  | null

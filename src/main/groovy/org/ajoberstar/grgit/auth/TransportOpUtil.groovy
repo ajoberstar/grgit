@@ -15,6 +15,8 @@
  */
 package org.ajoberstar.grgit.auth
 
+import java.awt.GraphicsEnvironment
+
 import org.ajoberstar.grgit.Credentials
 
 import org.eclipse.jgit.api.TransportCommand
@@ -50,13 +52,13 @@ final class TransportOpUtil {
 
 	private static CredentialsProvider determineCredentialsProvider(AuthConfig config, Credentials creds) {
 		Credentials systemCreds = config.hardcodedCreds
-		if (config.allows(AuthConfig.Option.HARDCODED) && creds?.username && creds?.password) {
+		if (config.allows(AuthConfig.Option.HARDCODED) && creds?.username) {
 			logger.info('using hardcoded credentials provided programmatically')
 			return new UsernamePasswordCredentialsProvider(creds.username, creds.password)
 		} else if (config.allows(AuthConfig.Option.HARDCODED) && systemCreds) {
 			logger.info('using hardcoded credentials from system properties')
 			return new UsernamePasswordCredentialsProvider(systemCreds.username, systemCreds.password)
-		} else if (config.allows(AuthConfig.Option.INTERACTIVE)) {
+		} else if (config.allows(AuthConfig.Option.INTERACTIVE) && !GraphicsEnvironment.isHeadless()) {
 			logger.info('using interactive credentials, if needed')
 			return new AwtCredentialsProvider()
 		} else {

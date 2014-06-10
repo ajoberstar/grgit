@@ -102,7 +102,7 @@ class AuthConfig {
 	Credentials getHardcodedCreds() {
 		String username = System.properties[USERNAME_OPTION]
 		String password = System.properties[PASSWORD_OPTION]
-		if (username && password) {
+		if (username) {
 			return new Credentials(username, password)
 		} else {
 			return null

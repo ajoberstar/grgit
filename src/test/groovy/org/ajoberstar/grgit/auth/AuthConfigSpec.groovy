@@ -17,6 +17,8 @@ package org.ajoberstar.grgit.auth
 
 import static org.ajoberstar.grgit.auth.AuthConfig.Option.*
 
+import org.ajoberstar.grgit.Credentials
+
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -42,5 +44,29 @@ class AuthConfigSpec extends Specification {
 		[force: 'hardcoded', 'hardcoded.allow': 'false']              | [HARDCODED]
 		['hardcoded.allow': 'false', 'interactive.allow': 'anything'] | [SSHAGENT, PAGEANT]
 		['pageant.allow': 'true', 'sshagent.allow': 'false']          | [HARDCODED, INTERACTIVE, PAGEANT]
+	}
+
+	def 'getHardcodedCreds returns creds if username and password are set'() {
+		given:
+		System.setProperty(AuthConfig.USERNAME_OPTION, 'myuser')
+		System.setProperty(AuthConfig.PASSWORD_OPTION, 'mypass')
+		expect:
+		AuthConfig.fromMap([:]).getHardcodedCreds() == new Credentials('myuser', 'mypass')
+	}
+
+	def 'getHardcodedCreds returns creds if username is set and password is not'() {
+		given:
+		System.setProperty(AuthConfig.USERNAME_OPTION, 'myuser')
+		System.clearProperty(AuthConfig.PASSWORD_OPTION)
+		expect:
+		AuthConfig.fromMap([:]).getHardcodedCreds() == new Credentials('myuser', null)
+	}
+
+	def 'getHardcodedCreds returns null if username is not set'() {
+		given:
+		System.clearProperty(AuthConfig.USERNAME_OPTION)
+		System.clearProperty(AuthConfig.PASSWORD_OPTION)
+		expect:
+		AuthConfig.fromMap([:]).getHardcodedCreds() == null
 	}
 }
