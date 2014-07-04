@@ -15,34 +15,32 @@
  */
 package org.ajoberstar.grgit
 
-import groovy.transform.Canonical
+import groovy.transform.Immutable
 
 import org.ajoberstar.grgit.Credentials
 
 import org.eclipse.jgit.api.Git
 
-// TODO: When Gradle is built with Groovy 2.0+, switch to @Immutable
-
 /**
  * A repository.
  * @since 0.1.0
  */
-@Canonical
+@Immutable(knownImmutableClasses=[Git, File])
 class Repository {
 	/**
 	 * The directory the repository is contained in.
 	 */
-	final File rootDir
+	File rootDir
 
 	/**
 	 * The JGit instance opened for this repository.
 	 */
-	final Git jgit
+	Git jgit
 
 	/**
 	 * The credentials used when talking to remote repositories.
 	 */
-	final Credentials credentials
+	Credentials credentials
 
 	@Override
 	String toString() {

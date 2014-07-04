@@ -30,18 +30,11 @@ repositories {
 	mavenCentral()
 }
 
-configurations {
-	docFix
-}
-
-def jgitVersion = '3.3.0.201403021825-r'
+def jgitVersion = '3.4.1.201406201815-r'
 
 dependencies {
 	// groovy
 	compile localGroovy()
-
-	// to get around groovydoc bugs
-	docFix 'org.codehaus.groovy:groovy-all:2.2.1'
 
 	// jgit
 	compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
@@ -53,16 +46,12 @@ dependencies {
 	}
 
 	// logging
-	compile 'org.slf4j:slf4j-api:1.7.6'
-	testRuntime 'org.slf4j:slf4j-simple:1.7.6'
+	compile 'org.slf4j:slf4j-api:1.7.7'
+	testRuntime 'org.slf4j:slf4j-simple:1.7.7'
 
 	// testing
 	testCompile 'junit:junit:4.11'
-	testCompile('org.spockframework:spock-core:0.7-groovy-1.8') { exclude group: 'org.codehaus.groovy' }
-}
-
-groovydoc {
-	groovyClasspath = configurations.docFix
+	testCompile('org.spockframework:spock-core:0.7-groovy-2.0') { exclude group: 'org.codehaus.groovy' }
 }
 
 tasks.withType(Test) {
@@ -91,5 +80,5 @@ test {
 }
 
 wrapper {
-	gradleVersion = '1.11'
+	gradleVersion = '2.0'
 }

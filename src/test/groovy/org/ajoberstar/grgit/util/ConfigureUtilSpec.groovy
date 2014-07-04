@@ -43,7 +43,7 @@ class ConfigureUtilSpec extends Specification {
 		when:
 		ConfigureUtil.configure(new Fake(), [name:'Test', other:'Should fail'])
 		then:
-		thrown(MissingFieldException)
+		thrown(MissingPropertyException)
 	}
 
 	def 'configure with closre works for valid methods'() {
@@ -58,7 +58,7 @@ class ConfigureUtilSpec extends Specification {
 		then:
 		object.name == 'Test'
 		object.items == ['one', 'two']
-		object._element == 'Test2'		
+		object._element == 'Test2'
 	}
 
 	def 'configure with closure fails for invalid method'() {

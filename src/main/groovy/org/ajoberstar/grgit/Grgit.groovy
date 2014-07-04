@@ -39,7 +39,7 @@ import org.eclipse.jgit.api.Git
  *   </li>
  *   <li>
  *     <p>{@link org.ajoberstar.grgit.operation.CloneOp Clone} an existing repository.</p>
- *     <pre>def grgit = Grgit.open(dir: new File('path/to/my/repo'), uri: 'git@github.com:ajoberstar/grgit.git')</pre>
+ *     <pre>def grgit = Grgit.clone(dir: new File('path/to/my/repo'), uri: 'git@github.com:ajoberstar/grgit.git')</pre>
  *   </li>
  * </ul>
  *
