@@ -30,7 +30,8 @@ repositories {
 	mavenCentral()
 }
 
-def jgitVersion = '3.4.1.201406201815-r'
+def jgitVersion = '3.3.2.201404171909-r'
+// def jgitVersion = '3.4.1.201406201815-r' // behavior of log command is different
 
 dependencies {
 	// groovy
