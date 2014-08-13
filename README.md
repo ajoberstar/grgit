@@ -50,6 +50,20 @@ If you're interested in a change, please submit an issue (or even better a pull 
 
 ## Release Notes
 
+### 0.3.0
+
+* Breaking change: Updating to Groovy 2.x.
+
+### 0.2.3
+
+* Allow empty passwords in hardcoded credentials to support Github auth tokens and similar use cases.
+* Support authentication on PullOp.
+
+### 0.2.2
+
+* Fix for #24 making closure syntax for operations work in gradle-git.
+* Support netcat as an alternative to JNA for sshagent connections.
+
 ### 0.2.1
 
 * Added `close()` method to `Grgit` to release resources.
