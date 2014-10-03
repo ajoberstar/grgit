@@ -5,7 +5,7 @@ buildscript {
 		maven { url 'http://dl.bintray.com/ajoberstar/temp-forks' }
 	}
 	dependencies {
-		classpath 'org.ajoberstar:gradle-ajoberstar:0.2.0'
+		classpath 'org.ajoberstar:gradle-ajoberstar:0.3.2'
 	}
 }
 
@@ -13,7 +13,7 @@ group = 'org.ajoberstar'
 
 apply plugin: 'groovy'
 apply plugin: 'maven-publish'
-apply plugin: 'bintray'
+apply plugin: 'com.jfrog.bintray'
 apply plugin: 'ajoberstar'
 
 ajoberstar {
