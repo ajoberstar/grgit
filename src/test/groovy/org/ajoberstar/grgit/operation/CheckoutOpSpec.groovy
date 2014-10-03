@@ -78,4 +78,32 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		then:
 		thrown(IllegalArgumentException)
 	}
+
+	def 'checkout with existing branch and orphan true fails'() {
+		when:
+		grgit.checkout(branch: 'my-branch', orphan: true)
+		then:
+		thrown(GrgitException)
+	}
+
+	def 'checkout with non-existent branch and orphan true works'() {
+		when:
+		grgit.checkout(branch: 'orphan-branch', orphan: true)
+		then:
+		grgit.branch.current.fullName == 'refs/heads/orphan-branch'
+	}
+
+	def 'checkout with non-existent branch, orphan true, and startPoint works'() {
+		when:
+		grgit.checkout(branch: 'orphan-branch', orphan: true, startPoint: 'my-branch')
+		then:
+		grgit.branch.current.fullName == 'refs/heads/orphan-branch'
+	}
+
+	def 'checkout with no branch name and orphan true fails'() {
+		when:
+		grgit.checkout(orphan: true)
+		then:
+		thrown(IllegalArgumentException)
+	}
 }

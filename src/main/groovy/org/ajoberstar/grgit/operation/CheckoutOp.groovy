@@ -46,6 +46,18 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * grgit.checkout(branch: 'new-branch', startPoint: 'any-branch', createBranch: true)
  * </pre>
  *
+ * <p>To checkout a new orphan branch starting at, but not tracking, the current HEAD.</p>
+ *
+ * <pre>
+ * grgit.checkout(branch: 'new-branch', orphan: true)
+ * </pre>
+ *
+ * <p>To checkout a new orphan branch starting at, but not tracking, a start point.</p>
+ *
+ * <pre>
+ * grgit.checkout(branch: 'new-branch', startPoint: 'any-branch', orphan: true)
+ * </pre>
+ *
  * See <a href="http://git-scm.com/docs/git-checkout">git-checkout Manual Page</a>.
  *
  * @since 0.1.0
@@ -66,25 +78,32 @@ class CheckoutOp implements Callable<Void> {
 	boolean createBranch = false
 
 	/**
-	 * If {@code createBranch} is {@code true}, start the new branch
+	 * If {@code createBranch} or {@code orphan} is {@code true}, start the new branch
 	 * at this commit.
 	 */
 	String startPoint
+
+	/**
+	 * {@code true} if the new branch is to be an orphan,
+	 * {@code false} (the default) otherwise
+	 */
+	boolean orphan = false
 
 	CheckoutOp(Repository repo) {
 		this.repo = repo
 	}
 
 	Void call() {
-		if (startPoint && !createBranch) {
-			throw new IllegalArgumentException('Cannot set a start point if createBranch is false.')
-		} else if (createBranch && !branch) {
+		if (startPoint && !createBranch && !orphan) {
+			throw new IllegalArgumentException('Cannot set a start point if createBranch and orphan are false.')
+		} else if ((createBranch || orphan) && !branch) {
 			throw new IllegalArgumentException('Must specify branch name to create.')
 		}
 		CheckoutCommand cmd = repo.jgit.checkout()
 		if (branch) { cmd.name = branch }
 		cmd.createBranch = createBranch
 		cmd.startPoint = startPoint
+		cmd.orphan = orphan
 		try {
 			cmd.call()
 			return null
