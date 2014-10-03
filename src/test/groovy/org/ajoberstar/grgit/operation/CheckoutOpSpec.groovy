@@ -15,23 +15,25 @@
  */
 package org.ajoberstar.grgit.operation
 
+import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 
 class CheckoutOpSpec extends SimpleGitOpSpec {
-	List commits = []
-
 	def setup() {
 		repoFile('1.txt') << '1'
-		commits << grgit.commit(message: 'do', all: true)
+		grgit.add(patterns: ['1.txt'])
+		grgit.commit(message: 'do')
 
 		repoFile('1.txt') << '2'
-		commits << grgit.commit(message: 'do', all: true)
+		grgit.add(patterns: ['1.txt'])
+		grgit.commit(message: 'do')
 
 		grgit.branch.add(name: 'my-branch')
 
 		repoFile('1.txt') << '3'
-		commits << grgit.commit(message: 'do', all: true)
+		grgit.add(patterns: ['1.txt'])
+		grgit.commit(message: 'do')
 	}
 
 	def 'checkout with existing branch and createBranch false works'() {
@@ -40,6 +42,8 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		then:
 		grgit.head() == grgit.resolveCommit('my-branch')
 		grgit.branch.current.fullName == 'refs/heads/my-branch'
+		grgit.log().size() == 2
+		repoFile('1.txt').text == '12'
 	}
 
 	def 'checkout with existing branch, createBranch true fails'() {
@@ -62,6 +66,8 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		then:
 		grgit.branch.current.fullName == 'refs/heads/new-branch'
 		grgit.head() == grgit.resolveCommit('master')
+		grgit.log().size() == 3
+		repoFile('1.txt').text == '123'
 	}
 
 	def 'checkout with non-existent branch, createBranch true, and startPoint works'() {
@@ -70,6 +76,8 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		then:
 		grgit.branch.current.fullName == 'refs/heads/new-branch'
 		grgit.head() == grgit.resolveCommit('my-branch')
+		grgit.log().size() == 2
+		repoFile('1.txt').text == '12'
 	}
 
 	def 'checkout with no branch name and createBranch true fails'() {
@@ -91,6 +99,8 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		grgit.checkout(branch: 'orphan-branch', orphan: true)
 		then:
 		grgit.branch.current.fullName == 'refs/heads/orphan-branch'
+		grgit.status() == new Status(staged: [added: ['1.txt']])
+		repoFile('1.txt').text == '123'
 	}
 
 	def 'checkout with non-existent branch, orphan true, and startPoint works'() {
@@ -98,6 +108,8 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		grgit.checkout(branch: 'orphan-branch', orphan: true, startPoint: 'my-branch')
 		then:
 		grgit.branch.current.fullName == 'refs/heads/orphan-branch'
+		grgit.status() == new Status(staged: [added: ['1.txt']])
+		repoFile('1.txt').text == '12'
 	}
 
 	def 'checkout with no branch name and orphan true fails'() {
