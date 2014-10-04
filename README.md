@@ -51,6 +51,10 @@ If you're interested in a change, please submit an issue (or even better a pull 
 
 ## Release Notes
 
+### 0.3.1
+
+* Implement #37 to support an `orphan` checkout.
+
 ### 0.3.0
 
 * Breaking change: Updating to Groovy 2.x.
