@@ -19,18 +19,37 @@ import groovy.transform.Immutable
 
 /**
  * Remote repository.
- * @since 0.2.0
+ * @since 0.4.0
  */
 @Immutable
 class Remote {
+	/**
+	 * Name of the remote.
+	 */
+	String name
 
-    /**
-     * Remote name.
-     */
-    String name
+	/**
+	 * URL to fetch from.
+	 */
+	String url
 
-    /**
-     * Remote repository URI.
-     */
-    String uri
+	/**
+	 * URL to push to.
+	 */
+	String pushUrl
+
+	/**
+	 * Specs to fetch from the remote.
+	 */
+	List fetchRefSpecs = []
+
+	/**
+	 * Specs to push to the remote.
+	 */
+	List pushRefSpecs = []
+
+	/**
+	 * Whether or not pushes will mirror the repository.
+	 */
+	boolean mirror
 }

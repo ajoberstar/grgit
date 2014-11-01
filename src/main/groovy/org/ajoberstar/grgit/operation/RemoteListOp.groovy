@@ -37,23 +37,25 @@ import java.util.concurrent.Callable
  * @see <a href="http://git-scm.com/docs/git-remote">git-remote Manual Page</a>
  */
 class RemoteListOp implements Callable<List> {
+	private final Repository repository
 
-    private final Repository repository
+	RemoteListOp(Repository repo) {
+		this.repository = repo
+	}
 
-    RemoteListOp(Repository repo) {
-        this.repository = repo
-    }
-
-    @Override
-    List call() {
-        Config config = repository.jgit.repository.config
-
-        def remotes = []
-        config.getSubsections('remote').each {
-            remotes += new Remote(name: it, uri: config.getString('remote', it, 'url'))
-        }
-
-        return remotes
-    }
+	@Override
+	List call() {
+		return RemoteConfig.getAllRemoteConfigs(repository.jgit.repository.config).collect { rc ->
+			if (rc.uris.size() > 1 || rc.pushURIs.size() > 1) {
+				throw new GrgitException("Grgit does not currently support multiple URLs in remote: [uris: ${rc.uris}, pushURIs:${rc.pushURIs}]")
+			}
+			new Remote(
+				name: rc.name,
+				url: rc.uris.find(),
+				pushUrl: rc.pushURIs.find(),
+				fetchRefSpecs: rc.fetchRefSpecs.collect { it.toString() },
+				pushRefSpecs: rc.pushRefSpecs.collect { it.toString() },
+				mirror: rc.mirror)
+		}
+	}
 }
-

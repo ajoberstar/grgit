@@ -118,6 +118,9 @@ class Grgit {
 
 	// final NoteService note
 
+	/**
+	 * Supports operations on remotes.
+	 */
 	final RemoteService remote
 
 	// final StashService stash
