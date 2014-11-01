@@ -118,7 +118,7 @@ class Grgit {
 
 	// final NoteService note
 
-	// final RemoteService remote
+	final RemoteService remote
 
 	// final StashService stash
 
@@ -136,7 +136,7 @@ class Grgit {
 		this.repository = repository
 		this.branch = new BranchService(repository)
 		// this.note = null
-		// this.remote = null
+		this.remote = new RemoteService(repository)
 		// this.stash = null
 		this.tag = new TagService(repository)
 		this.resolve = new ResolveService(repository)

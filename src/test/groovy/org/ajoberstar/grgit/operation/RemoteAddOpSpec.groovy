@@ -13,24 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ajoberstar.grgit
+package org.ajoberstar.grgit.operation
 
-import groovy.transform.Immutable
+import org.ajoberstar.grgit.Remote
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 
-/**
- * Remote repository.
- * @since 0.2.0
- */
-@Immutable
-class Remote {
+class RemoteAddOpSpec extends SimpleGitOpSpec {
 
-    /**
-     * Remote name.
-     */
-    String name
+    def 'remote with given name and push/fetch urls is added'() {
+        when:
+        Remote remote = grgit.remote.add(name: 'newRemote', uri: 'http://fetch.url/')
 
-    /**
-     * Remote repository URI.
-     */
-    String uri
+        then:
+        grgit.remote.list() == [remote]
+    }
+
 }

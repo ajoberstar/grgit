@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ajoberstar.grgit
+package org.ajoberstar.grgit.operation
 
-import groovy.transform.Immutable
+import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.Remote
+import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 
-/**
- * Remote repository.
- * @since 0.2.0
- */
-@Immutable
-class Remote {
+class RemoteListOpSpec extends MultiGitOpSpec {
 
-    /**
-     * Remote name.
-     */
-    String name
+    def 'will list all remotes'() {
+        given:
+        Grgit remoteGrgit = init('remote')
 
-    /**
-     * Remote repository URI.
-     */
-    String uri
+        repoFile(remoteGrgit, '1.txt') << '1'
+        remoteGrgit.commit(message: 'do', all: true)
+
+        Grgit localGrgit = clone('local', remoteGrgit)
+
+        expect:
+        localGrgit.remote.list() == [new Remote(name: 'origin', uri: "file://$remoteGrgit.repository.rootDir.canonicalPath/")]
+    }
+
 }

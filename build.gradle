@@ -62,6 +62,10 @@ test {
 	useJUnit {
 		excludeCategories 'org.ajoberstar.grgit.fixtures.PlatformSpecific'
 	}
+
+    testLogging {
+        exceptionFormat 'full'
+    }
 }
 
 ['Windows', 'Linux', 'Mac'].each { platform ->
