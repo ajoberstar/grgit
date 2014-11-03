@@ -20,7 +20,6 @@ import org.ajoberstar.grgit.Remote
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 
 class RemoteListOpSpec extends MultiGitOpSpec {
-
 	def 'will list all remotes'() {
 		given:
 		Grgit remoteGrgit = init('remote')

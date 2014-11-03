@@ -17,7 +17,10 @@ package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Remote
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.util.JGitUtil
 import org.eclipse.jgit.lib.Config
+import org.eclipse.jgit.transport.RefSpec
 import org.eclipse.jgit.transport.RemoteConfig
 import org.eclipse.jgit.transport.URIish
 
@@ -39,39 +42,59 @@ import java.util.concurrent.Callable
  */
 class RemoteAddOp implements Callable<Remote> {
 
-    private final Repository repository
+	private final Repository repository
 
-    /**
-     * Name of origin.
-     */
-    private String name
+	/**
+	 * Name of the remote.
+	 */
+	String name
 
-    /**
-     * URI pointing to origin.
-     */
-    private String uri
+	/**
+	 * URL to fetch from.
+	 */
+	String url
 
-    RemoteAddOp(Repository repo) {
-        this.repository = repo
-    }
+	/**
+	 * URL to push to.
+	 */
+	String pushUrl
 
-    @Override
-    Remote call() {
-        Config config = repository.jgit.repository.config
+	/**
+	 * Specs to fetch from the remote.
+	 */
+	List fetchRefSpecs = []
 
-        RemoteConfig remote = new RemoteConfig(config, name)
-        List<URIish> pushUris = new ArrayList<>(remote.pushURIs)
-        for (URIish uri : pushUris) {
-            remote.removePushURI(uri)
-        }
+	/**
+	 * Specs to push to the remote.
+	 */
+	List pushRefSpecs = []
 
-        remote.addPushURI(new URIish(uri))
-        remote.addURI(new URIish(uri))
-        remote.update(config)
+	/**
+	 * Whether or not pushes will mirror the repository.
+	 */
+	boolean mirror
 
-        config.save()
+	RemoteAddOp(Repository repo) {
+		this.repository = repo
+	}
 
-        return new Remote(name: name, uri: uri)
-    }
+	@Override
+	Remote call() {
+		Config config = repository.jgit.repository.config
+		if (RemoteConfig.getAllRemoteConfigs(config).find { it.name == name }) {
+			throw new GrgitException("Remote $name already exists.")
+		}
+		def toUri = { url -> new URIish(url) }
+		def toRefSpec = { spec -> new RefSpec(spec) }
+		RemoteConfig remote = new RemoteConfig(config, name)
+		if (url) { remote.addURI(toUri(url)) }
+		if (pushUrl) { remote.addPushURI(toUri(pushUrl)) }
+		remote.fetchRefSpecs = (fetchRefSpecs ?: ["+refs/heads/*:refs/remotes/$name/*"]).collect(toRefSpec)
+		remote.pushRefSpecs = pushRefSpecs.collect(toRefSpec)
+		remote.mirror = mirror
+		remote.update(config)
+		config.save()
+		return JGitUtil.convertRemote(remote)
+	}
 }
 

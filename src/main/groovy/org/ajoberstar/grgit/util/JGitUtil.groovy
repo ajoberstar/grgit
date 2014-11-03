@@ -18,6 +18,7 @@ package org.ajoberstar.grgit.util
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Person
+import org.ajoberstar.grgit.Remote
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.Tag
@@ -36,6 +37,7 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevObject
 import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.revwalk.RevWalk
+import org.eclipse.jgit.transport.RemoteConfig
 
 /**
  * Utility class to perform operations against JGit objects.
@@ -221,6 +223,21 @@ class JGitUtil {
 				removed: jgitStatus.missing
 			]
 		)
+	}
+
+	/**
+	 * Converts a JGit remote to a Grgit remote.
+	 * @param rc the remote config to convert
+	 * @return the converted remote
+	 */
+	static Remote convertRemote(RemoteConfig rc) {
+		return new Remote(
+			name: rc.name,
+			url: rc.uris.find(),
+			pushUrl: rc.pushURIs.find(),
+			fetchRefSpecs: rc.fetchRefSpecs.collect { it.toString() },
+			pushRefSpecs: rc.pushRefSpecs.collect { it.toString() },
+			mirror: rc.mirror)
 	}
 
 	/**
