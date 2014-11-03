@@ -51,6 +51,10 @@ If you're interested in a change, please submit an issue (or even better a pull 
 
 ## Release Notes
 
+### 0.4.0 (not final)
+
+* Added support for remote add/list. Thanks to [Adam Dubiel](https://github.com/adamdubiel).
+
 ### 0.3.1
 
 * Implement #37 to support an `orphan` checkout.
