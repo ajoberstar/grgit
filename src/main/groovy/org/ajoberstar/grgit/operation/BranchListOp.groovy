@@ -32,19 +32,19 @@ import org.eclipse.jgit.api.errors.GitAPIException
  *
  * <pre>
  * def branches = grgit.branch.list()
- * def branches = grgit.branch.list(BranchListOp.Mode.LOCAL)
+ * def branches = grgit.branch.list(mode: BranchListOp.Mode.LOCAL)
  * </pre>
  *
  * <p>To list remote branches only.</p>
  *
  * <pre>
- * def branches = grgit.branch.list(BranchListOp.Mode.REMOTE)
+ * def branches = grgit.branch.list(mode: BranchListOp.Mode.REMOTE)
  * </pre>
  *
  * <p>To list all branches.</p>
  *
  * <pre>
- * def branches = grgit.branch.list(BranchListOp.Mode.ALL)
+ * def branches = grgit.branch.list(mode: BranchListOp.Mode.ALL)
  * </pre>
  *
  * See <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>.
