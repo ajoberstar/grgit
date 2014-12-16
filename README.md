@@ -4,6 +4,7 @@ The Groovy way to use Git.
 
 [![Build Status](https://travis-ci.org/ajoberstar/grgit.png?branch=master)](https://travis-ci.org/ajoberstar/grgit)
 [![Maintainer Status](http://stillmaintained.com/ajoberstar/grgit.png)](http://stillmaintained.com/ajoberstar/grgit)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.ajoberstar/grgit/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.ajoberstar/grgit/badge.svg)
 
 ## What is this?
 
