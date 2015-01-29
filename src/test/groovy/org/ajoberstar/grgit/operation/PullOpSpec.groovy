@@ -72,10 +72,15 @@ class PullOpSpec extends MultiGitOpSpec {
 		localGrgit.pull()
 		then:
 		// includes all commits from remote
-		localGrgit.log {
-			includes = [remoteHead.id]
-			excludes = ['HEAD']
-		}.size() == 0
+		(remoteGrgit.log(includes: ['master']) - localGrgit.log()).size() == 0
+		/*
+		 * Go back to one pass log command when bug is fixed:
+		 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=439675
+		 */
+		// localGrgit.log {
+		// 	includes = [remoteHead.id]
+		// 	excludes = ['HEAD']
+		// }.size() == 0
 
 		// has merge commit
 		localGrgit.log {
