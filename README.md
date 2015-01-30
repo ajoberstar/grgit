@@ -52,6 +52,14 @@ If you're interested in a change, please submit an issue (or even better a pull 
 
 ## Release Notes
 
+### 1.0.0 (still in development)
+
+* Removed deprecated Grgit#resolveCommit(Object) method.
+* Deprecated the Grgit#open(String, Credentials) and Grgit#open(File, Credentials) methods, which are replaced with
+OpenOp to be consistent with all other methods.
+* Supporting more types for the directories in OpenOp, InitOp, and CloneOp. Can be a File, Path, or Object (which will
+be toString'd).
+
 ### 0.4.0
 
 * Added support for remote add/list. Thanks to [Adam Dubiel](https://github.com/adamdubiel).
