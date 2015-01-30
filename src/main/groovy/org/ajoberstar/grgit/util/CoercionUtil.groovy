@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ajoberstar.grgit.service
+package org.ajoberstar.grgit.util
 
-import org.ajoberstar.grgit.Note
+import java.nio.file.Path
 
-class NoteService {
-	Note show(Map parms) {
-
+final class CoercionUtil {
+	private CoercionUtil() {
+		throw new AssertionError('Can not instantiate this class.')
 	}
 
-	void add(Map parms) {
-
+	static File toFile(Object obj) {
+		if (obj instanceof File) {
+			return obj
+		} else if (obj instanceof Path) {
+			return obj.toFile()
+		} else {
+			return new File(obj.toString())
+		}
 	}
 
-	void remove(Map parms) {
 
-	}
-
-	Set<Note> list(Map parms) {
-		
-	}
 }

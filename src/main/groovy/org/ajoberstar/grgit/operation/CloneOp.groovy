@@ -21,6 +21,7 @@ import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.auth.TransportOpUtil
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.util.CoercionUtil
 
 import org.eclipse.jgit.api.CloneCommand
 import org.eclipse.jgit.api.Git
@@ -44,8 +45,9 @@ import org.eclipse.jgit.api.errors.GitAPIException
 class CloneOp implements Callable<Grgit> {
 	/**
 	 * The directory to put the cloned repository.
+	 * @see {@link CoercionUtil#toFile(Object)}
 	 */
-	File dir
+	Object dir
 
 	/**
 	 * The URI to the repository to be cloned.
@@ -93,7 +95,7 @@ class CloneOp implements Callable<Grgit> {
 		CloneCommand cmd = Git.cloneRepository()
 		TransportOpUtil.configure(cmd, credentials)
 
-		cmd.directory = dir
+		cmd.directory = CoercionUtil.toFile(dir)
 		cmd.uri = uri
 		cmd.remote = remote
 		cmd.bare = bare
@@ -102,7 +104,7 @@ class CloneOp implements Callable<Grgit> {
 
 		try {
 			cmd.call()
-			return Grgit.open(dir, credentials)
+			return Grgit.open(dir: dir, creds: credentials)
 		} catch (GitAPIException e) {
 			throw new GrgitException('Problem cloning repository.', e)
 		}

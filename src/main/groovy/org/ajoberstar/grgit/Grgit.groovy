@@ -30,16 +30,16 @@ import org.eclipse.jgit.api.Git
  *
  * <ul>
  *   <li>
- *     <p>{@link #open(String, Credentials) Open} an existing repository.</p>
- *     <pre>def grgit = Grgit.open('path/to/my/repo')</pre>
+ *     <p>{@link org.ajoberstar.grgit.operation.OpenOp Open} an existing repository.</p>
+ *     <pre>def grgit = Grgit.open(dir: 'path/to/my/repo')</pre>
  *   </li>
  *   <li>
  *     <p>{@link org.ajoberstar.grgit.operation.InitOp Initialize} a new repository.</p>
- *     <pre>def grgit = Grgit.init(dir: new File('path/to/my/repo'))</pre>
+ *     <pre>def grgit = Grgit.init(dir: 'path/to/my/repo')</pre>
  *   </li>
  *   <li>
  *     <p>{@link org.ajoberstar.grgit.operation.CloneOp Clone} an existing repository.</p>
- *     <pre>def grgit = Grgit.clone(dir: new File('path/to/my/repo'), uri: 'git@github.com:ajoberstar/grgit.git')</pre>
+ *     <pre>def grgit = Grgit.clone(dir: 'path/to/my/repo', uri: 'git@github.com:ajoberstar/grgit.git')</pre>
  *   </li>
  * </ul>
  *
@@ -92,19 +92,22 @@ import org.eclipse.jgit.api.Git
  * <ul>
  *   <li>{@link org.ajoberstar.grgit.operation.CloneOp clone}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.InitOp init}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.OpenOp open}</li>
  * </ul>
  *
  * @since 0.1.0
  */
 class Grgit {
-	private static final Map STATIC_OPERATIONS = [init: InitOp, clone: CloneOp]
+	private static final Map STATIC_OPERATIONS = [
+		init: InitOp, clone: CloneOp, open: OpenOp
+	]
+
 	private static final Map OPERATIONS = [
-		clean: CleanOp,
-		status: StatusOp, add: AddOp, remove: RmOp, reset: ResetOp, apply: ApplyOp,
-		pull: PullOp, push: PushOp, fetch: FetchOp,
-		checkout: CheckoutOp,
-		log: LogOp, commit: CommitOp, revert: RevertOp/*,
-		cherryPick: CherryPickOp*/, merge: MergeOp/*, rebase: RebaseOp*/].asImmutable()
+		clean: CleanOp, status: StatusOp, add: AddOp, remove: RmOp,
+		reset: ResetOp, apply: ApplyOp, pull: PullOp, push: PushOp,
+		fetch: FetchOp, checkout: CheckoutOp, log: LogOp, commit: CommitOp,
+		revert: RevertOp, merge: MergeOp
+	].asImmutable()
 
 	/**
 	 * The repository opened by this object.
@@ -116,14 +119,10 @@ class Grgit {
 	 */
 	final BranchService branch
 
-	// final NoteService note
-
 	/**
 	 * Supports operations on remotes.
 	 */
 	final RemoteService remote
-
-	// final StashService stash
 
 	/**
 	 * Convenience methods for resolving various objects.
@@ -138,9 +137,7 @@ class Grgit {
 	private Grgit(Repository repository) {
 		this.repository = repository
 		this.branch = new BranchService(repository)
-		// this.note = null
 		this.remote = new RemoteService(repository)
-		// this.stash = null
 		this.tag = new TagService(repository)
 		this.resolve = new ResolveService(repository)
 	}
@@ -166,22 +163,6 @@ class Grgit {
 	}
 
 	/**
-	 * Resolves the given revision string to a commit given the current
-	 * state of the repository. Any
-	 * <a href="http://git-scm.com/docs/gitrevisions.html">Git revision string</a>
-	 * should be supported.
-	 * @param revstr a revision string representing the desired commit
-	 * @return the commit represented by {@code revstr}
-	 * @throws GrgitException if there was a problem finding the commit
-	 * @deprecated replaced by {@link org.ajoberstar.grgit.service.ResolveService#toCommit(Object)}
-	 * @see <a href="http://git-scm.com/docs/gitrevisions.html">gitrevisions Manual Page</a>
-	 */
-	@Deprecated
-	Commit resolveCommit(String revstr) {
-		return resolve.toCommit(revstr)
-	}
-
-	/**
 	 * Release underlying resources used by this instance. After calling close
 	 * you should not use this instance anymore.
 	 */
@@ -204,9 +185,11 @@ class Grgit {
 	 * are provided they will be used for all operations with using remotes.
 	 * @param rootDirPath path to the repository's root directory
 	 * @param creds harcoded credentials to use for remote operations
+	 * @deprecated replaced by {@link org.ajoberstar.grgit.operation.OpenOp}
 	 * @throws GrgitException if an existing Git repository can't be opened
 	 * in {@code rootDirPath}
 	 */
+	@Deprecated
 	static Grgit open(String rootDirPath, Credentials creds = null) {
 		return open(new File(rootDirPath), creds)
 	}
@@ -216,11 +199,12 @@ class Grgit {
 	 * are provided they will be used for all operations with using remotes.
 	 * @param rootDir path to the repository's root directory
 	 * @param creds harcoded credentials to use for remote operations
+	 * @deprecated replaced by {@link org.ajoberstar.grgit.operation.OpenOp}
 	 * @throws GrgitException if an existing Git repository can't be opened
 	 * in {@code rootDir}
 	 */
+	@Deprecated
 	static Grgit open(File rootDir, Credentials creds = null) {
-		def repo = new Repository(rootDir, Git.open(rootDir), creds)
-		return new Grgit(repo)
+		return OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], 'open', [dir: rootDir, creds: creds])
 	}
 }
