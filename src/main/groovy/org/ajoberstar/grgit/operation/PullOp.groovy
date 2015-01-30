@@ -15,11 +15,10 @@
  */
 package org.ajoberstar.grgit.operation
 
-import org.ajoberstar.grgit.auth.TransportOpUtil
-
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.auth.TransportOpUtil
 import org.ajoberstar.grgit.exception.GrgitException
 
 import org.eclipse.jgit.api.PullCommand

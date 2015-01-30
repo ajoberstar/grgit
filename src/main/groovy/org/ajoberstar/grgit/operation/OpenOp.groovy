@@ -17,15 +17,12 @@ package org.ajoberstar.grgit.operation
 
 import java.util.concurrent.Callable
 
-import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Credentials
+import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.util.CoercionUtil
 
 import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.api.InitCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Opens an existing repository. Returns a {@link Grgit} pointing

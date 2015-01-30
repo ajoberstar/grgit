@@ -15,15 +15,13 @@
  */
 package org.ajoberstar.grgit.operation
 
-import org.ajoberstar.grgit.Remote
+import java.util.concurrent.Callable
+
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.util.JGitUtil
-import org.eclipse.jgit.lib.Config
-import org.eclipse.jgit.transport.RemoteConfig
-import org.eclipse.jgit.transport.URIish
 
-import java.util.concurrent.Callable
+import org.eclipse.jgit.transport.RemoteConfig
 
 /**
  * Lists remotes in the repository. Returns a list of {@link org.ajoberstar.grgit.Remote}.

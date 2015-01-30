@@ -15,8 +15,6 @@
  */
 package org.ajoberstar.grgit.auth
 
-import java.awt.GraphicsEnvironment
-
 import org.ajoberstar.grgit.Credentials
 
 import org.eclipse.jgit.api.TransportCommand
