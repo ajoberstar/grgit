@@ -44,7 +44,7 @@ class TagAddOpSpec extends SimpleGitOpSpec {
 			'',
 			''
 		)]
-		grgit.resolveCommit('test-tag') == grgit.head()
+		grgit.resolve.toCommit('test-tag') == grgit.head()
 	}
 
 	def 'tag add with annotate false creates unannotated tag pointing to current HEAD'() {
@@ -58,7 +58,7 @@ class TagAddOpSpec extends SimpleGitOpSpec {
 			null,
 			null
 		)]
-		grgit.resolveCommit('test-tag') == grgit.head()
+		grgit.resolve.toCommit('test-tag') == grgit.head()
 	}
 
 	def 'tag add with name and pointsTo creates tag pointing to pointsTo'() {
@@ -72,7 +72,7 @@ class TagAddOpSpec extends SimpleGitOpSpec {
 			'',
 			''
 		)]
-		grgit.resolveCommit('test-tag') == commits[0]
+		grgit.resolve.toCommit('test-tag') == commits[0]
 	}
 
 	def 'tag add without force fails to overwrite existing tag'() {
@@ -90,6 +90,6 @@ class TagAddOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.tag.add(name: 'test-tag', force: true)
 		then:
-		grgit.resolveCommit('test-tag') == grgit.head()
+		grgit.resolve.toCommit('test-tag') == grgit.head()
 	}
 }

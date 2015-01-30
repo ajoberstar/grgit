@@ -103,7 +103,7 @@ class CloneOpSpec extends MultiGitOpSpec {
 		when:
 		def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, refToCheckout: 'branch1')
 		then:
-		grgit.head() == remoteGrgit.resolveCommit('branch1')
+		grgit.head() == remoteGrgit.resolve.toCommit('branch1')
 		GitTestUtil.branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == GitTestUtil.branches(remoteGrgit).collect(lastName)
 		GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['branch1']
 		GitTestUtil.tags(grgit).collect(lastName) == ['tag1']
@@ -114,7 +114,7 @@ class CloneOpSpec extends MultiGitOpSpec {
 		when:
 		def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, refToCheckout: 'tag1')
 		then:
-		grgit.head() == remoteGrgit.resolveCommit('tag1')
+		grgit.head() == remoteGrgit.resolve.toCommit('tag1')
 		GitTestUtil.branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == GitTestUtil.branches(remoteGrgit).collect(lastName)
 		GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == []
 		GitTestUtil.tags(grgit).collect(lastName) == ['tag1']
@@ -125,7 +125,7 @@ class CloneOpSpec extends MultiGitOpSpec {
 		when:
 		def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, refToCheckout: 'refs/heads/branch2')
 		then:
-		grgit.head() == remoteGrgit.resolveCommit('branch2')
+		grgit.head() == remoteGrgit.resolve.toCommit('branch2')
 		GitTestUtil.branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == GitTestUtil.branches(remoteGrgit).collect(lastName)
 		GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['branch2']
 		GitTestUtil.tags(grgit).collect(lastName) == ['tag1']

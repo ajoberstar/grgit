@@ -53,12 +53,12 @@ class PullOpSpec extends MultiGitOpSpec {
 
 	def 'pull to local repo with no changes fast-forwards current branch only'() {
 		given:
-		def localTestBranchHead = localGrgit.resolveCommit('test-branch')
+		def localTestBranchHead = localGrgit.resolve.toCommit('test-branch')
 		when:
 		localGrgit.pull()
 		then:
-		localGrgit.head() == remoteGrgit.resolveCommit('master')
-		localGrgit.resolveCommit('test-branch') == localTestBranchHead
+		localGrgit.head() == remoteGrgit.resolve.toCommit('master')
+		localGrgit.resolve.toCommit('test-branch') == localTestBranchHead
 	}
 
 	def 'pull to local repo with clean changes merges branches from origin'() {
@@ -67,7 +67,7 @@ class PullOpSpec extends MultiGitOpSpec {
 		localGrgit.add(patterns: ['.'])
 		localGrgit.commit(message: '3.1')
 		def localHead = localGrgit.head()
-		def remoteHead = remoteGrgit.resolveCommit('master')
+		def remoteHead = remoteGrgit.resolve.toCommit('master')
 		when:
 		localGrgit.pull()
 		then:
@@ -108,7 +108,7 @@ class PullOpSpec extends MultiGitOpSpec {
 		localGrgit.add(patterns: ['.'])
 		localGrgit.commit(message: '3.1')
 		def localHead = localGrgit.head()
-		def remoteHead = remoteGrgit.resolveCommit('master')
+		def remoteHead = remoteGrgit.resolve.toCommit('master')
 		def localCommits = localGrgit.log {
 			includes = [localHead.id]
 			excludes = [ancestorHead.id]

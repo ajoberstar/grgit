@@ -66,7 +66,7 @@ class BranchChangeOpSpec extends MultiGitOpSpec {
 	def 'branch change with mode and start point behaves correctly'() {
 		expect:
 		localGrgit.branch.change(name: 'local-branch', startPoint: startPoint, mode: mode) == GitTestUtil.branch('refs/heads/local-branch', trackingBranch)
-		localGrgit.resolveCommit('local-branch') == localGrgit.resolveCommit(startPoint)
+		localGrgit.resolve.toCommit('local-branch') == localGrgit.resolve.toCommit(startPoint)
 		where:
 		mode                         | startPoint         | trackingBranch
 		null                         | 'origin/my-branch' | 'refs/remotes/origin/my-branch'

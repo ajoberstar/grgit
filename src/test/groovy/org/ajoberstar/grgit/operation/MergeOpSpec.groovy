@@ -80,7 +80,7 @@ class MergeOpSpec extends MultiGitOpSpec {
 		localGrgit.merge(head: head, mode: mode)
 		then:
 		localGrgit.status().clean
-		localGrgit.head() == remoteGrgit.resolveCommit(head - 'origin/')
+		localGrgit.head() == remoteGrgit.resolve.toCommit(head - 'origin/')
 		where:
 		head        | mode
 		'origin/ff' | DEFAULT
@@ -92,7 +92,7 @@ class MergeOpSpec extends MultiGitOpSpec {
 	def 'merge commits created when expected'() {
 		given:
 		def oldHead = localGrgit.head()
-		def mergeHead = remoteGrgit.resolveCommit(head - 'origin/')
+		def mergeHead = remoteGrgit.resolve.toCommit(head - 'origin/')
 		when:
 		localGrgit.merge(head: head, mode: mode)
 		then:
@@ -114,7 +114,7 @@ class MergeOpSpec extends MultiGitOpSpec {
 	def 'merge left uncommitted when expected'() {
 		given:
 		def oldHead = localGrgit.head()
-		def mergeHead = remoteGrgit.resolveCommit(head - 'origin/')
+		def mergeHead = remoteGrgit.resolve.toCommit(head - 'origin/')
 		when:
 		localGrgit.merge(head: head, mode: mode)
 		then:

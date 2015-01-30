@@ -18,6 +18,7 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.util.CoercionUtil
@@ -58,7 +59,7 @@ class OpenOp implements Callable<Grgit> {
 
 	Grgit call() {
 		def dirFile = CoercionUtil.toFile(dir)
-		def repo = new Repository(rootDir, Git.open(dirFile), creds)
+		def repo = new Repository(dirFile, Git.open(dirFile), creds)
 		return new Grgit(repo)
 	}
 }

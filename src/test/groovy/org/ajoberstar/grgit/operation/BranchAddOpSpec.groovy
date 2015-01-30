@@ -47,7 +47,7 @@ class BranchAddOpSpec extends MultiGitOpSpec {
 		localGrgit.branch.add(name: 'test-branch')
 		then:
 		localGrgit.branch.list() == [GitTestUtil.branch('refs/heads/master', 'refs/remotes/origin/master'), GitTestUtil.branch('refs/heads/test-branch')]
-		localGrgit.resolveCommit('test-branch') == localGrgit.head()
+		localGrgit.resolve.toCommit('test-branch') == localGrgit.head()
 	}
 
 	def 'branch add with name and startPoint creates branch pointing to startPoint'() {
@@ -55,7 +55,7 @@ class BranchAddOpSpec extends MultiGitOpSpec {
 		localGrgit.branch.add(name: 'test-branch', startPoint: commits[0].id)
 		then:
 		localGrgit.branch.list() == [GitTestUtil.branch('refs/heads/master', 'refs/remotes/origin/master'), GitTestUtil.branch('refs/heads/test-branch')]
-		localGrgit.resolveCommit('test-branch') == commits[0]
+		localGrgit.resolve.toCommit('test-branch') == commits[0]
 	}
 
 	def 'branch add fails to overwrite existing branch'() {
@@ -82,7 +82,7 @@ class BranchAddOpSpec extends MultiGitOpSpec {
 		localGrgit.branch.add(name: 'test-branch', startPoint: commits[0].id)
 		expect:
 		localGrgit.branch.add(name: 'local-branch', startPoint: startPoint, mode: mode) == GitTestUtil.branch('refs/heads/local-branch', trackingBranch)
-		localGrgit.resolveCommit('local-branch') == localGrgit.resolveCommit(startPoint)
+		localGrgit.resolve.toCommit('local-branch') == localGrgit.resolve.toCommit(startPoint)
 		where:
 		mode                      | startPoint         | trackingBranch
 		null                      | 'origin/my-branch' | 'refs/remotes/origin/my-branch'

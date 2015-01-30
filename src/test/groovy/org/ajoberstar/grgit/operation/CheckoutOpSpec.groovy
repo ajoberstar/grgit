@@ -40,7 +40,7 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		when:
 		grgit.checkout(branch: 'my-branch')
 		then:
-		grgit.head() == grgit.resolveCommit('my-branch')
+		grgit.head() == grgit.resolve.toCommit('my-branch')
 		grgit.branch.current.fullName == 'refs/heads/my-branch'
 		grgit.log().size() == 2
 		repoFile('1.txt').text == '12'
@@ -65,7 +65,7 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		grgit.checkout(branch: 'new-branch', createBranch: true)
 		then:
 		grgit.branch.current.fullName == 'refs/heads/new-branch'
-		grgit.head() == grgit.resolveCommit('master')
+		grgit.head() == grgit.resolve.toCommit('master')
 		grgit.log().size() == 3
 		repoFile('1.txt').text == '123'
 	}
@@ -75,7 +75,7 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
 		grgit.checkout(branch: 'new-branch', createBranch: true, startPoint: 'my-branch')
 		then:
 		grgit.branch.current.fullName == 'refs/heads/new-branch'
-		grgit.head() == grgit.resolveCommit('my-branch')
+		grgit.head() == grgit.resolve.toCommit('my-branch')
 		grgit.log().size() == 2
 		repoFile('1.txt').text == '12'
 	}
