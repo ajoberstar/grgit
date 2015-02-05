@@ -15,10 +15,12 @@
  */
 package org.ajoberstar.grgit.exception
 
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
  * Generic exception for any failures in use of Grgit.
  */
 @InheritConstructors
+@CompileStatic
 class GrgitException extends RuntimeException {}
