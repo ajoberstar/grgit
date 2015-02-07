@@ -57,8 +57,7 @@ If you're interested in a change, please submit an issue (or even better a pull 
 * Removed deprecated Grgit#resolveCommit(Object) method.
 * Deprecated the Grgit#open(String, Credentials) and Grgit#open(File, Credentials) methods, which are replaced with
 OpenOp to be consistent with all other methods.
-* Supporting more types for the directories in OpenOp, InitOp, and CloneOp. Can be a File, Path, or Object (which will
-be toString'd).
+* Many operations now support Grgit objects (such as Tag, Branch, Commit) as arguments instead of just Strings. These are indicated in each operations doc.
 
 ### 0.4.0
 
