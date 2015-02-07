@@ -45,6 +45,7 @@ class RevertOp implements Callable<Commit> {
 
 	/**
 	 * List of commits to revert.
+	 * @see {@link ResolveService#toRevisionString(Object)}
 	 */
 	List<Object> commits = []
 
@@ -55,7 +56,8 @@ class RevertOp implements Callable<Commit> {
 	Commit call() {
 		RevertCommand cmd = repo.jgit.revert()
 		commits.each {
-			cmd.include(JGitUtil.resolveObject(repo, it))
+			String revstr = new ResolveService(repo).toRevisionString(it)
+			cmd.include(JGitUtil.resolveObject(repo, revstr))
 		}
 		try {
 			RevCommit commit = cmd.call()

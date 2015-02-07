@@ -66,8 +66,9 @@ class ResetOp implements Callable<Void> {
 
 	/**
 	 * The commit to reset back to. Defaults to HEAD.
+	 * @see {@link ResolveService#toRevisionString(Object)}
 	 */
-	String commit
+	Object commit
 
 	/**
 	 * The mode to use when resetting.
@@ -86,7 +87,7 @@ class ResetOp implements Callable<Void> {
 		ResetCommand cmd = repo.jgit.reset()
 		paths.each { cmd.addPath(it) }
 		if (commit) {
-			cmd.ref = commit
+			cmd.ref = new ResolveService(repo).toRevisionString(commit)
 		}
 		if (paths.empty) {
 			cmd.mode = mode.jgit

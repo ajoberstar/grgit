@@ -44,6 +44,7 @@ class TagRemoveOp implements Callable<List<String>> {
 
 	/**
 	 * Names of tags to remove.
+	 * @see {@link ResolveService#toTagName(Object)}
 	 */
 	List names = []
 
@@ -53,7 +54,7 @@ class TagRemoveOp implements Callable<List<String>> {
 
 	List<String> call() {
 		DeleteTagCommand cmd = repo.jgit.tagDelete()
-		cmd.tags = names
+		cmd.tags = names.collect { new ResolveService(repo).toTagName(it) }
 
 		try {
 			return cmd.call()

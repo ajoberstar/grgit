@@ -94,8 +94,9 @@ class TagAddOp implements Callable<Tag> {
 
 	/**
 	 * The commit the tag should point to.
+	 * @see {@link ResolveService#toRevisionString(Object)}
 	 */
-	String pointsTo
+	Object pointsTo
 
 	TagAddOp(Repository repo) {
 		this.repo = repo
@@ -108,7 +109,10 @@ class TagAddOp implements Callable<Tag> {
 		if (tagger) { cmd.tagger = new PersonIdent(tagger.name, tagger.email) }
 		cmd.annotated = annotate
 		cmd.forceUpdate = force
-		if (pointsTo) { cmd.objectId = JGitUtil.resolveRevObject(repo, pointsTo) }
+		if (pointsTo) {
+			def revstr = new ResolveService(repo).toRevisionString(pointsTo)
+			cmd.objectId = JGitUtil.resolveRevObject(repo, revstr)
+		}
 
 		try {
 			Ref ref = cmd.call()

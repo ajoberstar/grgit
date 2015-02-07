@@ -133,6 +133,28 @@ class ResolveService {
 	}
 
 	/**
+	 * Resolves a tag name from the given object. Can handle any of the following
+	 * types:
+	 * <ul>
+	 *   <li>{@link String}</li>
+	 *   <li>{@link Tag}</li>
+	 * </ul>
+	 * @param object the object to resolve
+	 * @return the corresponding tag name
+	 */
+	String toTagName(Object object) {
+		if (object == null) {
+			return object
+		} else if (object instanceof String) {
+			return object
+		} else if (object instanceof Tag) {
+			return object.fullName
+		} else {
+			throwIllegalArgument(object)
+		}
+	}
+
+	/**
 	 * Resolves a revision string that corresponds to the given object. Can
 	 * handle any of the following types:
 	 * <ul>

@@ -52,8 +52,9 @@ class MergeOp implements Callable<Void> {
 
 	/**
 	 * The head to merge into the current HEAD.
+	 * @see {@link ResolveService#toRevisionString(Object)}
 	 */
-	String head
+	Object head
 
 	/**
 	 * How to handle the merge.
@@ -66,7 +67,10 @@ class MergeOp implements Callable<Void> {
 
 	Void call() {
 		MergeCommand cmd = repo.jgit.merge()
-		if (head) { cmd.include(JGitUtil.resolveObject(repo, head)) }
+		if (head) {
+			def revstr = new ResolveService(repo).toRevisionString(head)
+			cmd.include(JGitUtil.resolveObject(repo, revstr))
+		}
 		switch (mode) {
 			case Mode.ONLY_FF:
 				cmd.fastForward = MergeCommand.FastForwardMode.FF_ONLY
