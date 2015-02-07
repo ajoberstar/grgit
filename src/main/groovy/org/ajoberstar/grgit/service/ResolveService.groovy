@@ -51,7 +51,9 @@ class ResolveService {
 	 * @return the corresponding commit
 	 */
 	Commit toCommit(Object object) {
-		if (object instanceof Commit) {
+		if (object == null) {
+			return object
+		} else if (object instanceof Commit) {
 			return object
 		} else if (object instanceof Tag) {
 			return object.commit
@@ -75,10 +77,34 @@ class ResolveService {
 	 * @return the corresponding commit
 	 */
 	Branch toBranch(Object object) {
-		if (object instanceof Branch) {
+		if (object == null) {
+			return object
+		} else if (object instanceof Branch) {
 			return object
 		} else if (object instanceof String) {
 			return JGitUtil.resolveBranch(repository, object)
+		} else {
+			throwIllegalArgument(object)
+		}
+	}
+
+	/**
+	 * Resolves a branch name from the given object. Can handle any of the following
+	 * types:
+	 * <ul>
+	 *   <li>{@link String}</li>
+	 *   <li>{@link Branch}</li>
+	 * </ul>
+	 * @param object the object to resolve
+	 * @return the corresponding branch name
+	 */
+	String toBranchName(Object object) {
+		if (object == null) {
+			return object
+		} else if (object instanceof String) {
+			return object
+		} else if (object instanceof Branch) {
+			return object.fullName
 		} else {
 			throwIllegalArgument(object)
 		}
@@ -95,7 +121,9 @@ class ResolveService {
 	 * @return the corresponding commit
 	 */
 	Tag toTag(Object object) {
-		if (object instanceof Tag) {
+		if (object == null) {
+			return object
+		} else if (object instanceof Tag) {
 			return object
 		} else if (object instanceof String) {
 			JGitUtil.resolveTag(repository, object)
@@ -117,7 +145,9 @@ class ResolveService {
 	 * @return the corresponding commit
 	 */
 	String toRevisionString(Object object) {
-		if (object instanceof Commit) {
+		if (object == null) {
+			return object
+		} else if (object instanceof Commit) {
 			return object.id
 		} else if (object instanceof Tag) {
 			return object.fullName

@@ -65,7 +65,13 @@ import org.eclipse.jgit.lib.ObjectId
 class LogOp implements Callable<List<Commit>> {
 	private final Repository repo
 
+	/**
+	 * @see {@link ResolveService#toRevisionString(Object)}
+	 */
 	List includes = []
+	/**
+	 * @see {@link ResolveService#toRevisionString(Object)}
+	 */
 	List excludes = []
 	List paths = []
 	int skipCommits = -1
@@ -82,12 +88,16 @@ class LogOp implements Callable<List<Commit>> {
 
 	List<Commit> call() {
 		LogCommand cmd = repo.jgit.log()
-		includes.each { include ->
-			ObjectId object = JGitUtil.resolveObject(repo, include)
+		ResolveService resolve = new ResolveService(repo)
+		def toObjectId = { rev ->
+			String revstr = resolve.toRevisionString(rev)
+			JGitUtil.resolveObject(repo, revstr)
+		}
+
+		includes.collect(toObjectId).each { object ->
 			cmd.add(object)
 		}
-		excludes.each { exclude ->
-			ObjectId object = JGitUtil.resolveObject(repo, exclude)
+		excludes.collect(toObjectId).each { object ->
 			cmd.not(object)
 		}
 		paths.each { path ->

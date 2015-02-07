@@ -68,8 +68,9 @@ class CheckoutOp implements Callable<Void> {
 
 	/**
 	 * The branch or commit to checkout.
+ 	 * @see {@link ResolveService#toBranchName(Object)}
 	 */
-	String branch
+	Object branch
 
 	/**
 	 * {@code true} if the branch does not exist and should be created,
@@ -80,8 +81,9 @@ class CheckoutOp implements Callable<Void> {
 	/**
 	 * If {@code createBranch} or {@code orphan} is {@code true}, start the new branch
 	 * at this commit.
+ 	 * @see {@link ResolveService#toRevisionString(Object)}
 	 */
-	String startPoint
+	Object startPoint
 
 	/**
 	 * {@code true} if the new branch is to be an orphan,
@@ -100,9 +102,10 @@ class CheckoutOp implements Callable<Void> {
 			throw new IllegalArgumentException('Must specify branch name to create.')
 		}
 		CheckoutCommand cmd = repo.jgit.checkout()
-		if (branch) { cmd.name = branch }
+		ResolveService resolve = new ResolveService(repo)
+		if (branch) { cmd.name = resolve.toBranchName(branch) }
 		cmd.createBranch = createBranch
-		cmd.startPoint = startPoint
+		cmd.startPoint = resolve.toRevisionString(startPoint)
 		cmd.orphan = orphan
 		try {
 			cmd.call()

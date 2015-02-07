@@ -51,7 +51,7 @@ class BranchRemoveOp implements Callable<List<String>> {
 
 	/**
 	 * List of all branche names to remove.
-	 * @see {@link ResolveService#toBranch(Object)}
+	 * @see {@link ResolveService#toBranchName(Object)}
 	 */
 	List names = []
 
@@ -68,13 +68,7 @@ class BranchRemoveOp implements Callable<List<String>> {
 
 	List<String> call() {
 		DeleteBranchCommand cmd = repo.jgit.branchDelete()
-		cmd.branchNames = names.collect { branch ->
-			try {
-				return new ResolveService(repo).toBranch(branch)?.fullName
-			} catch (GrgitException e) {
-				return branch
-			}
-		}
+		cmd.branchNames = names.collect { new ResolveService(repo).toBranchName(it) }
 		cmd.force = force
 
 		try {
