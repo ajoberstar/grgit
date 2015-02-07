@@ -17,6 +17,7 @@ package org.ajoberstar.grgit.operation
 
 import java.util.concurrent.Callable
 
+import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
 
@@ -50,6 +51,7 @@ class BranchRemoveOp implements Callable<List<String>> {
 
 	/**
 	 * List of all branche names to remove.
+	 * @see {@link ResolveService#toBranch(Object)}
 	 */
 	List names = []
 
@@ -66,7 +68,13 @@ class BranchRemoveOp implements Callable<List<String>> {
 
 	List<String> call() {
 		DeleteBranchCommand cmd = repo.jgit.branchDelete()
-		cmd.branchNames = names
+		cmd.branchNames = names.collect { branch ->
+			try {
+				return new ResolveService(repo).toBranch(branch)?.fullName
+			} catch (GrgitException e) {
+				return branch
+			}
+		}
 		cmd.force = force
 
 		try {

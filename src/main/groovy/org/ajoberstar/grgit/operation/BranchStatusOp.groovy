@@ -40,8 +40,9 @@ class BranchStatusOp implements Callable<BranchStatus> {
 
 	/**
 	 * The branch to get the status of.
+	 * @see {@link ResolveService#toBranch(Object)}
 	 */
-	String branch
+	Object branch
 
 	BranchStatusOp(Repository repo) {
 		this.repo = repo
@@ -49,7 +50,7 @@ class BranchStatusOp implements Callable<BranchStatus> {
 
 	BranchStatus call() {
 		try {
-			Branch realBranch = JGitUtil.resolveBranch(repo, branch)
+			Branch realBranch = new ResolveService(repo).toBranch(branch)
 			if (realBranch.trackingBranch) {
 				BranchTrackingStatus status = BranchTrackingStatus.of(repo.jgit.repository, realBranch.fullName)
 				if (status) {

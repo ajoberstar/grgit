@@ -19,6 +19,7 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.util.CoercionUtil
 
 import org.eclipse.jgit.api.ApplyCommand
 import org.eclipse.jgit.api.errors.GitAPIException
@@ -42,8 +43,9 @@ class ApplyOp implements Callable<Void> {
 
 	/**
 	 * The patch file to apply to the index.
+	 * @see {@link CoercionUtil#toFile(Object)}
 	 */
-	File patch
+	Object patch
 
 	ApplyOp(Repository repo) {
 		this.repo = repo
@@ -54,7 +56,7 @@ class ApplyOp implements Callable<Void> {
 		if (!patch) {
 			throw new IllegalStateException('Must set a patch file.')
 		}
-		patch.withInputStream { stream ->
+		CoercionUtil.toFile(patch).withInputStream { stream ->
 			cmd.patch = stream
 			try {
 				cmd.call()

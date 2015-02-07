@@ -78,8 +78,9 @@ class BranchAddOp implements Callable<Branch> {
 	/**
 	 * The commit the branch should start at. If this is a remote branch
 	 * it will be automatically tracked.
+	 * @see {@link ResolveService#toRevisionString(Object)}
 	 */
-	String startPoint
+	Object startPoint
 
 	/**
 	 * The tracking mode to use. If {@code null}, will use the default
@@ -98,7 +99,10 @@ class BranchAddOp implements Callable<Branch> {
 		CreateBranchCommand cmd = repo.jgit.branchCreate()
 		cmd.name = name
 		cmd.force = false
-		if (startPoint) { cmd.startPoint = startPoint }
+		if (startPoint) {
+			String rev = new ResolveService(repo).toRevisionString(startPoint)
+			cmd.startPoint = rev
+		}
 		if (mode) { cmd.upstreamMode = mode.jgit }
 
 		try {

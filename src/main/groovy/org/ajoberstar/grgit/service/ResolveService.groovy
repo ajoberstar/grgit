@@ -32,18 +32,6 @@ class ResolveService {
 		this.repository = repository
 	}
 
-/**
-	 * Resolves the given revision string to a commit given the current
-	 * state of the repository. Any
-	 * <a href="http://git-scm.com/docs/gitrevisions.html">Git revision string</a>
-	 * should be supported.
-	 * @param revstr a revision string representing the desired commit
-	 * @return the commit represented by {@code revstr}
-	 * @throws GrgitException if there was a problem finding the commit
-	 * @deprecated replaced by {@link org.ajoberstar.grgit.service.ResolveService#toCommit(Object)}
-	 * @see <a href="http://git-scm.com/docs/gitrevisions.html">gitrevisions Manual Page</a>
-	 */
-
 	/**
 	 * Resolves a commit from the given object. Can handle any of the following
 	 * types:
@@ -80,14 +68,17 @@ class ResolveService {
 	 * Resolves a branch from the given object. Can handle any of the following
 	 * types:
 	 * <ul>
+	 *   <li>{@link Branch}</li>
 	 *   <li>{@link String}</li>
 	 * </ul>
 	 * @param object the object to resolve
 	 * @return the corresponding commit
 	 */
 	Branch toBranch(Object object) {
-		if (object instanceof String) {
-			JGitUtil.resolveBranch(repository, object)
+		if (object instanceof Branch) {
+			return object
+		} else if (object instanceof String) {
+			return JGitUtil.resolveBranch(repository, object)
 		} else {
 			throwIllegalArgument(object)
 		}
@@ -97,13 +88,16 @@ class ResolveService {
 	 * Resolves a tag from the given object. Can handle any of the following
 	 * types:
 	 * <ul>
+	 *   <li>{@link Tag}</li>
 	 *   <li>{@link String}</li>
 	 * </ul>
 	 * @param object the object to resolve
 	 * @return the corresponding commit
 	 */
 	Tag toTag(Object object) {
-		if (object instanceof String) {
+		if (object instanceof Tag) {
+			return object
+		} else if (object instanceof String) {
 			JGitUtil.resolveTag(repository, object)
 		} else {
 			throwIllegalArgument(object)

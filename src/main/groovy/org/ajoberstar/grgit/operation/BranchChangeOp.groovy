@@ -71,8 +71,9 @@ class BranchChangeOp implements Callable<Branch> {
 
 	/**
 	 * The commit the branch should now start at.
+	 * @see {@link ResolveService#toRevisionString(Object)}
 	 */
-	String startPoint
+	Object startPoint
 
 	/**
 	 * The tracking mode to use.
@@ -93,7 +94,10 @@ class BranchChangeOp implements Callable<Branch> {
 		CreateBranchCommand cmd = repo.jgit.branchCreate()
 		cmd.name = name
 		cmd.force = true
-		if (startPoint) { cmd.startPoint = startPoint }
+		if (startPoint) {
+			String rev = new ResolveService(repo).toRevisionString(startPoint)
+			cmd.startPoint = rev
+		}
 		if (mode) { cmd.upstreamMode = mode.jgit }
 
 		try {
