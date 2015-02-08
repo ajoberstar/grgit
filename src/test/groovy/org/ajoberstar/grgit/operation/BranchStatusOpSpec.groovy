@@ -62,7 +62,7 @@ class BranchStatusOpSpec extends MultiGitOpSpec {
 
 	def 'branch status on branch that is not tracking fails'() {
 		when:
-		localGrgit.branch.status(branch: 'no-track')
+		localGrgit.branch.status(name: 'no-track')
 		then:
 		thrown(GrgitException)
 	}
@@ -70,10 +70,30 @@ class BranchStatusOpSpec extends MultiGitOpSpec {
 	@Unroll('branch status on #branch gives correct counts')
 	def 'branch status on branch that is tracking gives correct counts'() {
 		expect:
-		localGrgit.branch.status(branch: branch) == status
+		localGrgit.branch.status(name: branch) == status
 		where:
 		branch        | status
 		'up-to-date'  | new BranchStatus(branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'), aheadCount: 0, behindCount: 0)
 		'out-of-date' | new BranchStatus(branch: GitTestUtil.branch('refs/heads/out-of-date', 'refs/remotes/origin/out-of-date'), aheadCount: 2, behindCount: 1)
+	}
+
+	def 'deprecated property still works as map'() {
+		expect:
+		localGrgit.branch.status(branch: 'up-to-date') == new BranchStatus(
+			branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'),
+			aheadCount: 0,
+			behindCount: 0
+		)
+	}
+
+	def 'deprecated property still works as closure'() {
+		expect:
+		localGrgit.branch.status {
+			branch = 'up-to-date'
+		} == new BranchStatus(
+			branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'),
+			aheadCount: 0,
+			behindCount: 0
+		)
 	}
 }

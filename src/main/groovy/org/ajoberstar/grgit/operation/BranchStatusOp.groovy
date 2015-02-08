@@ -30,7 +30,7 @@ import org.eclipse.jgit.lib.BranchTrackingStatus
  * Gets the tracking status of a branch. Returns a {@link BranchStatus}.
  *
  * <pre>
- * def status = grgit.branch.status(branch: 'the-branch')
+ * def status = grgit.branch.status(name: 'the-branch')
  * </pre>
  *
  * @since 0.2.0
@@ -42,7 +42,7 @@ class BranchStatusOp implements Callable<BranchStatus> {
 	 * The branch to get the status of.
 	 * @see {@link ResolveService#toBranch(Object)}
 	 */
-	Object branch
+	Object name
 
 	BranchStatusOp(Repository repo) {
 		this.repo = repo
@@ -50,7 +50,7 @@ class BranchStatusOp implements Callable<BranchStatus> {
 
 	BranchStatus call() {
 		try {
-			Branch realBranch = new ResolveService(repo).toBranch(branch)
+			Branch realBranch = new ResolveService(repo).toBranch(name)
 			if (realBranch.trackingBranch) {
 				BranchTrackingStatus status = BranchTrackingStatus.of(repo.jgit.repository, realBranch.fullName)
 				if (status) {
@@ -64,5 +64,21 @@ class BranchStatusOp implements Callable<BranchStatus> {
 		} catch (IOException e) {
 			throw new GrgitException('Problem retrieving branch status.', e)
 		}
+	}
+
+	/**
+	 * @deprecated replaced by {@link #name}
+	 */
+	@Deprecated
+	Object getBranch() {
+		return name
+	}
+
+	/**
+	 * @deprecated replaced by {@link #name}
+	 */
+	@Deprecated
+	void setBranch(Object branch) {
+		this.name = branch
 	}
 }
