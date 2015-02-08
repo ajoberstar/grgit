@@ -102,4 +102,23 @@ class PushOpSpec extends MultiGitOpSpec {
 		GitTestUtil.resolve(localGrgit, 'refs/heads/my-branch') == GitTestUtil.resolve(remoteGrgit, 'refs/heads/other-branch')
 		!GitTestUtil.tags(remoteGrgit)
 	}
+
+	def 'push in dryRun mode does not push commits'() {
+		given:
+		def remoteMasterHead = GitTestUtil.resolve(remoteGrgit, 'refs/heads/master')
+		when:
+		localGrgit.push(dryRun: true)
+		then:
+		GitTestUtil.resolve(localGrgit, 'refs/heads/master') != GitTestUtil.resolve(remoteGrgit, 'refs/heads/master')
+		GitTestUtil.resolve(remoteGrgit, 'refs/heads/master') == remoteMasterHead
+	}
+
+	def 'push in dryRun mode does not push tags'() {
+		given:
+		def remoteMasterHead = GitTestUtil.resolve(remoteGrgit, 'refs/heads/master')
+		when:
+		localGrgit.push(dryRun: true, tags: true)
+		then:
+		!GitTestUtil.tags(remoteGrgit)
+	}
 }

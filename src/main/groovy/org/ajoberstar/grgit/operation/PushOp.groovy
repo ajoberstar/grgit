@@ -88,6 +88,15 @@ class PushOp implements Callable<Void> {
 	 */
 	boolean force = false
 
+	/**
+	 * {@code true} if result of this operation should be just estimation
+	 * of real operation result, no real push is performed.
+	 * {@code false} (the default) if real push to remote repo should be performed.
+	 *
+	 * @since 0.4.1
+	 */
+	boolean dryRun = false
+
 	PushOp(Repository repo) {
 		this.repo = repo
 	}
@@ -100,6 +109,7 @@ class PushOp implements Callable<Void> {
 		if (all) { cmd.setPushAll() }
 		if (tags) { cmd.setPushTags() }
 		cmd.force = force
+		cmd.dryRun = dryRun
 		try {
 			cmd.call()
 			return null
