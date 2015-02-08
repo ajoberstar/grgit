@@ -31,7 +31,6 @@ import org.eclipse.jgit.api.errors.GitAPIException
  *
  * <pre>
  * def removedTags = grgit.tag.remove(names: ['the-tag'])
- * def removedTags = grgit.tag.remove(names: ['the-tag', 'other-tag'], force: false)
  * </pre>
  *
  * See <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>.
