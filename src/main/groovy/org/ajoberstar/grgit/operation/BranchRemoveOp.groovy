@@ -17,9 +17,9 @@ package org.ajoberstar.grgit.operation
 
 import java.util.concurrent.Callable
 
-import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.service.ResolveService
 
 import org.eclipse.jgit.api.DeleteBranchCommand
 import org.eclipse.jgit.api.errors.GitAPIException

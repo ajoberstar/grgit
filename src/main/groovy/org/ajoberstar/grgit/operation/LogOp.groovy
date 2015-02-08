@@ -20,11 +20,11 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.LogCommand
 import org.eclipse.jgit.api.errors.GitAPIException
-import org.eclipse.jgit.lib.ObjectId
 
 /**
  * Gets a log of commits in the repository. Returns a list of {@link Commit}s.

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ajoberstar.grgit.operation
+package org.ajoberstar.grgit.service
 
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Commit

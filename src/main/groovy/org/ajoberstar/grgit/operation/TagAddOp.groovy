@@ -21,6 +21,7 @@ import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.TagCommand
