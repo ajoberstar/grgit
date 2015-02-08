@@ -54,11 +54,14 @@ If you're interested in a change, please submit an issue (or even better a pull 
 
 ### 1.0.0 (still in development)
 
-* Removed deprecated Grgit#resolveCommit(Object) method.
+* Many operations now support Grgit objects (such as Tag, Branch, Commit) as arguments instead of just Strings. These are indicated in each operations doc.
 * Deprecated the Grgit#open(String, Credentials) and Grgit#open(File, Credentials) methods, which are replaced with
 OpenOp to be consistent with all other methods.
-* Many operations now support Grgit objects (such as Tag, Branch, Commit) as arguments instead of just Strings. These are indicated in each operations doc.
+* `dryRun` now supported on `PushOp`. (Thanks to [Marcin Zajączkowski](https://github.com/szpak))
+* Removed deprecated Grgit#resolveCommit(Object) method.
 * BranchStatusOp's `branch` property is now deprecated and replaced by `name`. `branch` will not be removed until 2.0.0, at the earliest.
+
+Also thanks to [Aaron Zirbes](https://github.com/aaronzirbes) for fixing a compile issue with `GrgitException`.
 
 ### 0.4.0
 
