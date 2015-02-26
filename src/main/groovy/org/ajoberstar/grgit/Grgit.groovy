@@ -106,7 +106,7 @@ class Grgit {
 		clean: CleanOp, status: StatusOp, add: AddOp, remove: RmOp,
 		reset: ResetOp, apply: ApplyOp, pull: PullOp, push: PushOp,
 		fetch: FetchOp, checkout: CheckoutOp, log: LogOp, commit: CommitOp,
-		revert: RevertOp, merge: MergeOp
+		revert: RevertOp, merge: MergeOp, describe: DescribeOp
 	].asImmutable()
 
 	/**
