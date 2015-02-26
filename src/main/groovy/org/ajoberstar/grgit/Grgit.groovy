@@ -75,6 +75,7 @@ import org.eclipse.jgit.api.Git
  *   <li>{@link org.ajoberstar.grgit.operation.CheckoutOp checkout}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.CleanOp clean}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.CommitOp commit}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.DescribeOp describe}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.FetchOp fetch}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.LogOp log}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.MergeOp merge}</li>

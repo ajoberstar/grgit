@@ -52,7 +52,11 @@ If you're interested in a change, please submit an issue (or even better a pull 
 
 ## Release Notes
 
-### 1.0.0 (still in development)
+### 1.1.0 (milestone)
+
+* Added `grgit.describe()` method. (Thanks to [Louis Bergulson](https://github.com/lbergelson))
+
+### 1.0.0
 
 * Many operations now support Grgit objects (such as Tag, Branch, Commit) as arguments instead of just Strings. These are indicated in each operations doc.
 * Deprecated the Grgit#open(String, Credentials) and Grgit#open(File, Credentials) methods, which are replaced with
