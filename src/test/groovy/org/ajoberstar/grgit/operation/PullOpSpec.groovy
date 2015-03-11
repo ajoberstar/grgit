@@ -23,6 +23,7 @@ import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 class PullOpSpec extends MultiGitOpSpec {
 	Grgit localGrgit
 	Grgit remoteGrgit
+	Grgit otherRemoteGrgit
 	Commit ancestorHead
 
 	def setup() {
@@ -36,6 +37,11 @@ class PullOpSpec extends MultiGitOpSpec {
 
 		localGrgit = clone('local', remoteGrgit)
 		localGrgit.branch.add(name: 'test-branch', startPoint: 'origin/test-branch')
+
+		otherRemoteGrgit = clone('remote2', remoteGrgit)
+		repoFile(otherRemoteGrgit, '4.txt') << '4.1\n'
+		otherRemoteGrgit.add(patterns: ['.'])
+		otherRemoteGrgit.commit(message: '4.1', all: true)
 
 		repoFile(remoteGrgit, '1.txt') << '1.2\n'
 		remoteGrgit.commit(message: '1.2', all: true)
@@ -141,5 +147,24 @@ class PullOpSpec extends MultiGitOpSpec {
 		// has state of all changes
 		repoFile(localGrgit, '1.txt').text == String.format('1.1%n1.2%n1.3%n')
 		repoFile(localGrgit, '3.txt').text == String.format('3.1%n')
+	}
+
+	def 'pull to local repo from other remote fast-forwards current branch'() {
+		given:
+		def otherRemoteUri = otherRemoteGrgit.repository.rootDir.toURI().toString()
+		localGrgit.remote.add(name: 'other-remote', url: otherRemoteUri)
+		when:
+		localGrgit.pull(remote: 'other-remote')
+		then:
+		localGrgit.head() == otherRemoteGrgit.head()
+	}
+
+	def 'pull to local repo from specific remote branch merges changes'() {
+		given:
+
+		when:
+		localGrgit.pull(branch: 'test-branch')
+		then:
+		(remoteGrgit.log(includes: ['test-branch']) - localGrgit.log()).size() == 0
 	}
 }

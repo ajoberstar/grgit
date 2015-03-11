@@ -52,6 +52,18 @@ class PullOp implements Callable<Void> {
 	private final Repository repo
 
 	/**
+	 * The name of the remote to pull. If not set, the current branch's
+	 * configuration will be used.
+	 */
+	String remote
+
+	/**
+	 * The name of the remote branch to pull. If not set, the current branch's
+	 * configuration will be used.
+	 */
+	String branch
+
+	/**
 	 * Rebase on top of the changes when they are pulled in, if
 	 * {@code true}. {@code false} (the default) otherwise.
 	 */
@@ -63,6 +75,8 @@ class PullOp implements Callable<Void> {
 
 	Void call() {
 		PullCommand cmd = repo.jgit.pull()
+		if (remote) { cmd.remote = remote }
+		if (branch) { cmd.remoteBranchName = branch }
 		cmd.rebase = rebase
         TransportOpUtil.configure(cmd, repo.credentials)
 

@@ -27,7 +27,7 @@ repositories {
 	mavenCentral()
 }
 
-def jgitVersion = '3.6.2.201501210735-r'
+def jgitVersion = '3.7.0.201502260915-r'
 // def jgitVersion = '3.3.2.201404171909-r' // pre-bug
 // def jgitVersion = '3.4.1.201406201815-r' // behavior of log command is different
 
