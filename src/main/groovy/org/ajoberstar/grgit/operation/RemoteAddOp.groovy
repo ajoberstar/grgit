@@ -34,7 +34,7 @@ import org.eclipse.jgit.transport.URIish
  * <p>To add remote.</p>
  *
  * <pre>
- * grgit.remote.add(name: 'new-remote', uri: 'git@github.com:username/project.git')
+ * grgit.remote.add(name: 'new-remote', url: 'git@github.com:username/project.git')
  * </pre>
  *
  * See <a href="http://git-scm.com/docs/git-remote">git-remote Manual Page</a>.
