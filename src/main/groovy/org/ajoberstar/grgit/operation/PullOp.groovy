@@ -43,6 +43,18 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * grgit.pull(rebase: true)
  * </pre>
  *
+ * <p>Pull changes from another remote.</p>
+ *
+ * <pre>
+ * grgit.pull(remote: 'other-remote')
+ * </pre>
+ *
+ * <p>Pull changes from another branch.</p>
+ *
+ * <pre>
+ * grgit.pull(branch: 'other-branch')
+ * </pre>
+ *
  * See <a href="http://git-scm.com/docs/git-pull">git-pull Manual Page</a>.
  *
  * @since 0.2.0
