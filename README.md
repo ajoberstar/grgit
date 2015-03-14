@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/ajoberstar/grgit.png?label=ready&title=Ready)](https://waffle.io/ajoberstar/grgit)
 # grgit
 
 The Groovy way to use Git.
