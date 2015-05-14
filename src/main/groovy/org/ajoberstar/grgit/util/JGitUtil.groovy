@@ -17,13 +17,14 @@ package org.ajoberstar.grgit.util
 
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Commit
+import org.ajoberstar.grgit.CommitDiff
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Remote
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.exception.GrgitException
-
+import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.errors.AmbiguousObjectException
 import org.eclipse.jgit.errors.IncorrectObjectTypeException
 import org.eclipse.jgit.errors.MissingObjectException
@@ -238,6 +239,26 @@ class JGitUtil {
 			fetchRefSpecs: rc.fetchRefSpecs.collect { it.toString() },
 			pushRefSpecs: rc.pushRefSpecs.collect { it.toString() },
 			mirror: rc.mirror)
+	}
+
+	static CommitDiff.Diff convertDiff(DiffEntry diffEntry, String diffAsString) {
+		if (diffEntry.getChangeType().equals(DiffEntry.ChangeType.DELETE)) {
+			return new CommitDiff.Diff(
+					diffEntry.getOldPath(),
+					diffEntry.getOldId().name(),
+					diffEntry.getChangeType())
+		} else if (diffEntry.getChangeType().equals(DiffEntry.ChangeType.RENAME)) {
+			return new CommitDiff.Diff(
+					diffEntry.getNewPath(),
+					diffEntry.getNewId().name(),
+					diffEntry.getChangeType())
+		}
+		return new CommitDiff.Diff(
+				diffEntry.getNewPath(),
+				diffEntry.getNewId().name(),
+				diffEntry.getChangeType(),
+				diffAsString
+		)
 	}
 
 	/**
