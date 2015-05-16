@@ -29,13 +29,16 @@ class TagListOpSpec extends SimpleGitOpSpec {
 		repoFile('1.txt') << '2'
 		commits << grgit.commit(message: 'do', all: true)
 		grgit.tag.add(name: 'tag2', message: 'My other\nmessage')
+
+		grgit.tag.add(name: 'tag3', message: 'My next message.', pointsTo: 'tag1')
 	}
 
 	def 'tag list lists all tags'() {
 		expect:
 		grgit.tag.list() == [
 			new Tag(commits[0], person, 'refs/tags/tag1', 'My message', 'My message'),
-			new Tag(commits[1], person, 'refs/tags/tag2', 'My other\nmessage', 'My other message')
+			new Tag(commits[1], person, 'refs/tags/tag2', 'My other\nmessage', 'My other message'),
+			new Tag(commits[0], person, 'refs/tags/tag3', 'My next message.', 'My next message.')
 		]
 	}
 }

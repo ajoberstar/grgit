@@ -159,8 +159,9 @@ class JGitUtil {
 		try {
 			RevWalk walk = new RevWalk(repo.jgit.repository)
 			RevTag rev = walk.parseTag(ref.objectId)
+			RevObject target = walk.peel(rev)
 			walk.parseBody(rev.object)
-			props.commit = convertCommit(rev.object)
+			props.commit = convertCommit(target)
 			PersonIdent tagger = rev.taggerIdent
 			props.tagger = new Person(tagger.name, tagger.emailAddress)
 			props.fullMessage = rev.fullMessage

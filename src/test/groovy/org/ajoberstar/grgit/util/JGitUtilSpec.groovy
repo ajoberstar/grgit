@@ -27,6 +27,8 @@ import org.eclipse.jgit.errors.RevisionSyntaxException
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.merge.MergeStrategy
+import org.eclipse.jgit.revwalk.RevWalk
+import org.eclipse.jgit.revwalk.RevTag
 
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
@@ -40,6 +42,7 @@ class JGitUtilSpec extends Specification {
 	List commits = []
 	Ref annotatedTag
 	Ref unannotatedTag
+	Ref taggedAnnotatedTag
 
 	def 'resolveObject works for branch name'() {
 		expect:
@@ -142,6 +145,19 @@ class JGitUtilSpec extends Specification {
 		)
 	}
 
+	def 'resolveTag works for a tag pointing to a tag'() {
+		given:
+		Person person = new Person(repo.jgit.repo.config.getString('user', null, 'name'), repo.jgit.repo.config.getString('user', null, 'email'))
+		expect:
+		JGitUtil.resolveTag(repo, taggedAnnotatedTag) == new Tag(
+			JGitUtil.convertCommit(commits[0]),
+			person,
+			'refs/tags/v1.1.0',
+			'testing',
+			'testing'
+		)
+	}
+
 	def setup() {
 		File repoDir = tempDir.newFolder('repo')
 		Git git = Git.init().setDirectory(repoDir).call()
@@ -165,6 +181,8 @@ class JGitUtilSpec extends Specification {
 		commits << git.commit().setMessage('third commit').call()
 		git.checkout().setName('master').call()
 		commits << git.merge().include(commits[2]).setStrategy(MergeStrategy.OURS).call().newHead
+		RevTag tagV1 = new RevWalk(git.repository).parseTag(annotatedTag.objectId)
+		taggedAnnotatedTag = git.tag().setName('v1.1.0').setObjectId(tagV1).setMessage('testing').call()
 		repo = Grgit.open(repoDir).repository
 	}
 }
