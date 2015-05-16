@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.CommitDiff
@@ -28,6 +27,7 @@ import org.eclipse.jgit.diff.RawTextComparator
 import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.revwalk.RevCommit
+import org.eclipse.jgit.revwalk.RevObject
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.TreeWalk
 
@@ -50,113 +50,57 @@ import java.util.concurrent.Callable
  * CommitDiff diff = grgit.show(commit: myCommit)
  * </pre>
  *
+ * @since 1.2.0
  * @see <a href="http://git-scm.com/docs/git-show">git-show Manual Page</a>
  */
 class ShowOp implements Callable<CommitDiff> {
-    private final Repository repo
+	private final Repository repo
 
-    /**
-     * The commit to show
-     * @see {@link org.ajoberstar.grgit.service.ResolveService#toRevisionString(Object)}
-     */
-    Object commit
+	/**
+	 * The commit to show
+	 * @see {@link org.ajoberstar.grgit.service.ResolveService#toRevisionString(Object)}
+	 */
+	Object commit
 
-    ShowOp(Repository repo) {
-        this.repo = repo
-    }
+	ShowOp(Repository repo) {
+		this.repo = repo
+	}
 
-    CommitDiff call() {
+	CommitDiff call() {
 
-        if (!commit) {
-            throw new GrgitException("You must specify which commit to show")
-        }
-        def revString = new ResolveService(repo).toRevisionString(commit)
-        def revObject = JGitUtil.resolveRevObject(repo, revString)
+		if (!commit) {
+			throw new GrgitException("You must specify which commit to show")
+		}
+		def revString = new ResolveService(repo).toRevisionString(commit)
+		def commitId = JGitUtil.resolveRevObject(repo, revString)
+		def parentId = JGitUtil.resolveParents(repo, commitId).find()
 
-        return new CommitDiff(
-                commit: JGitUtil.convertCommit(revObject),
-                diffs: this.getFilesInCommit(repo, revObject))
-    }
+		def commit = JGitUtil.resolveCommit(repo, commitId)
 
-    /**
-     * Returns the list of files changed in a specified commit. If the
-     * repository does not exist or is empty, an empty list is returned.
-     *
-     * @param repository git commit
-     * @param commit if null, HEAD is used.
-     * @return The diffs in a commit
-     */
-    public static List<CommitDiff.Diff> getFilesInCommit(Repository repository, RevCommit commit) {
+		TreeWalk walk = new TreeWalk(repo.jgit.repository)
 
-        if (!hasCommits(repository)) {
-            return [];
-        }
-        RevWalk rw = new RevWalk(repository.jgit.repository)
-        try {
-            if (!commit) {
-                ObjectId object = head(repository)
-                commit = rw.parseCommit(object)
-            }
-
-            def isFirstCommit = commit.getParentCount() == 0
-            if (isFirstCommit) {
-                return firstCommit(repository, commit)
-            } else {
-                return diffCommit(rw, commit, repository)
-            }
-        } catch (Throwable t) {
-            throw new GrgitException('Failed to determine files in commit..', t)
-        } finally {
-            rw.dispose()
-        }
-    }
-
-    private static List<CommitDiff.Diff> diffCommit(RevWalk rw, RevCommit commit, Repository repository) {
-        def outputStream = new ByteArrayOutputStream()
-        def df = new DiffFormatter(outputStream)
-        df.setRepository(repository.jgit.repository)
-        df.setDiffComparator(RawTextComparator.DEFAULT)
-        df.setDetectRenames(true)
-        RevCommit parent = rw.parseCommit(commit.getParent(0).getId())
-        List<DiffEntry> diffs = df.scan(parent.getTree(), commit.getTree())
-        return diffs.collect {
-            df.format(it)   // Write diff to the outputstream
-            return JGitUtil.convertDiff(it, outputStream.toString())
-        }
-    }
-
-    private static List<CommitDiff.Diff> firstCommit(Repository repository, RevCommit commit) {
-        TreeWalk tw = new TreeWalk(repository.jgit.repository)
-        tw.reset()
-        tw.setRecursive(true)
-        tw.addTree(commit.getTree())
-        def list = []
-        while (tw.next()) {
-            def content = new String(repository.jgit.repository.newObjectReader().open(tw.getObjectId(0)).getBytes())
-            list.add(new CommitDiff.Diff(
-                    tw.getPathString(),
-                    tw.getObjectId(0).getName(),
-                    ChangeType.ADD,
-                    content))
-        }
-        tw.release()
-        return list
-    }
-
-    private static boolean hasCommits(Repository repository) {
-        !repository.jgit.log().call().asList().isEmpty()
-    }
-
-    /**
-     * Returns head of the repo
-     * @param repository The jgit repo
-     * @return The head
-     */
-    public static ObjectId head(Repository repository) {
-        ObjectId object = repository.jgit.repository.resolve(Constants.HEAD)
-        if (object == null) {
-            throw new GrgitException('There is no HEAD')
-        }
-        return object
-    }
+		if (parentId) {
+			walk.addTree(parentId.tree)
+			walk.addTree(commitId.tree)
+			Map entries = DiffEntry.scan(walk).groupBy { it.changeType }
+			return new CommitDiff(
+				commit: commit,
+				added: entries[ChangeType.ADD].collect { it.newPath },
+				copied: entries[ChangeType.COPY].collect { it.newPath },
+				modified: entries[ChangeType.MODIFY].collect { it.newPath },
+				removed: entries[ChangeType.DELETE].collect { it.oldPath },
+				renamed: entries[ChangeType.RENAME].collect { it.newPath }
+			)
+		} else {
+			walk.addTree(commitId.tree)
+			def added = []
+			while (walk.next()) {
+				added << walk.pathString
+			}
+			return new CommitDiff(
+				commit: commit,
+				added: added
+			)
+		}
+	}
 }

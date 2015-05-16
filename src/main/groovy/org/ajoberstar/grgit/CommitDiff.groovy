@@ -13,60 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.ajoberstar.grgit
 
 import groovy.transform.Immutable
+import groovy.transform.ToString
 import org.eclipse.jgit.diff.DiffEntry
 
 @Immutable
+@ToString(includeNames=true)
 class CommitDiff {
+	Commit commit
 
-    /**
-     * The commit
-     */
-    Commit commit
+	Set<String> added = []
 
-    /**
-     * Changes made in the commit
-     */
-    List<Diff> diffs
+	Set<String> copied = []
 
-    /**
-     * Represents changes made in a commit
-     */
-    static class Diff {
-        /**
-         * The name of the file that was changed
-         */
-        String fileName
+	Set<String> modified = []
 
-        /**
-         * The git object it
-         */
-        String objectId
+	Set<String> removed = []
 
-        /**
-         * The diff represented as a String
-         */
-        String diffAsString
+	Set<String> renamed = []
 
-        /**
-         * The kind of change done to the file
-         */
-        DiffEntry.ChangeType changeType
-
-        Diff(String fileName, String objectId, DiffEntry.ChangeType type) {
-            this.fileName = fileName
-            this.objectId = objectId
-            this.changeType = type
-        }
-
-        Diff(String fileName, String objectId, DiffEntry.ChangeType type, String diffAsString) {
-            this.fileName = fileName
-            this.objectId = objectId
-            this.changeType = type
-            this.diffAsString = diffAsString
-        }
-    }
+	/**
+	 * Gets all changed files.
+	 * @return all changed files
+	 */
+	Set<String> getAllChanges() {
+		return added + copied + modified + removed + renamed
+	}
 }

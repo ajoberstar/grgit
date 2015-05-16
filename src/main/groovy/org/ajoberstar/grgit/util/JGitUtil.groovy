@@ -95,6 +95,21 @@ class JGitUtil {
 	}
 
 	/**
+	 * Resolves the parents of an object.
+	 * @param repo the Grgit repository to resolve the parents from
+	 * @param id the object to get the parents of
+	 * @return the parents of the commit
+	 * @throws GrgitException if the parents cannot be resolved
+	 */
+	static Set<ObjectId> resolveParents(Repository repo, ObjectId id) {
+		RevWalk walk = new RevWalk(repo.jgit.repository)
+		RevCommit rev = walk.parseCommit(id)
+		return rev.parents.collect {
+			walk.parseCommit(it)
+		}
+	}
+
+	/**
 	 * Resolves a Grgit {@code Commit} using the given revision string.
 	 * @param repo the Grgit repository to resolve the commit from
 	 * @param revstr the revision string to use
@@ -240,26 +255,6 @@ class JGitUtil {
 			fetchRefSpecs: rc.fetchRefSpecs.collect { it.toString() },
 			pushRefSpecs: rc.pushRefSpecs.collect { it.toString() },
 			mirror: rc.mirror)
-	}
-
-	static CommitDiff.Diff convertDiff(DiffEntry diffEntry, String diffAsString) {
-		if (diffEntry.getChangeType().equals(DiffEntry.ChangeType.DELETE)) {
-			return new CommitDiff.Diff(
-					diffEntry.getOldPath(),
-					diffEntry.getOldId().name(),
-					diffEntry.getChangeType())
-		} else if (diffEntry.getChangeType().equals(DiffEntry.ChangeType.RENAME)) {
-			return new CommitDiff.Diff(
-					diffEntry.getNewPath(),
-					diffEntry.getNewId().name(),
-					diffEntry.getChangeType())
-		}
-		return new CommitDiff.Diff(
-				diffEntry.getNewPath(),
-				diffEntry.getNewId().name(),
-				diffEntry.getChangeType(),
-				diffAsString
-		)
 	}
 
 	/**
