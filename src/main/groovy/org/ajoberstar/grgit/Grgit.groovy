@@ -84,6 +84,7 @@ import org.eclipse.jgit.api.Git
  *   <li>{@link org.ajoberstar.grgit.operation.RmOp remove}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.ResetOp reset}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.RevertOp revert}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.ShowOp diff}</li>
  * </ul>
  *
  * <p>
@@ -107,7 +108,7 @@ class Grgit {
 		clean: CleanOp, status: StatusOp, add: AddOp, remove: RmOp,
 		reset: ResetOp, apply: ApplyOp, pull: PullOp, push: PushOp,
 		fetch: FetchOp, checkout: CheckoutOp, log: LogOp, commit: CommitOp,
-		revert: RevertOp, merge: MergeOp, describe: DescribeOp
+		revert: RevertOp, merge: MergeOp, describe: DescribeOp, show: ShowOp
 	].asImmutable()
 
 	/**
