@@ -53,6 +53,11 @@ If you're interested in a change, please submit an issue (or even better a pull 
 
 ## Release Notes
 
+### 1.2.0
+
+* Added `grgit.show()` operation. (Thanks to [Odin Hole Standal](https://github.com/Odinodin))
+* Fixed tag parsing to support tags that point to other tags.
+
 ### 1.1.0
 
 * Added `grgit.describe()` method. (Thanks to [Louis Bergulson](https://github.com/lbergelson))

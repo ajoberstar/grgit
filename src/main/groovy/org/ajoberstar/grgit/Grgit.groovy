@@ -84,6 +84,7 @@ import org.eclipse.jgit.api.Git
  *   <li>{@link org.ajoberstar.grgit.operation.RmOp remove}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.ResetOp reset}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.RevertOp revert}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.ShowOp show}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.ShowOp diff}</li>
  * </ul>
  *
@@ -95,6 +96,17 @@ import org.eclipse.jgit.api.Git
  *   <li>{@link org.ajoberstar.grgit.operation.CloneOp clone}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.InitOp init}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.OpenOp open}</li>
+ * </ul>
+ *
+ * <p>
+ *   Further operations are available on the following services.
+ * </p>
+ *
+ * <ul>
+ *   <li>{@link org.ajoberstar.grgit.service.BranchService branch}</li>
+ *   <li>{@link org.ajoberstar.grgit.service.RemoveService remote}</li>
+ *   <li>{@link org.ajoberstar.grgit.service.ResolveService resolve}</li>
+ *   <li>{@link org.ajoberstar.grgit.service.TagService tag}</li>
  * </ul>
  *
  * @since 0.1.0
