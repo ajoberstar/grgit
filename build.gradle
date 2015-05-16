@@ -77,7 +77,3 @@ test {
 		}
 	}
 }
-
-wrapper {
-	gradleVersion = '2.2.1'
-}
