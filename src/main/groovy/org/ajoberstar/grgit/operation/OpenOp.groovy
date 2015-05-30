@@ -15,10 +15,6 @@
  */
 package org.ajoberstar.grgit.operation
 
-import org.eclipse.jgit.errors.RepositoryNotFoundException
-import org.eclipse.jgit.internal.storage.file.FileRepository
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder
-
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Credentials
@@ -27,6 +23,8 @@ import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.util.CoercionUtil
 
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.internal.storage.file.FileRepository
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 
 /**
  * Opens an existing repository. Returns a {@link Grgit} pointing

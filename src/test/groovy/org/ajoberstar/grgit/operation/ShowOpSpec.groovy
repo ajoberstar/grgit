@@ -18,7 +18,6 @@ package org.ajoberstar.grgit.operation
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.CommitDiff
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
-import org.eclipse.jgit.diff.DiffEntry
 
 class ShowOpSpec extends SimpleGitOpSpec {
 

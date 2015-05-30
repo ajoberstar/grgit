@@ -17,7 +17,6 @@ package org.ajoberstar.grgit
 
 import groovy.transform.Immutable
 import groovy.transform.ToString
-import org.eclipse.jgit.diff.DiffEntry
 
 @Immutable
 @ToString(includeNames=true)

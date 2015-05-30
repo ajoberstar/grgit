@@ -27,8 +27,8 @@ import org.eclipse.jgit.errors.RevisionSyntaxException
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.merge.MergeStrategy
-import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.revwalk.RevTag
+import org.eclipse.jgit.revwalk.RevWalk
 
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder

@@ -17,14 +17,13 @@ package org.ajoberstar.grgit.util
 
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Commit
-import org.ajoberstar.grgit.CommitDiff
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Remote
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.exception.GrgitException
-import org.eclipse.jgit.diff.DiffEntry
+
 import org.eclipse.jgit.errors.AmbiguousObjectException
 import org.eclipse.jgit.errors.IncorrectObjectTypeException
 import org.eclipse.jgit.errors.MissingObjectException

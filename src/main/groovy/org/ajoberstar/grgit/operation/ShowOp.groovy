@@ -15,23 +15,17 @@
  */
 package org.ajoberstar.grgit.operation
 
+import java.util.concurrent.Callable
+
 import org.ajoberstar.grgit.CommitDiff
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
+
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffEntry.ChangeType
-import org.eclipse.jgit.diff.DiffFormatter
-import org.eclipse.jgit.diff.RawTextComparator
-import org.eclipse.jgit.lib.Constants
-import org.eclipse.jgit.lib.ObjectId
-import org.eclipse.jgit.revwalk.RevCommit
-import org.eclipse.jgit.revwalk.RevObject
-import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.TreeWalk
-
-import java.util.concurrent.Callable
 
 /**
  * Show changes made in a commit.
