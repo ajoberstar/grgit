@@ -38,7 +38,7 @@ class MultiGitOpSpec extends Specification {
 			setString('user', null, 'email', person.email)
 			save()
 		}
-		return Grgit.open(repoDir)
+		return Grgit.open(dir: repoDir)
 	}
 
 	protected Grgit clone(String name, Grgit remote) {

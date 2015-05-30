@@ -183,6 +183,6 @@ class JGitUtilSpec extends Specification {
 		commits << git.merge().include(commits[2]).setStrategy(MergeStrategy.OURS).call().newHead
 		RevTag tagV1 = new RevWalk(git.repository).parseTag(annotatedTag.objectId)
 		taggedAnnotatedTag = git.tag().setName('v1.1.0').setObjectId(tagV1).setMessage('testing').call()
-		repo = Grgit.open(repoDir).repository
+		repo = Grgit.open(dir: repoDir).repository
 	}
 }

@@ -56,10 +56,10 @@ class BranchStatusOp implements Callable<BranchStatus> {
 				if (status) {
 					return new BranchStatus(realBranch, status.aheadCount, status.behindCount)
 				} else {
-					throw new GrgitException("Could not retrieve status for ${branch}")
+					throw new GrgitException("Could not retrieve status for ${name}")
 				}
 			} else {
-				throw new GrgitException("${branch} is not set to track another branch")
+				throw new GrgitException("${name} is not set to track another branch")
 			}
 		} catch (IOException e) {
 			throw new GrgitException('Problem retrieving branch status.', e)
