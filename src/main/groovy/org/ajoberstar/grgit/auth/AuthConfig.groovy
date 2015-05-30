@@ -50,6 +50,15 @@ import org.ajoberstar.grgit.exception.GrgitException
  * </ul>
  *
  * <p>
+ *   In order to add a non-standard SSH key to use as your credentials,
+ *   use the following property.
+ * </p>
+ *
+ * <ul>
+ *     <li>{@code org.ajoberstar.grgit.auth.ssh.private=<path.to.private.key>}</li>
+ * </ul>
+ *
+ * <p>
  *   The following order is used to determine which authentication option
  *   is used.
  * </p>
@@ -70,6 +79,7 @@ class AuthConfig {
 	static final String FORCE_OPTION = 'org.ajoberstar.grgit.auth.force'
 	static final String USERNAME_OPTION = 'org.ajoberstar.grgit.auth.username'
 	static final String PASSWORD_OPTION = 'org.ajoberstar.grgit.auth.password'
+	static final String SSH_PRIVATE_KEY_OPTION = 'org.ajoberstar.grgit.auth.ssh.private'
 
 	/**
 	 * Set of all authentication options that are allowed in this
@@ -94,10 +104,9 @@ class AuthConfig {
 
 	/**
 	 * Constructs and returns a {@link Credentials} instance reflecting the
-	 * settings in the system properties, but only if both the username and
-	 * password are set.
+	 * settings in the system properties.
 	 * @return a credentials instance reflecting the settings in the system
-	 * properties, or, if either one isn't set, {@code null}
+	 * properties, or, if the username isn't set, {@code null}
 	 */
 	Credentials getHardcodedCreds() {
 		String username = System.properties[USERNAME_OPTION]
@@ -107,6 +116,15 @@ class AuthConfig {
 		} else {
 			return null
 		}
+	}
+
+	/**
+	 * Gets the path to your SSH private key to use during authentication reflecting
+	 * the value set in the system properties.
+	 * @return the path to the SSH key, if set, otherwise {@code null}
+	 */
+	String getSshPrivateKeyPath() {
+		return System.properties[SSH_PRIVATE_KEY_OPTION]
 	}
 
 	/**

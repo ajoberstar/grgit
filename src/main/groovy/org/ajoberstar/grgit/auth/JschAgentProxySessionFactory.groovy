@@ -62,6 +62,11 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 	@Override
 	protected JSch getJSch(Host hc, FS fs) throws JSchException {
 		JSch jsch = super.getJSch(hc, fs)
+
+		if (config.sshPrivateKeyPath) {
+			jsch.addIdentity(config.sshPrivateKeyPath)
+		}
+
 		Connector con = determineConnector()
 		if (con) {
 			IdentityRepository remoteRepo = new RemoteIdentityRepository(con)
