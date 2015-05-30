@@ -195,6 +195,14 @@ class Grgit {
 	}
 
 	/**
+	 * Opens a {@code Grgit} instance by looking up the correct repo dir.
+	 * This is a workaround due to the existing deprecated methods.
+	 */
+	static Grgit open() {
+		return OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], 'open', [] as Object[])
+	}
+
+	/**
 	 * Opens a {@code Grgit} instance in {@code rootDirPath}. If credentials
 	 * are provided they will be used for all operations with using remotes.
 	 * @param rootDirPath path to the repository's root directory

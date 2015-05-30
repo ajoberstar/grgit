@@ -50,7 +50,7 @@ dependencies {
 
 	// testing
 	testCompile 'junit:junit:4.11'
-	testCompile('org.spockframework:spock-core:0.7-groovy-2.0') { exclude group: 'org.codehaus.groovy' }
+	testCompile('org.spockframework:spock-core:1.0-groovy-2.3') { exclude group: 'org.codehaus.groovy' }
 }
 
 tasks.withType(Test) {

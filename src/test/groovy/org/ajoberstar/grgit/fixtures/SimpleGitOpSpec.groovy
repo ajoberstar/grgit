@@ -39,7 +39,7 @@ class SimpleGitOpSpec extends Specification {
 			setString('user', null, 'email', person.email)
 			save()
 		}
-		grgit = Grgit.open(repoDir)
+		grgit = Grgit.open(dir: repoDir)
 	}
 
 	protected File repoFile(String path, boolean makeDirs = true) {

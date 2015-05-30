@@ -15,6 +15,10 @@
  */
 package org.ajoberstar.grgit.operation
 
+import org.eclipse.jgit.errors.RepositoryNotFoundException
+import org.eclipse.jgit.internal.storage.file.FileRepository
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder
+
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Credentials
@@ -28,16 +32,22 @@ import org.eclipse.jgit.api.Git
  * Opens an existing repository. Returns a {@link Grgit} pointing
  * to the resulting repository.
  *
- * <p>To open a repository in the current working directory.</p>
+ * <p>To open a repository by checking for GIT_DIR and/or walking up the current tree.</p>
  *
  * <pre>
- * def grgit = Grgit.open(dir: '.')
+ * def grgit = Grgit.open()
+ * </pre>
+ *
+ * <p>To open a repository in a specific directory.</p>
+ *
+ * <pre>
+ * def grgit = Grgit.open(dir: 'some/dir/path')
  * </pre>
  *
  * <p>To open a repository using hard-coded credentials.</p>
  *
  * <pre>
- * def grgit = Grgit.open(dir: 'gradle-git', creds: new Credentials(username: 'user', password: 'pass'))
+ * def grgit = Grgit.open(dir: 'some/dir/path', creds: new Credentials(username: 'user', password: 'pass'))
  * </pre>
  *
  * @since 1.0.0
@@ -55,8 +65,18 @@ class OpenOp implements Callable<Grgit> {
 	Object dir
 
 	Grgit call() {
-		def dirFile = CoercionUtil.toFile(dir)
-		def repo = new Repository(dirFile, Git.open(dirFile), creds)
-		return new Grgit(repo)
+		if (dir) {
+			def dirFile = CoercionUtil.toFile(dir)
+			def repo = new Repository(dirFile, Git.open(dirFile), creds)
+			return new Grgit(repo)
+		} else {
+			FileRepository jgitRepo = new FileRepositoryBuilder()
+					.readEnvironment()
+					.findGitDir()
+					.build()
+			Git jgit = new Git(jgitRepo)
+			Repository repo = new Repository(jgitRepo.directory, jgit, creds)
+			return new Grgit(repo)
+		}
 	}
 }
