@@ -31,6 +31,4 @@ final class CoercionUtil {
 			return new File(obj.toString())
 		}
 	}
-
-
 }

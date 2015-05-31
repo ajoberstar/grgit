@@ -118,4 +118,13 @@ class OpenOpSpec extends SimpleGitOpSpec {
         opened.head() == commit
         opened.status() == new Status(unstaged: [modified: [FILE_PATH]])
     }
+
+    def 'open with currentDir succeeds if current directory is subdir of a repo'() {
+        when:
+        Grgit opened = Grgit.open(currentDir: subdir)
+        repoFile(FILE_PATH) << '1.2'
+        then:
+        opened.head() == commit
+        opened.status() == new Status(unstaged: [modified: [FILE_PATH]])
+    }
 }
