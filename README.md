@@ -53,6 +53,11 @@ If you're interested in a change, please submit an issue (or even better a pull 
 
 ## Release Notes
 
+### 1.3.0
+
+* `grgit.open()` no longer requires the exact repo directory to be specified. (See [OpenOp](http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/operation/OpenOp.html))
+* An alternate SSH private key location can be specified with `org.ajoberstar.grgit.auth.ssh.private` (See [AuthConfig](http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/auth/AuthConfig.html))
+
 ### 1.2.0
 
 * Added `grgit.show()` operation. (Thanks to [Odin Hole Standal](https://github.com/Odinodin))
