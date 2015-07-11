@@ -24,8 +24,8 @@ more user interaction (such as resolving merge conflicts) are intentionally excl
 **NOTE:** Grgit requires Java 7 (or higher).
 
 * [Release Notes](https://github.com/ajoberstar/grgit/releases)
-* [API Documentation](http://ajoberstar.org/grgit/docs/groovydoc/index.html?org/ajoberstar/grgit/Grgit.html) (including usage examples)
-** Authentication is covered in [AuthConfig](http://ajoberstar.org/grgit/docs/groovydoc/index.html?org/ajoberstar/grgit/auth/AuthConfig.html)
+* [Usage examples and API documentation](http://ajoberstar.org/grgit/docs/groovydoc/index.html?org/ajoberstar/grgit/Grgit.html)
+* [Authentication](http://ajoberstar.org/grgit/docs/groovydoc/index.html?org/ajoberstar/grgit/auth/AuthConfig.html)
 
 ## Questions, Bugs, and Features
 
