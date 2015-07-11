@@ -104,7 +104,7 @@ import org.eclipse.jgit.api.Git
  *
  * <ul>
  *   <li>{@link org.ajoberstar.grgit.service.BranchService branch}</li>
- *   <li>{@link org.ajoberstar.grgit.service.RemoveService remote}</li>
+ *   <li>{@link org.ajoberstar.grgit.service.RemoteService remote}</li>
  *   <li>{@link org.ajoberstar.grgit.service.ResolveService resolve}</li>
  *   <li>{@link org.ajoberstar.grgit.service.TagService tag}</li>
  * </ul>
