@@ -31,7 +31,7 @@ class MultiGitOpSpec extends Specification {
 	Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
 
 	protected Grgit init(String name) {
-		File repoDir = tempDir.newFolder(name)
+		File repoDir = tempDir.newFolder(name).canonicalFile
 		Git git = Git.init().setDirectory(repoDir).call()
 		git.repo.config.with {
 			setString('user', null, 'name', person.name)
