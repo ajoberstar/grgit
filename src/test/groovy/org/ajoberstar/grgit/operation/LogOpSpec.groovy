@@ -39,6 +39,7 @@ class LogOpSpec extends SimpleGitOpSpec {
 		testFile1 << '2'
 		grgit.add(patterns: ['.'])
 		commits << grgit.commit(message: 'second commit')
+		grgit.tag.add(name: 'v1.0.0', message: 'annotated tag')
 
 		grgit.checkout(branch: intToCommit(0).id)
 		testFile1 << '3'
@@ -84,5 +85,10 @@ class LogOpSpec extends SimpleGitOpSpec {
 	def 'log with path includes only commits with changes for that path'() {
 		expect:
 		grgit.log(paths:['2.txt']) == [5, 0].collect(intToCommit)
+	}
+
+	def 'log with annotated tag short name works'() {
+		expect:
+		grgit.log(includes: ['v1.0.0']) == [1, 0].collect(intToCommit)
 	}
 }

@@ -78,14 +78,16 @@ class JGitUtil {
 	 * Resolves a JGit {@code RevObject} using the given revision string.
 	 * @param repo the Grgit repository to resolve the object from
 	 * @param revstr the revision string to use
+	 * @param peel whether or not to peel the resolved object
 	 * @return the resolved object
 	 * @throws GrgitException if the object cannot be resolved
 	 */
-	static RevObject resolveRevObject(Repository repo, String revstr) {
+	static RevObject resolveRevObject(Repository repo, String revstr, boolean peel = false) {
 		ObjectId id = resolveObject(repo, revstr)
 		RevWalk walk = new RevWalk(repo.jgit.repository)
 		try {
-			return walk.parseAny(id)
+			RevObject rev = walk.parseAny(id)
+			return peel ? walk.peel(rev) : rev
 		} catch (MissingObjectException e) {
 			throw new GrgitException("Supplied object does not exist: ${revstr}", e)
 		} catch (IOException e) {
