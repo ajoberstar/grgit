@@ -145,8 +145,8 @@ class PullOpSpec extends MultiGitOpSpec {
 		}
 
 		// has state of all changes
-		repoFile(localGrgit, '1.txt').text == String.format('1.1%n1.2%n1.3%n')
-		repoFile(localGrgit, '3.txt').text == String.format('3.1%n')
+		repoFile(localGrgit, '1.txt').text.normalize() == '1.1\n1.2\n1.3\n'
+		repoFile(localGrgit, '3.txt').text == '3.1\n'
 	}
 
 	def 'pull to local repo from other remote fast-forwards current branch'() {

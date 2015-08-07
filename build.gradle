@@ -27,7 +27,7 @@ repositories {
 	mavenCentral()
 }
 
-def jgitVersion = '3.7.0.201502260915-r'
+def jgitVersion = '4.0.1.201506240215-r'
 // def jgitVersion = '3.3.2.201404171909-r' // pre-bug
 // def jgitVersion = '3.4.1.201406201815-r' // behavior of log command is different
 
@@ -41,15 +41,14 @@ dependencies {
 
 	// agentproxy
 	['jsch', 'pageant', 'sshagent', 'usocket-jna', 'usocket-nc'].each {
-		compile "com.jcraft:jsch.agentproxy.${it}:0.0.7"
+		compile "com.jcraft:jsch.agentproxy.${it}:0.0.9"
 	}
 
 	// logging
-	compile 'org.slf4j:slf4j-api:1.7.7'
-	testRuntime 'org.slf4j:slf4j-simple:1.7.7'
+	compile 'org.slf4j:slf4j-api:1.7.12'
+	testRuntime 'org.slf4j:slf4j-simple:1.7.12'
 
 	// testing
-	testCompile 'junit:junit:4.11'
 	testCompile('org.spockframework:spock-core:1.0-groovy-2.3') { exclude group: 'org.codehaus.groovy' }
 }
 
