@@ -41,6 +41,7 @@ class ResolveService {
 	 *   <li>{@link org.ajoberstar.grgit.Tag}</li>
 	 *   <li>{@link org.ajoberstar.grgit.Branch}</li>
 	 *   <li>{@link String}</li>
+	 *   <li>{@link GString}</li>
 	 * </ul>
 	 *
 	 * <p>
@@ -59,7 +60,7 @@ class ResolveService {
 			return object.commit
 		} else if (object instanceof Branch) {
 			return JGitUtil.resolveCommit(repository, object.fullName)
-		} else if (object instanceof String) {
+		} else if (object instanceof String || object instanceof GString) {
 			return JGitUtil.resolveCommit(repository, object)
 		} else {
 			throwIllegalArgument(object)
@@ -72,6 +73,7 @@ class ResolveService {
 	 * <ul>
 	 *   <li>{@link Branch}</li>
 	 *   <li>{@link String}</li>
+	 *   <li>{@link GString}</li>
 	 * </ul>
 	 * @param object the object to resolve
 	 * @return the corresponding commit
@@ -81,7 +83,7 @@ class ResolveService {
 			return object
 		} else if (object instanceof Branch) {
 			return object
-		} else if (object instanceof String) {
+		} else if (object instanceof String || object instanceof GString) {
 			return JGitUtil.resolveBranch(repository, object)
 		} else {
 			throwIllegalArgument(object)
@@ -93,6 +95,7 @@ class ResolveService {
 	 * types:
 	 * <ul>
 	 *   <li>{@link String}</li>
+	 *   <li>{@link GString}</li>
 	 *   <li>{@link Branch}</li>
 	 * </ul>
 	 * @param object the object to resolve
@@ -101,7 +104,7 @@ class ResolveService {
 	String toBranchName(Object object) {
 		if (object == null) {
 			return object
-		} else if (object instanceof String) {
+		} else if (object instanceof String || object instanceof GString) {
 			return object
 		} else if (object instanceof Branch) {
 			return object.fullName
@@ -116,6 +119,7 @@ class ResolveService {
 	 * <ul>
 	 *   <li>{@link Tag}</li>
 	 *   <li>{@link String}</li>
+	 *   <li>{@link GString}</li>
 	 * </ul>
 	 * @param object the object to resolve
 	 * @return the corresponding commit
@@ -125,7 +129,7 @@ class ResolveService {
 			return object
 		} else if (object instanceof Tag) {
 			return object
-		} else if (object instanceof String) {
+		} else if (object instanceof String || object instanceof GString) {
 			JGitUtil.resolveTag(repository, object)
 		} else {
 			throwIllegalArgument(object)
@@ -137,6 +141,7 @@ class ResolveService {
 	 * types:
 	 * <ul>
 	 *   <li>{@link String}</li>
+	 *   <li>{@link GString}</li>
 	 *   <li>{@link Tag}</li>
 	 * </ul>
 	 * @param object the object to resolve
@@ -145,7 +150,7 @@ class ResolveService {
 	String toTagName(Object object) {
 		if (object == null) {
 			return object
-		} else if (object instanceof String) {
+		} else if (object instanceof String || object instanceof GString) {
 			return object
 		} else if (object instanceof Tag) {
 			return object.fullName
@@ -162,6 +167,7 @@ class ResolveService {
 	 *   <li>{@link org.ajoberstar.grgit.Tag}</li>
 	 *   <li>{@link org.ajoberstar.grgit.Branch}</li>
 	 *   <li>{@link String}</li>
+	 *   <li>{@link GString}</li>
 	 * </ul>
 	 * @param object the object to resolve
 	 * @return the corresponding commit
@@ -175,7 +181,7 @@ class ResolveService {
 			return object.fullName
 		} else if (object instanceof Branch) {
 			return object.fullName
-		} else if (object instanceof String) {
+		} else if (object instanceof String || object instanceof GString) {
 			return object
 		} else {
 			throwIllegalArgument(object)
