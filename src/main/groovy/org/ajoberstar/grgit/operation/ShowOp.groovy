@@ -25,6 +25,7 @@ import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffEntry.ChangeType
+import org.eclipse.jgit.diff.RenameDetector
 import org.eclipse.jgit.treewalk.TreeWalk
 
 /**
@@ -76,14 +77,19 @@ class ShowOp implements Callable<CommitDiff> {
 		if (parentId) {
 			walk.addTree(parentId.tree)
 			walk.addTree(commitId.tree)
-			Map entries = DiffEntry.scan(walk).groupBy { it.changeType }
+			List initialEntries = DiffEntry.scan(walk)
+			RenameDetector detector = new RenameDetector(repo.jgit.repository)
+			detector.addAll(initialEntries)
+			List entries = detector.compute()
+			Map entriesByType = entries.groupBy { it.changeType }
+
 			return new CommitDiff(
 				commit: commit,
-				added: entries[ChangeType.ADD].collect { it.newPath },
-				copied: entries[ChangeType.COPY].collect { it.newPath },
-				modified: entries[ChangeType.MODIFY].collect { it.newPath },
-				removed: entries[ChangeType.DELETE].collect { it.oldPath },
-				renamed: entries[ChangeType.RENAME].collect { it.newPath }
+				added: entriesByType[ChangeType.ADD].collect { it.newPath },
+				copied: entriesByType[ChangeType.COPY].collect { it.newPath },
+				modified: entriesByType[ChangeType.MODIFY].collect { it.newPath },
+				removed: entriesByType[ChangeType.DELETE].collect { it.oldPath },
+				renamed: entriesByType[ChangeType.RENAME].collect { it.newPath }
 			)
 		} else {
 			walk.addTree(commitId.tree)

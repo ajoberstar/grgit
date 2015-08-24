@@ -92,6 +92,24 @@ class ShowOpSpec extends SimpleGitOpSpec {
 		)
 	}
 
+	def 'can show diffs in commit with rename'() {
+		given:
+		repoFile('elephant.txt') << 'I have tusks.'
+		grgit.add(patterns: ['.'])
+		grgit.commit(message: 'Adding elephant.')
+
+		repoFile('elephant.txt').renameTo(repoFile('mammoth.txt'))
+		grgit.add(patterns: ['.'])
+		grgit.remove(patterns: ['elephant.txt'])
+		Commit renameCommit = grgit.commit(message: 'Renaming to mammoth.')
+
+		expect:
+		grgit.show(commit: renameCommit) == new CommitDiff(
+			commit: renameCommit,
+			renamed: ['mammoth.txt']
+		)
+	}
+
 	def 'can show diffs based on rev string'() {
 		File fooFile = repoFile("foo.txt")
 		fooFile << "foo!"
