@@ -22,7 +22,7 @@ import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 class ShowOpSpec extends SimpleGitOpSpec {
 
 	def 'can show diffs in commit that added new file'() {
-		File fooFile = repoFile("foo.txt")
+		File fooFile = repoFile("dir1/foo.txt")
 		fooFile << "foo!"
 		grgit.add(patterns: ['.'])
 		Commit commit = grgit.commit(message: "Initial commit")
@@ -30,7 +30,7 @@ class ShowOpSpec extends SimpleGitOpSpec {
 		expect:
 		grgit.show(commit: commit) == new CommitDiff(
 			commit: commit,
-			added: ['foo.txt']
+			added: ['dir1/foo.txt']
 		)
 	}
 

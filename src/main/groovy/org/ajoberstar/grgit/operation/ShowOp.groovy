@@ -73,6 +73,7 @@ class ShowOp implements Callable<CommitDiff> {
 		def commit = JGitUtil.resolveCommit(repo, commitId)
 
 		TreeWalk walk = new TreeWalk(repo.jgit.repository)
+		walk.recursive = true
 
 		if (parentId) {
 			walk.addTree(parentId.tree)
