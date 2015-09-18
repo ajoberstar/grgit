@@ -2,8 +2,8 @@
 
 [![Bintray](https://img.shields.io/bintray/v/ajoberstar/libraries/org.ajoberstar%3Agrgit.svg?style=flat-square)](https://bintray.com/ajoberstar/libraries/org.ajoberstar%3Agrgit/_latestVersion)
 [![Travis](https://img.shields.io/travis/ajoberstar/grgit.svg?style=flat-square)](https://travis-ci.org/ajoberstar/grgit)
-[![GitHub license](https://img.shields.io/github/license/ajoberstar/grgit.svg?style=flat-square)](https://github.com/ajoberstar/grgit/blob/master/LICENSE)
 [![Maintainer Status](http://stillmaintained.com/ajoberstar/grgit.svg)](http://stillmaintained.com/ajoberstar/grgit)
+[![GitHub license](https://img.shields.io/github/license/ajoberstar/grgit.svg?style=flat-square)](https://github.com/ajoberstar/grgit/blob/master/LICENSE)
 
 ## Why do you care?
 
