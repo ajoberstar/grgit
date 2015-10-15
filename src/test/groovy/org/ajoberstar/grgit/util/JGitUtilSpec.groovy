@@ -109,13 +109,14 @@ class JGitUtilSpec extends Specification {
 		given:
 		Person person = new Person(repo.jgit.repo.config.getString('user', null, 'name'), repo.jgit.repo.config.getString('user', null, 'email'))
 		expect:
-		JGitUtil.convertCommit(commits[0]) == new Commit(
-			ObjectId.toString(commits[0]),
+		JGitUtil.convertCommit(commits[1]) == new Commit(
+			ObjectId.toString(commits[1]),
+			[ObjectId.toString(commits[0])],
 			person,
 			person,
-			commits[0].commitTime,
-			'first commit\ntesting',
-			'first commit testing'
+			commits[1].commitTime,
+			'second commit',
+			'second commit'
 		)
 	}
 

@@ -84,7 +84,7 @@ class LogOpSpec extends SimpleGitOpSpec {
 
 	def 'log with path includes only commits with changes for that path'() {
 		expect:
-		grgit.log(paths:['2.txt']) == [5, 0].collect(intToCommit)
+		grgit.log(paths:['2.txt']).collect { it.id } == [5, 0].collect(intToCommit).collect { it.id }
 	}
 
 	def 'log with annotated tag short name works'() {

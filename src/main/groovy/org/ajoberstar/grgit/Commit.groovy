@@ -29,6 +29,11 @@ class Commit {
 	String id
 
 	/**
+	 * Hashes of any parent commits.
+	 */
+	List<String> parentIds
+
+	/**
 	 * The author of the changes in the commit.
 	 */
 	Person author

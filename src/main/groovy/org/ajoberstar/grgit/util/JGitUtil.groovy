@@ -141,7 +141,7 @@ class JGitUtil {
 	 */
 	static Commit convertCommit(RevCommit rev) {
 		Map props = [:]
-		props.id = ObjectId.toString(rev.id)
+		props.id = ObjectId.toString(rev)
 		PersonIdent committer = rev.committerIdent
 		props.committer = new Person(committer.name, committer.emailAddress)
 		PersonIdent author = rev.authorIdent
@@ -149,6 +149,7 @@ class JGitUtil {
 		props.time = rev.commitTime
 		props.fullMessage = rev.fullMessage
 		props.shortMessage = rev.shortMessage
+		props.parentIds = rev.parents.collect { ObjectId.toString(it) }
 		return new Commit(props)
 	}
 
