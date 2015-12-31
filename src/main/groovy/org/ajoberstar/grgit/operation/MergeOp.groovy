@@ -58,6 +58,11 @@ class MergeOp implements Callable<Void> {
 	Object head
 
 	/**
+	 * The message to use for the merge commit
+	 */
+	String message
+
+	/**
 	 * How to handle the merge.
 	 */
 	Mode mode
@@ -76,6 +81,9 @@ class MergeOp implements Callable<Void> {
 			} else {
 				cmd.include(ref)
 			}
+		}
+		if (message) {
+			cmd.setMessage(message)
 		}
 		switch (mode) {
 			case Mode.ONLY_FF:
