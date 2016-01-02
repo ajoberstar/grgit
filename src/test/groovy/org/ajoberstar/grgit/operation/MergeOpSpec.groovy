@@ -193,7 +193,7 @@ class MergeOpSpec extends MultiGitOpSpec {
 			excludes = [oldHead.id, mergeHead.id]
 		}.size() == 1
 		and: 'the merge commits message mentions branch name'
-		localGrgit.head().shortMessage == 'Merge branch origin/clean into merge-test'
+		localGrgit.head().shortMessage == 'Merge remote-tracking branch \'origin/clean\' into merge-test'
 	}
 
 	def 'merge of a commit includes this in default message'() {
