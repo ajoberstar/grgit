@@ -1,5 +1,6 @@
 language: java
 install: ""
 script: TERM=dumb ./gradlew clean check
+sudo: false
 jdk:
     - openjdk7
