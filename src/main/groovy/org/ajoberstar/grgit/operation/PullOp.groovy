@@ -90,11 +90,10 @@ class PullOp implements Callable<Void> {
 		if (remote) { cmd.remote = remote }
 		if (branch) { cmd.remoteBranchName = branch }
 		cmd.rebase = rebase
-        TransportOpUtil.configure(cmd, repo.credentials)
+		TransportOpUtil.configure(cmd, repo.credentials)
 
 		try {
 			PullResult result = cmd.call()
-			println result
 			if (!result.successful) {
 				throw new GrgitException("Could not pull: ${result}")
 			}
