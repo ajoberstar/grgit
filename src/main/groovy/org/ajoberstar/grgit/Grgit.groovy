@@ -85,7 +85,7 @@ import org.eclipse.jgit.api.Git
  *   <li>{@link org.ajoberstar.grgit.operation.ResetOp reset}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.RevertOp revert}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.ShowOp show}</li>
- *   <li>{@link org.ajoberstar.grgit.operation.ShowOp diff}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.StatusOp status}</li>
  * </ul>
  *
  * <p>
