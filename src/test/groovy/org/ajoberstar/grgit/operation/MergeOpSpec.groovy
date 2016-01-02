@@ -161,4 +161,55 @@ class MergeOpSpec extends MultiGitOpSpec {
 		'origin/conflict' | SQUASH
 		'origin/conflict' | NO_COMMIT
 	}
+
+	def 'merge uses message if supplied'() {
+		given:
+		def oldHead = localGrgit.head()
+		def mergeHead = remoteGrgit.resolve.toCommit('clean')
+		when:
+		localGrgit.merge(head: 'origin/clean', message: 'Custom message')
+		then: 'all changes are committed'
+		localGrgit.status().clean
+		and: 'a merge commit was created'
+		localGrgit.log {
+			includes = ['HEAD']
+			excludes = [oldHead.id, mergeHead.id]
+		}.size() == 1
+		and: 'the merge commits message is what was passed in'
+		localGrgit.head().shortMessage == 'Custom message'
+	}
+
+	def 'merge of a branch includes this in default message'() {
+		given:
+		def oldHead = localGrgit.head()
+		def mergeHead = remoteGrgit.resolve.toCommit('clean')
+		when:
+		localGrgit.merge(head: 'origin/clean')
+		then: 'all changes are committed'
+		localGrgit.status().clean
+		and: 'a merge commit was created'
+		localGrgit.log {
+			includes = ['HEAD']
+			excludes = [oldHead.id, mergeHead.id]
+		}.size() == 1
+		and: 'the merge commits message mentions branch name'
+		localGrgit.head().shortMessage == 'Merge branch origin/clean into merge-test'
+	}
+
+	def 'merge of a commit includes this in default message'() {
+		given:
+		def oldHead = localGrgit.head()
+		def mergeHead = remoteGrgit.resolve.toCommit('clean')
+		when:
+		localGrgit.merge(head: mergeHead.id)
+		then: 'all changes are committed'
+		localGrgit.status().clean
+		and: 'a merge commit was created'
+		localGrgit.log {
+			includes = ['HEAD']
+			excludes = [oldHead.id, mergeHead.id]
+		}.size() == 1
+		and: 'the merge commits message mentions commit hash'
+		localGrgit.head().shortMessage == "Merge commit '${mergeHead.id}' into merge-test"
+	}
 }
