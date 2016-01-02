@@ -58,6 +58,11 @@ class MergeOp implements Callable<Void> {
 	Object head
 
 	/**
+	 * The message to use for the merge commit
+	 */
+	String message
+
+	/**
 	 * How to handle the merge.
 	 */
 	Mode mode
@@ -69,8 +74,16 @@ class MergeOp implements Callable<Void> {
 	Void call() {
 		MergeCommand cmd = repo.jgit.merge()
 		if (head) {
-			def revstr = new ResolveService(repo).toRevisionString(head)
-			cmd.include(JGitUtil.resolveObject(repo, revstr))
+			def ref = repo.jgit.repository.getRef(head)
+			if (ref == null) {
+				def revstr = new ResolveService(repo).toRevisionString(head)
+				cmd.include(JGitUtil.resolveObject(repo, revstr))
+			} else {
+				cmd.include(ref)
+			}
+		}
+		if (message) {
+			cmd.setMessage(message)
 		}
 		switch (mode) {
 			case Mode.ONLY_FF:
