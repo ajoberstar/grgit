@@ -88,6 +88,7 @@ if (System.env['SONARQUBE_TOKEN']) {
 		properties {
 			property 'sonar.host.url', 'http://sonarqube.ajoberstar.com'
 			property 'sonar.login', System.env['SONARQUBE_TOKEN']
+			property 'sonar.projectVersion', version.toString().split('-')[0]
 		}
 	}
 }
