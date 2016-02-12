@@ -1,6 +1,6 @@
 language: java
-install: ""
-script: TERM=dumb ./gradlew clean check sonarqube
 sudo: false
+install: ""
+script: ./travis.sh
 jdk:
     - openjdk7
