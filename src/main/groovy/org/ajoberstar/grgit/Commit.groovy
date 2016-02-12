@@ -16,6 +16,9 @@
 package org.ajoberstar.grgit
 
 import groovy.transform.Immutable
+import org.ajoberstar.grgit.operation.AddOp
+import org.ajoberstar.grgit.operation.LogOp
+import org.ajoberstar.grgit.operation.CommitOp
 
 /**
  * A commit.
