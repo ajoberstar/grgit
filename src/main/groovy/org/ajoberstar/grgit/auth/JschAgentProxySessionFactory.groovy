@@ -65,7 +65,7 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 		try {
 			jsch = super.getJSch(hc, fs)
 		} catch (JSchException e) {
-			jsch = super.createDefaultJsch(fs)
+			jsch = super.createDefaultJSch(fs)
 		}
 
 		if (config.sshPrivateKeyPath) {
