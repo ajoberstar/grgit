@@ -47,6 +47,12 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * def branches = grgit.branch.list(mode: BranchListOp.Mode.ALL)
  * </pre>
  *
+ * <p>To list all branches contains specified commit</p>
+ *
+ * <pre>
+ * def branches = grgit.branch.list(contains: %Commit hash or tag name%)
+ * </pre>
+ *
  * See <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>.
  *
  * @since 0.2.0
@@ -60,6 +66,11 @@ class BranchListOp implements Callable<List<Branch>> {
 	 */
 	Mode mode = Mode.LOCAL
 
+	/**
+	 * Commit ref branches must contains
+	 */
+	String contains = null
+
 	BranchListOp(Repository repo) {
 		this.repo = repo
 	}
@@ -67,6 +78,7 @@ class BranchListOp implements Callable<List<Branch>> {
 	List<Branch> call() {
 		ListBranchCommand cmd = repo.jgit.branchList()
 		cmd.listMode = mode.jgit
+		cmd.contains = contains
 
 		try {
 			return cmd.call().collect {

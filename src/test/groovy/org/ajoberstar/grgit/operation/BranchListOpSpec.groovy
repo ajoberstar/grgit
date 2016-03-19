@@ -33,6 +33,10 @@ class BranchListOpSpec extends MultiGitOpSpec {
 
 		remoteGrgit.branch.add(name: 'my-branch')
 
+		repoFile(remoteGrgit, '2.txt') << '2'
+		remoteGrgit.commit(message: 'another', all: true)
+		remoteGrgit.tag.add(name: 'test-tag');
+
 		localGrgit = clone('local', remoteGrgit)
 	}
 
@@ -48,5 +52,16 @@ class BranchListOpSpec extends MultiGitOpSpec {
 		[mode: BranchListOp.Mode.LOCAL]  | [['refs/heads/master', 'refs/remotes/origin/master']]
 		[mode: BranchListOp.Mode.REMOTE] | [['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
 		[mode: BranchListOp.Mode.ALL]    | [['refs/heads/master', 'refs/remotes/origin/master'], ['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
+	}
+
+	def 'list branch with --contains filter'() {
+		given:
+		def expectedBranches = expected.collect { GitTestUtil.branch(*it) }
+		expect:
+		localGrgit.branch.list(arguments) == expectedBranches
+		where:
+		arguments                                              | expected
+		[mode: BranchListOp.Mode.REMOTE]                       | [['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
+		[mode: BranchListOp.Mode.REMOTE, contains: 'test-tag'] | [['refs/remotes/origin/master']]
 	}
 }
