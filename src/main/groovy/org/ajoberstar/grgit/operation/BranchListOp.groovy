@@ -15,6 +15,8 @@
  */
 package org.ajoberstar.grgit.operation
 
+import org.ajoberstar.grgit.service.ResolveService
+
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Branch
@@ -69,7 +71,7 @@ class BranchListOp implements Callable<List<Branch>> {
 	/**
 	 * Commit ref branches must contains
 	 */
-	String contains = null
+	Object contains = null
 
 	BranchListOp(Repository repo) {
 		this.repo = repo
@@ -78,8 +80,9 @@ class BranchListOp implements Callable<List<Branch>> {
 	List<Branch> call() {
 		ListBranchCommand cmd = repo.jgit.branchList()
 		cmd.listMode = mode.jgit
-		cmd.contains = contains
-
+		if (contains) {
+			cmd.contains = new ResolveService(repo).toRevisionString(contains)
+		}
 		try {
 			return cmd.call().collect {
 				JGitUtil.resolveBranch(repo, it.name)

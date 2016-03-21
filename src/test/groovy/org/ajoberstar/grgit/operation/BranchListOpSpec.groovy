@@ -15,10 +15,10 @@
  */
 package org.ajoberstar.grgit.operation
 
+import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
-
 import spock.lang.Unroll
 
 class BranchListOpSpec extends MultiGitOpSpec {
@@ -44,24 +44,24 @@ class BranchListOpSpec extends MultiGitOpSpec {
 	def 'list branch without arguments only lists local'() {
 		given:
 		def expectedBranches = expected.collect { GitTestUtil.branch(*it) }
-		expect:
-		localGrgit.branch.list(arguments) == expectedBranches
-		where:
-		arguments                        | expected
-		[:]                              | [['refs/heads/master', 'refs/remotes/origin/master']]
-		[mode: BranchListOp.Mode.LOCAL]  | [['refs/heads/master', 'refs/remotes/origin/master']]
-		[mode: BranchListOp.Mode.REMOTE] | [['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
-		[mode: BranchListOp.Mode.ALL]    | [['refs/heads/master', 'refs/remotes/origin/master'], ['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
-	}
-
-	def 'list branch with --contains filter'() {
-		given:
-		def expectedBranches = expected.collect { GitTestUtil.branch(*it) }
+		def head = localGrgit.head()
 		expect:
 		localGrgit.branch.list(arguments) == expectedBranches
 		where:
 		arguments                                              | expected
+		[:]                                                    | [['refs/heads/master', 'refs/remotes/origin/master']]
+		[mode: BranchListOp.Mode.LOCAL]                        | [['refs/heads/master', 'refs/remotes/origin/master']]
 		[mode: BranchListOp.Mode.REMOTE]                       | [['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
+		[mode: BranchListOp.Mode.ALL]                          | [['refs/heads/master', 'refs/remotes/origin/master'], ['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
 		[mode: BranchListOp.Mode.REMOTE, contains: 'test-tag'] | [['refs/remotes/origin/master']]
+	}
+
+	def 'list branch receives Commit object as contains flag'() {
+		given:
+		def expectedBranches = [GitTestUtil.branch('refs/remotes/origin/master')]
+		def head = localGrgit.head()
+		def arguments = [mode: BranchListOp.Mode.REMOTE, contains: head]
+		expect:
+		localGrgit.branch.list(arguments) == expectedBranches
 	}
 }
