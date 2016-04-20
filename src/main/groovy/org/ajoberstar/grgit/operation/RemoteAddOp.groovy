@@ -82,9 +82,7 @@ class RemoteAddOp implements Callable<Remote> {
 	@Override
 	Remote call() {
 		Config config = repository.jgit.repository.config
-		RemoteConfig currentConfig = RemoteConfig.getAllRemoteConfigs(config).find { it.name == name }) {
-			return it
-		}
+		RemoteConfig currentConfig = RemoteConfig.getAllRemoteConfigs(config).find { it.name == name }
 		
 		def toUri = { url -> new URIish(url) }
 		def toRefSpec = { spec -> new RefSpec(spec) }
