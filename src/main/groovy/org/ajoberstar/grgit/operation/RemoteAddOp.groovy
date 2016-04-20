@@ -82,12 +82,11 @@ class RemoteAddOp implements Callable<Remote> {
 	@Override
 	Remote call() {
 		Config config = repository.jgit.repository.config
-		if (RemoteConfig.getAllRemoteConfigs(config).find { it.name == name }) {
-			throw new GrgitException("Remote $name already exists.")
-		}
+		RemoteConfig currentConfig = RemoteConfig.getAllRemoteConfigs(config).find { it.name == name }
+		
 		def toUri = { url -> new URIish(url) }
 		def toRefSpec = { spec -> new RefSpec(spec) }
-		RemoteConfig remote = new RemoteConfig(config, name)
+		RemoteConfig remote = currentConfig ? currentConfig : new RemoteConfig(config, name)
 		if (url) { remote.addURI(toUri(url)) }
 		if (pushUrl) { remote.addPushURI(toUri(pushUrl)) }
 		remote.fetchRefSpecs = (fetchRefSpecs ?: ["+refs/heads/*:refs/remotes/$name/*"]).collect(toRefSpec)
