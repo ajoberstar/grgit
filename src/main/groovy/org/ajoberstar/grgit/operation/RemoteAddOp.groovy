@@ -29,7 +29,7 @@ import org.eclipse.jgit.transport.URIish
 
 /**
  * Adds a remote to the repository. Returns the newly created {@link org.ajoberstar.grgit.Remote}.
- * If remote with given name already exists, its URIs are replaced with newly specified ones.
+ * If remote with given name already exists, this command will fail.
  *
  * <p>To add remote.</p>
  *
