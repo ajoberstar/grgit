@@ -19,7 +19,7 @@ import static org.ajoberstar.grgit.operation.MergeOp.Mode.*
 
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Status
-import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.exception.GrgitMergeException
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 
 import spock.lang.Unroll
@@ -151,7 +151,7 @@ class MergeOpSpec extends MultiGitOpSpec {
 		then:
 		localGrgit.head() == oldHead
 		localGrgit.status().clean
-		thrown(GrgitException)
+		thrown(GrgitMergeException)
 		where:
 		head              | mode
 		'origin/clean'    | ONLY_FF
