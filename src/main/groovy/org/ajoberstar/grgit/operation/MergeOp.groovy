@@ -19,6 +19,7 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.exception.GrgitMergeException
 import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
 
@@ -107,7 +108,7 @@ class MergeOp implements Callable<Void> {
 		try {
 			MergeResult result = cmd.call()
 			if (!result.mergeStatus.successful) {
-				throw new GrgitException("Could not merge: ${result}")
+				throw new GrgitMergeException("Could not merge: ${result}", result)
 			}
 			return null
 		} catch (GitAPIException e) {
