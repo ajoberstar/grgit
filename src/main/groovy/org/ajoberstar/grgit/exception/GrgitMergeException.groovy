@@ -25,7 +25,7 @@ import org.eclipse.jgit.api.MergeResult
  */
 @InheritConstructors
 @CompileStatic
-class GrgitMergeException extends RuntimeException {
+class GrgitMergeException extends GrgitException {
 	MergeResult mergeResult
 
 	GrgitMergeException(String message, MergeResult mergeResult) {
