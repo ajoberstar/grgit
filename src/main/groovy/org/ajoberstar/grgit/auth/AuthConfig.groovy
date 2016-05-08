@@ -58,8 +58,8 @@ import org.ajoberstar.grgit.exception.GrgitException
  *     <li>{@code org.ajoberstar.grgit.auth.ssh.private=<path.to.private.key>}</li>
  * </ul>
  * <p>
- *   In order to add a non-standard session config,
- *   use the following property.
+ *   In order to customize the JSch session config use a property of the
+ *   following format (possible values <a href="http://epaul.github.io/jsch-documentation/javadoc/com/jcraft/jsch/JSch.html#setConfig(java.lang.String, java.lang.String)">JSch documentation</a>):
  * </p>
  *
  * <ul>
@@ -142,8 +142,8 @@ class AuthConfig {
 	 */
 	Map<String, String> getSessionConfig() {
 		return System.properties
-                .findAll { it -> it.key.startsWith(SSH_SESSION_CONFIG_OPTION_PREFIX) }
-                .collectEntries { it -> [ it.key.substring(SSH_SESSION_CONFIG_OPTION_PREFIX.length()), it.value] }
+			.findAll { key, value -> key.startsWith(SSH_SESSION_CONFIG_OPTION_PREFIX) }
+			.collectEntries { key, value -> [key.substring(SSH_SESSION_CONFIG_OPTION_PREFIX.length()), value] }
 	}
 
 	/**
