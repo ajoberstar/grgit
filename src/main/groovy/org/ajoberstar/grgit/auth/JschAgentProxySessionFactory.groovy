@@ -48,10 +48,10 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
 	}
 
 	/**
-	 * No actions performed by this.
+	 * Customize session
 	 */
 	protected void configure(Host hc, Session session) {
-		// no action
+	    config.sessionConfig.each { key, value -> session.setConfig(key, value) }
 	}
 
 	/**

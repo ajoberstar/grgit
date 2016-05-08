@@ -57,6 +57,14 @@ import org.ajoberstar.grgit.exception.GrgitException
  * <ul>
  *     <li>{@code org.ajoberstar.grgit.auth.ssh.private=<path.to.private.key>}</li>
  * </ul>
+ * <p>
+ *   In order to add a non-standard session config,
+ *   use the following property.
+ * </p>
+ *
+ * <ul>
+ *     <li>{@code org.ajoberstar.grgit.auth.session.config.<key>=<value>}</li>
+ * </ul>
  *
  * <p>
  *   The following order is used to determine which authentication option
@@ -80,6 +88,7 @@ class AuthConfig {
 	static final String USERNAME_OPTION = 'org.ajoberstar.grgit.auth.username'
 	static final String PASSWORD_OPTION = 'org.ajoberstar.grgit.auth.password'
 	static final String SSH_PRIVATE_KEY_OPTION = 'org.ajoberstar.grgit.auth.ssh.private'
+	static final String SSH_SESSION_CONFIG_OPTION_PREFIX = 'org.ajoberstar.grgit.auth.session.config.'
 
 	/**
 	 * Set of all authentication options that are allowed in this
@@ -125,6 +134,16 @@ class AuthConfig {
 	 */
 	String getSshPrivateKeyPath() {
 		return System.properties[SSH_PRIVATE_KEY_OPTION]
+	}
+
+	/**
+	 * Gets session config override for SSH session that is used underneath by JGit
+	 * @return map with configuration or empty if nothing was specified in system property
+	 */
+	Map<String, String> getSessionConfig() {
+		return System.properties
+                .findAll { it -> it.key.startsWith(SSH_SESSION_CONFIG_OPTION_PREFIX) }
+                .collectEntries { it -> [ it.key.substring(SSH_SESSION_CONFIG_OPTION_PREFIX.length()), it.value] }
 	}
 
 	/**

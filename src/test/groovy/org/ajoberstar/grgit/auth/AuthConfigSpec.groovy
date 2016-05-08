@@ -69,4 +69,16 @@ class AuthConfigSpec extends Specification {
 		expect:
 		AuthConfig.fromMap([:]).getHardcodedCreds() == null
 	}
+
+	def 'getSessionConfig returns empty map if nothing specified'() {
+		expect:
+		AuthConfig.fromMap(Collections.emptyMap()).sessionConfig.isEmpty()
+	}
+
+	def 'getSessionConfig returns session config based on system property'() {
+		given:
+		System.setProperty(AuthConfig.SSH_SESSION_CONFIG_OPTION_PREFIX + 'StrictHostKeyChecking', 'no')
+		expect:
+		AuthConfig.fromMap(Collections.emptyMap()).sessionConfig == [ StrictHostKeyChecking: 'no' ]
+	}
 }
