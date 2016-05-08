@@ -28,8 +28,8 @@ import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Merges changes from a single head. This is a simplified version of
- * merge. If any conflict occurs the merge will be aborted, leaving the
- * current working tree as it was before, and throwing an exception.
+ * merge. If any conflict occurs the merge will throw an exception. The
+ * conflicting files can be identified with {@code grgit.status()}.
  *
  * <p>Merge another head into the current branch.</p>
  *
@@ -107,7 +107,7 @@ class MergeOp implements Callable<Void> {
 		try {
 			MergeResult result = cmd.call()
 			if (!result.mergeStatus.successful) {
-				throw new GrgitException("Could not merge: ${result}")
+				throw new GrgitException("Could not merge (conflicting files can be retrieved with a call to grgit.status()): ${result}")
 			}
 			return null
 		} catch (GitAPIException e) {

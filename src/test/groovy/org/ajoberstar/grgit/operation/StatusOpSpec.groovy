@@ -16,6 +16,7 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Status
+import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 
 class StatusOpSpec extends SimpleGitOpSpec {
@@ -23,6 +24,14 @@ class StatusOpSpec extends SimpleGitOpSpec {
 		4.times { repoFile("${it}.txt") << "1" }
 		grgit.add(patterns: ['.'])
 		grgit.commit(message: 'Test')
+		grgit.checkout(branch: 'conflict', createBranch: true)
+		repoFile('1.txt') << '2'
+		grgit.add(patterns: ['.'])
+		grgit.commit(message: 'conflicting change')
+		grgit.checkout(branch: 'master')
+		repoFile('1.txt') << '3'
+		grgit.add(patterns: ['.'])
+		grgit.commit(message: 'other change')
 	}
 
 	def 'with no changes all methods return empty list'() {
@@ -82,5 +91,13 @@ class StatusOpSpec extends SimpleGitOpSpec {
 		grgit.add(patterns: ['.'], update: true)
 		then:
 		grgit.status() == new Status(staged: [removed: ['3.txt', '0.txt']])
+	}
+
+	def 'conflict files detected'() {
+		when:
+		grgit.merge(head: 'conflict')
+		then:
+		grgit.status() == new Status(conflicts: ['1.txt'])
+		thrown(GrgitException)
 	}
 }

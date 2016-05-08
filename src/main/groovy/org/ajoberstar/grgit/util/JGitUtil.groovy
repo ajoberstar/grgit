@@ -240,7 +240,8 @@ class JGitUtil {
 				added: jgitStatus.untracked,
 				modified: jgitStatus.modified,
 				removed: jgitStatus.missing
-			]
+			],
+			conflicts: jgitStatus.conflicting
 		)
 	}
 

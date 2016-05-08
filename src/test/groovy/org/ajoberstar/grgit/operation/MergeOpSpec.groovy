@@ -142,7 +142,7 @@ class MergeOpSpec extends MultiGitOpSpec {
 		'origin/clean' | SQUASH | new Status(staged: [added: ['3.txt']])
 	}
 
-	@Unroll('merging #head with #mode fails and leaves state as before')
+	@Unroll('merging #head with #mode fails with correct status')
 	def 'merge fails as expected'() {
 		given:
 		def oldHead = localGrgit.head()
@@ -150,16 +150,16 @@ class MergeOpSpec extends MultiGitOpSpec {
 		localGrgit.merge(head: head, mode: mode)
 		then:
 		localGrgit.head() == oldHead
-		localGrgit.status().clean
+		localGrgit.status() == status
 		thrown(GrgitException)
 		where:
-		head              | mode
-		'origin/clean'    | ONLY_FF
-		'origin/conflict' | DEFAULT
-		'origin/conflict' | ONLY_FF
-		'origin/conflict' | CREATE_COMMIT
-		'origin/conflict' | SQUASH
-		'origin/conflict' | NO_COMMIT
+		head              | mode          | status
+		'origin/clean'    | ONLY_FF       | new Status()
+		'origin/conflict' | DEFAULT       | new Status(conflicts: ['2.txt'])
+		'origin/conflict' | ONLY_FF       | new Status()
+		'origin/conflict' | CREATE_COMMIT | new Status(conflicts: ['2.txt'])
+		'origin/conflict' | SQUASH        | new Status(conflicts: ['2.txt'])
+		'origin/conflict' | NO_COMMIT     | new Status(conflicts: ['2.txt'])
 	}
 
 	def 'merge uses message if supplied'() {
