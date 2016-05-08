@@ -27,8 +27,8 @@ import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Pulls changes from the remote on the current branch. If the changes
- * conflict, the pull will fail, leaving the working tree as-is, and
- * throwing an exception.
+ * conflict, the pull will fail, any conflicts can be retrieved with
+ * {@code grgit.status()}, and throwing an exception.
  *
  * <p>Pull changes.</p>
  *

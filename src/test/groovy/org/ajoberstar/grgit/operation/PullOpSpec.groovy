@@ -17,6 +17,7 @@ package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 
@@ -103,7 +104,7 @@ class PullOpSpec extends MultiGitOpSpec {
 		when:
 		localGrgit.pull()
 		then:
-		localGrgit.status().clean
+		localGrgit.status() == new Status(conflicts: ['1.txt'])
 		localGrgit.head() == localHead
 		thrown(GrgitException)
 	}
