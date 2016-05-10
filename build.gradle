@@ -34,7 +34,8 @@ def jgitVersion = '4.3.1.201605051710-r'
 
 dependencies {
 	// groovy
-	compile 'org.codehaus.groovy:groovy-all:2.4.5'
+	compileOnly 'org.codehaus.groovy:groovy-all:2.4.5'
+	testCompile 'org.codehaus.groovy:groovy-all:2.4.5'
 
 	// jgit
 	compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
