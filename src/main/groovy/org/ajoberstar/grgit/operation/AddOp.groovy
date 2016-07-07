@@ -66,7 +66,7 @@ class AddOp implements Callable<Void> {
 
 	Void call() {
 		AddCommand cmd = repo.jgit.add()
-		patterns.each { cmd.addFilepattern(it) }
+		patterns.each { cmd.addFilepattern(it.replaceAll('\\\\', '/')) }
 		cmd.update = update
 		try {
 			cmd.call()

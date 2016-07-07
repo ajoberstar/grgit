@@ -65,7 +65,7 @@ class RmOp implements Callable<Void> {
 
 	Void call() {
 		RmCommand cmd = repo.jgit.rm()
-		patterns.each { cmd.addFilepattern(it) }
+		patterns.each { cmd.addFilepattern(it.replaceAll('\\\\', '/')) }
 		cmd.cached = cached
 		try {
 			cmd.call()

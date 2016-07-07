@@ -33,6 +33,19 @@ class AddOpSpec extends SimpleGitOpSpec {
 		)
 	}
 
+	def 'adding file using Windows-style path only adds that file'() {
+		given:
+		repoFile('test/1.txt') << '1'
+		repoFile('test/2.txt') << '2'
+		when:
+		grgit.add(patterns: ['test\\1.txt'])
+		then:
+		grgit.status() == new Status(
+				staged: [added: ['test/1.txt']],
+				unstaged: [added: ['test/2.txt']]
+		)
+	}
+
 	def 'adding specific directory adds all files within it'() {
 		given:
 		repoFile('1.txt') << '1'

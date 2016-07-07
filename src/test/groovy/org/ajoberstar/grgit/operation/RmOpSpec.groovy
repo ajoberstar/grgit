@@ -39,6 +39,16 @@ class RmOpSpec extends SimpleGitOpSpec {
 		paths.every { !repoFile(it).exists() }
 	}
 
+	def 'removing specific file using Windows-style path only removes that file'() {
+		given:
+		def paths = ['test/3.bat'] as Set
+		when:
+		grgit.remove(patterns:['test\\3.bat'])
+		then:
+		grgit.status() == new Status(staged: [removed: paths])
+		paths.every { !repoFile(it).exists() }
+	}
+
 	def 'removing specific directory removes all files within it'() {
 		given:
 		def paths = ['test/3.bat', 'test/4.txt', 'test/other/5.txt'] as Set
