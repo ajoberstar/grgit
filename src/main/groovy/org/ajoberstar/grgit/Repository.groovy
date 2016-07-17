@@ -17,8 +17,6 @@ package org.ajoberstar.grgit
 
 import groovy.transform.Immutable
 
-import org.ajoberstar.grgit.Credentials
-
 import org.eclipse.jgit.api.Git
 
 /**

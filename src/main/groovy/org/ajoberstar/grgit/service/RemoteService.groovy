@@ -39,7 +39,6 @@ class RemoteService {
     private static final Map OPERATIONS = [
         list: RemoteListOp, add: RemoteAddOp]
 
-
     private final Repository repository
 
     RemoteService(Repository repository) {

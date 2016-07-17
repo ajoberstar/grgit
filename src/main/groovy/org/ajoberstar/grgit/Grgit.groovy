@@ -111,7 +111,7 @@ import org.eclipse.jgit.api.Git
  *
  * @since 0.1.0
  */
-class Grgit {
+class Grgit implements AutoCloseable {
     private static final Map STATIC_OPERATIONS = [
         init: InitOp, clone: CloneOp, open: OpenOp
     ]
@@ -180,6 +180,7 @@ class Grgit {
      * Release underlying resources used by this instance. After calling close
      * you should not use this instance anymore.
      */
+    @Override
     void close() {
         repository.jgit.close()
     }

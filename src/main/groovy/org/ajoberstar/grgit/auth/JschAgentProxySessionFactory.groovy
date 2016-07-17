@@ -98,7 +98,7 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
         }
     }
 
-    private Closure<Connector> sshAgentSelector = {
+    private final Closure<Connector> sshAgentSelector = {
         try {
             if (!config.allows(AuthConfig.Option.SSHAGENT)) {
                 logger.info('ssh-agent option disabled')
@@ -123,7 +123,7 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
         }
     }
 
-    private Closure<Connector> pageantSelector = {
+    private final Closure<Connector> pageantSelector = {
         try {
             if (!config.allows(AuthConfig.Option.PAGEANT)) {
                 logger.info('pageant option disabled')
@@ -147,13 +147,13 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
      * @return a working socket factory or {@code null} if none is
      * available
      */
-    private USocketFactory determineUSocketFactory() {
+    private final USocketFactory determineUSocketFactory() {
         return [ncSelector, jnaSelector].findResult { selector ->
             selector()
         }
     }
 
-    private Closure<USocketFactory> jnaSelector = {
+    private final Closure<USocketFactory> jnaSelector = {
         try {
             return new JNAUSocketFactory()
         } catch (UnsatisfiedLinkError e) {

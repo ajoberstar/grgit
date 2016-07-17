@@ -62,9 +62,8 @@ class ShowOp implements Callable<CommitDiff> {
     }
 
     CommitDiff call() {
-
         if (!commit) {
-            throw new GrgitException("You must specify which commit to show")
+            throw new GrgitException('You must specify which commit to show')
         }
         def revString = new ResolveService(repo).toRevisionString(commit)
         def commitId = JGitUtil.resolveRevObject(repo, revString)

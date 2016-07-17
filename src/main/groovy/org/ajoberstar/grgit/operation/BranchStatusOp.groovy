@@ -15,7 +15,6 @@
  */
 package org.ajoberstar.grgit.operation
 
-import java.io.IOException
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Branch

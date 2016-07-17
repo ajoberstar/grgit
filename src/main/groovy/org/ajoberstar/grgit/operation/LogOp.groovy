@@ -91,7 +91,7 @@ class LogOp implements Callable<List<Commit>> {
         ResolveService resolve = new ResolveService(repo)
         def toObjectId = { rev ->
             String revstr = resolve.toRevisionString(rev)
-            JGitUtil.resolveRevObject(repo, revstr, true).getId()
+            JGitUtil.resolveRevObject(repo, revstr, true).id
         }
 
         includes.collect(toObjectId).each { object ->

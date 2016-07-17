@@ -33,7 +33,6 @@ class BranchStatus {
      */
     int aheadCount
 
-
     /**
      * The number of commits this branch is behind its upstream.
      */

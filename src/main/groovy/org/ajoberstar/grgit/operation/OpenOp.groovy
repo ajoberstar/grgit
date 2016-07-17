@@ -78,7 +78,7 @@ class OpenOp implements Callable<Grgit> {
 
     Grgit call() {
         if (dir && currentDir) {
-            throw new IllegalArgumentException("Cannot use both dir and currentDir.")
+            throw new IllegalArgumentException('Cannot use both dir and currentDir.')
         } else if (dir) {
             def dirFile = CoercionUtil.toFile(dir)
             def repo = new Repository(dirFile, Git.open(dirFile), creds)
