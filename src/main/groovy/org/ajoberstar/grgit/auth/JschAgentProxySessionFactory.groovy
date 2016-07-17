@@ -167,7 +167,7 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
         }
     }
 
-    private Closure<USocketFactory> ncSelector = {
+    private final Closure<USocketFactory> ncSelector = {
         try {
             return new NCUSocketFactory()
         } catch (AgentProxyException e) {
