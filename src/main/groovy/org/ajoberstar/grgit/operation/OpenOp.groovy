@@ -57,45 +57,45 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder
  * @since 1.0.0
  */
 class OpenOp implements Callable<Grgit> {
-	/**
-	 * Hardcoded credentials to use for remote operations.
-	 */
-	Credentials creds
+    /**
+     * Hardcoded credentials to use for remote operations.
+     */
+    Credentials creds
 
-	/**
-	 * The directory to open the repository from. Incompatible
-	 * with {@code currentDir}.
-	 * @see {@link CoercionUtil#toFile(Object)}
-	 */
-	Object dir
+    /**
+     * The directory to open the repository from. Incompatible
+     * with {@code currentDir}.
+     * @see {@link CoercionUtil#toFile(Object)}
+     */
+    Object dir
 
-	/**
-	 * The directory to begin searching from the repository
-	 * from. Incompatible with {@code dir}.
-	 * @see {@link CoercionUtil#toFile(Object)}
-	 */
-	Object currentDir
+    /**
+     * The directory to begin searching from the repository
+     * from. Incompatible with {@code dir}.
+     * @see {@link CoercionUtil#toFile(Object)}
+     */
+    Object currentDir
 
-	Grgit call() {
-		if (dir && currentDir) {
-			throw new IllegalArgumentException("Cannot use both dir and currentDir.")
-		} else if (dir) {
-			def dirFile = CoercionUtil.toFile(dir)
-			def repo = new Repository(dirFile, Git.open(dirFile), creds)
-			return new Grgit(repo)
-		} else {
-			FileRepositoryBuilder builder = new FileRepositoryBuilder()
-			builder.readEnvironment()
-			if (currentDir) {
-				File currentDirFile = CoercionUtil.toFile(currentDir)
-				builder.findGitDir(currentDirFile)
-			} else {
-				builder.findGitDir()
-			}
-			FileRepository jgitRepo = builder.build()
-			Git jgit = new Git(jgitRepo)
-			Repository repo = new Repository(jgitRepo.directory, jgit, creds)
-			return new Grgit(repo)
-		}
-	}
+    Grgit call() {
+        if (dir && currentDir) {
+            throw new IllegalArgumentException("Cannot use both dir and currentDir.")
+        } else if (dir) {
+            def dirFile = CoercionUtil.toFile(dir)
+            def repo = new Repository(dirFile, Git.open(dirFile), creds)
+            return new Grgit(repo)
+        } else {
+            FileRepositoryBuilder builder = new FileRepositoryBuilder()
+            builder.readEnvironment()
+            if (currentDir) {
+                File currentDirFile = CoercionUtil.toFile(currentDir)
+                builder.findGitDir(currentDirFile)
+            } else {
+                builder.findGitDir()
+            }
+            FileRepository jgitRepo = builder.build()
+            Git jgit = new Git(jgitRepo)
+            Repository repo = new Repository(jgitRepo.directory, jgit, creds)
+            return new Grgit(repo)
+        }
+    }
 }

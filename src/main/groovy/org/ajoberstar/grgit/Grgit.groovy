@@ -112,121 +112,121 @@ import org.eclipse.jgit.api.Git
  * @since 0.1.0
  */
 class Grgit {
-	private static final Map STATIC_OPERATIONS = [
-		init: InitOp, clone: CloneOp, open: OpenOp
-	]
+    private static final Map STATIC_OPERATIONS = [
+        init: InitOp, clone: CloneOp, open: OpenOp
+    ]
 
-	private static final Map OPERATIONS = [
-		clean: CleanOp, status: StatusOp, add: AddOp, remove: RmOp,
-		reset: ResetOp, apply: ApplyOp, pull: PullOp, push: PushOp,
-		fetch: FetchOp, checkout: CheckoutOp, log: LogOp, commit: CommitOp,
-		revert: RevertOp, merge: MergeOp, describe: DescribeOp, show: ShowOp
-	].asImmutable()
+    private static final Map OPERATIONS = [
+        clean: CleanOp, status: StatusOp, add: AddOp, remove: RmOp,
+        reset: ResetOp, apply: ApplyOp, pull: PullOp, push: PushOp,
+        fetch: FetchOp, checkout: CheckoutOp, log: LogOp, commit: CommitOp,
+        revert: RevertOp, merge: MergeOp, describe: DescribeOp, show: ShowOp
+    ].asImmutable()
 
-	/**
-	 * The repository opened by this object.
-	 */
-	final Repository repository
+    /**
+     * The repository opened by this object.
+     */
+    final Repository repository
 
-	/**
-	 * Supports operations on branches.
-	 */
-	final BranchService branch
+    /**
+     * Supports operations on branches.
+     */
+    final BranchService branch
 
-	/**
-	 * Supports operations on remotes.
-	 */
-	final RemoteService remote
+    /**
+     * Supports operations on remotes.
+     */
+    final RemoteService remote
 
-	/**
-	 * Convenience methods for resolving various objects.
-	 */
-	final ResolveService resolve
+    /**
+     * Convenience methods for resolving various objects.
+     */
+    final ResolveService resolve
 
-	/**
-	 * Supports operations on tags.
-	 */
-	final TagService tag
+    /**
+     * Supports operations on tags.
+     */
+    final TagService tag
 
-	private Grgit(Repository repository) {
-		this.repository = repository
-		this.branch = new BranchService(repository)
-		this.remote = new RemoteService(repository)
-		this.tag = new TagService(repository)
-		this.resolve = new ResolveService(repository)
-	}
+    private Grgit(Repository repository) {
+        this.repository = repository
+        this.branch = new BranchService(repository)
+        this.remote = new RemoteService(repository)
+        this.tag = new TagService(repository)
+        this.resolve = new ResolveService(repository)
+    }
 
-	/**
-	 * Returns the commit located at the current HEAD of the repository.
-	 * @return the current HEAD commit
-	 */
-	Commit head() {
-		return resolve.toCommit('HEAD')
-	}
+    /**
+     * Returns the commit located at the current HEAD of the repository.
+     * @return the current HEAD commit
+     */
+    Commit head() {
+        return resolve.toCommit('HEAD')
+    }
 
-	/**
-	 * Checks if {@code base} is an ancestor of {@code tip}.
-	 * @param base the version that might be an ancestor
-	 * @param tip the tip version
-	 * @since 0.2.2
-	 */
-	boolean isAncestorOf(Object base, Object tip) {
-		Commit baseCommit = resolve.toCommit(base)
-		Commit tipCommit = resolve.toCommit(tip)
-		return JGitUtil.isAncestorOf(repository, baseCommit, tipCommit)
-	}
+    /**
+     * Checks if {@code base} is an ancestor of {@code tip}.
+     * @param base the version that might be an ancestor
+     * @param tip the tip version
+     * @since 0.2.2
+     */
+    boolean isAncestorOf(Object base, Object tip) {
+        Commit baseCommit = resolve.toCommit(base)
+        Commit tipCommit = resolve.toCommit(tip)
+        return JGitUtil.isAncestorOf(repository, baseCommit, tipCommit)
+    }
 
-	/**
-	 * Release underlying resources used by this instance. After calling close
-	 * you should not use this instance anymore.
-	 */
-	void close() {
-		repository.jgit.close()
-	}
+    /**
+     * Release underlying resources used by this instance. After calling close
+     * you should not use this instance anymore.
+     */
+    void close() {
+        repository.jgit.close()
+    }
 
-	def methodMissing(String name, args) {
-		OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
-	}
+    def methodMissing(String name, args) {
+        OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
+    }
 
-	static {
-		Grgit.metaClass.static.methodMissing = { name, args ->
-			OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], name, args)
-		}
-	}
+    static {
+        Grgit.metaClass.static.methodMissing = { name, args ->
+            OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], name, args)
+        }
+    }
 
-	/**
-	 * Opens a {@code Grgit} instance by looking up the correct repo dir.
-	 * This is a workaround due to the existing deprecated methods.
-	 */
-	static Grgit open() {
-		return OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], 'open', [] as Object[])
-	}
+    /**
+     * Opens a {@code Grgit} instance by looking up the correct repo dir.
+     * This is a workaround due to the existing deprecated methods.
+     */
+    static Grgit open() {
+        return OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], 'open', [] as Object[])
+    }
 
-	/**
-	 * Opens a {@code Grgit} instance in {@code rootDirPath}. If credentials
-	 * are provided they will be used for all operations with using remotes.
-	 * @param rootDirPath path to the repository's root directory
-	 * @param creds harcoded credentials to use for remote operations
-	 * @deprecated replaced by {@link org.ajoberstar.grgit.operation.OpenOp}
-	 * @throws GrgitException if an existing Git repository can't be opened
-	 * in {@code rootDirPath}
-	 */
-	@Deprecated
-	static Grgit open(String rootDirPath, Credentials creds = null) {
-		return open(new File(rootDirPath), creds)
-	}
+    /**
+     * Opens a {@code Grgit} instance in {@code rootDirPath}. If credentials
+     * are provided they will be used for all operations with using remotes.
+     * @param rootDirPath path to the repository's root directory
+     * @param creds harcoded credentials to use for remote operations
+     * @deprecated replaced by {@link org.ajoberstar.grgit.operation.OpenOp}
+     * @throws GrgitException if an existing Git repository can't be opened
+     * in {@code rootDirPath}
+     */
+    @Deprecated
+    static Grgit open(String rootDirPath, Credentials creds = null) {
+        return open(new File(rootDirPath), creds)
+    }
 
-	/**
-	 * Opens a {@code Grgit} instance in {@code rootDir}. If credentials
-	 * are provided they will be used for all operations with using remotes.
-	 * @param rootDir path to the repository's root directory
-	 * @param creds harcoded credentials to use for remote operations
-	 * @deprecated replaced by {@link org.ajoberstar.grgit.operation.OpenOp}
-	 * @throws GrgitException if an existing Git repository can't be opened
-	 * in {@code rootDir}
-	 */
-	@Deprecated
-	static Grgit open(File rootDir, Credentials creds = null) {
-		return OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], 'open', [dir: rootDir, creds: creds])
-	}
+    /**
+     * Opens a {@code Grgit} instance in {@code rootDir}. If credentials
+     * are provided they will be used for all operations with using remotes.
+     * @param rootDir path to the repository's root directory
+     * @param creds harcoded credentials to use for remote operations
+     * @deprecated replaced by {@link org.ajoberstar.grgit.operation.OpenOp}
+     * @throws GrgitException if an existing Git repository can't be opened
+     * in {@code rootDir}
+     */
+    @Deprecated
+    static Grgit open(File rootDir, Credentials creds = null) {
+        return OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], 'open', [dir: rootDir, creds: creds])
+    }
 }

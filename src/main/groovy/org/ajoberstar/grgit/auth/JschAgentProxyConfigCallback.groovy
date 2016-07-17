@@ -26,20 +26,20 @@ import org.eclipse.jgit.transport.Transport
  * @since 0.1.0
  */
 class JschAgentProxyConfigCallback implements TransportConfigCallback {
-	private final AuthConfig config
+    private final AuthConfig config
 
-	JschAgentProxyConfigCallback(AuthConfig config) {
-		this.config = config
-	}
+    JschAgentProxyConfigCallback(AuthConfig config) {
+        this.config = config
+    }
 
-	/**
-	 * Configures the {@code transport} to support JSch agent proxy,
-	 * if it is an SSH transport.
-	 * @param transport the transport to configure
-	 */
-	void configure(Transport transport) {
-		if (transport instanceof SshTransport) {
-			transport.sshSessionFactory = new JschAgentProxySessionFactory(config)
-		}
-	}
+    /**
+     * Configures the {@code transport} to support JSch agent proxy,
+     * if it is an SSH transport.
+     * @param transport the transport to configure
+     */
+    void configure(Transport transport) {
+        if (transport instanceof SshTransport) {
+            transport.sshSessionFactory = new JschAgentProxySessionFactory(config)
+        }
+    }
 }

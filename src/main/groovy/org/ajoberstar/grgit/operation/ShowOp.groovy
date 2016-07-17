@@ -49,59 +49,59 @@ import org.eclipse.jgit.treewalk.TreeWalk
  * @see <a href="http://git-scm.com/docs/git-show">git-show Manual Page</a>
  */
 class ShowOp implements Callable<CommitDiff> {
-	private final Repository repo
+    private final Repository repo
 
-	/**
-	 * The commit to show
-	 * @see {@link org.ajoberstar.grgit.service.ResolveService#toRevisionString(Object)}
-	 */
-	Object commit
+    /**
+     * The commit to show
+     * @see {@link org.ajoberstar.grgit.service.ResolveService#toRevisionString(Object)}
+     */
+    Object commit
 
-	ShowOp(Repository repo) {
-		this.repo = repo
-	}
+    ShowOp(Repository repo) {
+        this.repo = repo
+    }
 
-	CommitDiff call() {
+    CommitDiff call() {
 
-		if (!commit) {
-			throw new GrgitException("You must specify which commit to show")
-		}
-		def revString = new ResolveService(repo).toRevisionString(commit)
-		def commitId = JGitUtil.resolveRevObject(repo, revString)
-		def parentId = JGitUtil.resolveParents(repo, commitId).find()
+        if (!commit) {
+            throw new GrgitException("You must specify which commit to show")
+        }
+        def revString = new ResolveService(repo).toRevisionString(commit)
+        def commitId = JGitUtil.resolveRevObject(repo, revString)
+        def parentId = JGitUtil.resolveParents(repo, commitId).find()
 
-		def commit = JGitUtil.resolveCommit(repo, commitId)
+        def commit = JGitUtil.resolveCommit(repo, commitId)
 
-		TreeWalk walk = new TreeWalk(repo.jgit.repository)
-		walk.recursive = true
+        TreeWalk walk = new TreeWalk(repo.jgit.repository)
+        walk.recursive = true
 
-		if (parentId) {
-			walk.addTree(parentId.tree)
-			walk.addTree(commitId.tree)
-			List initialEntries = DiffEntry.scan(walk)
-			RenameDetector detector = new RenameDetector(repo.jgit.repository)
-			detector.addAll(initialEntries)
-			List entries = detector.compute()
-			Map entriesByType = entries.groupBy { it.changeType }
+        if (parentId) {
+            walk.addTree(parentId.tree)
+            walk.addTree(commitId.tree)
+            List initialEntries = DiffEntry.scan(walk)
+            RenameDetector detector = new RenameDetector(repo.jgit.repository)
+            detector.addAll(initialEntries)
+            List entries = detector.compute()
+            Map entriesByType = entries.groupBy { it.changeType }
 
-			return new CommitDiff(
-				commit: commit,
-				added: entriesByType[ChangeType.ADD].collect { it.newPath },
-				copied: entriesByType[ChangeType.COPY].collect { it.newPath },
-				modified: entriesByType[ChangeType.MODIFY].collect { it.newPath },
-				removed: entriesByType[ChangeType.DELETE].collect { it.oldPath },
-				renamed: entriesByType[ChangeType.RENAME].collect { it.newPath }
-			)
-		} else {
-			walk.addTree(commitId.tree)
-			def added = []
-			while (walk.next()) {
-				added << walk.pathString
-			}
-			return new CommitDiff(
-				commit: commit,
-				added: added
-			)
-		}
-	}
+            return new CommitDiff(
+                commit: commit,
+                added: entriesByType[ChangeType.ADD].collect { it.newPath },
+                copied: entriesByType[ChangeType.COPY].collect { it.newPath },
+                modified: entriesByType[ChangeType.MODIFY].collect { it.newPath },
+                removed: entriesByType[ChangeType.DELETE].collect { it.oldPath },
+                renamed: entriesByType[ChangeType.RENAME].collect { it.newPath }
+            )
+        } else {
+            walk.addTree(commitId.tree)
+            def added = []
+            while (walk.next()) {
+                added << walk.pathString
+            }
+            return new CommitDiff(
+                commit: commit,
+                added: added
+            )
+        }
+    }
 }

@@ -40,18 +40,18 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-status">git-status Manual Page</a>
  */
 class StatusOp implements Callable<Status> {
-	private final Repository repo
+    private final Repository repo
 
-	StatusOp(Repository repo) {
-		this.repo = repo
-	}
+    StatusOp(Repository repo) {
+        this.repo = repo
+    }
 
-	Status call() {
-		StatusCommand cmd = repo.jgit.status()
-		try {
-			return JGitUtil.convertStatus(cmd.call())
-		} catch (GitAPIException e) {
-			throw new GrgitException('Problem retrieving status.', e)
-		}
-	}
+    Status call() {
+        StatusCommand cmd = repo.jgit.status()
+        try {
+            return JGitUtil.convertStatus(cmd.call())
+        } catch (GitAPIException e) {
+            throw new GrgitException('Problem retrieving status.', e)
+        }
+    }
 }

@@ -26,30 +26,30 @@ import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class MultiGitOpSpec extends Specification {
-	@Rule TemporaryFolder tempDir = new TemporaryFolder()
+    @Rule TemporaryFolder tempDir = new TemporaryFolder()
 
-	Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
+    Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
 
-	protected Grgit init(String name) {
-		File repoDir = tempDir.newFolder(name).canonicalFile
-		Git git = Git.init().setDirectory(repoDir).call()
-		git.repo.config.with {
-			setString('user', null, 'name', person.name)
-			setString('user', null, 'email', person.email)
-			save()
-		}
-		return Grgit.open(dir: repoDir)
-	}
+    protected Grgit init(String name) {
+        File repoDir = tempDir.newFolder(name).canonicalFile
+        Git git = Git.init().setDirectory(repoDir).call()
+        git.repo.config.with {
+            setString('user', null, 'name', person.name)
+            setString('user', null, 'email', person.email)
+            save()
+        }
+        return Grgit.open(dir: repoDir)
+    }
 
-	protected Grgit clone(String name, Grgit remote) {
-		File repoDir = tempDir.newFolder(name)
-		return Grgit.clone {
-			dir = repoDir
-			uri = remote.repository.rootDir.toURI()
-		}
-	}
+    protected Grgit clone(String name, Grgit remote) {
+        File repoDir = tempDir.newFolder(name)
+        return Grgit.clone {
+            dir = repoDir
+            uri = remote.repository.rootDir.toURI()
+        }
+    }
 
-	protected File repoFile(Grgit grgit, String path, boolean makeDirs = true) {
-		return GitTestUtil.repoFile(grgit, path, makeDirs)
-	}
+    protected File repoFile(Grgit grgit, String path, boolean makeDirs = true) {
+        return GitTestUtil.repoFile(grgit, path, makeDirs)
+    }
 }

@@ -36,49 +36,49 @@ import org.eclipse.jgit.lib.BranchTrackingStatus
  * @since 0.2.0
  */
 class BranchStatusOp implements Callable<BranchStatus> {
-	private final Repository repo
+    private final Repository repo
 
-	/**
-	 * The branch to get the status of.
-	 * @see {@link ResolveService#toBranch(Object)}
-	 */
-	Object name
+    /**
+     * The branch to get the status of.
+     * @see {@link ResolveService#toBranch(Object)}
+     */
+    Object name
 
-	BranchStatusOp(Repository repo) {
-		this.repo = repo
-	}
+    BranchStatusOp(Repository repo) {
+        this.repo = repo
+    }
 
-	BranchStatus call() {
-		try {
-			Branch realBranch = new ResolveService(repo).toBranch(name)
-			if (realBranch.trackingBranch) {
-				BranchTrackingStatus status = BranchTrackingStatus.of(repo.jgit.repository, realBranch.fullName)
-				if (status) {
-					return new BranchStatus(realBranch, status.aheadCount, status.behindCount)
-				} else {
-					throw new GrgitException("Could not retrieve status for ${name}")
-				}
-			} else {
-				throw new GrgitException("${name} is not set to track another branch")
-			}
-		} catch (IOException e) {
-			throw new GrgitException('Problem retrieving branch status.', e)
-		}
-	}
+    BranchStatus call() {
+        try {
+            Branch realBranch = new ResolveService(repo).toBranch(name)
+            if (realBranch.trackingBranch) {
+                BranchTrackingStatus status = BranchTrackingStatus.of(repo.jgit.repository, realBranch.fullName)
+                if (status) {
+                    return new BranchStatus(realBranch, status.aheadCount, status.behindCount)
+                } else {
+                    throw new GrgitException("Could not retrieve status for ${name}")
+                }
+            } else {
+                throw new GrgitException("${name} is not set to track another branch")
+            }
+        } catch (IOException e) {
+            throw new GrgitException('Problem retrieving branch status.', e)
+        }
+    }
 
-	/**
-	 * @deprecated replaced by {@link #name}
-	 */
-	@Deprecated
-	Object getBranch() {
-		return name
-	}
+    /**
+     * @deprecated replaced by {@link #name}
+     */
+    @Deprecated
+    Object getBranch() {
+        return name
+    }
 
-	/**
-	 * @deprecated replaced by {@link #name}
-	 */
-	@Deprecated
-	void setBranch(Object branch) {
-		this.name = branch
-	}
+    /**
+     * @deprecated replaced by {@link #name}
+     */
+    @Deprecated
+    void setBranch(Object branch) {
+        this.name = branch
+    }
 }

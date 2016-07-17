@@ -23,13 +23,13 @@ import groovy.transform.Immutable
  */
  @Immutable
 class Person {
-	/**
-	 * Name of person.
-	 */
-	String name
+    /**
+     * Name of person.
+     */
+    String name
 
-	/**
-	 * Email address of person.
-	 */
-	String email
+    /**
+     * Email address of person.
+     */
+    String email
 }

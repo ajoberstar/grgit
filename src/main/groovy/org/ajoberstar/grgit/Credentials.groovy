@@ -23,6 +23,6 @@ import groovy.transform.Immutable
  */
 @Immutable
 class Credentials {
-	String username
-	String password
+    String username
+    String password
 }

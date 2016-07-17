@@ -26,27 +26,27 @@ import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class SimpleGitOpSpec extends Specification {
-	@Rule TemporaryFolder tempDir = new TemporaryFolder()
+    @Rule TemporaryFolder tempDir = new TemporaryFolder()
 
-	Grgit grgit
-	Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
+    Grgit grgit
+    Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
 
-	def setup() {
-		File repoDir = tempDir.newFolder('repo')
-		Git git = Git.init().setDirectory(repoDir).call()
-		git.repo.config.with {
-			setString('user', null, 'name', person.name)
-			setString('user', null, 'email', person.email)
-			save()
-		}
-		grgit = Grgit.open(dir: repoDir)
-	}
+    def setup() {
+        File repoDir = tempDir.newFolder('repo')
+        Git git = Git.init().setDirectory(repoDir).call()
+        git.repo.config.with {
+            setString('user', null, 'name', person.name)
+            setString('user', null, 'email', person.email)
+            save()
+        }
+        grgit = Grgit.open(dir: repoDir)
+    }
 
-	protected File repoFile(String path, boolean makeDirs = true) {
-		return GitTestUtil.repoFile(grgit, path, makeDirs)
-	}
+    protected File repoFile(String path, boolean makeDirs = true) {
+        return GitTestUtil.repoFile(grgit, path, makeDirs)
+    }
 
-	protected File repoDir(String path) {
-		return GitTestUtil.repoDir(grgit, path)
-	}
+    protected File repoDir(String path) {
+        return GitTestUtil.repoDir(grgit, path)
+    }
 }

@@ -42,32 +42,32 @@ import org.eclipse.jgit.revwalk.RevCommit
  * @see <a href="http://git-scm.com/docs/git-revert">git-revert Manual Page</a>
  */
 class RevertOp implements Callable<Commit> {
-	private final Repository repo
+    private final Repository repo
 
-	/**
-	 * List of commits to revert.
-	 * @see {@link ResolveService#toRevisionString(Object)}
-	 */
-	List<Object> commits = []
+    /**
+     * List of commits to revert.
+     * @see {@link ResolveService#toRevisionString(Object)}
+     */
+    List<Object> commits = []
 
-	RevertOp(Repository repo) {
-		this.repo = repo
-	}
+    RevertOp(Repository repo) {
+        this.repo = repo
+    }
 
-	Commit call() {
-		RevertCommand cmd = repo.jgit.revert()
-		commits.each {
-			String revstr = new ResolveService(repo).toRevisionString(it)
-			cmd.include(JGitUtil.resolveObject(repo, revstr))
-		}
-		try {
-			RevCommit commit = cmd.call()
-			if (commit == null) {
-				throw new GrgitException('Problem reverting commits.')
-			}
-			return JGitUtil.convertCommit(commit)
-		} catch (GitAPIException e) {
-			throw new GrgitException('Problem reverting commits.', e)
-		}
-	}
+    Commit call() {
+        RevertCommand cmd = repo.jgit.revert()
+        commits.each {
+            String revstr = new ResolveService(repo).toRevisionString(it)
+            cmd.include(JGitUtil.resolveObject(repo, revstr))
+        }
+        try {
+            RevCommit commit = cmd.call()
+            if (commit == null) {
+                throw new GrgitException('Problem reverting commits.')
+            }
+            return JGitUtil.convertCommit(commit)
+        } catch (GitAPIException e) {
+            throw new GrgitException('Problem reverting commits.', e)
+        }
+    }
 }

@@ -64,62 +64,62 @@ import org.eclipse.jgit.lib.Ref
  * @see <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>
  */
 class TagAddOp implements Callable<Tag> {
-	private final Repository repo
+    private final Repository repo
 
-	/**
-	 * The name of the tag to create.
-	 */
-	String name
+    /**
+     * The name of the tag to create.
+     */
+    String name
 
-	/**
-	 * The message to put on the tag.
-	 */
-	String message
+    /**
+     * The message to put on the tag.
+     */
+    String message
 
-	/**
-	 * The person who created the tag.
-	 */
-	Person tagger
+    /**
+     * The person who created the tag.
+     */
+    Person tagger
 
-	/**
-	 * {@code true} (the default) if an annotated tag should be
-	 * created, {@code false} otherwise.
-	 */
-	boolean annotate = true
+    /**
+     * {@code true} (the default) if an annotated tag should be
+     * created, {@code false} otherwise.
+     */
+    boolean annotate = true
 
-	/**
-	 * {@code true} to overwrite an existing tag, {@code false}
-	 * (the default) otherwise
-	 */
-	boolean force = false
+    /**
+     * {@code true} to overwrite an existing tag, {@code false}
+     * (the default) otherwise
+     */
+    boolean force = false
 
-	/**
-	 * The commit the tag should point to.
-	 * @see {@link ResolveService#toRevisionString(Object)}
-	 */
-	Object pointsTo
+    /**
+     * The commit the tag should point to.
+     * @see {@link ResolveService#toRevisionString(Object)}
+     */
+    Object pointsTo
 
-	TagAddOp(Repository repo) {
-		this.repo = repo
-	}
+    TagAddOp(Repository repo) {
+        this.repo = repo
+    }
 
-	Tag call() {
-		TagCommand cmd = repo.jgit.tag()
-		cmd.name = name
-		cmd.message = message
-		if (tagger) { cmd.tagger = new PersonIdent(tagger.name, tagger.email) }
-		cmd.annotated = annotate
-		cmd.forceUpdate = force
-		if (pointsTo) {
-			def revstr = new ResolveService(repo).toRevisionString(pointsTo)
-			cmd.objectId = JGitUtil.resolveRevObject(repo, revstr)
-		}
+    Tag call() {
+        TagCommand cmd = repo.jgit.tag()
+        cmd.name = name
+        cmd.message = message
+        if (tagger) { cmd.tagger = new PersonIdent(tagger.name, tagger.email) }
+        cmd.annotated = annotate
+        cmd.forceUpdate = force
+        if (pointsTo) {
+            def revstr = new ResolveService(repo).toRevisionString(pointsTo)
+            cmd.objectId = JGitUtil.resolveRevObject(repo, revstr)
+        }
 
-		try {
-			Ref ref = cmd.call()
-			return JGitUtil.resolveTag(repo, ref)
-		} catch (GitAPIException e) {
-			throw new GrgitException('Problem creating tag.', e)
-		}
-	}
+        try {
+            Ref ref = cmd.call()
+            return JGitUtil.resolveTag(repo, ref)
+        } catch (GitAPIException e) {
+            throw new GrgitException('Problem creating tag.', e)
+        }
+    }
 }

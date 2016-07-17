@@ -48,27 +48,27 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-init">git-init Manual Reference.</a>
  */
 class InitOp implements Callable<Grgit> {
-	/**
-	 * {@code true} if the repository should not have a
-	 * working tree, {@code false} (the default) otherwise
-	 */
-	boolean bare = false
+    /**
+     * {@code true} if the repository should not have a
+     * working tree, {@code false} (the default) otherwise
+     */
+    boolean bare = false
 
-	/**
-	 * The directory to initialize the repository in.
-	 * @see {@link CoercionUtil#toFile(Object)}
-	 */
-	Object dir
+    /**
+     * The directory to initialize the repository in.
+     * @see {@link CoercionUtil#toFile(Object)}
+     */
+    Object dir
 
-	Grgit call() {
-		InitCommand cmd = Git.init()
-		cmd.bare = bare
-		cmd.directory = CoercionUtil.toFile(dir)
-		try {
-			cmd.call()
-			return Grgit.open(dir: dir)
-		} catch (GitAPIException e) {
-			throw new GrgitException('Problem initializing repository.', e)
-		}
-	}
+    Grgit call() {
+        InitCommand cmd = Git.init()
+        cmd.bare = bare
+        cmd.directory = CoercionUtil.toFile(dir)
+        try {
+            cmd.call()
+            return Grgit.open(dir: dir)
+        } catch (GitAPIException e) {
+            throw new GrgitException('Problem initializing repository.', e)
+        }
+    }
 }

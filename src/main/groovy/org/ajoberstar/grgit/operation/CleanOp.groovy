@@ -63,46 +63,46 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-clean">git-clean Manual Page</a>
  */
 class CleanOp implements Callable<Set<String>> {
-	private final Repository repo
+    private final Repository repo
 
-	/**
-	 * The paths to clean. {@code null} if all paths should be included.
-	 */
-	Set<String> paths
+    /**
+     * The paths to clean. {@code null} if all paths should be included.
+     */
+    Set<String> paths
 
-	/**
-	 * {@code true} if untracked directories should also be deleted,
-	 * {@code false} (the default) otherwise
-	 */
-	boolean directories = false
+    /**
+     * {@code true} if untracked directories should also be deleted,
+     * {@code false} (the default) otherwise
+     */
+    boolean directories = false
 
-	/**
-	 * {@code true} if the files should be returned, but not deleted,
-	 * {@code false} (the default) otherwise
-	 */
-	boolean dryRun = false
+    /**
+     * {@code true} if the files should be returned, but not deleted,
+     * {@code false} (the default) otherwise
+     */
+    boolean dryRun = false
 
-	/**
-	 * {@code false} if files ignored by {@code .gitignore} should
-	 * also be deleted, {@code true} (the default) otherwise
-	 */
-	boolean ignore = true
+    /**
+     * {@code false} if files ignored by {@code .gitignore} should
+     * also be deleted, {@code true} (the default) otherwise
+     */
+    boolean ignore = true
 
-	CleanOp(Repository repo) {
-		this.repo = repo
-	}
+    CleanOp(Repository repo) {
+        this.repo = repo
+    }
 
-	Set<String> call() {
-		CleanCommand cmd = repo.jgit.clean()
-		if (paths) { cmd.paths = paths }
-		cmd.cleanDirectories = directories
-		cmd.dryRun = dryRun
-		cmd.ignore = ignore
+    Set<String> call() {
+        CleanCommand cmd = repo.jgit.clean()
+        if (paths) { cmd.paths = paths }
+        cmd.cleanDirectories = directories
+        cmd.dryRun = dryRun
+        cmd.ignore = ignore
 
-		try {
-			return cmd.call()
-		} catch (GitAPIException e) {
-			throw new GrgitException('Problem cleaning repository.', e)
-		}
-	}
+        try {
+            return cmd.call()
+        } catch (GitAPIException e) {
+            throw new GrgitException('Problem cleaning repository.', e)
+        }
+    }
 }

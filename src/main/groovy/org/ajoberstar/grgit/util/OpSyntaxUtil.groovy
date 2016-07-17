@@ -20,31 +20,31 @@ package org.ajoberstar.grgit.util
  * @since 0.1.0
  */
 final class OpSyntaxUtil {
-	private OpSyntaxUtil() {
-		throw new AssertionError('Cannot instantiate this class.')
-	}
+    private OpSyntaxUtil() {
+        throw new AssertionError('Cannot instantiate this class.')
+    }
 
-	/**
-	 * Attempt to call an operation using the given parameters.
-	 * @param service the service class to call the method on
-	 * @param supportedOps a map of operation method names to operation
-	 * classes supported on the {@code service} class
-	 * @param classArgs the arguments to instantiate the operation class
-	 * @param methodName the method requested on the {@code service}
-	 * @param methodArgs the arguments requested on the method
-	 * @return the result of the operation
-	 * @throws GrgitException if the operation failed
-	 * @throws MissingMethodException if the requested method doesn't
-	 * correspond to a supported operation
-	 */
-	static Object tryOp(Class service, Map supportedOps, Object[] classArgs, String methodName, Object[] methodArgs) {
-		if (methodName in supportedOps && methodArgs.size() < 2) {
-			def op = supportedOps[methodName].newInstance(classArgs)
-			def config = methodArgs.size() == 0 ? [:] : methodArgs[0]
-			ConfigureUtil.configure(op, config)
-			return op.call()
-		} else {
-			throw new MissingMethodException(methodName, service, methodArgs)
-		}
-	}
+    /**
+     * Attempt to call an operation using the given parameters.
+     * @param service the service class to call the method on
+     * @param supportedOps a map of operation method names to operation
+     * classes supported on the {@code service} class
+     * @param classArgs the arguments to instantiate the operation class
+     * @param methodName the method requested on the {@code service}
+     * @param methodArgs the arguments requested on the method
+     * @return the result of the operation
+     * @throws GrgitException if the operation failed
+     * @throws MissingMethodException if the requested method doesn't
+     * correspond to a supported operation
+     */
+    static Object tryOp(Class service, Map supportedOps, Object[] classArgs, String methodName, Object[] methodArgs) {
+        if (methodName in supportedOps && methodArgs.size() < 2) {
+            def op = supportedOps[methodName].newInstance(classArgs)
+            def config = methodArgs.size() == 0 ? [:] : methodArgs[0]
+            ConfigureUtil.configure(op, config)
+            return op.call()
+        } else {
+            throw new MissingMethodException(methodName, service, methodArgs)
+        }
+    }
 }

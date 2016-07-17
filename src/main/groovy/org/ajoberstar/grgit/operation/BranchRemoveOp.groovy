@@ -47,34 +47,34 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>
  */
 class BranchRemoveOp implements Callable<List<String>> {
-	private final Repository repo
+    private final Repository repo
 
-	/**
-	 * List of all branche names to remove.
-	 * @see {@link ResolveService#toBranchName(Object)}
-	 */
-	List names = []
+    /**
+     * List of all branche names to remove.
+     * @see {@link ResolveService#toBranchName(Object)}
+     */
+    List names = []
 
-	/**
-	 * If {@code false} (the default), only remove branches that
-	 * are merged into another branch. If {@code true} will delete
-	 * regardless.
-	 */
-	boolean force = false
+    /**
+     * If {@code false} (the default), only remove branches that
+     * are merged into another branch. If {@code true} will delete
+     * regardless.
+     */
+    boolean force = false
 
-	BranchRemoveOp(Repository repo) {
-		this.repo = repo
-	}
+    BranchRemoveOp(Repository repo) {
+        this.repo = repo
+    }
 
-	List<String> call() {
-		DeleteBranchCommand cmd = repo.jgit.branchDelete()
-		cmd.branchNames = names.collect { new ResolveService(repo).toBranchName(it) }
-		cmd.force = force
+    List<String> call() {
+        DeleteBranchCommand cmd = repo.jgit.branchDelete()
+        cmd.branchNames = names.collect { new ResolveService(repo).toBranchName(it) }
+        cmd.force = force
 
-		try {
-			return cmd.call()
-		} catch (GitAPIException e) {
-			throw new GrgitException('Problem deleting branch(es).', e)
-		}
-	}
+        try {
+            return cmd.call()
+        } catch (GitAPIException e) {
+            throw new GrgitException('Problem deleting branch(es).', e)
+        }
+    }
 }

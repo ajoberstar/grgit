@@ -25,36 +25,36 @@ import org.eclipse.jgit.lib.Repository
  */
 @Immutable
 class Tag {
-	/**
-	 * The commit this tag points to.
-	 */
-	Commit commit
+    /**
+     * The commit this tag points to.
+     */
+    Commit commit
 
-	/**
-	 * The person who created the tag.
-	 */
-	Person tagger
+    /**
+     * The person who created the tag.
+     */
+    Person tagger
 
-	/**
-	 * The full name of this tag.
-	 */
-	String fullName
+    /**
+     * The full name of this tag.
+     */
+    String fullName
 
-	/**
-	 * The full tag message.
-	 */
-	String fullMessage
+    /**
+     * The full tag message.
+     */
+    String fullMessage
 
-	/**
-	 * The shortened tag message.
-	 */
-	String shortMessage
+    /**
+     * The shortened tag message.
+     */
+    String shortMessage
 
-	/**
-	 * The simple name of this tag.
-	 * @return the simple name
-	 */
-	String getName() {
-		return Repository.shortenRefName(fullName)
-	}
+    /**
+     * The simple name of this tag.
+     * @return the simple name
+     */
+    String getName() {
+        return Repository.shortenRefName(fullName)
+    }
 }

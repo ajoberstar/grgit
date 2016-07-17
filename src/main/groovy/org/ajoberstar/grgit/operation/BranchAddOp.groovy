@@ -69,59 +69,59 @@ import org.eclipse.jgit.lib.Ref
  * @see <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>
  */
 class BranchAddOp implements Callable<Branch> {
-	private final Repository repo
+    private final Repository repo
 
-	/**
-	 * The name of the branch to add.
-	 */
-	String name
+    /**
+     * The name of the branch to add.
+     */
+    String name
 
-	/**
-	 * The commit the branch should start at. If this is a remote branch
-	 * it will be automatically tracked.
-	 * @see {@link ResolveService#toRevisionString(Object)}
-	 */
-	Object startPoint
+    /**
+     * The commit the branch should start at. If this is a remote branch
+     * it will be automatically tracked.
+     * @see {@link ResolveService#toRevisionString(Object)}
+     */
+    Object startPoint
 
-	/**
-	 * The tracking mode to use. If {@code null}, will use the default
-	 * behavior.
-	 */
-	Mode mode
+    /**
+     * The tracking mode to use. If {@code null}, will use the default
+     * behavior.
+     */
+    Mode mode
 
-	BranchAddOp(Repository repo) {
-		this.repo = repo
-	}
+    BranchAddOp(Repository repo) {
+        this.repo = repo
+    }
 
-	Branch call() {
-		if (mode && !startPoint) {
-			throw new IllegalStateException('Cannot set mode if no start point.')
-		}
-		CreateBranchCommand cmd = repo.jgit.branchCreate()
-		cmd.name = name
-		cmd.force = false
-		if (startPoint) {
-			String rev = new ResolveService(repo).toRevisionString(startPoint)
-			cmd.startPoint = rev
-		}
-		if (mode) { cmd.upstreamMode = mode.jgit }
+    Branch call() {
+        if (mode && !startPoint) {
+            throw new IllegalStateException('Cannot set mode if no start point.')
+        }
+        CreateBranchCommand cmd = repo.jgit.branchCreate()
+        cmd.name = name
+        cmd.force = false
+        if (startPoint) {
+            String rev = new ResolveService(repo).toRevisionString(startPoint)
+            cmd.startPoint = rev
+        }
+        if (mode) { cmd.upstreamMode = mode.jgit }
 
-		try {
-			Ref ref = cmd.call()
-			return JGitUtil.resolveBranch(repo, ref)
-		} catch (GitAPIException e) {
-			throw new GrgitException('Problem creating branch.', e)
-		}
-	}
+        try {
+            Ref ref = cmd.call()
+            return JGitUtil.resolveBranch(repo, ref)
+        } catch (GitAPIException e) {
+            throw new GrgitException('Problem creating branch.', e)
+        }
+    }
 
-	static enum Mode {
-		TRACK(SetupUpstreamMode.TRACK),
-		NO_TRACK(SetupUpstreamMode.NOTRACK)
+    static enum Mode {
+        TRACK(SetupUpstreamMode.TRACK),
+        NO_TRACK(SetupUpstreamMode.NOTRACK)
 
-		private final SetupUpstreamMode jgit
+        private final SetupUpstreamMode jgit
 
-		Mode(SetupUpstreamMode jgit) {
-			this.jgit = jgit
-		}
-	}
+        Mode(SetupUpstreamMode jgit) {
+            this.jgit = jgit
+        }
+    }
 }

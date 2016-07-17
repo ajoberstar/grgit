@@ -1,31 +1,31 @@
 plugins {
-	id 'groovy'
-	id 'maven-publish'
-	id 'com.jfrog.bintray' version '1.1'
-	id 'org.ajoberstar.defaults' version '0.6.0-milestone.7'
-	id 'org.sonarqube' version '1.2'
+    id 'groovy'
+    id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.1'
+    id 'org.ajoberstar.defaults' version '0.6.0-milestone.7'
+    id 'org.sonarqube' version '1.2'
 }
 
 group = 'org.ajoberstar'
 description = 'The Groovy way to use Git.'
 
 defaults {
-	id = 'ajoberstar'
+    id = 'ajoberstar'
 
-	bintrayRepo = 'libraries'
-	bintrayLabels = ['groovy', 'git']
+    bintrayRepo = 'libraries'
+    bintrayLabels = ['groovy', 'git']
 
-	developers = [
-		[id: 'ajoberstar', name: 'Andrew Oberstar', email: 'andrew@ajoberstar.org']
-	]
+    developers = [
+        [id: 'ajoberstar', name: 'Andrew Oberstar', email: 'andrew@ajoberstar.org']
+    ]
 
-	copyrightYears = '2012-2015'
+    copyrightYears = '2012-2015'
 }
 
 sourceCompatibility = '1.7'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 def jgitVersion = '4.3.1.201605051710-r'
@@ -33,54 +33,54 @@ def jgitVersion = '4.3.1.201605051710-r'
 // def jgitVersion = '3.4.1.201406201815-r' // behavior of log command is different
 
 dependencies {
-	// groovy
-	compileOnly 'org.codehaus.groovy:groovy-all:2.4.5'
-	testCompile 'org.codehaus.groovy:groovy-all:2.4.5'
+    // groovy
+    compileOnly 'org.codehaus.groovy:groovy-all:2.4.5'
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.5'
 
-	// jgit
-	compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
-	compile "org.eclipse.jgit:org.eclipse.jgit.ui:$jgitVersion"
+    // jgit
+    compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
+    compile "org.eclipse.jgit:org.eclipse.jgit.ui:$jgitVersion"
 
-	// agentproxy
-	['jsch', 'pageant', 'sshagent', 'usocket-jna', 'usocket-nc'].each {
-		compile "com.jcraft:jsch.agentproxy.${it}:0.0.9"
-	}
+    // agentproxy
+    ['jsch', 'pageant', 'sshagent', 'usocket-jna', 'usocket-nc'].each {
+        compile "com.jcraft:jsch.agentproxy.${it}:0.0.9"
+    }
 
-	// logging
-	compile 'org.slf4j:slf4j-api:1.7.21'
-	testRuntime 'org.slf4j:slf4j-simple:1.7.21'
+    // logging
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    testRuntime 'org.slf4j:slf4j-simple:1.7.21'
 
-	// testing
-	testCompile('org.spockframework:spock-core:1.0-groovy-2.4') { exclude group: 'org.codehaus.groovy' }
+    // testing
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.4') { exclude group: 'org.codehaus.groovy' }
 }
 
 tasks.withType(Test) {
-	reports {
-		junitXml.outputPerTestCase = true
-	}
+    reports {
+        junitXml.outputPerTestCase = true
+    }
 }
 
 test {
-	useJUnit {
-		excludeCategories 'org.ajoberstar.grgit.fixtures.PlatformSpecific'
-	}
+    useJUnit {
+        excludeCategories 'org.ajoberstar.grgit.fixtures.PlatformSpecific'
+    }
 }
 
 ['Windows', 'Linux', 'Mac'].each { platform ->
-	tasks.create("test${platform}", Test) {
-		useJUnit {
-			includeCategories "org.ajoberstar.grgit.fixtures.${platform}Specific"
-		}
-		System.properties.each { key, value ->
-			if (key.startsWith('org.ajoberstar.grgit.test')) {
-				systemProperties((key): value)
-			}
-		}
-	}
+    tasks.create("test${platform}", Test) {
+        useJUnit {
+            includeCategories "org.ajoberstar.grgit.fixtures.${platform}Specific"
+        }
+        System.properties.each { key, value ->
+            if (key.startsWith('org.ajoberstar.grgit.test')) {
+                systemProperties((key): value)
+            }
+        }
+    }
 }
 
 sonarqube {
-	properties {
-		property 'sonar.projectVersion', version.toString().split('-')[0]
-	}
+    properties {
+        property 'sonar.projectVersion', version.toString().split('-')[0]
+    }
 }

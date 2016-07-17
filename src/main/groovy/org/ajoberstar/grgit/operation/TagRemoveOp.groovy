@@ -40,26 +40,26 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>
  */
 class TagRemoveOp implements Callable<List<String>> {
-	private final Repository repo
+    private final Repository repo
 
-	/**
-	 * Names of tags to remove.
-	 * @see {@link ResolveService#toTagName(Object)}
-	 */
-	List names = []
+    /**
+     * Names of tags to remove.
+     * @see {@link ResolveService#toTagName(Object)}
+     */
+    List names = []
 
-	TagRemoveOp(Repository repo) {
-		this.repo = repo
-	}
+    TagRemoveOp(Repository repo) {
+        this.repo = repo
+    }
 
-	List<String> call() {
-		DeleteTagCommand cmd = repo.jgit.tagDelete()
-		cmd.tags = names.collect { new ResolveService(repo).toTagName(it) }
+    List<String> call() {
+        DeleteTagCommand cmd = repo.jgit.tagDelete()
+        cmd.tags = names.collect { new ResolveService(repo).toTagName(it) }
 
-		try {
-			return cmd.call()
-		} catch (GitAPIException e) {
-			throw new GrgitException('Problem deleting tag(s).', e)
-		}
-	}
+        try {
+            return cmd.call()
+        } catch (GitAPIException e) {
+            throw new GrgitException('Problem deleting tag(s).', e)
+        }
+    }
 }

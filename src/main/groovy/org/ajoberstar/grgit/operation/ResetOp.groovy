@@ -58,68 +58,68 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-reset">git-reset Manual Page</a>
  */
 class ResetOp implements Callable<Void> {
-	private final Repository repo
+    private final Repository repo
 
-	/**
-	 * The paths to reset.
-	 */
-	Set<String> paths = []
+    /**
+     * The paths to reset.
+     */
+    Set<String> paths = []
 
-	/**
-	 * The commit to reset back to. Defaults to HEAD.
-	 * @see {@link ResolveService#toRevisionString(Object)}
-	 */
-	Object commit
+    /**
+     * The commit to reset back to. Defaults to HEAD.
+     * @see {@link ResolveService#toRevisionString(Object)}
+     */
+    Object commit
 
-	/**
-	 * The mode to use when resetting.
-	 */
-	Mode mode = Mode.MIXED
+    /**
+     * The mode to use when resetting.
+     */
+    Mode mode = Mode.MIXED
 
-	ResetOp(Repository repo) {
-		this.repo = repo
-	}
+    ResetOp(Repository repo) {
+        this.repo = repo
+    }
 
-	Void call() {
-		if (!paths.empty && mode != Mode.MIXED) {
-			throw new IllegalStateException('Cannot set mode when resetting paths.')
-		}
+    Void call() {
+        if (!paths.empty && mode != Mode.MIXED) {
+            throw new IllegalStateException('Cannot set mode when resetting paths.')
+        }
 
-		ResetCommand cmd = repo.jgit.reset()
-		paths.each { cmd.addPath(it) }
-		if (commit) {
-			cmd.ref = new ResolveService(repo).toRevisionString(commit)
-		}
-		if (paths.empty) {
-			cmd.mode = mode.jgit
-		}
+        ResetCommand cmd = repo.jgit.reset()
+        paths.each { cmd.addPath(it) }
+        if (commit) {
+            cmd.ref = new ResolveService(repo).toRevisionString(commit)
+        }
+        if (paths.empty) {
+            cmd.mode = mode.jgit
+        }
 
-		try {
-			cmd.call()
-			return null
-		} catch (GitAPIException e) {
-			throw new GrgitException('Problem running reset.', e)
-		}
-	}
+        try {
+            cmd.call()
+            return null
+        } catch (GitAPIException e) {
+            throw new GrgitException('Problem running reset.', e)
+        }
+    }
 
-	static enum Mode {
-		/**
-		 * Reset the index and working tree.
-		 */
-		HARD(ResetCommand.ResetType.HARD),
-		/**
-		 * Reset the index, but not the working tree.
-		 */
-		MIXED(ResetCommand.ResetType.MIXED),
-		/**
-		 * Only reset the HEAD. Leave the index and working tree as-is.
-		 */
-		SOFT(ResetCommand.ResetType.SOFT)
+    static enum Mode {
+        /**
+         * Reset the index and working tree.
+         */
+        HARD(ResetCommand.ResetType.HARD),
+        /**
+         * Reset the index, but not the working tree.
+         */
+        MIXED(ResetCommand.ResetType.MIXED),
+        /**
+         * Only reset the HEAD. Leave the index and working tree as-is.
+         */
+        SOFT(ResetCommand.ResetType.SOFT)
 
-		private final ResetCommand.ResetType jgit
+        private final ResetCommand.ResetType jgit
 
-		private Mode(ResetCommand.ResetType jgit) {
-			this.jgit = jgit
-		}
-	}
+        private Mode(ResetCommand.ResetType jgit) {
+            this.jgit = jgit
+        }
+    }
 }

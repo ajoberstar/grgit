@@ -81,139 +81,139 @@ import org.ajoberstar.grgit.exception.GrgitException
  * @since 0.2.0
  */
 class AuthConfig {
-	/**
-	 * System property name used to force a specific authentication option.
-	 */
-	static final String FORCE_OPTION = 'org.ajoberstar.grgit.auth.force'
-	static final String USERNAME_OPTION = 'org.ajoberstar.grgit.auth.username'
-	static final String PASSWORD_OPTION = 'org.ajoberstar.grgit.auth.password'
-	static final String SSH_PRIVATE_KEY_OPTION = 'org.ajoberstar.grgit.auth.ssh.private'
-	static final String SSH_SESSION_CONFIG_OPTION_PREFIX = 'org.ajoberstar.grgit.auth.session.config.'
+    /**
+     * System property name used to force a specific authentication option.
+     */
+    static final String FORCE_OPTION = 'org.ajoberstar.grgit.auth.force'
+    static final String USERNAME_OPTION = 'org.ajoberstar.grgit.auth.username'
+    static final String PASSWORD_OPTION = 'org.ajoberstar.grgit.auth.password'
+    static final String SSH_PRIVATE_KEY_OPTION = 'org.ajoberstar.grgit.auth.ssh.private'
+    static final String SSH_SESSION_CONFIG_OPTION_PREFIX = 'org.ajoberstar.grgit.auth.session.config.'
 
-	/**
-	 * Set of all authentication options that are allowed in this
-	 * configuration.
-	 */
-	final Set<Option> allowed
+    /**
+     * Set of all authentication options that are allowed in this
+     * configuration.
+     */
+    final Set<Option> allowed
 
-	private AuthConfig(Set<Option> allowed) {
-		this.allowed = allowed.asImmutable()
-	}
+    private AuthConfig(Set<Option> allowed) {
+        this.allowed = allowed.asImmutable()
+    }
 
-	/**
-	 * Test whether the given authentication option is allowed by this
-	 * configuration.
-	 * @param option the authentication option to test for
-	 * @return {@code true} if the given option is allowed, {@code false}
-	 * otherwise
-	 */
-	boolean allows(Option option) {
-		return allowed.contains(option)
-	}
+    /**
+     * Test whether the given authentication option is allowed by this
+     * configuration.
+     * @param option the authentication option to test for
+     * @return {@code true} if the given option is allowed, {@code false}
+     * otherwise
+     */
+    boolean allows(Option option) {
+        return allowed.contains(option)
+    }
 
-	/**
-	 * Constructs and returns a {@link Credentials} instance reflecting the
-	 * settings in the system properties.
-	 * @return a credentials instance reflecting the settings in the system
-	 * properties, or, if the username isn't set, {@code null}
-	 */
-	Credentials getHardcodedCreds() {
-		String username = System.properties[USERNAME_OPTION]
-		String password = System.properties[PASSWORD_OPTION]
-		if (username) {
-			return new Credentials(username, password)
-		} else {
-			return null
-		}
-	}
+    /**
+     * Constructs and returns a {@link Credentials} instance reflecting the
+     * settings in the system properties.
+     * @return a credentials instance reflecting the settings in the system
+     * properties, or, if the username isn't set, {@code null}
+     */
+    Credentials getHardcodedCreds() {
+        String username = System.properties[USERNAME_OPTION]
+        String password = System.properties[PASSWORD_OPTION]
+        if (username) {
+            return new Credentials(username, password)
+        } else {
+            return null
+        }
+    }
 
-	/**
-	 * Gets the path to your SSH private key to use during authentication reflecting
-	 * the value set in the system properties.
-	 * @return the path to the SSH key, if set, otherwise {@code null}
-	 */
-	String getSshPrivateKeyPath() {
-		return System.properties[SSH_PRIVATE_KEY_OPTION]
-	}
+    /**
+     * Gets the path to your SSH private key to use during authentication reflecting
+     * the value set in the system properties.
+     * @return the path to the SSH key, if set, otherwise {@code null}
+     */
+    String getSshPrivateKeyPath() {
+        return System.properties[SSH_PRIVATE_KEY_OPTION]
+    }
 
-	/**
-	 * Gets session config override for SSH session that is used underneath by JGit
-	 * @return map with configuration or empty if nothing was specified in system property
-	 */
-	Map<String, String> getSessionConfig() {
-		return System.properties
-			.findAll { key, value -> key.startsWith(SSH_SESSION_CONFIG_OPTION_PREFIX) }
-			.collectEntries { key, value -> [key.substring(SSH_SESSION_CONFIG_OPTION_PREFIX.length()), value] }
-	}
+    /**
+     * Gets session config override for SSH session that is used underneath by JGit
+     * @return map with configuration or empty if nothing was specified in system property
+     */
+    Map<String, String> getSessionConfig() {
+        return System.properties
+            .findAll { key, value -> key.startsWith(SSH_SESSION_CONFIG_OPTION_PREFIX) }
+            .collectEntries { key, value -> [key.substring(SSH_SESSION_CONFIG_OPTION_PREFIX.length()), value] }
+    }
 
-	/**
-	 * Factory method to construct an authentication configuration from the
-	 * given properties.
-	 * @param properties the properties to use in this configuration
-	 * @return the constructed configuration
-	 * @throws GrgitException if force is set to an invalid option
-	 */
-	static AuthConfig fromMap(Map properties) {
-		String forceSetting = properties[FORCE_OPTION]
-		if (forceSetting) {
-			try {
-				return new AuthConfig([Option.valueOf(forceSetting.toUpperCase())] as Set)
-			} catch (IllegalArgumentException e) {
-				throw new GrgitException("${FORCE_OPTION} must be set to one of ${Option.values() as List}. Currently set to: ${forceSetting}", e)
-			}
-		} else {
-			Set<Option> allowed = (Option.values() as Set).findAll {
-				String setting = properties[it.systemPropertyName]
-				setting == null ? true : Boolean.valueOf(setting)
-			}
-			return new AuthConfig(allowed)
-		}
-	}
+    /**
+     * Factory method to construct an authentication configuration from the
+     * given properties.
+     * @param properties the properties to use in this configuration
+     * @return the constructed configuration
+     * @throws GrgitException if force is set to an invalid option
+     */
+    static AuthConfig fromMap(Map properties) {
+        String forceSetting = properties[FORCE_OPTION]
+        if (forceSetting) {
+            try {
+                return new AuthConfig([Option.valueOf(forceSetting.toUpperCase())] as Set)
+            } catch (IllegalArgumentException e) {
+                throw new GrgitException("${FORCE_OPTION} must be set to one of ${Option.values() as List}. Currently set to: ${forceSetting}", e)
+            }
+        } else {
+            Set<Option> allowed = (Option.values() as Set).findAll {
+                String setting = properties[it.systemPropertyName]
+                setting == null ? true : Boolean.valueOf(setting)
+            }
+            return new AuthConfig(allowed)
+        }
+    }
 
-	/**
-	 * Factory method to construct an authentication configuration from the
-	 * current system properties.
-	 * @return the constructed configuration
-	 * @throws GrgitException if force is set to an invalid option
-	 */
-	static AuthConfig fromSystemProperties() {
-		return fromMap(System.properties)
-	}
+    /**
+     * Factory method to construct an authentication configuration from the
+     * current system properties.
+     * @return the constructed configuration
+     * @throws GrgitException if force is set to an invalid option
+     */
+    static AuthConfig fromSystemProperties() {
+        return fromMap(System.properties)
+    }
 
-	/**
-	 * Available authentication options.
-	 */
-	static enum Option {
-		/**
-		 * Use credentials provided directly to Grgit.
-		 */
-		HARDCODED,
+    /**
+     * Available authentication options.
+     */
+    static enum Option {
+        /**
+         * Use credentials provided directly to Grgit.
+         */
+        HARDCODED,
 
-		/**
-		 * Will prompt for credentials using an AWT window, if needed.
-		 */
-		INTERACTIVE,
+        /**
+         * Will prompt for credentials using an AWT window, if needed.
+         */
+        INTERACTIVE,
 
-		/**
-		 * Use SSH keys in the system's sshagent process.
-		 */
-		SSHAGENT,
+        /**
+         * Use SSH keys in the system's sshagent process.
+         */
+        SSHAGENT,
 
-		/**
-		 * Use SSH keys in the system's pageant process.
-		 */
-		PAGEANT
+        /**
+         * Use SSH keys in the system's pageant process.
+         */
+        PAGEANT
 
-		/**
-		 * Gets the system property name used to configure whether this
-		 * option is allowed or not. By default, all are allowed.
-		 * The system properties are of the form
-		 * {@code org.ajoberstar.grgit.auth.<lowercase option name>.allow}
-		 * Can be set to {@code true} or {@code false}.
-		 * @return the system property name
-		 */
-		String getSystemPropertyName() {
-			return "org.ajoberstar.grgit.auth.${name().toLowerCase()}.allow"
-		}
-	}
+        /**
+         * Gets the system property name used to configure whether this
+         * option is allowed or not. By default, all are allowed.
+         * The system properties are of the form
+         * {@code org.ajoberstar.grgit.auth.<lowercase option name>.allow}
+         * Can be set to {@code true} or {@code false}.
+         * @return the system property name
+         */
+        String getSystemPropertyName() {
+            return "org.ajoberstar.grgit.auth.${name().toLowerCase()}.allow"
+        }
+    }
 }
