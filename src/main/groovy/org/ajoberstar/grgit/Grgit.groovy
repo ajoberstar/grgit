@@ -23,7 +23,7 @@ import org.ajoberstar.grgit.util.OpSyntaxUtil
 import org.eclipse.jgit.api.Git
 
 /**
- * Provides support for performaing operations on and getting information about
+ * Provides support for performing operations on and getting information about
  * a Git repository.
  *
  * <p>A Grgit instance can be obtained via 3 methods.</p>
