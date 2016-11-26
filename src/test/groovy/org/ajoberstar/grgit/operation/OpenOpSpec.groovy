@@ -19,6 +19,7 @@ import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
+import org.ajoberstar.grgit.exception.GrgitException
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.errors.RepositoryNotFoundException
@@ -49,6 +50,17 @@ class OpenOpSpec extends SimpleGitOpSpec {
         Grgit opened = Grgit.open(dir: repoDir('.'))
         then:
         opened.head() == commit
+    }
+
+    @RestoreSystemProperties
+    def 'open without dir fails if there is no repo in the current dir'() {
+        given:
+        File workingDir = tempDir.newFolder('no_repo')
+        System.setProperty('user.dir', workingDir.absolutePath)
+        when:
+        Grgit.open()
+        then:
+        thrown(GrgitException)
     }
 
     @RestoreSystemProperties
