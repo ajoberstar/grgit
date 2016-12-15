@@ -2,6 +2,9 @@ language: java
 sudo: false
 install: ""
 script: ./travis.sh
+branches:
+    only:
+        - master
 jdk:
     - oraclejdk8
 cache:

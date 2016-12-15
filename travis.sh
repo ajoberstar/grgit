@@ -16,7 +16,7 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${GITHUB_TOKEN:-}" ]; then
 		-Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
         -Dsonar.github.repository=$TRAVIS_REPO_SLUG \
         -Dsonar.github.oauth=$GITHUB_TOKEN \
-        -Dsonar.analysis.mode=issues
+        -Dsonar.analysis.mode=preview
 else
 	echo 'Running Gradle check without SonarQube analysis'
 	./gradlew clean check
