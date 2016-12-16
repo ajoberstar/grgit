@@ -28,7 +28,7 @@ repositories {
     mavenCentral()
 }
 
-def jgitVersion = '4.3.1.201605051710-r'
+def jgitVersion = '4.5.0.201609210915-r'
 // def jgitVersion = '3.3.2.201404171909-r' // pre-bug
 // def jgitVersion = '3.4.1.201406201815-r' // behavior of log command is different
 
@@ -45,6 +45,8 @@ dependencies {
     ['jsch', 'pageant', 'sshagent', 'usocket-jna', 'usocket-nc'].each {
         compile "com.jcraft:jsch.agentproxy.${it}:0.0.9"
     }
+    // agentproxy pulls this in, but we need to force a newer version
+    compile 'com.jcraft:jsch:0.1.54'
 
     // logging
     compile 'org.slf4j:slf4j-api:1.7.21'
