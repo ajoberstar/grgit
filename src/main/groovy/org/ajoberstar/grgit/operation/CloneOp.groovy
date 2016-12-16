@@ -19,6 +19,7 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.auth.TransportOpUtil
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.util.CoercionUtil
@@ -103,8 +104,9 @@ class CloneOp implements Callable<Grgit> {
         if (refToCheckout) { cmd.branch = refToCheckout }
 
         try {
-            cmd.call().close()
-            return Grgit.open(dir: dir, creds: credentials)
+            Git jgit = cmd.call()
+            Repository repo = new Repository(CoercionUtil.toFile(dir), jgit, credentials)
+            return new Grgit(repo)
         } catch (GitAPIException e) {
             throw new GrgitException('Problem cloning repository.', e)
         }
