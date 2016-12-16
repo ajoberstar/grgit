@@ -131,4 +131,13 @@ class CloneOpSpec extends MultiGitOpSpec {
         GitTestUtil.tags(grgit).collect(lastName) == ['tag1']
         GitTestUtil.remotes(grgit) == ['origin']
     }
+
+    def 'cloned repo can be deleted'() {
+        given:
+        def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, refToCheckout: 'refs/heads/branch2')
+        when:
+        grgit.close()
+        then:
+        assert repoDir.deleteDir()
+    }
 }
