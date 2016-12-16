@@ -138,6 +138,6 @@ class CloneOpSpec extends MultiGitOpSpec {
         when:
         grgit.close()
         then:
-        assert repoDir.deleteDir()
+        repoDir.deleteDir()
     }
 }

@@ -15,6 +15,8 @@
  */
 package org.ajoberstar.grgit.operation
 
+import java.nio.file.Files
+
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Status
@@ -138,5 +140,14 @@ class OpenOpSpec extends SimpleGitOpSpec {
         then:
         opened.head() == commit
         opened.status() == new Status(unstaged: [modified: [FILE_PATH]])
+    }
+
+    def 'opened repo can be deleted after being closed'() {
+        given:
+        Grgit opened = Grgit.open(dir: repoDir('.').canonicalFile)
+        when:
+        opened.close()
+        then:
+        opened.repository.rootDir.deleteDir()
     }
 }

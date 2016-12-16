@@ -18,6 +18,7 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.util.CoercionUtil
 
@@ -65,8 +66,9 @@ class InitOp implements Callable<Grgit> {
         cmd.bare = bare
         cmd.directory = CoercionUtil.toFile(dir)
         try {
-            cmd.call()
-            return Grgit.open(dir: dir)
+            Git jgit = cmd.call()
+            Repository repo = new Repository(CoercionUtil.toFile(dir), jgit, null)
+            return new Grgit(repo)
         } catch (GitAPIException e) {
             throw new GrgitException('Problem initializing repository.', e)
         }
