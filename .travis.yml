@@ -1,12 +1,13 @@
 language: java
-sudo: false
+sudo: required
+dist: trusty
 install: ""
 script: ./travis.sh
 branches:
     only:
         - master
 jdk:
-    - oraclejdk8
+    - openjdk8
 cache:
     directories:
         - $HOME/.gradle/caches
