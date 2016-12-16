@@ -103,7 +103,7 @@ class CloneOp implements Callable<Grgit> {
         if (refToCheckout) { cmd.branch = refToCheckout }
 
         try {
-            cmd.call()
+            cmd.call().close()
             return Grgit.open(dir: dir, creds: credentials)
         } catch (GitAPIException e) {
             throw new GrgitException('Problem cloning repository.', e)
