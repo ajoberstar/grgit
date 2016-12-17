@@ -50,6 +50,16 @@ import org.ajoberstar.grgit.exception.GrgitException
  * </ul>
  *
  * <p>
+ *   Hardcoded credentials can alternately be provided with environment variables.
+ *   These take a lower precedence than the system properties, but all other
+ *   considerations are the same.
+ * </p>
+ * <ul>
+ *   <li>{@code GRGIT_USER=<username>}</li>
+ *   <li>{@code GRGIT_PASS=<password>}</li>
+ * </ul>
+ *
+ * <p>
  *   In order to add a non-standard SSH key to use as your credentials,
  *   use the following property.
  * </p>
@@ -90,14 +100,35 @@ class AuthConfig {
     static final String SSH_PRIVATE_KEY_OPTION = 'org.ajoberstar.grgit.auth.ssh.private'
     static final String SSH_SESSION_CONFIG_OPTION_PREFIX = 'org.ajoberstar.grgit.auth.session.config.'
 
+    static final String USERNAME_ENV_VAR = 'GRGIT_USER'
+    static final String PASSWORD_ENV_VAR = 'GRGIT_PASS'
+
+    private final Map<String, String> props
+    private final Map<String, String> env
+
+    private AuthConfig(Map<String, String> props, Map<String, String> env) {
+        this.props = props
+        this.env = env
+    }
+
     /**
      * Set of all authentication options that are allowed in this
      * configuration.
      */
-    final Set<Option> allowed
-
-    private AuthConfig(Set<Option> allowed) {
-        this.allowed = allowed.asImmutable()
+    Set<Option> getAllowed() {
+        String forceSetting = props[FORCE_OPTION]
+        if (forceSetting) {
+            try {
+                return [Option.valueOf(forceSetting.toUpperCase())]
+            } catch (IllegalArgumentException e) {
+                throw new GrgitException("${FORCE_OPTION} must be set to one of ${Option.values() as List}. Currently set to: ${forceSetting}", e)
+            }
+        } else {
+            return (Option.values() as Set).findAll {
+                String setting = props[it.systemPropertyName]
+                setting == null ? true : Boolean.valueOf(setting)
+            }
+        }
     }
 
     /**
@@ -108,7 +139,7 @@ class AuthConfig {
      * otherwise
      */
     boolean allows(Option option) {
-        return allowed.contains(option)
+        return getAllowed().contains(option)
     }
 
     /**
@@ -118,10 +149,14 @@ class AuthConfig {
      * properties, or, if the username isn't set, {@code null}
      */
     Credentials getHardcodedCreds() {
-        String username = System.properties[USERNAME_OPTION]
-        String password = System.properties[PASSWORD_OPTION]
-        if (username) {
-            return new Credentials(username, password)
+        if (allows(Option.HARDCODED)) {
+            String username = props[USERNAME_OPTION] ?: env[USERNAME_ENV_VAR]
+            String password = props[PASSWORD_OPTION] ?: env[PASSWORD_ENV_VAR]
+            if (username) {
+                return new Credentials(username, password)
+            } else {
+                return null
+            }
         } else {
             return null
         }
@@ -133,7 +168,7 @@ class AuthConfig {
      * @return the path to the SSH key, if set, otherwise {@code null}
      */
     String getSshPrivateKeyPath() {
-        return System.properties[SSH_PRIVATE_KEY_OPTION]
+        return props[SSH_PRIVATE_KEY_OPTION]
     }
 
     /**
@@ -141,43 +176,31 @@ class AuthConfig {
      * @return map with configuration or empty if nothing was specified in system property
      */
     Map<String, String> getSessionConfig() {
-        return System.properties
+        return props
             .findAll { key, value -> key.startsWith(SSH_SESSION_CONFIG_OPTION_PREFIX) }
             .collectEntries { key, value -> [key.substring(SSH_SESSION_CONFIG_OPTION_PREFIX.length()), value] }
     }
 
     /**
      * Factory method to construct an authentication configuration from the
-     * given properties.
+     * given properties and environment.
      * @param properties the properties to use in this configuration
+     * @param env the environment vars to use in this configuration
      * @return the constructed configuration
      * @throws GrgitException if force is set to an invalid option
      */
-    static AuthConfig fromMap(Map properties) {
-        String forceSetting = properties[FORCE_OPTION]
-        if (forceSetting) {
-            try {
-                return new AuthConfig([Option.valueOf(forceSetting.toUpperCase())] as Set)
-            } catch (IllegalArgumentException e) {
-                throw new GrgitException("${FORCE_OPTION} must be set to one of ${Option.values() as List}. Currently set to: ${forceSetting}", e)
-            }
-        } else {
-            Set<Option> allowed = (Option.values() as Set).findAll {
-                String setting = properties[it.systemPropertyName]
-                setting == null ? true : Boolean.valueOf(setting)
-            }
-            return new AuthConfig(allowed)
-        }
+    static AuthConfig fromMap(Map props, Map env = [:]) {
+        return new AuthConfig(props, env)
     }
 
     /**
      * Factory method to construct an authentication configuration from the
-     * current system properties.
+     * current system properties and environment variables.
      * @return the constructed configuration
      * @throws GrgitException if force is set to an invalid option
      */
-    static AuthConfig fromSystemProperties() {
-        return fromMap(System.properties)
+    static AuthConfig fromSystem() {
+        return fromMap(System.properties, System.env)
     }
 
     /**

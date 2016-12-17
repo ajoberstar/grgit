@@ -46,39 +46,41 @@ class AuthConfigSpec extends Specification {
         ['pageant.allow': 'true', 'sshagent.allow': 'false']          | [HARDCODED, INTERACTIVE, PAGEANT]
     }
 
-    def 'getHardcodedCreds returns creds if username and password are set'() {
+    def 'getHardcodedCreds returns creds if username and password are set with properties'() {
         given:
-        System.setProperty(AuthConfig.USERNAME_OPTION, 'myuser')
-        System.setProperty(AuthConfig.PASSWORD_OPTION, 'mypass')
+        def props = [(AuthConfig.USERNAME_OPTION): 'myuser', (AuthConfig.PASSWORD_OPTION): 'mypass']
         expect:
-        AuthConfig.fromMap([:]).getHardcodedCreds() == new Credentials('myuser', 'mypass')
+        AuthConfig.fromMap(props).getHardcodedCreds() == new Credentials('myuser', 'mypass')
+    }
+
+    def 'getHardcodedCreds returns creds if username and password are set with env'() {
+        given:
+        def env = [(AuthConfig.USERNAME_ENV_VAR): 'myuser', (AuthConfig.PASSWORD_ENV_VAR): 'mypass']
+        expect:
+        AuthConfig.fromMap([:], env).getHardcodedCreds() == new Credentials('myuser', 'mypass')
     }
 
     def 'getHardcodedCreds returns creds if username is set and password is not'() {
         given:
-        System.setProperty(AuthConfig.USERNAME_OPTION, 'myuser')
-        System.clearProperty(AuthConfig.PASSWORD_OPTION)
+        def props = [(AuthConfig.USERNAME_OPTION): 'myuser']
         expect:
-        AuthConfig.fromMap([:]).getHardcodedCreds() == new Credentials('myuser', null)
+        AuthConfig.fromMap(props).getHardcodedCreds() == new Credentials('myuser', null)
     }
 
     def 'getHardcodedCreds returns null if username is not set'() {
-        given:
-        System.clearProperty(AuthConfig.USERNAME_OPTION)
-        System.clearProperty(AuthConfig.PASSWORD_OPTION)
         expect:
         AuthConfig.fromMap([:]).getHardcodedCreds() == null
     }
 
     def 'getSessionConfig returns empty map if nothing specified'() {
         expect:
-        AuthConfig.fromMap(Collections.emptyMap()).sessionConfig.isEmpty()
+        AuthConfig.fromMap([:]).sessionConfig.isEmpty()
     }
 
     def 'getSessionConfig returns session config based on system property'() {
         given:
-        System.setProperty(AuthConfig.SSH_SESSION_CONFIG_OPTION_PREFIX + 'StrictHostKeyChecking', 'no')
+        def props = [(AuthConfig.SSH_SESSION_CONFIG_OPTION_PREFIX + 'StrictHostKeyChecking'): 'no']
         expect:
-        AuthConfig.fromMap(Collections.emptyMap()).sessionConfig == [ StrictHostKeyChecking: 'no' ]
+        AuthConfig.fromMap(props).sessionConfig == [StrictHostKeyChecking: 'no']
     }
 }

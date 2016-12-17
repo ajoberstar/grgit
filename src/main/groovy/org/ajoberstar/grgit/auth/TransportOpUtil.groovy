@@ -44,7 +44,7 @@ final class TransportOpUtil {
      * @param creds the hardcoded credentials to use, if not {@code null}
      */
     static void configure(TransportCommand cmd, Credentials creds) {
-        AuthConfig config = AuthConfig.fromSystemProperties()
+        AuthConfig config = AuthConfig.fromSystem()
         logger.info('The following authentication options are allowed (though they may not be available): {}', config.allowed)
         cmd.credentialsProvider = determineCredentialsProvider(config, creds)
         cmd.transportConfigCallback = new JschAgentProxyConfigCallback(config)
