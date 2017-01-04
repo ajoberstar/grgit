@@ -39,31 +39,31 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-apply">git-apply Manual Page</a>
  */
 class ApplyOp implements Callable<Void> {
-    private final Repository repo
+  private final Repository repo
 
-    /**
-     * The patch file to apply to the index.
-     * @see {@link CoercionUtil#toFile(Object)}
-     */
-    Object patch
+  /**
+   * The patch file to apply to the index.
+   * @see {@link CoercionUtil#toFile(Object)}
+   */
+  Object patch
 
-    ApplyOp(Repository repo) {
-        this.repo = repo
+  ApplyOp(Repository repo) {
+    this.repo = repo
+  }
+
+  Void call() {
+    ApplyCommand cmd = repo.jgit.apply()
+    if (!patch) {
+      throw new IllegalStateException('Must set a patch file.')
     }
-
-    Void call() {
-        ApplyCommand cmd = repo.jgit.apply()
-        if (!patch) {
-            throw new IllegalStateException('Must set a patch file.')
-        }
-        CoercionUtil.toFile(patch).withInputStream { stream ->
-            cmd.patch = stream
-            try {
-                cmd.call()
-                return null
-            } catch (GitAPIException e) {
-                throw new GrgitException('Problem applying patch.', e)
-            }
-        }
+    CoercionUtil.toFile(patch).withInputStream { stream ->
+      cmd.patch = stream
+      try {
+        cmd.call()
+        return null
+      } catch (GitAPIException e) {
+        throw new GrgitException('Problem applying patch.', e)
+      }
     }
+  }
 }

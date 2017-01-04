@@ -40,15 +40,15 @@ import org.ajoberstar.grgit.util.OpSyntaxUtil
  * @since 0.2.0
  */
 class TagService {
-    private static final Map OPERATIONS = [
-        list: TagListOp, add: TagAddOp, remove: TagRemoveOp]
-    private final Repository repository
+  private static final Map OPERATIONS = [
+    list: TagListOp, add: TagAddOp, remove: TagRemoveOp]
+  private final Repository repository
 
-    TagService(Repository repository) {
-        this.repository = repository
-    }
+  TagService(Repository repository) {
+    this.repository = repository
+  }
 
-    def methodMissing(String name, args) {
-        OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
-    }
+  def methodMissing(String name, args) {
+    OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
+  }
 }

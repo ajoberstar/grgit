@@ -36,16 +36,16 @@ import org.ajoberstar.grgit.util.OpSyntaxUtil
  */
 class RemoteService {
 
-    private static final Map OPERATIONS = [
-        list: RemoteListOp, add: RemoteAddOp]
+  private static final Map OPERATIONS = [
+    list: RemoteListOp, add: RemoteAddOp]
 
-    private final Repository repository
+  private final Repository repository
 
-    RemoteService(Repository repository) {
-        this.repository = repository
-    }
+  RemoteService(Repository repository) {
+    this.repository = repository
+  }
 
-    def methodMissing(String name, args) {
-        OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
-    }
+  def methodMissing(String name, args) {
+    OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
+  }
 }

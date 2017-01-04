@@ -25,23 +25,23 @@ import org.eclipse.jgit.api.Git
  */
 @Immutable(knownImmutableClasses=[Git, File])
 class Repository {
-    /**
-     * The directory the repository is contained in.
-     */
-    File rootDir
+  /**
+   * The directory the repository is contained in.
+   */
+  File rootDir
 
-    /**
-     * The JGit instance opened for this repository.
-     */
-    Git jgit
+  /**
+   * The JGit instance opened for this repository.
+   */
+  Git jgit
 
-    /**
-     * The credentials used when talking to remote repositories.
-     */
-    Credentials credentials
+  /**
+   * The credentials used when talking to remote repositories.
+   */
+  Credentials credentials
 
-    @Override
-    String toString() {
-        return "Repository(${rootDir.canonicalPath})"
-    }
+  @Override
+  String toString() {
+    return "Repository(${rootDir.canonicalPath})"
+  }
 }

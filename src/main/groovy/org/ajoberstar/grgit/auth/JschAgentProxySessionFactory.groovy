@@ -40,140 +40,140 @@ import org.slf4j.LoggerFactory
  * @since 0.1.0
  */
 class JschAgentProxySessionFactory extends JschConfigSessionFactory {
-    private static final Logger logger = LoggerFactory.getLogger(JschAgentProxySessionFactory)
-    private final AuthConfig config
+  private static final Logger logger = LoggerFactory.getLogger(JschAgentProxySessionFactory)
+  private final AuthConfig config
 
-    JschAgentProxySessionFactory(AuthConfig config) {
-        this.config = config
+  JschAgentProxySessionFactory(AuthConfig config) {
+    this.config = config
+  }
+
+  /**
+   * Customize session
+   */
+  @Override
+  protected void configure(Host hc, Session session) {
+    config.sessionConfig.each { key, value -> session.setConfig(key, value) }
+  }
+
+  /**
+   * Obtains a JSch used for creating sessions, with the addition
+   * of ssh-agent and Pageant agents, if available.
+   * @return the JSch instance
+   */
+  @Override
+  protected JSch getJSch(Host hc, FS fs) throws JSchException {
+    JSch jsch
+    try {
+      jsch = super.getJSch(hc, fs)
+    } catch (JSchException e) {
+      jsch = super.createDefaultJSch(fs)
     }
 
-    /**
-     * Customize session
-     */
-    @Override
-    protected void configure(Host hc, Session session) {
-        config.sessionConfig.each { key, value -> session.setConfig(key, value) }
+    if (config.sshPrivateKeyPath) {
+      jsch.addIdentity(config.sshPrivateKeyPath)
     }
 
-    /**
-     * Obtains a JSch used for creating sessions, with the addition
-     * of ssh-agent and Pageant agents, if available.
-     * @return the JSch instance
-     */
-    @Override
-    protected JSch getJSch(Host hc, FS fs) throws JSchException {
-        JSch jsch
-        try {
-            jsch = super.getJSch(hc, fs)
-        } catch (JSchException e) {
-            jsch = super.createDefaultJSch(fs)
-        }
+    Connector con = determineConnector()
+    if (con) {
+      IdentityRepository remoteRepo = new RemoteIdentityRepository(con)
+      if (remoteRepo.identities.empty) {
+        logger.info 'not using agent proxy: no identities found'
+      } else {
+        logger.info 'using agent proxy'
+        jsch.setIdentityRepository(remoteRepo)
+      }
+    } else {
+      logger.info 'jsch agent proxy not available'
+    }
+    return jsch
+  }
 
-        if (config.sshPrivateKeyPath) {
-            jsch.addIdentity(config.sshPrivateKeyPath)
-        }
+  /**
+   * Chooses which agent proxy connector is used.
+   * @return the connector available at this time
+   */
+  private Connector determineConnector() {
+    return [sshAgentSelector, pageantSelector].findResult { selector ->
+      selector()
+    }
+  }
 
-        Connector con = determineConnector()
-        if (con) {
-            IdentityRepository remoteRepo = new RemoteIdentityRepository(con)
-            if (remoteRepo.identities.empty) {
-                logger.info 'not using agent proxy: no identities found'
-            } else {
-                logger.info 'using agent proxy'
-                jsch.setIdentityRepository(remoteRepo)
-            }
+  private final Closure<Connector> sshAgentSelector = {
+    try {
+      if (!config.allows(AuthConfig.Option.SSHAGENT)) {
+        logger.info('ssh-agent option disabled')
+        return null
+      } else if (SSHAgentConnector.isConnectorAvailable()) {
+        USocketFactory usf = determineUSocketFactory()
+        if (usf) {
+          logger.info 'ssh-agent available'
+          return new SSHAgentConnector(usf)
         } else {
-            logger.info 'jsch agent proxy not available'
+          logger.info 'ssh-agent not available'
+          return null
         }
-        return jsch
+      } else {
+        logger.info 'ssh-agent not available'
+        return null
+      }
+    } catch (AgentProxyException e) {
+      logger.info 'ssh-agent could not be configured: {}', e.message
+      logger.debug 'ssh-agent failure details', e
+      return null
     }
+  }
 
-    /**
-     * Chooses which agent proxy connector is used.
-     * @return the connector available at this time
-     */
-    private Connector determineConnector() {
-        return [sshAgentSelector, pageantSelector].findResult { selector ->
-            selector()
-        }
+  private final Closure<Connector> pageantSelector = {
+    try {
+      if (!config.allows(AuthConfig.Option.PAGEANT)) {
+        logger.info('pageant option disabled')
+        return null
+      } else if (PageantConnector.isConnectorAvailable()) {
+        logger.info 'pageant available'
+        return new PageantConnector()
+      } else {
+        logger.info 'pageant not available'
+        return null
+      }
+    } catch (AgentProxyException e) {
+      logger.info 'pageant could not be configured: {}', e.message
+      logger.debug 'pageant failure details', e
+      return null
     }
+  }
 
-    private final Closure<Connector> sshAgentSelector = {
-        try {
-            if (!config.allows(AuthConfig.Option.SSHAGENT)) {
-                logger.info('ssh-agent option disabled')
-                return null
-            } else if (SSHAgentConnector.isConnectorAvailable()) {
-                USocketFactory usf = determineUSocketFactory()
-                if (usf) {
-                    logger.info 'ssh-agent available'
-                    return new SSHAgentConnector(usf)
-                } else {
-                    logger.info 'ssh-agent not available'
-                    return null
-                }
-            } else {
-                logger.info 'ssh-agent not available'
-                return null
-            }
-        } catch (AgentProxyException e) {
-            logger.info 'ssh-agent could not be configured: {}', e.message
-            logger.debug 'ssh-agent failure details', e
-            return null
-        }
+  /**
+   * Choose which socket factory to use.
+   * @return a working socket factory or {@code null} if none is
+   * available
+   */
+  private final USocketFactory determineUSocketFactory() {
+    return [ncSelector, jnaSelector].findResult { selector ->
+      selector()
     }
+  }
 
-    private final Closure<Connector> pageantSelector = {
-        try {
-            if (!config.allows(AuthConfig.Option.PAGEANT)) {
-                logger.info('pageant option disabled')
-                return null
-            } else if (PageantConnector.isConnectorAvailable()) {
-                logger.info 'pageant available'
-                return new PageantConnector()
-            } else {
-                logger.info 'pageant not available'
-                return null
-            }
-        } catch (AgentProxyException e) {
-            logger.info 'pageant could not be configured: {}', e.message
-            logger.debug 'pageant failure details', e
-            return null
-        }
+  private final Closure<USocketFactory> jnaSelector = {
+    try {
+      return new JNAUSocketFactory()
+    } catch (UnsatisfiedLinkError e) {
+      logger.info 'JNA USocketFactory could not be configured: {}', e.message
+      logger.debug 'JNA USocketFactory failure details', e
+      return null
+    } catch (NoClassDefFoundError e) {
+      logger.info 'JNA USocketFactory could not be configured: {}', e.message
+      logger.debug 'JNA USocketFactory failure details', e
+      return null
     }
+  }
 
-    /**
-     * Choose which socket factory to use.
-     * @return a working socket factory or {@code null} if none is
-     * available
-     */
-    private final USocketFactory determineUSocketFactory() {
-        return [ncSelector, jnaSelector].findResult { selector ->
-            selector()
-        }
+  private final Closure<USocketFactory> ncSelector = {
+    try {
+      return new NCUSocketFactory()
+    } catch (AgentProxyException e) {
+      logger.info 'NetCat USocketFactory could not be configured: {}', e.message
+      logger.debug 'NetCat USocketFactory failure details', e
+      return null
     }
-
-    private final Closure<USocketFactory> jnaSelector = {
-        try {
-            return new JNAUSocketFactory()
-        } catch (UnsatisfiedLinkError e) {
-            logger.info 'JNA USocketFactory could not be configured: {}', e.message
-            logger.debug 'JNA USocketFactory failure details', e
-            return null
-        } catch (NoClassDefFoundError e) {
-            logger.info 'JNA USocketFactory could not be configured: {}', e.message
-            logger.debug 'JNA USocketFactory failure details', e
-            return null
-        }
-    }
-
-    private final Closure<USocketFactory> ncSelector = {
-        try {
-            return new NCUSocketFactory()
-        } catch (AgentProxyException e) {
-            logger.info 'NetCat USocketFactory could not be configured: {}', e.message
-            logger.debug 'NetCat USocketFactory failure details', e
-            return null
-        }
-    }
+  }
 }

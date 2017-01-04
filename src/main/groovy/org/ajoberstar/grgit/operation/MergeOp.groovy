@@ -49,98 +49,98 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-merge">git-merge Manual Page</a>
  */
 class MergeOp implements Callable<Void> {
-    private final Repository repo
+  private final Repository repo
 
-    /**
-     * The head to merge into the current HEAD.
-     * @see {@link ResolveService#toRevisionString(Object)}
-     */
-    Object head
+  /**
+   * The head to merge into the current HEAD.
+   * @see {@link ResolveService#toRevisionString(Object)}
+   */
+  Object head
 
-    /**
-     * The message to use for the merge commit
-     */
-    String message
+  /**
+   * The message to use for the merge commit
+   */
+  String message
 
-    /**
-     * How to handle the merge.
-     */
-    Mode mode
+  /**
+   * How to handle the merge.
+   */
+  Mode mode
 
-    MergeOp(Repository repo) {
-        this.repo = repo
+  MergeOp(Repository repo) {
+    this.repo = repo
+  }
+
+  Void call() {
+    MergeCommand cmd = repo.jgit.merge()
+    if (head) {
+      /*
+       * we want to preserve ref name in merge commit msg. if it's a ref, don't
+       * resolve down to commit id
+       */
+      def ref = repo.jgit.repository.getRef(head)
+      if (ref == null) {
+        def revstr = new ResolveService(repo).toRevisionString(head)
+        cmd.include(JGitUtil.resolveObject(repo, revstr))
+      } else {
+        cmd.include(ref)
+      }
+    }
+    if (message) {
+      cmd.setMessage(message)
+    }
+    switch (mode) {
+      case Mode.ONLY_FF:
+        cmd.fastForward = MergeCommand.FastForwardMode.FF_ONLY
+        break
+      case Mode.CREATE_COMMIT:
+        cmd.fastForward = MergeCommand.FastForwardMode.NO_FF
+        break
+      case Mode.SQUASH:
+        cmd.squash = true
+        break
+      case Mode.NO_COMMIT:
+        cmd.commit = false
+        break
     }
 
-    Void call() {
-        MergeCommand cmd = repo.jgit.merge()
-        if (head) {
-            /*
-             * we want to preserve ref name in merge commit msg. if it's a ref, don't
-             * resolve down to commit id
-             */
-            def ref = repo.jgit.repository.getRef(head)
-            if (ref == null) {
-                def revstr = new ResolveService(repo).toRevisionString(head)
-                cmd.include(JGitUtil.resolveObject(repo, revstr))
-            } else {
-                cmd.include(ref)
-            }
-        }
-        if (message) {
-            cmd.setMessage(message)
-        }
-        switch (mode) {
-            case Mode.ONLY_FF:
-                cmd.fastForward = MergeCommand.FastForwardMode.FF_ONLY
-                break
-            case Mode.CREATE_COMMIT:
-                cmd.fastForward = MergeCommand.FastForwardMode.NO_FF
-                break
-            case Mode.SQUASH:
-                cmd.squash = true
-                break
-            case Mode.NO_COMMIT:
-                cmd.commit = false
-                break
-        }
-
-        try {
-            MergeResult result = cmd.call()
-            if (!result.mergeStatus.successful) {
-                throw new GrgitException("Could not merge (conflicting files can be retrieved with a call to grgit.status()): ${result}")
-            }
-            return null
-        } catch (GitAPIException e) {
-            throw new GrgitException('Problem merging.', e)
-        }
+    try {
+      MergeResult result = cmd.call()
+      if (!result.mergeStatus.successful) {
+        throw new GrgitException("Could not merge (conflicting files can be retrieved with a call to grgit.status()): ${result}")
+      }
+      return null
+    } catch (GitAPIException e) {
+      throw new GrgitException('Problem merging.', e)
     }
+  }
 
-    static enum Mode {
-        /**
-         * Fast-forwards if possible, creates a merge commit otherwise.
-         * Behaves like --ff.
-         */
-        DEFAULT,
+  static enum Mode {
+    /**
+     * Fast-forwards if possible, creates a merge commit otherwise.
+     * Behaves like --ff.
+     */
+    DEFAULT,
 
-        /**
-         * Only merges if a fast-forward is possible.
-         * Behaves like --ff-only.
-         */
-        ONLY_FF,
+    /**
+     * Only merges if a fast-forward is possible.
+     * Behaves like --ff-only.
+     */
+    ONLY_FF,
 
-        /**
-         * Always creates a merge commit (even if a fast-forward is possible).
-         * Behaves like --no-ff.
-         */
-        CREATE_COMMIT,
-        /**
-         * Squashes the merged changes into one set and leaves them uncommitted.
-         * Behaves like --squash.
-         */
-        SQUASH,
-        /**
-         * Merges changes, but does not commit them. Behaves like --no-commit.
-         */
-        NO_COMMIT
-    }
+    /**
+     * Always creates a merge commit (even if a fast-forward is possible).
+     * Behaves like --no-ff.
+     */
+    CREATE_COMMIT,
+    /**
+     * Squashes the merged changes into one set and leaves them uncommitted.
+     * Behaves like --squash.
+     */
+    SQUASH,
+    /**
+     * Merges changes, but does not commit them. Behaves like --no-commit.
+     */
+    NO_COMMIT
+  }
 }

@@ -23,18 +23,18 @@ import groovy.transform.Immutable
  */
 @Immutable
 class BranchStatus {
-    /**
-     * The branch this object is for.
-     */
-    Branch branch
+  /**
+   * The branch this object is for.
+   */
+  Branch branch
 
-    /**
-     * The number of commits this branch is ahead of its upstream.
-     */
-    int aheadCount
+  /**
+   * The number of commits this branch is ahead of its upstream.
+   */
+  int aheadCount
 
-    /**
-     * The number of commits this branch is behind its upstream.
-     */
-    int behindCount
+  /**
+   * The number of commits this branch is behind its upstream.
+   */
+  int behindCount
 }

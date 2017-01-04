@@ -40,21 +40,21 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>
  */
 class TagListOp implements Callable<List<Tag>> {
-    private final Repository repo
+  private final Repository repo
 
-    TagListOp(Repository repo) {
-        this.repo = repo
+  TagListOp(Repository repo) {
+    this.repo = repo
+  }
+
+  List<Tag> call() {
+    ListTagCommand cmd = repo.jgit.tagList()
+
+    try {
+      return cmd.call().collect {
+        JGitUtil.resolveTag(repo, it)
+      }
+    } catch (GitAPIException e) {
+      throw new GrgitException('Problem listing tags.', e)
     }
-
-    List<Tag> call() {
-        ListTagCommand cmd = repo.jgit.tagList()
-
-        try {
-            return cmd.call().collect {
-                JGitUtil.resolveTag(repo, it)
-            }
-        } catch (GitAPIException e) {
-            throw new GrgitException('Problem listing tags.', e)
-        }
-    }
+  }
 }

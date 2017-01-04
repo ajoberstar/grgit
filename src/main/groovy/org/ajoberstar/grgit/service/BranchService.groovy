@@ -44,25 +44,25 @@ import org.eclipse.jgit.lib.Ref
  * @since 0.2.0
  */
 class BranchService {
-    private static final Map OPERATIONS = [
-        list: BranchListOp, add: BranchAddOp, remove: BranchRemoveOp,
-        change: BranchChangeOp, status: BranchStatusOp]
-    private final Repository repository
+  private static final Map OPERATIONS = [
+    list: BranchListOp, add: BranchAddOp, remove: BranchRemoveOp,
+    change: BranchChangeOp, status: BranchStatusOp]
+  private final Repository repository
 
-    BranchService(Repository repository) {
-        this.repository = repository
-    }
+  BranchService(Repository repository) {
+    this.repository = repository
+  }
 
-    /**
-     * Gets the branch associated with the current HEAD.
-     * @return the branch or {@code null} if the HEAD is detached
-     */
-    Branch getCurrent() {
-        Ref ref = repository.jgit.repository.getRef('HEAD')?.target
-        return ref ? JGitUtil.resolveBranch(repository, ref) : null
-    }
+  /**
+   * Gets the branch associated with the current HEAD.
+   * @return the branch or {@code null} if the HEAD is detached
+   */
+  Branch getCurrent() {
+    Ref ref = repository.jgit.repository.getRef('HEAD')?.target
+    return ref ? JGitUtil.resolveBranch(repository, ref) : null
+  }
 
-    def methodMissing(String name, args) {
-        OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
-    }
+  def methodMissing(String name, args) {
+    OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
+  }
 }

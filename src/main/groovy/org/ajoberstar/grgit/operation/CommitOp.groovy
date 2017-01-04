@@ -62,66 +62,66 @@ import org.eclipse.jgit.revwalk.RevCommit
  * @see <a href="http://git-scm.com/docs/git-commit">git-commit Manual Reference.</a>
  */
 class CommitOp implements Callable<Commit> {
-    private final Repository repo
+  private final Repository repo
 
-    /**
-     * Commit message.
-     */
-    String message
+  /**
+   * Commit message.
+   */
+  String message
 
-    /**
-     * Comment to put in the reflog.
-     */
-    String reflogComment
+  /**
+   * Comment to put in the reflog.
+   */
+  String reflogComment
 
-    /**
-     * The person who committed the changes. Uses the git-config
-     * setting, if {@code null}.
-     */
-    Person committer
+  /**
+   * The person who committed the changes. Uses the git-config
+   * setting, if {@code null}.
+   */
+  Person committer
 
-    /**
-     * The person who authored the changes. Uses the git-config
-     * setting, if {@code null}.
-     */
-    Person author
+  /**
+   * The person who authored the changes. Uses the git-config
+   * setting, if {@code null}.
+   */
+  Person author
 
-    /**
-     * Only include these paths when committing. {@code null} to
-     * include all staged changes.
-     */
-    Set<String> paths = []
+  /**
+   * Only include these paths when committing. {@code null} to
+   * include all staged changes.
+   */
+  Set<String> paths = []
 
-    /**
-     * Commit changes to all previously tracked files, even if
-     * they aren't staged, if {@code true}.
-     */
-    boolean all = false
+  /**
+   * Commit changes to all previously tracked files, even if
+   * they aren't staged, if {@code true}.
+   */
+  boolean all = false
 
-    /**
-     * {@code true} if the previous commit should be amended with
-     * these changes.
-     */
-    boolean amend = false
+  /**
+   * {@code true} if the previous commit should be amended with
+   * these changes.
+   */
+  boolean amend = false
 
-    CommitOp(Repository repo) {
-        this.repo = repo
+  CommitOp(Repository repo) {
+    this.repo = repo
+  }
+
+  Commit call() {
+    CommitCommand cmd = repo.jgit.commit()
+    cmd.message = message
+    cmd.reflogComment = reflogComment
+    if (committer) { cmd.committer = new PersonIdent(committer.name, committer.email) }
+    if (author) { cmd.author = new PersonIdent(author.name, author.email) }
+    paths.each { cmd.setOnly(it) }
+    if (all) { cmd.all = all }
+    cmd.amend = amend
+    try {
+      RevCommit commit = cmd.call()
+      return JGitUtil.convertCommit(commit)
+    } catch (GitAPIException e) {
+      throw new GrgitException('Problem committing changes.', e)
     }
-
-    Commit call() {
-        CommitCommand cmd = repo.jgit.commit()
-        cmd.message = message
-        cmd.reflogComment = reflogComment
-        if (committer) { cmd.committer = new PersonIdent(committer.name, committer.email) }
-        if (author) { cmd.author = new PersonIdent(author.name, author.email) }
-        paths.each { cmd.setOnly(it) }
-        if (all) { cmd.all = all }
-        cmd.amend = amend
-        try {
-            RevCommit commit = cmd.call()
-            return JGitUtil.convertCommit(commit)
-        } catch (GitAPIException e) {
-            throw new GrgitException('Problem committing changes.', e)
-        }
-    }
+  }
 }

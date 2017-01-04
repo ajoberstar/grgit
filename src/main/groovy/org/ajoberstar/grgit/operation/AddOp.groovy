@@ -47,32 +47,32 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-add">git-add Manual Page</a>
  */
 class AddOp implements Callable<Void> {
-    private final Repository repo
+  private final Repository repo
 
-    /**
-     * Patterns of files to add to the index.
-     */
-    Set<String> patterns = []
+  /**
+   * Patterns of files to add to the index.
+   */
+  Set<String> patterns = []
 
-    /**
-     * {@code true} if changes to all currently tracked files should be added
-     * to the index, {@code false} otherwise.
-     */
-    boolean update = false
+  /**
+   * {@code true} if changes to all currently tracked files should be added
+   * to the index, {@code false} otherwise.
+   */
+  boolean update = false
 
-    AddOp(Repository repo) {
-        this.repo = repo
+  AddOp(Repository repo) {
+    this.repo = repo
+  }
+
+  Void call() {
+    AddCommand cmd = repo.jgit.add()
+    patterns.each { cmd.addFilepattern(it) }
+    cmd.update = update
+    try {
+      cmd.call()
+      return null
+    } catch (GitAPIException e) {
+      throw new GrgitException('Problem adding changes to index.', e)
     }
-
-    Void call() {
-        AddCommand cmd = repo.jgit.add()
-        patterns.each { cmd.addFilepattern(it) }
-        cmd.update = update
-        try {
-            cmd.call()
-            return null
-        } catch (GitAPIException e) {
-            throw new GrgitException('Problem adding changes to index.', e)
-        }
-    }
+  }
 }

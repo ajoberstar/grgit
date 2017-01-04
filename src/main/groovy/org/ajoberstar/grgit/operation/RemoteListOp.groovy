@@ -37,19 +37,19 @@ import org.eclipse.jgit.transport.RemoteConfig
  * @see <a href="http://git-scm.com/docs/git-remote">git-remote Manual Page</a>
  */
 class RemoteListOp implements Callable<List> {
-    private final Repository repository
+  private final Repository repository
 
-    RemoteListOp(Repository repo) {
-        this.repository = repo
-    }
+  RemoteListOp(Repository repo) {
+    this.repository = repo
+  }
 
-    @Override
-    List call() {
-        return RemoteConfig.getAllRemoteConfigs(repository.jgit.repository.config).collect { rc ->
-            if (rc.uris.size() > 1 || rc.pushURIs.size() > 1) {
-                throw new GrgitException("Grgit does not currently support multiple URLs in remote: [uris: ${rc.uris}, pushURIs:${rc.pushURIs}]")
-            }
-            JGitUtil.convertRemote(rc)
-        }
+  @Override
+  List call() {
+    return RemoteConfig.getAllRemoteConfigs(repository.jgit.repository.config).collect { rc ->
+      if (rc.uris.size() > 1 || rc.pushURIs.size() > 1) {
+        throw new GrgitException("Grgit does not currently support multiple URLs in remote: [uris: ${rc.uris}, pushURIs:${rc.pushURIs}]")
+      }
+      JGitUtil.convertRemote(rc)
     }
+  }
 }
