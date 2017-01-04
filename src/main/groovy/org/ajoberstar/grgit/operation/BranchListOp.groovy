@@ -61,46 +61,46 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>
  */
 class BranchListOp implements Callable<List<Branch>> {
-    private final Repository repo
+  private final Repository repo
 
-    /**
-     * Which branches to return.
-     */
-    Mode mode = Mode.LOCAL
+  /**
+   * Which branches to return.
+   */
+  Mode mode = Mode.LOCAL
 
-    /**
-     * Commit ref branches must contains
-     */
-    Object contains = null
+  /**
+   * Commit ref branches must contains
+   */
+  Object contains = null
 
-    BranchListOp(Repository repo) {
-        this.repo = repo
+  BranchListOp(Repository repo) {
+    this.repo = repo
+  }
+
+  List<Branch> call() {
+    ListBranchCommand cmd = repo.jgit.branchList()
+    cmd.listMode = mode.jgit
+    if (contains) {
+      cmd.contains = new ResolveService(repo).toRevisionString(contains)
     }
-
-    List<Branch> call() {
-        ListBranchCommand cmd = repo.jgit.branchList()
-        cmd.listMode = mode.jgit
-        if (contains) {
-            cmd.contains = new ResolveService(repo).toRevisionString(contains)
-        }
-        try {
-            return cmd.call().collect {
-                JGitUtil.resolveBranch(repo, it.name)
-            }
-        } catch (GitAPIException e) {
-            throw new GrgitException('Problem listing branches.', e)
-        }
+    try {
+      return cmd.call().collect {
+        JGitUtil.resolveBranch(repo, it.name)
+      }
+    } catch (GitAPIException e) {
+      throw new GrgitException('Problem listing branches.', e)
     }
+  }
 
-    static enum Mode {
-        ALL(ListBranchCommand.ListMode.ALL),
-        REMOTE(ListBranchCommand.ListMode.REMOTE),
-        LOCAL(null)
+  static enum Mode {
+    ALL(ListBranchCommand.ListMode.ALL),
+    REMOTE(ListBranchCommand.ListMode.REMOTE),
+    LOCAL(null)
 
-        private final ListBranchCommand.ListMode jgit
+    private final ListBranchCommand.ListMode jgit
 
-        private Mode(ListBranchCommand.ListMode jgit) {
-            this.jgit = jgit
-        }
+    private Mode(ListBranchCommand.ListMode jgit) {
+      this.jgit = jgit
     }
+  }
 }

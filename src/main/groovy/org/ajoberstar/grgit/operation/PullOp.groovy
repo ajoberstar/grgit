@@ -61,45 +61,45 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-pull">git-pull Manual Page</a>
  */
 class PullOp implements Callable<Void> {
-    private final Repository repo
+  private final Repository repo
 
-    /**
-     * The name of the remote to pull. If not set, the current branch's
-     * configuration will be used.
-     */
-    String remote
+  /**
+   * The name of the remote to pull. If not set, the current branch's
+   * configuration will be used.
+   */
+  String remote
 
-    /**
-     * The name of the remote branch to pull. If not set, the current branch's
-     * configuration will be used.
-     */
-    String branch
+  /**
+   * The name of the remote branch to pull. If not set, the current branch's
+   * configuration will be used.
+   */
+  String branch
 
-    /**
-     * Rebase on top of the changes when they are pulled in, if
-     * {@code true}. {@code false} (the default) otherwise.
-     */
-    boolean rebase = false
+  /**
+   * Rebase on top of the changes when they are pulled in, if
+   * {@code true}. {@code false} (the default) otherwise.
+   */
+  boolean rebase = false
 
-    PullOp(Repository repo) {
-        this.repo = repo
+  PullOp(Repository repo) {
+    this.repo = repo
+  }
+
+  Void call() {
+    PullCommand cmd = repo.jgit.pull()
+    if (remote) { cmd.remote = remote }
+    if (branch) { cmd.remoteBranchName = branch }
+    cmd.rebase = rebase
+    TransportOpUtil.configure(cmd, repo.credentials)
+
+    try {
+      PullResult result = cmd.call()
+      if (!result.successful) {
+        throw new GrgitException("Could not pull: ${result}")
+      }
+      return null
+    } catch (GitAPIException e) {
+      throw new GrgitException('Problem merging.', e)
     }
-
-    Void call() {
-        PullCommand cmd = repo.jgit.pull()
-        if (remote) { cmd.remote = remote }
-        if (branch) { cmd.remoteBranchName = branch }
-        cmd.rebase = rebase
-        TransportOpUtil.configure(cmd, repo.credentials)
-
-        try {
-            PullResult result = cmd.call()
-            if (!result.successful) {
-                throw new GrgitException("Could not pull: ${result}")
-            }
-            return null
-        } catch (GitAPIException e) {
-            throw new GrgitException('Problem merging.', e)
-        }
-    }
+  }
 }

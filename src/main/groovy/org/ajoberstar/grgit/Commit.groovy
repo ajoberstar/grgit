@@ -23,56 +23,56 @@ import groovy.transform.Immutable
  */
  @Immutable
 class Commit {
-    /**
-     * The full hash of the commit.
-     */
-    String id
+  /**
+   * The full hash of the commit.
+   */
+  String id
 
-    /**
-     * Hashes of any parent commits.
-     */
-    List<String> parentIds
+  /**
+   * Hashes of any parent commits.
+   */
+  List<String> parentIds
 
-    /**
-     * The author of the changes in the commit.
-     */
-    Person author
+  /**
+   * The author of the changes in the commit.
+   */
+  Person author
 
-    /**
-     * The committer of the changes in the commit.
-     */
-    Person committer
+  /**
+   * The committer of the changes in the commit.
+   */
+  Person committer
 
-    /**
-     * The time the commit was created in seconds since "the epoch".
-     */
-    int time
+  /**
+   * The time the commit was created in seconds since "the epoch".
+   */
+  int time
 
-    /**
-     * The full commit message.
-     */
-    String fullMessage
+  /**
+   * The full commit message.
+   */
+  String fullMessage
 
-    /**
-     * The shortened commit message.
-     */
-    String shortMessage
+  /**
+   * The shortened commit message.
+   */
+  String shortMessage
 
-    /**
-     * The time the commit was created.
-     * @return the date
-     */
-    Date getDate() {
-        long seconds = Integer.valueOf(time).longValue()
-        return new Date(seconds * 1000)
-    }
+  /**
+   * The time the commit was created.
+   * @return the date
+   */
+  Date getDate() {
+    long seconds = Integer.valueOf(time).longValue()
+    return new Date(seconds * 1000)
+  }
 
-    /**
-     * The first {@code length} characters of the commit hash.
-     * @param length the number of characters to abbreviate the
-     * hash to (defaults to 7)
-     */
-    String getAbbreviatedId(int length = 7) {
-        return id[0..(length - 1)]
-    }
+  /**
+   * The first {@code length} characters of the commit hash.
+   * @param length the number of characters to abbreviate the
+   * hash to (defaults to 7)
+   */
+  String getAbbreviatedId(int length = 7) {
+    return id[0..(length - 1)]
+  }
 }

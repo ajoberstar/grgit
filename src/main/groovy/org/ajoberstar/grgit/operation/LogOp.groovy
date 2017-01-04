@@ -63,52 +63,52 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-log">git-log Manual Page</a>
  */
 class LogOp implements Callable<List<Commit>> {
-    private final Repository repo
+  private final Repository repo
 
-    /**
-     * @see {@link ResolveService#toRevisionString(Object)}
-     */
-    List includes = []
-    /**
-     * @see {@link ResolveService#toRevisionString(Object)}
-     */
-    List excludes = []
-    List paths = []
-    int skipCommits = -1
-    int maxCommits = -1
+  /**
+   * @see {@link ResolveService#toRevisionString(Object)}
+   */
+  List includes = []
+  /**
+   * @see {@link ResolveService#toRevisionString(Object)}
+   */
+  List excludes = []
+  List paths = []
+  int skipCommits = -1
+  int maxCommits = -1
 
-    LogOp(Repository repo) {
-        this.repo = repo
+  LogOp(Repository repo) {
+    this.repo = repo
+  }
+
+  void range(Object since, Object until) {
+    excludes << since
+    includes << until
+  }
+
+  List<Commit> call() {
+    LogCommand cmd = repo.jgit.log()
+    ResolveService resolve = new ResolveService(repo)
+    def toObjectId = { rev ->
+      String revstr = resolve.toRevisionString(rev)
+      JGitUtil.resolveRevObject(repo, revstr, true).id
     }
 
-    void range(Object since, Object until) {
-        excludes << since
-        includes << until
+    includes.collect(toObjectId).each { object ->
+      cmd.add(object)
     }
-
-    List<Commit> call() {
-        LogCommand cmd = repo.jgit.log()
-        ResolveService resolve = new ResolveService(repo)
-        def toObjectId = { rev ->
-            String revstr = resolve.toRevisionString(rev)
-            JGitUtil.resolveRevObject(repo, revstr, true).id
-        }
-
-        includes.collect(toObjectId).each { object ->
-            cmd.add(object)
-        }
-        excludes.collect(toObjectId).each { object ->
-            cmd.not(object)
-        }
-        paths.each { path ->
-            cmd.addPath(path)
-        }
-        cmd.skip = skipCommits
-        cmd.maxCount = maxCommits
-        try {
-            return cmd.call().collect { JGitUtil.convertCommit(it) }.asImmutable()
-        } catch (GitAPIException e) {
-            throw new GrgitException('Problem retrieving log.', e)
-        }
+    excludes.collect(toObjectId).each { object ->
+      cmd.not(object)
     }
+    paths.each { path ->
+      cmd.addPath(path)
+    }
+    cmd.skip = skipCommits
+    cmd.maxCount = maxCommits
+    try {
+      return cmd.call().collect { JGitUtil.convertCommit(it) }.asImmutable()
+    } catch (GitAPIException e) {
+      throw new GrgitException('Problem retrieving log.', e)
+    }
+  }
 }

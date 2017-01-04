@@ -24,76 +24,76 @@ import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 import spock.lang.Unroll
 
 class BranchStatusOpSpec extends MultiGitOpSpec {
-    Grgit localGrgit
-    Grgit remoteGrgit
+  Grgit localGrgit
+  Grgit remoteGrgit
 
-    def setup() {
-        remoteGrgit = init('remote')
+  def setup() {
+    remoteGrgit = init('remote')
 
-        repoFile(remoteGrgit, '1.txt') << '1'
-        remoteGrgit.commit(message: 'do', all: true)
+    repoFile(remoteGrgit, '1.txt') << '1'
+    remoteGrgit.commit(message: 'do', all: true)
 
-        remoteGrgit.checkout(branch: 'up-to-date', createBranch: true)
+    remoteGrgit.checkout(branch: 'up-to-date', createBranch: true)
 
-        repoFile(remoteGrgit, '1.txt') << '2'
-        remoteGrgit.commit(message: 'do', all: true)
+    repoFile(remoteGrgit, '1.txt') << '2'
+    remoteGrgit.commit(message: 'do', all: true)
 
-        remoteGrgit.checkout(branch: 'master')
-        remoteGrgit.checkout(branch: 'out-of-date', createBranch: true)
+    remoteGrgit.checkout(branch: 'master')
+    remoteGrgit.checkout(branch: 'out-of-date', createBranch: true)
 
-        localGrgit = clone('local', remoteGrgit)
+    localGrgit = clone('local', remoteGrgit)
 
-        localGrgit.branch.add(name: 'up-to-date', startPoint: 'origin/up-to-date')
-        localGrgit.branch.add(name: 'out-of-date', startPoint: 'origin/out-of-date')
-        localGrgit.checkout(branch: 'out-of-date')
+    localGrgit.branch.add(name: 'up-to-date', startPoint: 'origin/up-to-date')
+    localGrgit.branch.add(name: 'out-of-date', startPoint: 'origin/out-of-date')
+    localGrgit.checkout(branch: 'out-of-date')
 
-        repoFile(remoteGrgit, '1.txt') << '3'
-        remoteGrgit.commit(message: 'do', all: true)
+    repoFile(remoteGrgit, '1.txt') << '3'
+    remoteGrgit.commit(message: 'do', all: true)
 
-        repoFile(localGrgit, '1.txt') << '4'
-        localGrgit.commit(message: 'do', all: true)
-        repoFile(localGrgit, '1.txt') << '5'
-        localGrgit.commit(message: 'do', all: true)
+    repoFile(localGrgit, '1.txt') << '4'
+    localGrgit.commit(message: 'do', all: true)
+    repoFile(localGrgit, '1.txt') << '5'
+    localGrgit.commit(message: 'do', all: true)
 
-        localGrgit.branch.add(name: 'no-track')
+    localGrgit.branch.add(name: 'no-track')
 
-        localGrgit.fetch()
-    }
+    localGrgit.fetch()
+  }
 
-    def 'branch status on branch that is not tracking fails'() {
-        when:
-        localGrgit.branch.status(name: 'no-track')
-        then:
-        thrown(GrgitException)
-    }
+  def 'branch status on branch that is not tracking fails'() {
+    when:
+    localGrgit.branch.status(name: 'no-track')
+    then:
+    thrown(GrgitException)
+  }
 
-    @Unroll('branch status on #branch gives correct counts')
-    def 'branch status on branch that is tracking gives correct counts'() {
-        expect:
-        localGrgit.branch.status(name: branch) == status
-        where:
-        branch        | status
-        'up-to-date'  | new BranchStatus(branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'), aheadCount: 0, behindCount: 0)
-        'out-of-date' | new BranchStatus(branch: GitTestUtil.branch('refs/heads/out-of-date', 'refs/remotes/origin/out-of-date'), aheadCount: 2, behindCount: 1)
-    }
+  @Unroll('branch status on #branch gives correct counts')
+  def 'branch status on branch that is tracking gives correct counts'() {
+    expect:
+    localGrgit.branch.status(name: branch) == status
+    where:
+    branch		| status
+    'up-to-date'  | new BranchStatus(branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'), aheadCount: 0, behindCount: 0)
+    'out-of-date' | new BranchStatus(branch: GitTestUtil.branch('refs/heads/out-of-date', 'refs/remotes/origin/out-of-date'), aheadCount: 2, behindCount: 1)
+  }
 
-    def 'deprecated property still works as map'() {
-        expect:
-        localGrgit.branch.status(branch: 'up-to-date') == new BranchStatus(
-            branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'),
-            aheadCount: 0,
-            behindCount: 0
-        )
-    }
+  def 'deprecated property still works as map'() {
+    expect:
+    localGrgit.branch.status(branch: 'up-to-date') == new BranchStatus(
+      branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'),
+      aheadCount: 0,
+      behindCount: 0
+    )
+  }
 
-    def 'deprecated property still works as closure'() {
-        expect:
-        localGrgit.branch.status {
-            branch = 'up-to-date'
-        } == new BranchStatus(
-            branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'),
-            aheadCount: 0,
-            behindCount: 0
-        )
-    }
+  def 'deprecated property still works as closure'() {
+    expect:
+    localGrgit.branch.status {
+      branch = 'up-to-date'
+    } == new BranchStatus(
+      branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'),
+      aheadCount: 0,
+      behindCount: 0
+    )
+  }
 }

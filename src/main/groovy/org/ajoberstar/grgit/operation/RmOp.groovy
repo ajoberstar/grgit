@@ -46,32 +46,32 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-rm">git-rm Manual Page</a>
  */
 class RmOp implements Callable<Void> {
-    private final Repository repo
+  private final Repository repo
 
-    /**
-     * The file patterns to remove.
-     */
-    Set<String> patterns = []
+  /**
+   * The file patterns to remove.
+   */
+  Set<String> patterns = []
 
-    /**
-     * {@code true} if files should only be removed from the index,
-     * {@code false} (the default) otherwise.
-     */
-    boolean cached = false
+  /**
+   * {@code true} if files should only be removed from the index,
+   * {@code false} (the default) otherwise.
+   */
+  boolean cached = false
 
-    RmOp(Repository repo) {
-        this.repo = repo
+  RmOp(Repository repo) {
+    this.repo = repo
+  }
+
+  Void call() {
+    RmCommand cmd = repo.jgit.rm()
+    patterns.each { cmd.addFilepattern(it) }
+    cmd.cached = cached
+    try {
+      cmd.call()
+      return null
+    } catch (GitAPIException e) {
+      throw new GrgitException('Problem removing files from index.', e)
     }
-
-    Void call() {
-        RmCommand cmd = repo.jgit.rm()
-        patterns.each { cmd.addFilepattern(it) }
-        cmd.cached = cached
-        try {
-            cmd.call()
-            return null
-        } catch (GitAPIException e) {
-            throw new GrgitException('Problem removing files from index.', e)
-        }
-    }
+  }
 }

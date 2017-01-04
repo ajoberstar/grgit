@@ -13,8 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Primary user facing classes. Includes both the primary domain objects
- * and the {@code Grgit} class that provides access to repositories.
- */
 package org.ajoberstar.grgit

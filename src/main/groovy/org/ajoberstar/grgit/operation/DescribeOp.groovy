@@ -39,20 +39,19 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @see <a href="http://git-scm.com/docs/git-describe">git-describe Manual Page</a>
  */
 class DescribeOp implements Callable<String> {
-    private final Repository repo
+  private final Repository repo
 
-    DescribeOp(Repository repo){
-        this.repo = repo
+  DescribeOp(Repository repo){
+    this.repo = repo
+  }
+
+  String call(){
+    DescribeCommand cmd = repo.jgit.describe()
+    try {
+      return cmd.call()
+    } catch (GitAPIException e) {
+      throw new GrgitException('Problem retrieving description.', e)
     }
 
-    String call(){
-        DescribeCommand cmd = repo.jgit.describe()
-        try {
-            return cmd.call()
-        } catch (GitAPIException e) {
-            throw new GrgitException('Problem retrieving description.', e)
-        }
-
-    }
+  }
 }
-

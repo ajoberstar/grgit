@@ -23,8 +23,8 @@ import spock.lang.Specification
 
 @Category(MacSpecific)
 class MacAuthenticationSpec extends Specification {
-    def 'dummy'() {
-        expect:
-        false
-    }
+  def 'dummy'() {
+    expect:
+    false
+  }
 }

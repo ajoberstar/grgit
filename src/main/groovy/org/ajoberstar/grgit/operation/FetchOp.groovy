@@ -59,57 +59,57 @@ import org.eclipse.jgit.transport.TagOpt
  * @see <a href="http://git-scm.com/docs/git-fetch">git-fetch Manual Reference.</a>
  */
 class FetchOp implements Callable<Void> {
-    private final Repository repo
+  private final Repository repo
 
-    /**
-     * Which remote should be fetched. Defaults to {@code origin}.
-     */
-    String remote = 'origin'
+  /**
+   * Which remote should be fetched. Defaults to {@code origin}.
+   */
+  String remote = 'origin'
 
-    /**
-     * List of refspecs to fetch.
-     */
-    List refSpecs = []
+  /**
+   * List of refspecs to fetch.
+   */
+  List refSpecs = []
 
-    /**
-     * {@code true} if branches removed by the remote should be
-     * removed locally.
-     */
-    boolean prune = false
+  /**
+   * {@code true} if branches removed by the remote should be
+   * removed locally.
+   */
+  boolean prune = false
 
-    /**
-     * How should tags be handled.
-     */
-    TagMode tagMode = TagMode.AUTO
+  /**
+   * How should tags be handled.
+   */
+  TagMode tagMode = TagMode.AUTO
 
-    FetchOp(Repository repo) {
-        this.repo = repo
+  FetchOp(Repository repo) {
+    this.repo = repo
+  }
+
+  Void call() {
+    FetchCommand cmd = repo.jgit.fetch()
+    TransportOpUtil.configure(cmd, repo.credentials)
+    cmd.remote = remote
+    cmd.refSpecs = refSpecs.collect { new RefSpec(it) }
+    cmd.removeDeletedRefs = prune
+    cmd.tagOpt = tagMode.jgit
+    try {
+      cmd.call()
+      return null
+    } catch (GitAPIException e) {
+      throw new GrgitException('Problem fetching from remote.', e)
     }
+  }
 
-    Void call() {
-        FetchCommand cmd = repo.jgit.fetch()
-        TransportOpUtil.configure(cmd, repo.credentials)
-        cmd.remote = remote
-        cmd.refSpecs = refSpecs.collect { new RefSpec(it) }
-        cmd.removeDeletedRefs = prune
-        cmd.tagOpt = tagMode.jgit
-        try {
-            cmd.call()
-            return null
-        } catch (GitAPIException e) {
-            throw new GrgitException('Problem fetching from remote.', e)
-        }
+  enum TagMode {
+    AUTO(TagOpt.AUTO_FOLLOW),
+    ALL(TagOpt.FETCH_TAGS),
+    NONE(TagOpt.NO_TAGS)
+
+    final TagOpt jgit
+
+    private TagMode(TagOpt opt) {
+      this.jgit = opt
     }
-
-    enum TagMode {
-        AUTO(TagOpt.AUTO_FOLLOW),
-        ALL(TagOpt.FETCH_TAGS),
-        NONE(TagOpt.NO_TAGS)
-
-        final TagOpt jgit
-
-        private TagMode(TagOpt opt) {
-            this.jgit = opt
-        }
-    }
+  }
 }
