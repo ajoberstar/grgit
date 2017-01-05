@@ -68,5 +68,5 @@ model {
 }
 
 wrapper {
-  version = '3.3'
+  gradleVersion = '3.3'
 }
