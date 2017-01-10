@@ -68,7 +68,7 @@ import org.ajoberstar.grgit.exception.GrgitException
  *
  * <ul>
  *	 <li>{@code org.ajoberstar.grgit.auth.ssh.private=<path.to.private.key>}</li>
- *	 <li>{@code org.ajoberstar.grgit.auth.ssh.passphrase=<passphrase>}</li>
+ *   <li>{@code org.ajoberstar.grgit.auth.ssh.passphrase=<passphrase>}</li>
  * </ul>
  * <p>
  *   In order to customize the JSch session config use a property of the
@@ -174,14 +174,14 @@ class AuthConfig {
   String getSshPrivateKeyPath() {
     return props[SSH_PRIVATE_KEY_OPTION]
   }
-  
+ 
   /**
    * Gets the passphrase for your SSH private key to use during authentication reflecting
    * the value set in the system properties.
    * @return the passphrase of the SSH key, if set, otherwise {@code null}
    */
   String getSshPassphrase() {
-	return props[SSH_PASSPHRASE_OPTION]
+    return props[SSH_PASSPHRASE_OPTION]
   }
 
   /**
