@@ -70,8 +70,8 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
     }
 
     if (config.sshPrivateKeyPath) {
-	  if (config.getSshPassphrase())
-	    jsch.addIdentity(config.sshPrivateKeyPath, config.getSshPassphrase())
+      if (config.getSshPassphrase())
+        jsch.addIdentity(config.sshPrivateKeyPath, config.getSshPassphrase())
       jsch.addIdentity(config.sshPrivateKeyPath)
     }
 
