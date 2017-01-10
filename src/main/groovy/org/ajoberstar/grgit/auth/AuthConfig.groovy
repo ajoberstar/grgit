@@ -174,7 +174,7 @@ class AuthConfig {
   String getSshPrivateKeyPath() {
     return props[SSH_PRIVATE_KEY_OPTION]
   }
- 
+
   /**
    * Gets the passphrase for your SSH private key to use during authentication reflecting
    * the value set in the system properties.
