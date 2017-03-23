@@ -12,14 +12,14 @@ repositories {
   mavenCentral()
 }
 
-def jgitVersion = '4.5.0.201609210915-r'
+def jgitVersion = '4.6.1.201703071140-r'
 // def jgitVersion = '3.3.2.201404171909-r' // pre-bug
 // def jgitVersion = '3.4.1.201406201815-r' // behavior of log command is different
 
 dependencies {
   // groovy
-  compileOnly 'org.codehaus.groovy:groovy-all:2.4.5'
-  testCompile 'org.codehaus.groovy:groovy-all:2.4.5'
+  compileOnly 'org.codehaus.groovy:groovy-all:2.4.10'
+  testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
 
   // jgit
   compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
@@ -33,8 +33,8 @@ dependencies {
   compile 'com.jcraft:jsch:0.1.54'
 
   // logging
-  compile 'org.slf4j:slf4j-api:1.7.21'
-  testRuntime 'org.slf4j:slf4j-simple:1.7.21'
+  compile 'org.slf4j:slf4j-api:1.7.25'
+  testRuntime 'org.slf4j:slf4j-simple:1.7.25'
 
   // testing
   testCompile('org.spockframework:spock-core:1.0-groovy-2.4') { exclude group: 'org.codehaus.groovy' }
