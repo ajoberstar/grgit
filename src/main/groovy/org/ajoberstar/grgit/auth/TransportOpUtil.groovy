@@ -52,10 +52,10 @@ final class TransportOpUtil {
 
   private static CredentialsProvider determineCredentialsProvider(AuthConfig config, Credentials creds) {
     Credentials systemCreds = config.hardcodedCreds
-    if (config.allows(AuthConfig.Option.HARDCODED) && creds?.username) {
+    if (config.allows(AuthConfig.Option.HARDCODED) && creds?.populated) {
       logger.info('using hardcoded credentials provided programmatically')
       return new UsernamePasswordCredentialsProvider(creds.username, creds.password)
-    } else if (config.allows(AuthConfig.Option.HARDCODED) && systemCreds) {
+    } else if (config.allows(AuthConfig.Option.HARDCODED) && systemCreds?.populated) {
       logger.info('using hardcoded credentials from system properties')
       return new UsernamePasswordCredentialsProvider(systemCreds.username, systemCreds.password)
     } else if (config.allows(AuthConfig.Option.INTERACTIVE) && !GraphicsEnvironment.isHeadless()) {

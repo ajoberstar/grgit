@@ -156,11 +156,7 @@ class AuthConfig {
     if (allows(Option.HARDCODED)) {
       String username = props[USERNAME_OPTION] ?: env[USERNAME_ENV_VAR]
       String password = props[PASSWORD_OPTION] ?: env[PASSWORD_ENV_VAR]
-      if (username) {
-        return new Credentials(username, password)
-      } else {
-        return null
-      }
+      return new Credentials(username, password)
     } else {
       return null
     }

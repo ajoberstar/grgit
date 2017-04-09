@@ -15,14 +15,26 @@
  */
 package org.ajoberstar.grgit
 
-import groovy.transform.Immutable
+import groovy.transform.Canonical
 
 /**
  * Credentials to use for remote operations.
  * @since 0.2.0
  */
-@Immutable
+@Canonical
 class Credentials {
-  String username
-  String password
+  final String username
+  final String password
+
+  String getUsername() {
+    return username ?: ''
+  }
+
+  String getPassword() {
+    return password ?: ''
+  }
+
+  boolean isPopulated() {
+    return username != null
+  }
 }

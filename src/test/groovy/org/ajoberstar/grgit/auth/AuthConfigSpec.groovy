@@ -67,9 +67,9 @@ class AuthConfigSpec extends Specification {
     AuthConfig.fromMap(props).getHardcodedCreds() == new Credentials('myuser', null)
   }
 
-  def 'getHardcodedCreds returns null if username is not set'() {
+  def 'getHardcodedCreds are not populated if username is not set'() {
     expect:
-    AuthConfig.fromMap([:]).getHardcodedCreds() == null
+    !AuthConfig.fromMap([:]).getHardcodedCreds().isPopulated()
   }
 
   def 'getSessionConfig returns empty map if nothing specified'() {
