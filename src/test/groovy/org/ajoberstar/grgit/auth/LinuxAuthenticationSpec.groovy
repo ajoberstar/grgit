@@ -34,6 +34,7 @@ class LinuxAuthenticationSpec extends Specification {
   private static final String HTTPS_URI = 'https://github.com/ajoberstar/grgit-test.git'
 
   static Credentials hardcodedCreds
+  static Credentials partialCreds
 
   @Rule TemporaryFolder tempDir = new TemporaryFolder()
 
@@ -45,6 +46,7 @@ class LinuxAuthenticationSpec extends Specification {
     def username = System.properties['org.ajoberstar.grgit.test.username']
     def password = System.properties['org.ajoberstar.grgit.test.password']
     hardcodedCreds = new Credentials(username, password)
+    partialCreds = new Credentials(password, null)
     assert hardcodedCreds.username && hardcodedCreds.password
   }
 
@@ -61,7 +63,7 @@ class LinuxAuthenticationSpec extends Specification {
     System.properties[AuthConfig.FORCE_OPTION] = method
     assert System.properties[AuthConfig.USERNAME_OPTION] == null, 'Username should not already be set.'
     assert System.properties[AuthConfig.PASSWORD_OPTION] == null, 'Password should not already be set.'
-    ready(ssh, creds)
+    ready(ssh)
     if (!creds) {
       System.properties[AuthConfig.USERNAME_OPTION] = hardcodedCreds.username
       System.properties[AuthConfig.PASSWORD_OPTION] = hardcodedCreds.password
@@ -72,18 +74,18 @@ class LinuxAuthenticationSpec extends Specification {
     then:
     grgit.branch.status(branch: 'master').aheadCount == 0
     where:
-    method		| ssh   | creds
+    method		    | ssh   | creds
     'hardcoded'   | false | hardcodedCreds
-    'hardcoded'   | false | null
+    'hardcoded'   | false | partialCreds
     'interactive' | false | null
     'interactive' | true  | null
-    'sshagent'	| true  | null
+    'sshagent'	  | true  | null
   }
 
-  private void ready(boolean ssh, Credentials credentials = null) {
+  private void ready(boolean ssh) {
     File repoDir = tempDir.newFolder('repo')
     String uri = ssh ? SSH_URI : HTTPS_URI
-    grgit = Grgit.clone(uri: uri, dir: repoDir, credentials: credentials)
+    grgit = Grgit.clone(uri: uri, dir: repoDir)
     grgit.repository.jgit.repo.config.with {
       setString('user', null, 'name', person.name)
       setString('user', null, 'email', person.email)

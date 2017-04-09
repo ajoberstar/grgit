@@ -46,7 +46,7 @@ class WindowsAuthenticationSpec extends Specification {
     def username = System.properties['org.ajoberstar.grgit.test.username']
     def password = System.properties['org.ajoberstar.grgit.test.password']
     hardcodedCreds = new Credentials(username, password)
-    partialCreds = new Credentials(username, null)
+    partialCreds = new Credentials(password, null)
     assert hardcodedCreds.username && hardcodedCreds.password
   }
 
@@ -63,7 +63,7 @@ class WindowsAuthenticationSpec extends Specification {
     assert System.properties[AuthConfig.USERNAME_OPTION] == null, 'Username should not already be set.'
     assert System.properties[AuthConfig.PASSWORD_OPTION] == null, 'Password should not already be set.'
     System.properties[AuthConfig.FORCE_OPTION] = method
-    ready(ssh, creds)
+    ready(ssh)
     if (!creds) {
       System.properties[AuthConfig.USERNAME_OPTION] = hardcodedCreds.username
       System.properties[AuthConfig.PASSWORD_OPTION] = hardcodedCreds.password
@@ -74,20 +74,20 @@ class WindowsAuthenticationSpec extends Specification {
     then:
     grgit.branch.status(branch: 'master').aheadCount == 0
     where:
-    method		| ssh   | creds
+    method		    | ssh   | creds
     'hardcoded'   | false | hardcodedCreds
     'hardcoded'   | false | partialCreds
     'hardcoded'   | false | null
     'interactive' | false | null
     'interactive' | true  | null
-    'sshagent'	| true  | null
-    'pageant'	 | true  | null
+    'sshagent'	  | true  | null
+    'pageant'	    | true  | null
   }
 
-  private void ready(boolean ssh, Credentials credentials = null) {
+  private void ready(boolean ssh) {
     File repoDir = tempDir.newFolder('repo')
     String uri = ssh ? SSH_URI : HTTPS_URI
-    grgit = Grgit.clone(uri: uri, dir: repoDir, credentials: credentials)
+    grgit = Grgit.clone(uri: uri, dir: repoDir)
     grgit.repository.jgit.repo.config.with {
       setString('user', null, 'name', person.name)
       setString('user', null, 'email', person.email)
