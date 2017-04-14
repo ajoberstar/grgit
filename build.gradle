@@ -12,7 +12,7 @@ repositories {
   mavenCentral()
 }
 
-def jgitVersion = '4.6.1.201703071140-r'
+def jgitVersion = '4.5.2.201704071617-r'
 
 dependencies {
   // groovy
