@@ -23,7 +23,7 @@ import org.eclipse.jgit.api.Git
  * A repository.
  * @since 0.1.0
  */
-@Immutable(knownImmutableClasses=[Git, File])
+@Immutable(knownImmutableClasses=[Git, File, Credentials])
 class Repository {
   /**
    * The directory the repository is contained in.
