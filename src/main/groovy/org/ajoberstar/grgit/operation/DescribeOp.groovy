@@ -19,20 +19,29 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.service.ResolveService
 
 import org.eclipse.jgit.api.DescribeCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
- * Find the nearest tag reachable from HEAD. Returns an {@link String}}.
+ * Find the nearest tag reachable. Returns an {@link String}}.
  *
- * <p>Find the most recent tag that is reachable from HEAD.  If the tag points to the commit, then only the tag is
+ * <p>Find the most recent tag that is reachable.  If the tag points to the commit, then only the tag is
  * shown. Otherwise, it suffixes the tag name with the number of additional commits on top of the tagged object and the
  * abbreviated object name of the most recent commit.</p>
  *
  * <pre>
  * def description = grgit.describe()
  * </pre>
+ *
+ * <p>Find the most recent tag that is reachable from HEAD.</p>
+ *
+ * <pre>
+ * def description = grgit.describe(commit: 'other-branch')
+ * </pre>
+ *
+ * <p>Find the most recent tag that is reachable from a different commit.</p>
  *
  * See <a href="http://git-scm.com/docs/git-describe">git-describe Manual Page</a>.
  *
@@ -45,9 +54,19 @@ class DescribeOp implements Callable<String> {
     this.repo = repo
   }
 
+  /**
+   * Sets the commit to be described. Defaults to HEAD.
+   * @see {@link ResolveService#toRevisionString(Object)}
+   */
+  Object commit
+
+
   String call(){
     DescribeCommand cmd = repo.jgit.describe()
     try {
+      if (commit) {
+        cmd.setTarget(new ResolveService(repo).toRevisionString(commit))
+      }
       return cmd.call()
     } catch (GitAPIException e) {
       throw new GrgitException('Problem retrieving description.', e)

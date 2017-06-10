@@ -36,4 +36,13 @@ class DescribeOpSpec extends SimpleGitOpSpec {
     then:
     grgit.describe().startsWith("initial-1-")
   }
+
+  def 'from differnt commit'(){
+    when:
+    repoFile('1.txt') << '1'
+    grgit.add(patterns:['1.txt'])
+    grgit.commit(message:  "another commit")
+    then:
+    grgit.describe(commit: 'HEAD^') == "initial"
+  }
 }
