@@ -27,7 +27,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
 /**
  * Find the nearest tag reachable. Returns an {@link String}}.
  *
- * <p>Find the most recent tag that is reachable.  If the tag points to the commit, then only the tag is
+ * <p>Find the most recent tag that is reachable from HEAD.  If the tag points to the commit, then only the tag is
  * shown. Otherwise, it suffixes the tag name with the number of additional commits on top of the tagged object and the
  * abbreviated object name of the most recent commit.</p>
  *
@@ -35,13 +35,11 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * def description = grgit.describe()
  * </pre>
  *
- * <p>Find the most recent tag that is reachable from HEAD.</p>
+ * <p>Find the most recent tag that is reachable from a different commit.</p>
  *
  * <pre>
  * def description = grgit.describe(commit: 'other-branch')
  * </pre>
- *
- * <p>Find the most recent tag that is reachable from a different commit.</p>
  *
  * See <a href="http://git-scm.com/docs/git-describe">git-describe Manual Page</a>.
  *
