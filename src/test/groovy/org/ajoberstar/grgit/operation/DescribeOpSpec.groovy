@@ -45,4 +45,9 @@ class DescribeOpSpec extends SimpleGitOpSpec {
     then:
     grgit.describe(commit: 'HEAD^') == "initial"
   }
+
+  def 'with long description'() {
+    expect:
+    grgit.describe(longDescr: true).startsWith("initial-0-")
+  }
 }

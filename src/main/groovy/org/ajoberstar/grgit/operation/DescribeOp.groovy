@@ -41,6 +41,12 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * def description = grgit.describe(commit: 'other-branch')
  * </pre>
  *
+ * <p>Always output the long format (the tag, the number of commits and the abbreviated commit name) even when it matches a tag.</p>
+ *
+ * <pre>
+ * def description = grgit.describe(longDescr: true)
+ * </pre>
+ *
  * See <a href="http://git-scm.com/docs/git-describe">git-describe Manual Page</a>.
  *
  * @see <a href="http://git-scm.com/docs/git-describe">git-describe Manual Page</a>
@@ -58,6 +64,10 @@ class DescribeOp implements Callable<String> {
    */
   Object commit
 
+  /**
+   * Whether to always use long output format or not.
+   */
+  boolean longDescr
 
   String call(){
     DescribeCommand cmd = repo.jgit.describe()
@@ -65,6 +75,7 @@ class DescribeOp implements Callable<String> {
       if (commit) {
         cmd.setTarget(new ResolveService(repo).toRevisionString(commit))
       }
+    cmd.setLong(longDescr)
       return cmd.call()
     } catch (GitAPIException e) {
       throw new GrgitException('Problem retrieving description.', e)
