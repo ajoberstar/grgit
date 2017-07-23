@@ -64,20 +64,4 @@ class BranchStatusOp implements Callable<BranchStatus> {
       throw new GrgitException('Problem retrieving branch status.', e)
     }
   }
-
-  /**
-   * @deprecated replaced by {@link #name}
-   */
-  @Deprecated
-  Object getBranch() {
-    return name
-  }
-
-  /**
-   * @deprecated replaced by {@link #name}
-   */
-  @Deprecated
-  void setBranch(Object branch) {
-    this.name = branch
-  }
 }

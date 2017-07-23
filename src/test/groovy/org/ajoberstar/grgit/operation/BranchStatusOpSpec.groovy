@@ -76,24 +76,4 @@ class BranchStatusOpSpec extends MultiGitOpSpec {
     'up-to-date'  | new BranchStatus(branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'), aheadCount: 0, behindCount: 0)
     'out-of-date' | new BranchStatus(branch: GitTestUtil.branch('refs/heads/out-of-date', 'refs/remotes/origin/out-of-date'), aheadCount: 2, behindCount: 1)
   }
-
-  def 'deprecated property still works as map'() {
-    expect:
-    localGrgit.branch.status(branch: 'up-to-date') == new BranchStatus(
-      branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'),
-      aheadCount: 0,
-      behindCount: 0
-    )
-  }
-
-  def 'deprecated property still works as closure'() {
-    expect:
-    localGrgit.branch.status {
-      branch = 'up-to-date'
-    } == new BranchStatus(
-      branch: GitTestUtil.branch('refs/heads/up-to-date', 'refs/remotes/origin/up-to-date'),
-      aheadCount: 0,
-      behindCount: 0
-    )
-  }
 }

@@ -194,40 +194,4 @@ class Grgit implements AutoCloseable {
       OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], name, args)
     }
   }
-
-  /**
-   * Opens a {@code Grgit} instance by looking up the correct repo dir.
-   * This is a workaround due to the existing deprecated methods.
-   */
-  static Grgit open() {
-    return OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], 'open', [] as Object[])
-  }
-
-  /**
-   * Opens a {@code Grgit} instance in {@code rootDirPath}. If credentials
-   * are provided they will be used for all operations with using remotes.
-   * @param rootDirPath path to the repository's root directory
-   * @param creds harcoded credentials to use for remote operations
-   * @deprecated replaced by {@link org.ajoberstar.grgit.operation.OpenOp}
-   * @throws GrgitException if an existing Git repository can't be opened
-   * in {@code rootDirPath}
-   */
-  @Deprecated
-  static Grgit open(String rootDirPath, Credentials creds = null) {
-    return open(new File(rootDirPath), creds)
-  }
-
-  /**
-   * Opens a {@code Grgit} instance in {@code rootDir}. If credentials
-   * are provided they will be used for all operations with using remotes.
-   * @param rootDir path to the repository's root directory
-   * @param creds harcoded credentials to use for remote operations
-   * @deprecated replaced by {@link org.ajoberstar.grgit.operation.OpenOp}
-   * @throws GrgitException if an existing Git repository can't be opened
-   * in {@code rootDir}
-   */
-  @Deprecated
-  static Grgit open(File rootDir, Credentials creds = null) {
-    return OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], 'open', [dir: rootDir, creds: creds])
-  }
 }
