@@ -15,13 +15,17 @@
  */
 package org.ajoberstar.grgit.util
 
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.exception.GrgitException
-
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.errors.RevisionSyntaxException
 import org.eclipse.jgit.lib.ObjectId
@@ -29,7 +33,6 @@ import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.merge.MergeStrategy
 import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.revwalk.RevWalk
-
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
@@ -108,13 +111,16 @@ class JGitUtilSpec extends Specification {
   def 'convertCommit works for valid commit'() {
     given:
     Person person = new Person(repo.jgit.repo.config.getString('user', null, 'name'), repo.jgit.repo.config.getString('user', null, 'email'))
+    Instant instant = Instant.ofEpochSecond(commits[1].commitTime)
+    ZoneId zone = ZoneId.ofOffset('GMT', ZoneId.systemDefault().getRules().getOffset(instant))
+    ZonedDateTime commitTime = ZonedDateTime.ofInstant(instant, zone)
     expect:
     JGitUtil.convertCommit(commits[1]) == new Commit(
       ObjectId.toString(commits[1]),
       [ObjectId.toString(commits[0])],
       person,
       person,
-      commits[1].commitTime,
+      commitTime,
       'second commit',
       'second commit'
     )
@@ -123,40 +129,54 @@ class JGitUtilSpec extends Specification {
   def 'resolveTag works for annotated tag ref'() {
     given:
     Person person = new Person(repo.jgit.repo.config.getString('user', null, 'name'), repo.jgit.repo.config.getString('user', null, 'email'))
-    expect:
-    JGitUtil.resolveTag(repo, annotatedTag) == new Tag(
-      JGitUtil.convertCommit(commits[0]),
-      person,
-      'refs/tags/v1.0.0',
-      'first tag\ntesting',
-      'first tag testing'
-    )
+    ZonedDateTime before = ZonedDateTime.now().minusSeconds(2)
+    when:
+    def tag = JGitUtil.resolveTag(repo, annotatedTag)
+    and:
+    ZonedDateTime after = ZonedDateTime.now().plusSeconds(2)
+    then:
+    tag.commit == JGitUtil.convertCommit(commits[0])
+    tag.tagger == person
+    tag.fullName == 'refs/tags/v1.0.0'
+    tag.fullMessage == 'first tag\ntesting'
+    tag.shortMessage == 'first tag testing'
+    tag.dateTime.isAfter(before)
+    tag.dateTime.isBefore(after)
   }
 
   def 'resolveTag works for unannotated tag ref'() {
     given:
     Person person = new Person(repo.jgit.repo.config.getString('user', null, 'name'), repo.jgit.repo.config.getString('user', null, 'email'))
-    expect:
-    JGitUtil.resolveTag(repo, unannotatedTag) == new Tag(
-      JGitUtil.convertCommit(commits[0]),
-      null,
-      'refs/tags/v2.0.0',
-      null,
-      null
-    )
+    ZonedDateTime before = ZonedDateTime.now().minusSeconds(2)
+    when:
+    def tag = JGitUtil.resolveTag(repo, unannotatedTag)
+    and:
+    ZonedDateTime after = ZonedDateTime.now().plusSeconds(2)
+    then:
+    tag.commit == JGitUtil.convertCommit(commits[0])
+    tag.tagger == null
+    tag.fullName == 'refs/tags/v2.0.0'
+    tag.fullMessage == null
+    tag.shortMessage == null
+    tag.dateTime == null
   }
 
   def 'resolveTag works for a tag pointing to a tag'() {
     given:
     Person person = new Person(repo.jgit.repo.config.getString('user', null, 'name'), repo.jgit.repo.config.getString('user', null, 'email'))
-    expect:
-    JGitUtil.resolveTag(repo, taggedAnnotatedTag) == new Tag(
-      JGitUtil.convertCommit(commits[0]),
-      person,
-      'refs/tags/v1.1.0',
-      'testing',
-      'testing'
-    )
+    ZonedDateTime before = ZonedDateTime.now().minusSeconds(2)
+    when:
+    def tag = JGitUtil.resolveTag(repo, taggedAnnotatedTag)
+    and:
+    ZonedDateTime after = ZonedDateTime.now().plusSeconds(2)
+    then:
+    tag.commit == JGitUtil.convertCommit(commits[0])
+    tag.tagger == person
+    tag.fullName == 'refs/tags/v1.1.0'
+    tag.fullMessage == 'testing'
+    tag.shortMessage == 'testing'
+    tag.dateTime.isAfter(before)
+    tag.dateTime.isBefore(after)
   }
 
   def setup() {

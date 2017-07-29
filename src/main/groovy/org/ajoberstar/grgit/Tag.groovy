@@ -17,13 +17,15 @@ package org.ajoberstar.grgit
 
 import groovy.transform.Immutable
 
+import java.time.ZonedDateTime
+
 import org.eclipse.jgit.lib.Repository
 
 /**
  * A tag.
  * @since 0.2.0
  */
-@Immutable
+@Immutable(knownImmutableClasses=[ZonedDateTime])
 class Tag {
   /**
    * The commit this tag points to.
@@ -49,6 +51,11 @@ class Tag {
    * The shortened tag message.
    */
   String shortMessage
+
+  /**
+   * The time the commit was created with the time zone of the committer, if available.
+   */
+  ZonedDateTime dateTime
 
   /**
    * The simple name of this tag.
