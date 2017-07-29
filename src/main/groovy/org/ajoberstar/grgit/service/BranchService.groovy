@@ -17,10 +17,9 @@ package org.ajoberstar.grgit.service
 
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.internal.WithOperations
 import org.ajoberstar.grgit.operation.*
 import org.ajoberstar.grgit.util.JGitUtil
-import org.ajoberstar.grgit.util.OpSyntaxUtil
-
 import org.eclipse.jgit.lib.Ref
 
 /**
@@ -43,10 +42,8 @@ import org.eclipse.jgit.lib.Ref
  *
  * @since 0.2.0
  */
+@WithOperations(instanceOperations=[BranchListOp, BranchAddOp, BranchRemoveOp, BranchChangeOp, BranchStatusOp])
 class BranchService {
-  private static final Map OPERATIONS = [
-    list: BranchListOp, add: BranchAddOp, remove: BranchRemoveOp,
-    change: BranchChangeOp, status: BranchStatusOp]
   private final Repository repository
 
   BranchService(Repository repository) {
@@ -60,9 +57,5 @@ class BranchService {
   Branch getCurrent() {
     Ref ref = repository.jgit.repository.getRef('HEAD')?.target
     return ref ? JGitUtil.resolveBranch(repository, ref) : null
-  }
-
-  def methodMissing(String name, args) {
-    OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
   }
 }

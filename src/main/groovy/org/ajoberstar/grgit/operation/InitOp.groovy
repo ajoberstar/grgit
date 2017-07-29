@@ -20,6 +20,7 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.CoercionUtil
 
 import org.eclipse.jgit.api.Git
@@ -48,6 +49,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @since 0.1.0
  * @see <a href="http://git-scm.com/docs/git-init">git-init Manual Reference.</a>
  */
+@Operation('init')
 class InitOp implements Callable<Grgit> {
   /**
    * {@code true} if the repository should not have a

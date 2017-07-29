@@ -19,6 +19,7 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
 
 import org.eclipse.jgit.api.CheckoutCommand
@@ -64,6 +65,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @since 0.1.0
  * @see <a href="http://git-scm.com/docs/git-checkout">git-checkout Manual Page</a>
  */
+@Operation('checkout')
 class CheckoutOp implements Callable<Void> {
   private final Repository repo
 

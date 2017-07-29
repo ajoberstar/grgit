@@ -20,9 +20,9 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.util.CoercionUtil
 import org.ajoberstar.grgit.exception.GrgitException
-
+import org.ajoberstar.grgit.internal.Operation
+import org.ajoberstar.grgit.util.CoercionUtil
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.internal.storage.file.FileRepository
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
@@ -57,6 +57,7 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder
  *
  * @since 1.0.0
  */
+@Operation('open')
 class OpenOp implements Callable<Grgit> {
   /**
    * Hardcoded credentials to use for remote operations.

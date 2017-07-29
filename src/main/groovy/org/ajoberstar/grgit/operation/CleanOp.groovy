@@ -19,7 +19,7 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
-
+import org.ajoberstar.grgit.internal.Operation
 import org.eclipse.jgit.api.CleanCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
@@ -62,6 +62,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @since 0.2.0
  * @see <a href="http://git-scm.com/docs/git-clean">git-clean Manual Page</a>
  */
+@Operation('clean')
 class CleanOp implements Callable<Set<String>> {
   private final Repository repo
 

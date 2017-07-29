@@ -21,6 +21,7 @@ import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.JGitUtil
 
 import org.eclipse.jgit.api.CommitCommand
@@ -61,6 +62,7 @@ import org.eclipse.jgit.revwalk.RevCommit
  * @since 0.1.0
  * @see <a href="http://git-scm.com/docs/git-commit">git-commit Manual Reference.</a>
  */
+@Operation('commit')
 class CommitOp implements Callable<Commit> {
   private final Repository repo
 

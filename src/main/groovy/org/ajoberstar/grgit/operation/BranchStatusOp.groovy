@@ -21,6 +21,7 @@ import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.BranchStatus
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
 
 import org.eclipse.jgit.lib.BranchTrackingStatus
@@ -34,6 +35,7 @@ import org.eclipse.jgit.lib.BranchTrackingStatus
  *
  * @since 0.2.0
  */
+@Operation('status')
 class BranchStatusOp implements Callable<BranchStatus> {
   private final Repository repo
 
@@ -63,21 +65,5 @@ class BranchStatusOp implements Callable<BranchStatus> {
     } catch (IOException e) {
       throw new GrgitException('Problem retrieving branch status.', e)
     }
-  }
-
-  /**
-   * @deprecated replaced by {@link #name}
-   */
-  @Deprecated
-  Object getBranch() {
-    return name
-  }
-
-  /**
-   * @deprecated replaced by {@link #name}
-   */
-  @Deprecated
-  void setBranch(Object branch) {
-    this.name = branch
   }
 }

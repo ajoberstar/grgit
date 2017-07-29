@@ -6,18 +6,18 @@ plugins {
 group = 'org.ajoberstar'
 description = 'The Groovy way to use Git.'
 
-sourceCompatibility = '1.7'
+sourceCompatibility = '1.8'
 
 repositories {
   mavenCentral()
 }
 
-def jgitVersion = '4.5.2.201704071617-r'
+def jgitVersion = '4.8.0.201706111038-r'
 
 dependencies {
   // groovy
-  compileOnly 'org.codehaus.groovy:groovy-all:2.4.10'
-  testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
+  compileOnly 'org.codehaus.groovy:groovy-all:2.4.12'
+  testCompile 'org.codehaus.groovy:groovy-all:2.4.12'
 
   // jgit
   compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
@@ -66,5 +66,5 @@ model {
 }
 
 wrapper {
-  gradleVersion = '3.3'
+  gradleVersion = '3.5.1'
 }
