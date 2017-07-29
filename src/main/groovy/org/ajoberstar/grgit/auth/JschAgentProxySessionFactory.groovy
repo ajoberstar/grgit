@@ -118,7 +118,7 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
         logger.info 'ssh-agent not available'
         return null
       }
-    } catch (AgentProxyException e) {
+    } catch (Throwable e) {
       logger.info 'ssh-agent could not be configured: {}', e.message
       logger.debug 'ssh-agent failure details', e
       return null
@@ -137,7 +137,7 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
         logger.info 'pageant not available'
         return null
       }
-    } catch (AgentProxyException e) {
+    } catch (Throwable e) {
       logger.info 'pageant could not be configured: {}', e.message
       logger.debug 'pageant failure details', e
       return null
@@ -158,11 +158,7 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
   private final Closure<USocketFactory> jnaSelector = {
     try {
       return new JNAUSocketFactory()
-    } catch (UnsatisfiedLinkError e) {
-      logger.info 'JNA USocketFactory could not be configured: {}', e.message
-      logger.debug 'JNA USocketFactory failure details', e
-      return null
-    } catch (NoClassDefFoundError e) {
+    } catch (Throwable e) {
       logger.info 'JNA USocketFactory could not be configured: {}', e.message
       logger.debug 'JNA USocketFactory failure details', e
       return null
@@ -172,7 +168,7 @@ class JschAgentProxySessionFactory extends JschConfigSessionFactory {
   private final Closure<USocketFactory> ncSelector = {
     try {
       return new NCUSocketFactory()
-    } catch (AgentProxyException e) {
+    } catch (Throwable e) {
       logger.info 'NetCat USocketFactory could not be configured: {}', e.message
       logger.debug 'NetCat USocketFactory failure details', e
       return null
