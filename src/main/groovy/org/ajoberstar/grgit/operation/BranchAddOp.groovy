@@ -20,6 +20,7 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
 
@@ -68,6 +69,7 @@ import org.eclipse.jgit.lib.Ref
  * @since 0.2.0
  * @see <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>
  */
+@Operation('add')
 class BranchAddOp implements Callable<Branch> {
   private final Repository repo
 

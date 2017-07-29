@@ -15,12 +15,10 @@
  */
 package org.ajoberstar.grgit
 
+import org.ajoberstar.grgit.internal.WithOperations
 import org.ajoberstar.grgit.operation.*
 import org.ajoberstar.grgit.service.*
 import org.ajoberstar.grgit.util.JGitUtil
-import org.ajoberstar.grgit.util.OpSyntaxUtil
-
-import org.eclipse.jgit.api.Git
 
 /**
  * Provides support for performing operations on and getting information about
@@ -111,18 +109,8 @@ import org.eclipse.jgit.api.Git
  *
  * @since 0.1.0
  */
+@WithOperations(staticOperations=[InitOp, CloneOp, OpenOp], instanceOperations=[CleanOp, StatusOp, AddOp, RmOp, ResetOp, ApplyOp, PullOp, PushOp, FetchOp, CheckoutOp, LogOp, CommitOp, RevertOp, MergeOp, DescribeOp, ShowOp])
 class Grgit implements AutoCloseable {
-  private static final Map STATIC_OPERATIONS = [
-    init: InitOp, clone: CloneOp, open: OpenOp
-  ]
-
-  private static final Map OPERATIONS = [
-    clean: CleanOp, status: StatusOp, add: AddOp, remove: RmOp,
-    reset: ResetOp, apply: ApplyOp, pull: PullOp, push: PushOp,
-    fetch: FetchOp, checkout: CheckoutOp, log: LogOp, commit: CommitOp,
-    revert: RevertOp, merge: MergeOp, describe: DescribeOp, show: ShowOp
-  ].asImmutable()
-
   /**
    * The repository opened by this object.
    */
@@ -183,15 +171,5 @@ class Grgit implements AutoCloseable {
   @Override
   void close() {
     repository.jgit.close()
-  }
-
-  def methodMissing(String name, args) {
-    OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
-  }
-
-  static {
-    Grgit.metaClass.static.methodMissing = { name, args ->
-      OpSyntaxUtil.tryOp(Grgit, STATIC_OPERATIONS, [] as Object[], name, args)
-    }
   }
 }

@@ -20,7 +20,7 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.auth.TransportOpUtil
 import org.ajoberstar.grgit.exception.GrgitException
-
+import org.ajoberstar.grgit.internal.Operation
 import org.eclipse.jgit.api.PullCommand
 import org.eclipse.jgit.api.PullResult
 import org.eclipse.jgit.api.errors.GitAPIException
@@ -60,6 +60,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @since 0.2.0
  * @see <a href="http://git-scm.com/docs/git-pull">git-pull Manual Page</a>
  */
+@Operation('pull')
 class PullOp implements Callable<Void> {
   private final Repository repo
 

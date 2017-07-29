@@ -20,6 +20,7 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.CommitDiff
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
 
@@ -48,6 +49,7 @@ import org.eclipse.jgit.treewalk.TreeWalk
  * @since 1.2.0
  * @see <a href="http://git-scm.com/docs/git-show">git-show Manual Page</a>
  */
+@Operation('show')
 class ShowOp implements Callable<CommitDiff> {
   private final Repository repo
 

@@ -19,7 +19,7 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
-
+import org.ajoberstar.grgit.internal.Operation
 import org.eclipse.jgit.api.AddCommand
 import org.eclipse.jgit.api.errors.GitAPIException
 
@@ -46,6 +46,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
  * @since 0.1.0
  * @see <a href="http://git-scm.com/docs/git-add">git-add Manual Page</a>
  */
+@Operation('add')
 class AddOp implements Callable<Void> {
   private final Repository repo
 

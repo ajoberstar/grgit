@@ -19,6 +19,7 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.exception.GrgitException
+import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
 
 import org.eclipse.jgit.api.DescribeCommand
@@ -51,6 +52,7 @@ import org.eclipse.jgit.api.errors.GitAPIException
  *
  * @see <a href="http://git-scm.com/docs/git-describe">git-describe Manual Page</a>
  */
+@Operation('describe')
 class DescribeOp implements Callable<String> {
   private final Repository repo
 

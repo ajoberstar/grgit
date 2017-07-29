@@ -16,10 +16,10 @@
 package org.ajoberstar.grgit.service
 
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.internal.WithOperations
 import org.ajoberstar.grgit.operation.TagAddOp
 import org.ajoberstar.grgit.operation.TagListOp
 import org.ajoberstar.grgit.operation.TagRemoveOp
-import org.ajoberstar.grgit.util.OpSyntaxUtil
 
 /**
  * Provides support for performing tag-related operations on
@@ -39,16 +39,11 @@ import org.ajoberstar.grgit.util.OpSyntaxUtil
  *
  * @since 0.2.0
  */
+@WithOperations(instanceOperations=[TagListOp, TagAddOp, TagRemoveOp])
 class TagService {
-  private static final Map OPERATIONS = [
-    list: TagListOp, add: TagAddOp, remove: TagRemoveOp]
   private final Repository repository
 
   TagService(Repository repository) {
     this.repository = repository
-  }
-
-  def methodMissing(String name, args) {
-    OpSyntaxUtil.tryOp(this.class, OPERATIONS, [repository] as Object[], name, args)
   }
 }
