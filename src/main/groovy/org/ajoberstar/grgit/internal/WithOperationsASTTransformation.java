@@ -61,14 +61,8 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
       List<ClassNode> staticOps = getClassList(annotation, "staticOperations");
       List<ClassNode> instanceOps = getClassList(annotation, "instanceOperations");
 
-      staticOps.forEach(
-          op -> {
-            makeMethods(clazz, op, true);
-          });
-      instanceOps.forEach(
-          op -> {
-            makeMethods(clazz, op, false);
-          });
+      staticOps.forEach(op -> makeMethods(clazz, op, true));
+      instanceOps.forEach(op -> makeMethods(clazz, op, false));
     }
   }
 

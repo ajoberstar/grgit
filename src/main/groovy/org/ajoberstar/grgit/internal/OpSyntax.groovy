@@ -17,8 +17,6 @@ package org.ajoberstar.grgit.internal
 
 import java.util.concurrent.Callable
 
-import groovy.transform.PackageScope
-
 class OpSyntax {
   static def noArgOperation(Class<Callable> opClass, Object[] classArgs) {
     def op = opClass.newInstance(classArgs)

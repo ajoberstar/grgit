@@ -18,7 +18,6 @@ package org.ajoberstar.grgit.gradle
 import org.ajoberstar.grgit.Grgit
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.Task
 
 /**
  * Plugin adding a {@code grgit} property to all projects
@@ -27,8 +26,6 @@ import org.gradle.api.Task
  * @since 2.0.0
  */
 class GrgitPlugin implements Plugin<Project> {
-  private static final String CLOSE_TASK = 'gitClose'
-
   @Override
   void apply(Project project) {
     try {
