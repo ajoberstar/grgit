@@ -24,40 +24,8 @@ import org.eclipse.jgit.api.CleanCommand
 /**
  * Remove untracked files from the working tree. Returns the list of
  * file paths deleted.
- *
- * <p>To clean all untracked files, but not ignored ones or untracked directories.</p>
- *
- * <pre>
- * def cleanedPaths = grgit.clean()
- * </pre>
- *
- * <p>To clean all untracked files and directories.</p>
- *
- * <pre>
- * def cleanedPaths = grgit.clean(directories: true)
- * </pre>
- *
- * <p>To clean all untracked files, including ignored ones.</p>
- *
- * <pre>
- * def cleanedPaths = grgit.clean(ignore: false)
- * </pre>
- *
- * <p>To only return files that would be cleaned.</p>
- *
- * <pre>
- * def cleanedPaths = grgit.clean(dryRun: true)
- * </pre>
- *
- * <p>To clean specific untracked files.</p>
- *
- * <pre>
- * def cleanedPaths = grgit.clean(paths: ['specific/file.txt'])
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-clean">git-clean Manual Page</a>.
- *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/clean.html">grgit-clean</a>
  * @see <a href="http://git-scm.com/docs/git-clean">git-clean Manual Page</a>
  */
 @Operation('clean')

@@ -22,9 +22,9 @@ grgit.lsremote(heads: <boolean>, tags: <boolean>, remote: '<name or uri>')
 [source, groovy]
 ----
 grgit.lsremote {
-    heads = <boolean>
-    tags = <boolean>
-    remote = '<name or uri>'
+  heads = <boolean>
+  tags = <boolean>
+  remote = '<name or uri>'
 }
 ----
 
