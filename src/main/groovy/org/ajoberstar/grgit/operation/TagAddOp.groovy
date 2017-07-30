@@ -20,13 +20,10 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Tag
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
-
 import org.eclipse.jgit.api.TagCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.lib.PersonIdent
 import org.eclipse.jgit.lib.Ref
 
@@ -117,11 +114,7 @@ class TagAddOp implements Callable<Tag> {
       cmd.objectId = JGitUtil.resolveRevObject(repo, revstr)
     }
 
-    try {
-      Ref ref = cmd.call()
-      return JGitUtil.resolveTag(repo, ref)
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem creating tag.', e)
-    }
+    Ref ref = cmd.call()
+    return JGitUtil.resolveTag(repo, ref)
   }
 }

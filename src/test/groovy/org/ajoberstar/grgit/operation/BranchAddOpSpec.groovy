@@ -16,9 +16,9 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
+import org.eclipse.jgit.api.errors.GitAPIException
 
 import spock.lang.Unroll
 
@@ -64,7 +64,7 @@ class BranchAddOpSpec extends MultiGitOpSpec {
     when:
     localGrgit.branch.add(name: 'test-branch')
     then:
-    thrown(GrgitException)
+    thrown(GitAPIException)
   }
 
   def 'branch add with mode set but no start point fails'() {
@@ -98,7 +98,7 @@ class BranchAddOpSpec extends MultiGitOpSpec {
     when:
     localGrgit.branch.add(startPoint: 'origin/my-branch', mode: mode)
     then:
-    thrown(GrgitException)
+    thrown(GitAPIException)
     where:
     mode << [null, BranchAddOp.Mode.TRACK, BranchAddOp.Mode.NO_TRACK]
   }

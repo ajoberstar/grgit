@@ -18,8 +18,8 @@ package org.ajoberstar.grgit.operation
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Status
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
+import org.eclipse.jgit.api.errors.GitAPIException
 
 class PullOpSpec extends MultiGitOpSpec {
   Grgit localGrgit
@@ -106,7 +106,7 @@ class PullOpSpec extends MultiGitOpSpec {
     then:
     localGrgit.status() == new Status(conflicts: ['1.txt'])
     localGrgit.head() == localHead
-    thrown(GrgitException)
+    thrown(IllegalStateException)
   }
 
   def 'pull to local repo with clean changes and rebase rebases changes on top of origin'() {

@@ -21,8 +21,8 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoField
 
 import org.ajoberstar.grgit.Tag
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
+import org.eclipse.jgit.api.errors.GitAPIException
 
 class TagAddOpSpec extends SimpleGitOpSpec {
   List commits = []
@@ -97,7 +97,7 @@ class TagAddOpSpec extends SimpleGitOpSpec {
     when:
     grgit.tag.add(name: 'test-tag')
     then:
-    thrown(GrgitException)
+    thrown(GitAPIException)
   }
 
   def 'tag add with force overwrites existing tag'() {

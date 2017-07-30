@@ -18,12 +18,9 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
-
 import org.eclipse.jgit.api.CheckoutCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Checks out a branch to the working tree. Does not support checking out
@@ -110,11 +107,7 @@ class CheckoutOp implements Callable<Void> {
     cmd.createBranch = createBranch
     cmd.startPoint = resolve.toRevisionString(startPoint)
     cmd.orphan = orphan
-    try {
-      cmd.call()
-      return null
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem checking out.', e)
-    }
+    cmd.call()
+    return null
   }
 }

@@ -16,9 +16,9 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
+import org.eclipse.jgit.api.errors.GitAPIException
 
 class PushOpSpec extends MultiGitOpSpec {
   Grgit localGrgit
@@ -54,7 +54,7 @@ class PushOpSpec extends MultiGitOpSpec {
     when:
     localGrgit.push(remote: 'fake')
     then:
-    thrown(GrgitException)
+    thrown(GitAPIException)
   }
 
   def 'push without other settings pushes correct commits'() {

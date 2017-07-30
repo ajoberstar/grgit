@@ -19,10 +19,8 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.auth.TransportOpUtil
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.eclipse.jgit.api.PushCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Push changes to a remote repository.
@@ -111,11 +109,7 @@ class PushOp implements Callable<Void> {
     if (tags) { cmd.setPushTags() }
     cmd.force = force
     cmd.dryRun = dryRun
-    try {
-      cmd.call()
-      return null
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem pushing to remote.', e)
-    }
+    cmd.call()
+    return null
   }
 }

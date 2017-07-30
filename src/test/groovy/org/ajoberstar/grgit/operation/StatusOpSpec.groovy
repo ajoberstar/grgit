@@ -16,8 +16,8 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Status
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
+import org.eclipse.jgit.api.errors.GitAPIException
 
 class StatusOpSpec extends SimpleGitOpSpec {
   def setup() {
@@ -98,6 +98,6 @@ class StatusOpSpec extends SimpleGitOpSpec {
     grgit.merge(head: 'conflict')
     then:
     grgit.status() == new Status(conflicts: ['1.txt'])
-    thrown(GrgitException)
+    thrown(IllegalStateException)
   }
 }

@@ -18,12 +18,9 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
-
 import org.eclipse.jgit.api.DescribeCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Find the nearest tag reachable. Returns an {@link String}}.
@@ -73,15 +70,10 @@ class DescribeOp implements Callable<String> {
 
   String call(){
     DescribeCommand cmd = repo.jgit.describe()
-    try {
-      if (commit) {
-        cmd.setTarget(new ResolveService(repo).toRevisionString(commit))
-      }
-    cmd.setLong(longDescr)
-      return cmd.call()
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem retrieving description.', e)
+    if (commit) {
+      cmd.setTarget(new ResolveService(repo).toRevisionString(commit))
     }
-
+    cmd.setLong(longDescr)
+    return cmd.call()
   }
 }

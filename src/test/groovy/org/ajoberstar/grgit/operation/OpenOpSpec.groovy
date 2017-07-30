@@ -21,10 +21,10 @@ import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
-import org.ajoberstar.grgit.exception.GrgitException
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.errors.RepositoryNotFoundException
+import org.eclipse.jgit.api.errors.GitAPIException
 
 import spock.util.environment.RestoreSystemProperties
 
@@ -62,7 +62,7 @@ class OpenOpSpec extends SimpleGitOpSpec {
     when:
     Grgit.open()
     then:
-    thrown(GrgitException)
+    thrown(IllegalStateException)
   }
 
   @RestoreSystemProperties

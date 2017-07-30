@@ -20,10 +20,8 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.BranchStatus
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
-
 import org.eclipse.jgit.lib.BranchTrackingStatus
 
 /**
@@ -50,20 +48,16 @@ class BranchStatusOp implements Callable<BranchStatus> {
   }
 
   BranchStatus call() {
-    try {
-      Branch realBranch = new ResolveService(repo).toBranch(name)
-      if (realBranch.trackingBranch) {
-        BranchTrackingStatus status = BranchTrackingStatus.of(repo.jgit.repository, realBranch.fullName)
-        if (status) {
-          return new BranchStatus(realBranch, status.aheadCount, status.behindCount)
-        } else {
-          throw new GrgitException("Could not retrieve status for ${name}")
-        }
+    Branch realBranch = new ResolveService(repo).toBranch(name)
+    if (realBranch.trackingBranch) {
+      BranchTrackingStatus status = BranchTrackingStatus.of(repo.jgit.repository, realBranch.fullName)
+      if (status) {
+        return new BranchStatus(realBranch, status.aheadCount, status.behindCount)
       } else {
-        throw new GrgitException("${name} is not set to track another branch")
+        throw new IllegalStateException("Could not retrieve status for ${name}")
       }
-    } catch (IOException e) {
-      throw new GrgitException('Problem retrieving branch status.', e)
+    } else {
+      throw new IllegalStateException("${name} is not set to track another branch")
     }
   }
 }

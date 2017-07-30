@@ -15,18 +15,14 @@
  */
 package org.ajoberstar.grgit.operation
 
-import org.ajoberstar.grgit.service.ResolveService
-
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
+import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
-
 import org.eclipse.jgit.api.ListBranchCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Lists branches in the repository. Returns a list of {@link Branch}.
@@ -85,12 +81,8 @@ class BranchListOp implements Callable<List<Branch>> {
     if (contains) {
       cmd.contains = new ResolveService(repo).toRevisionString(contains)
     }
-    try {
-      return cmd.call().collect {
-        JGitUtil.resolveBranch(repo, it.name)
-      }
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem listing branches.', e)
+    return cmd.call().collect {
+      JGitUtil.resolveBranch(repo, it.name)
     }
   }
 

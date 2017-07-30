@@ -19,14 +19,12 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.CommitDiff
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
-
 import org.eclipse.jgit.diff.DiffEntry
-import org.eclipse.jgit.diff.DiffEntry.ChangeType
 import org.eclipse.jgit.diff.RenameDetector
+import org.eclipse.jgit.diff.DiffEntry.ChangeType
 import org.eclipse.jgit.treewalk.TreeWalk
 
 /**
@@ -65,7 +63,7 @@ class ShowOp implements Callable<CommitDiff> {
 
   CommitDiff call() {
     if (!commit) {
-      throw new GrgitException('You must specify which commit to show')
+      throw new IllegalArgumentException('You must specify which commit to show')
     }
     def revString = new ResolveService(repo).toRevisionString(commit)
     def commitId = JGitUtil.resolveRevObject(repo, revString)

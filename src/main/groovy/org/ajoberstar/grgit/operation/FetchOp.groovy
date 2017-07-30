@@ -19,10 +19,8 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.auth.TransportOpUtil
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.eclipse.jgit.api.FetchCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.transport.RefSpec
 import org.eclipse.jgit.transport.TagOpt
 
@@ -94,12 +92,8 @@ class FetchOp implements Callable<Void> {
     cmd.refSpecs = refSpecs.collect { new RefSpec(it) }
     cmd.removeDeletedRefs = prune
     cmd.tagOpt = tagMode.jgit
-    try {
-      cmd.call()
-      return null
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem fetching from remote.', e)
-    }
+    cmd.call()
+    return null
   }
 
   enum TagMode {

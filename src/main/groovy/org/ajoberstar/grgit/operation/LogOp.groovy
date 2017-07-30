@@ -19,13 +19,10 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
-
 import org.eclipse.jgit.api.LogCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Gets a log of commits in the repository. Returns a list of {@link Commit}s.
@@ -107,10 +104,6 @@ class LogOp implements Callable<List<Commit>> {
     }
     cmd.skip = skipCommits
     cmd.maxCount = maxCommits
-    try {
-      return cmd.call().collect { JGitUtil.convertCommit(it) }.asImmutable()
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem retrieving log.', e)
-    }
+    return cmd.call().collect { JGitUtil.convertCommit(it) }.asImmutable()
   }
 }

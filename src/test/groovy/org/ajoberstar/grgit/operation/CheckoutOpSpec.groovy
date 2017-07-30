@@ -16,8 +16,8 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Status
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
+import org.eclipse.jgit.api.errors.GitAPIException
 
 class CheckoutOpSpec extends SimpleGitOpSpec {
   def setup() {
@@ -50,14 +50,14 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
     when:
     grgit.checkout(branch: 'my-branch', createBranch: true)
     then:
-    thrown(GrgitException)
+    thrown(GitAPIException)
   }
 
   def 'checkout with non-existent branch and createBranch false fails'() {
     when:
     grgit.checkout(branch: 'fake')
     then:
-    thrown(GrgitException)
+    thrown(GitAPIException)
   }
 
   def 'checkout with non-existent branch and createBranch true works'() {
@@ -91,7 +91,7 @@ class CheckoutOpSpec extends SimpleGitOpSpec {
     when:
     grgit.checkout(branch: 'my-branch', orphan: true)
     then:
-    thrown(GrgitException)
+    thrown(GitAPIException)
   }
 
   def 'checkout with non-existent branch and orphan true works'() {

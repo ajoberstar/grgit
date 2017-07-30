@@ -25,8 +25,8 @@ import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Tag
-import org.ajoberstar.grgit.exception.GrgitException
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.errors.RevisionSyntaxException
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Ref
@@ -93,19 +93,15 @@ class JGitUtilSpec extends Specification {
   }
 
   def 'resolveObject fails if revision cannot be found'() {
-    when:
-    JGitUtil.resolveObject(repo, 'unreal')
-    then:
-    def e = thrown(GrgitException)
-    e.cause == null
+    expect:
+    JGitUtil.resolveObject(repo, 'unreal') == null
   }
 
   def 'resolveObject fails if revision syntax is wrong'() {
     when:
     JGitUtil.resolveObject(repo, 'lkj!)#(*')
     then:
-    def e = thrown(GrgitException)
-    e.cause instanceof RevisionSyntaxException
+    thrown(RevisionSyntaxException)
   }
 
   def 'convertCommit works for valid commit'() {

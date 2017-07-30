@@ -19,11 +19,9 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.auth.TransportOpUtil
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.eclipse.jgit.api.PullCommand
 import org.eclipse.jgit.api.PullResult
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Pulls changes from the remote on the current branch. If the changes
@@ -93,14 +91,10 @@ class PullOp implements Callable<Void> {
     cmd.rebase = rebase
     TransportOpUtil.configure(cmd, repo.credentials)
 
-    try {
       PullResult result = cmd.call()
       if (!result.successful) {
-        throw new GrgitException("Could not pull: ${result}")
+        throw new IllegalStateException("Could not pull: ${result}")
       }
       return null
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem merging.', e)
-    }
   }
 }
