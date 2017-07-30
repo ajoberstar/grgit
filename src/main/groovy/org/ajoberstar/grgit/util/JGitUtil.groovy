@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 the original author or authors.
+ * Copyright 2012-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,11 @@
  */
 package org.ajoberstar.grgit.util
 
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Person
@@ -23,7 +28,6 @@ import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.exception.GrgitException
-
 import org.eclipse.jgit.errors.AmbiguousObjectException
 import org.eclipse.jgit.errors.IncorrectObjectTypeException
 import org.eclipse.jgit.errors.MissingObjectException
@@ -146,7 +150,13 @@ class JGitUtil {
     props.committer = new Person(committer.name, committer.emailAddress)
     PersonIdent author = rev.authorIdent
     props.author = new Person(author.name, author.emailAddress)
-    props.time = rev.commitTime
+
+    Instant instant = Instant.ofEpochSecond(rev.commitTime)
+    ZoneId zone = Optional.ofNullable(rev.committerIdent.timeZone)
+      .map { it.toZoneId() }
+      .orElse(ZoneOffset.UTC)
+    props.dateTime = ZonedDateTime.ofInstant(instant, zone)
+
     props.fullMessage = rev.fullMessage
     props.shortMessage = rev.shortMessage
     props.parentIds = rev.parents.collect { ObjectId.toString(it) }
@@ -184,6 +194,12 @@ class JGitUtil {
       props.tagger = new Person(tagger.name, tagger.emailAddress)
       props.fullMessage = rev.fullMessage
       props.shortMessage = rev.shortMessage
+
+      Instant instant = rev.taggerIdent.when.toInstant()
+      ZoneId zone = Optional.ofNullable(rev.taggerIdent.timeZone)
+        .map { it.toZoneId() }
+        .orElse(ZoneOffset.UTC)
+      props.dateTime = ZonedDateTime.ofInstant(instant, zone)
     } catch (IncorrectObjectTypeException e) {
       props.commit = resolveCommit(repo, ref.objectId)
     }

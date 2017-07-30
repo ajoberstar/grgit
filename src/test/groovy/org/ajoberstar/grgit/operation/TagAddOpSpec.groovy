@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 the original author or authors.
+ * Copyright 2012-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 package org.ajoberstar.grgit.operation
+
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoField
 
 import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.exception.GrgitException
@@ -34,6 +39,10 @@ class TagAddOpSpec extends SimpleGitOpSpec {
   }
 
   def 'tag add creates annotated tag pointing to current HEAD'() {
+    given:
+    Instant instant = Instant.now().with(ChronoField.NANO_OF_SECOND, 0)
+    ZoneId zone = ZoneId.ofOffset('GMT', ZoneId.systemDefault().getRules().getOffset(instant))
+    ZonedDateTime tagTime = ZonedDateTime.ofInstant(instant, zone)
     when:
     grgit.tag.add(name: 'test-tag')
     then:
@@ -42,7 +51,8 @@ class TagAddOpSpec extends SimpleGitOpSpec {
       person,
       'refs/tags/test-tag',
       '',
-      ''
+      '',
+      tagTime
     )]
     grgit.resolve.toCommit('test-tag') == grgit.head()
   }
@@ -56,12 +66,17 @@ class TagAddOpSpec extends SimpleGitOpSpec {
       null,
       'refs/tags/test-tag',
       null,
-      null
+      null,
+    null
     )]
     grgit.resolve.toCommit('test-tag') == grgit.head()
   }
 
   def 'tag add with name and pointsTo creates tag pointing to pointsTo'() {
+    given:
+    Instant instant = Instant.now().with(ChronoField.NANO_OF_SECOND, 0)
+    ZoneId zone = ZoneId.ofOffset('GMT', ZoneId.systemDefault().getRules().getOffset(instant))
+    ZonedDateTime tagTime = ZonedDateTime.ofInstant(instant, zone)
     when:
     grgit.tag.add(name: 'test-tag', pointsTo: commits[0].id)
     then:
@@ -70,7 +85,8 @@ class TagAddOpSpec extends SimpleGitOpSpec {
       person,
       'refs/tags/test-tag',
       '',
-      ''
+      '',
+      tagTime
     )]
     grgit.resolve.toCommit('test-tag') == commits[0]
   }
