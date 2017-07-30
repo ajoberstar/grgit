@@ -5,11 +5,13 @@
 
 == Description
 
+Grgit supports authentication via basic auth (i.e. username/password or _hardcoded_ creds) and SSH keys. It also integrates support for using SSH agents (e.g. ssh-agent or Pageant) to provide authentication.
+
 == Options
 
 === Authentication Method
 
-The following system properties can be set to configure which authentication options are available when performing a _transport_ command.
+The following system properties can be set to configure which authentication options are available when performing a _transport_ command. Generally, you shouldn't need to modify any of these unless you are having an issue and need to bypass or force or particular method.
 
 org.ajoberstar.grgit.auth.force:: (one of `hardcoded`, `interactive`, `sshagent`, `pageant`)
 org.ajoberstar.grgit.auth.hardcoded.allow:: (`true` or `false`, default `true`)
@@ -70,7 +72,7 @@ org.ajoberstar.grgit.auth.session.config.<key>:: <value>
 
 For example: `org.ajoberstar.grgit.auth.session.config.StrictHostKeyChecking=no`
 
-== Common Scenarios
+== Examples
 
 This is a non-exhaustive list of examples of how to configure authentication in common scenarios.
 
