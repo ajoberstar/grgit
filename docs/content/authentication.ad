@@ -1,7 +1,8 @@
-title=Authentication in Grgit
-type=page
-status=published
-~~~~~~
+= grgit-authentication
+:jbake-title: grgit-authentication
+:jbake-type: page
+:jbake-status: published
+
 Stores configuration options for how to authenticate with remote repositories.
 
 The following system properties can be set to configure how authentication is performed with remote repositories. All "allow" properties default to true.

@@ -24,39 +24,9 @@ import org.eclipse.jgit.api.LsRemoteCommand
 import org.eclipse.jgit.lib.ObjectId
 
 /**
- * Gets a log of commits in the repository. Returns a list of {@link Commit}s.
- * Since a Git history is not necessarilly a line, these commits may not be in
- * a strict order.
- *
- * <p>Get a full log of commits from the current HEAD and back.</p>
- *
- * <pre>
- * def history = grgit.log()
- * </pre>
- *
- * <p>Get log of commits between two points.</p>
- *
- * <pre>
- * def history = grgit.log {
- *  range 'v1.0', 'v2.0'
- * }
- * </pre>
- *
- * <p>Get a list of the most recent 5 commits.</p>
- *
- * <pre>
- * def history = grgit.log(maxCommits: 5)
- * </pre>
- *
- * <p>Get a log of commits skipping the most recent 3.</p>
- *
- * <pre>
- * def history = grgit.log(skipCommits: 3)
- * </pre>
- *
- * See <a href="https://git-scm.com/docs/git-ls-remote">git-ls-remote Manual Page</a>.
- *
+ * List references in a remote repository.
  * @since 2.0.0
+ * @see <a href="http://ajoberstar.org/grgit/lsremote.html">grgit-lsremote</a>
  * @see <a href="https://git-scm.com/docs/git-ls-remote">git-ls-remote Manual Page</a>
  */
 @Operation('lsremote')

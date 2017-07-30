@@ -1,7 +1,8 @@
-title=Using Grgit in Gradle
-type=page
-status=published
-~~~~~~
+= grgit-gradle
+:jbake-title: grgit-gradle
+:jbake-type: page
+:jbake-status: published
+
 For typical use cases of interacting with a Git repo, you should apply the `org.ajoberstar.grgit` plugin. This plugin makes a `grgit` property available to all projects (so you should only apply it once). It will be configured to search for a repo as if you had a console open to the `rootDir` of the build's root project, and we're using the Git CLI.
 
 **[Plugins Block Dependency](https://github.com/ajoberstar/gradle-git/wiki#plugin-block-dependency)**

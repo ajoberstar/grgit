@@ -20,7 +20,7 @@ pre.highlight { overflow-x: auto; }
 /* END fix overflow of code samples */
 
 /* BEGIN emphasis around code snippets */
-pre.highlight.prettyprint {
+div.listingblock div.content pre {
     padding: 5px;
     border: 2px solid #B0BEC5; /* material blue-grey 500 */
     border-radius: 2px;
@@ -28,7 +28,7 @@ pre.highlight.prettyprint {
 /* END emphasis around code snippets */
 
 /* BEGIN put the language name in the code block */
-div.listingblock {
+div.listingblock div.content {
     position: relative;
 }
 

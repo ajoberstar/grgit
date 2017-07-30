@@ -1,7 +1,8 @@
-title=Grgit
-type=page
-status=published
-~~~~~~
+= grgit
+:jbake-title: grgit
+:jbake-type: page
+:jbake-status: published
+
 == What is Grgit?
 
 A library
