@@ -18,6 +18,7 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.Remote
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.JGitUtil
 import org.eclipse.jgit.transport.RemoteConfig

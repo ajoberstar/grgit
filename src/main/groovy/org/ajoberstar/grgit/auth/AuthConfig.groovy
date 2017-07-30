@@ -20,77 +20,8 @@ import org.ajoberstar.grgit.Credentials
 /**
  * Stores configuration options for how to authenticate with remote
  * repositories.
- *
- * <p>
- *   The following system properties can be set to configure how
- *   authentication is performed with remote repositories. All "allow"
- *   properties default to {@code true}.
- * </p>
- *
- * <ul>
- *   <li>{@code org.ajoberstar.grgit.auth.force={hardcoded|interactive|sshagent|pageant}}</li>
- *   <li>{@code org.ajoberstar.grgit.auth.hardcoded.allow={true|false}}</li>
- *   <li>{@code org.ajoberstar.grgit.auth.interactive.allow={true|false}}</li>
- *   <li>{@code org.ajoberstar.grgit.auth.sshagent.allow={true|false}}</li>
- *   <li>{@code org.ajoberstar.grgit.auth.pageant.allow={true|false}}</li>
- * </ul>
- *
- * <p>
- *   In order to set default hardocded credentials, use the following properties.
- *   Note that unless hardcoded credentials are disabled, using these properties
- *   will supersede the use of interactive creds, ssh-agent, or Pageant. However,
- *   they will not take precedence over credentials provided directly to a
- *   repository during the clone, init, or open.
- * </p>
- *
- * <ul>
- *   <li>{@code org.ajoberstar.grgit.auth.username=<username>}</li>
- *   <li>{@code org.ajoberstar.grgit.auth.password=<password>}</li>
- * </ul>
- *
- * <p>
- *   Hardcoded credentials can alternately be provided with environment variables.
- *   These take a lower precedence than the system properties, but all other
- *   considerations are the same.
- * </p>
- * <ul>
- *   <li>{@code GRGIT_USER=<username>}</li>
- *   <li>{@code GRGIT_PASS=<password>}</li>
- * </ul>
- *
- * <p>
- *   To customize SSH credentials use the following properties.
- *   In order to add a non-standard SSH key to use as your credentials,
- *   use the first following property.
- *   In case your private key is protected by a passphrase, use the second property.
- * </p>
- *
- * <ul>
- *	 <li>{@code org.ajoberstar.grgit.auth.ssh.private=<path.to.private.key>}</li>
- *   <li>{@code org.ajoberstar.grgit.auth.ssh.passphrase=<passphrase>}</li>
- * </ul>
- * <p>
- *   In order to customize the JSch session config use a property of the
- *   following format (possible values <a href="http://epaul.github.io/jsch-documentation/javadoc/com/jcraft/jsch/JSch.html#setConfig(java.lang.String, java.lang.String)">JSch documentation</a>):
- * </p>
- *
- * <ul>
- *	 <li>{@code org.ajoberstar.grgit.auth.session.config.<key>=<value>}</li>
- * </ul>
- *
- * <p>
- *   The following order is used to determine which authentication option
- *   is used.
- * </p>
- *
- * <ol>
- *   <li>Hardcoded credentials, if provided.</li>
- *   <li>Ssh-Agent, if available.</li>
- *   <li>Pageant, if available.</li>
- *   <li>Interactive credentials, if needed.</li>
- * </ol>
- *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/authentication.html">grgit-authentication</a>
  */
 class AuthConfig {
   /**
