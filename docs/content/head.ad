@@ -1,0 +1,25 @@
+= grgit-head
+:jbake-title: grgit-head
+:jbake-type: page
+:jbake-status: published
+
+== Name
+
+grgit-head - Gets the current `HEAD` commit.
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.head()
+----
+
+== Description
+
+Returns the link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Commit.html[Commit] that the current `HEAD` points to.
+
+== Options
+
+== Examples
+
+== See Also

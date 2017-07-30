@@ -29,15 +29,7 @@ import org.eclipse.jgit.transport.URIish
 /**
  * Adds a remote to the repository. Returns the newly created {@link org.ajoberstar.grgit.Remote}.
  * If remote with given name already exists, this command will fail.
- *
- * <p>To add remote.</p>
- *
- * <pre>
- * grgit.remote.add(name: 'new-remote', url: 'git@github.com:username/project.git')
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-remote">git-remote Manual Page</a>.
- *
+ * @see <a href="http://ajoberstar.org/grgit/remote.html">grgit-remote</a>
  * @see <a href="http://git-scm.com/docs/git-remote">git-remote Manual Page</a>
  */
 @Operation('add')

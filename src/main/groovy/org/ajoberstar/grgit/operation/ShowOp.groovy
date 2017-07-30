@@ -30,21 +30,8 @@ import org.eclipse.jgit.treewalk.TreeWalk
 /**
  * Show changes made in a commit.
  * Returns changes made in commit in the form of {@link org.ajoberstar.grgit.CommitDiff}.
- *
- * <p>Show changes based on revision string</p>
- *
- * <pre>
- * CommitDiff diff = grgit.show(commit: 'c99a58906246e96333e0788fc50eb8e3e6df0bd9')
- * </pre>
- *
- * <p>Show changes based on Commit reference</p>
- *
- * <pre>
- * Commit myCommit = grgit.commit(message: "Add stuff")
- * CommitDiff diff = grgit.show(commit: myCommit)
- * </pre>
- *
  * @since 1.2.0
+ * @see <a href="http://ajoberstar.org/grgit/show.html">grgit-show</a>
  * @see <a href="http://git-scm.com/docs/git-show">git-show Manual Page</a>
  */
 @Operation('show')
