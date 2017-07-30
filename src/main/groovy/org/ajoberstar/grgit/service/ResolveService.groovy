@@ -18,8 +18,10 @@ package org.ajoberstar.grgit.service
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.Ref
 import org.ajoberstar.grgit.Tag
 import org.ajoberstar.grgit.util.JGitUtil
+import org.eclipse.jgit.lib.ObjectId
 
 /**
  * Convenience methods to resolve various objects.
@@ -30,6 +32,32 @@ class ResolveService {
 
   ResolveService(Repository repository) {
     this.repository = repository
+  }
+
+  /**
+   * Resolves an object ID from the given object. Can handle any of the following
+   * types:
+   *
+   * <ul>
+   *   <li>{@link org.ajoberstar.grgit.Commit}</li>
+   *   <li>{@link org.ajoberstar.grgit.Tag}</li>
+   *   <li>{@link org.ajoberstar.grgit.Branch}</li>
+   *   <li>{@link org.ajoberstar.grgit.Ref}</li>
+   * </ul>
+   *
+   * @param object the object to resolve
+   * @return the corresponding object id
+   */
+  String toObjectId(Object object) {
+    if (object == null) {
+      return null
+    } else if (object instanceof Commit) {
+      return object.id
+    } else if (object instanceof Branch || object instanceof Tag || object instanceof Ref) {
+      return ObjectId.toString(repository.jgit.repository.getRef(object.fullName).objectId)
+    } else {
+      throwIllegalArgument(object)
+    }
   }
 
   /**

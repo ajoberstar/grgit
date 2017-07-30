@@ -76,6 +76,7 @@ import org.ajoberstar.grgit.util.JGitUtil
  *   <li>{@link org.ajoberstar.grgit.operation.DescribeOp describe}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.FetchOp fetch}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.LogOp log}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.LsRemoteOp lsremote}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.MergeOp merge}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.PullOp pull}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.PushOp push}</li>
@@ -109,7 +110,7 @@ import org.ajoberstar.grgit.util.JGitUtil
  *
  * @since 0.1.0
  */
-@WithOperations(staticOperations=[InitOp, CloneOp, OpenOp], instanceOperations=[CleanOp, StatusOp, AddOp, RmOp, ResetOp, ApplyOp, PullOp, PushOp, FetchOp, CheckoutOp, LogOp, CommitOp, RevertOp, MergeOp, DescribeOp, ShowOp])
+@WithOperations(staticOperations=[InitOp, CloneOp, OpenOp], instanceOperations=[CleanOp, StatusOp, AddOp, RmOp, ResetOp, ApplyOp, PullOp, PushOp, FetchOp, LsRemoteOp, CheckoutOp, LogOp, CommitOp, RevertOp, MergeOp, DescribeOp, ShowOp])
 class Grgit implements AutoCloseable {
   /**
    * The repository opened by this object.
