@@ -85,4 +85,4 @@ def cleanedPaths = grgit.clean(paths: ['specific/file.txt'])
 
 == See Also
 
-- link:https://git-scm.com/docs/git-ls-remote[git-clean]
+- link:https://git-scm.com/docs/git-clean[git-clean]

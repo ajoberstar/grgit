@@ -24,29 +24,7 @@ import org.eclipse.jgit.api.DescribeCommand
 
 /**
  * Find the nearest tag reachable. Returns an {@link String}}.
- *
- * <p>Find the most recent tag that is reachable from HEAD.  If the tag points to the commit, then only the tag is
- * shown. Otherwise, it suffixes the tag name with the number of additional commits on top of the tagged object and the
- * abbreviated object name of the most recent commit.</p>
- *
- * <pre>
- * def description = grgit.describe()
- * </pre>
- *
- * <p>Find the most recent tag that is reachable from a different commit.</p>
- *
- * <pre>
- * def description = grgit.describe(commit: 'other-branch')
- * </pre>
- *
- * <p>Always output the long format (the tag, the number of commits and the abbreviated commit name) even when it matches a tag.</p>
- *
- * <pre>
- * def description = grgit.describe(longDescr: true)
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-describe">git-describe Manual Page</a>.
- *
+ * @see <a href="http://ajoberstar.org/grgit/describe.html">grgit-describe</a>
  * @see <a href="http://git-scm.com/docs/git-describe">git-describe Manual Page</a>
  */
 @Operation('describe')

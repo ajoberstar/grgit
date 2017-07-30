@@ -26,6 +26,7 @@ import org.eclipse.jgit.lib.ObjectId
 /**
  * Convenience methods to resolve various objects.
  * @since 0.2.2
+ * @see <a href="http://ajoberstar.org/grgit/resolve.html">grgit-resolve</a>
  */
 class ResolveService {
   private final Repository repository
