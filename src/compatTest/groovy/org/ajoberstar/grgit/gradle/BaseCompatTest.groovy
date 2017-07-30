@@ -66,6 +66,32 @@ task doStuff {
     result.output.normalize() == '1.0.0\n'
   }
 
+  def 'with repo, plugin closes the repo after build is finished'() {
+    given:
+    Grgit git = Grgit.init(dir: projectDir)
+    projectFile('1.txt') << '1'
+    git.add(patterns: ['1.txt'])
+    git.commit(message: 'yay')
+    git.tag.add(name: '1.0.0')
+
+    buildFile << '''\
+plugins {
+  id 'org.ajoberstar.grgit'
+}
+
+task doStuff {
+  doLast {
+    println grgit.describe()
+  }
+}
+'''
+    when:
+    def result = build('doStuff', '--info')
+    then:
+    result.task(':doStuff').outcome == TaskOutcome.SUCCESS
+    result.output.contains('Closing Git repo')
+  }
+
   private BuildResult build(String... args) {
     return GradleRunner.create()
       .withGradleVersion(System.properties['compat.gradle.version'])

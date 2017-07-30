@@ -34,32 +34,21 @@ class GrgitPlugin implements Plugin<Project> {
     try {
       Grgit grgit = Grgit.open(currentDir: project.rootDir)
 
-      Task closeTask = createCloseTask(project, grgit)
+      // Make sure Git repo is closed when the build is over. Ideally, this avoids issues with the daemon.
+      project.gradle.buildFinished {
+        project.logger.info "Closing Git repo: ${grgit.repository.rootDir}"
+        grgit.close()
+      }
 
       project.allprojects { prj ->
         if (prj.ext.has('grgit')) {
           prj.logger.warn("Project ${prj.path} already has a grgit property. Remove org.ajoberstar.grgit from either ${prj.path} or ${project.path}.")
         }
-
         prj.ext.grgit = grgit
-
-        prj.tasks.all { task ->
-          if (task.name != CLOSE_TASK) {
-            task.finalizedBy(closeTask)
-          }
-        }
       }
     } catch (Exception ignored) {
       project.logger.error('No git repository found for ${project.path}. Accessing grgit will cause an NPE.')
       project.ext.grgit = null
     }
-  }
-
-  private Task createCloseTask(Project project, Grgit grgit) {
-    Task task = project.tasks.create(CLOSE_TASK)
-    task.doLast {
-      grgit.close()
-    }
-    return task
   }
 }
