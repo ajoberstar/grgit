@@ -18,10 +18,8 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.eclipse.jgit.api.CleanCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Remove untracked files from the working tree. Returns the list of
@@ -100,10 +98,6 @@ class CleanOp implements Callable<Set<String>> {
     cmd.dryRun = dryRun
     cmd.ignore = ignore
 
-    try {
-      return cmd.call()
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem cleaning repository.', e)
-    }
+    return cmd.call()
   }
 }

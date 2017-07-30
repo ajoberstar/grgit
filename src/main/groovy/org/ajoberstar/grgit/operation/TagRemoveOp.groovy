@@ -18,12 +18,9 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
-
 import org.eclipse.jgit.api.DeleteTagCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Removes one or more tags from the repository. Returns a list of
@@ -58,10 +55,6 @@ class TagRemoveOp implements Callable<List<String>> {
     DeleteTagCommand cmd = repo.jgit.tagDelete()
     cmd.tags = names.collect { new ResolveService(repo).toTagName(it) }
 
-    try {
-      return cmd.call()
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem deleting tag(s).', e)
-    }
+    return cmd.call()
   }
 }

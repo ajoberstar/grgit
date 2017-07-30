@@ -19,14 +19,11 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
-
 import org.eclipse.jgit.api.CreateBranchCommand
 import org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode
-import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.lib.Ref
 
 /**
@@ -89,10 +86,10 @@ class BranchChangeOp implements Callable<Branch> {
 
   Branch call() {
     if (!JGitUtil.resolveBranch(repo, name)) {
-      throw new GrgitException("Branch does not exist: ${name}")
+      throw new IllegalStateException("Branch does not exist: ${name}")
     }
     if (!startPoint) {
-      throw new GrgitException('Must set new startPoint.')
+      throw new IllegalArgumentException('Must set new startPoint.')
     }
     CreateBranchCommand cmd = repo.jgit.branchCreate()
     cmd.name = name
@@ -103,12 +100,8 @@ class BranchChangeOp implements Callable<Branch> {
     }
     if (mode) { cmd.upstreamMode = mode.jgit }
 
-    try {
-      Ref ref = cmd.call()
-      return JGitUtil.resolveBranch(repo, ref)
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem changing branch.', e)
-    }
+    Ref ref = cmd.call()
+    return JGitUtil.resolveBranch(repo, ref)
   }
 
   static enum Mode {

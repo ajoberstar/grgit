@@ -19,10 +19,8 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Remote
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.JGitUtil
-
 import org.eclipse.jgit.lib.Config
 import org.eclipse.jgit.transport.RefSpec
 import org.eclipse.jgit.transport.RemoteConfig
@@ -85,7 +83,7 @@ class RemoteAddOp implements Callable<Remote> {
   Remote call() {
     Config config = repository.jgit.repository.config
     if (RemoteConfig.getAllRemoteConfigs(config).find { it.name == name }) {
-      throw new GrgitException("Remote $name already exists.")
+      throw new IllegalStateException("Remote $name already exists.")
     }
     def toUri = { url -> new URIish(url) }
     def toRefSpec = { spec -> new RefSpec(spec) }

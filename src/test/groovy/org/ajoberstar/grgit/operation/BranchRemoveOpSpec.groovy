@@ -16,9 +16,9 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Branch
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
+import org.eclipse.jgit.api.errors.GitAPIException
 
 import spock.lang.Unroll
 
@@ -69,7 +69,7 @@ class BranchRemoveOpSpec extends SimpleGitOpSpec {
     when:
     grgit.branch.remove(names: ['branch3'])
     then:
-    thrown(GrgitException)
+    thrown(GitAPIException)
   }
 
   def 'branch remove with unmerged branch and force true works'() {
@@ -83,7 +83,7 @@ class BranchRemoveOpSpec extends SimpleGitOpSpec {
     when:
     grgit.branch.remove(names: ['master'], force: force)
     then:
-    thrown(GrgitException)
+    thrown(GitAPIException)
     where:
     force << [true, false]
   }

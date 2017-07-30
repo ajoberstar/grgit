@@ -19,13 +19,10 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.CoercionUtil
-
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.InitCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Initializes a new repository. Returns a {@link Grgit} pointing
@@ -67,12 +64,8 @@ class InitOp implements Callable<Grgit> {
     InitCommand cmd = Git.init()
     cmd.bare = bare
     cmd.directory = CoercionUtil.toFile(dir)
-    try {
-      Git jgit = cmd.call()
-      Repository repo = new Repository(CoercionUtil.toFile(dir), jgit, null)
-      return new Grgit(repo)
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem initializing repository.', e)
-    }
+    Git jgit = cmd.call()
+    Repository repo = new Repository(CoercionUtil.toFile(dir), jgit, null)
+    return new Grgit(repo)
   }
 }

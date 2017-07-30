@@ -18,10 +18,8 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.JGitUtil
-
 import org.eclipse.jgit.transport.RemoteConfig
 
 /**
@@ -49,7 +47,7 @@ class RemoteListOp implements Callable<List> {
   List call() {
     return RemoteConfig.getAllRemoteConfigs(repository.jgit.repository.config).collect { rc ->
       if (rc.uris.size() > 1 || rc.pushURIs.size() > 1) {
-        throw new GrgitException("Grgit does not currently support multiple URLs in remote: [uris: ${rc.uris}, pushURIs:${rc.pushURIs}]")
+        throw new IllegalArgumentException("Grgit does not currently support multiple URLs in remote: [uris: ${rc.uris}, pushURIs:${rc.pushURIs}]")
       }
       JGitUtil.convertRemote(rc)
     }

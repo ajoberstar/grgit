@@ -19,12 +19,9 @@ import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Tag
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.JGitUtil
-
 import org.eclipse.jgit.api.ListTagCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Lists tags in the repository. Returns a list of {@link Tag}.
@@ -51,12 +48,8 @@ class TagListOp implements Callable<List<Tag>> {
   List<Tag> call() {
     ListTagCommand cmd = repo.jgit.tagList()
 
-    try {
-      return cmd.call().collect {
-        JGitUtil.resolveTag(repo, it)
-      }
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem listing tags.', e)
+    return cmd.call().collect {
+      JGitUtil.resolveTag(repo, it)
     }
   }
 }

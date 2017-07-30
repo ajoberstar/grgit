@@ -21,13 +21,10 @@ import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.auth.TransportOpUtil
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.CoercionUtil
-
 import org.eclipse.jgit.api.CloneCommand
 import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Clones an existing repository. Returns a {@link Grgit} pointing
@@ -105,12 +102,8 @@ class CloneOp implements Callable<Grgit> {
     cmd.noCheckout = !checkout
     if (refToCheckout) { cmd.branch = refToCheckout }
 
-    try {
-      Git jgit = cmd.call()
-      Repository repo = new Repository(CoercionUtil.toFile(dir), jgit, credentials)
-      return new Grgit(repo)
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem cloning repository.', e)
-    }
+    Git jgit = cmd.call()
+    Repository repo = new Repository(CoercionUtil.toFile(dir), jgit, credentials)
+    return new Grgit(repo)
   }
 }

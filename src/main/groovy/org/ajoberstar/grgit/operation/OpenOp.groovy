@@ -20,7 +20,6 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.CoercionUtil
 import org.eclipse.jgit.api.Git
@@ -96,7 +95,7 @@ class OpenOp implements Callable<Grgit> {
       }
 
       if(builder.getGitDir() == null){
-        throw new GrgitException('No .git directory found!');
+        throw new IllegalStateException('No .git directory found!');
       }
 
       FileRepository jgitRepo = builder.build()

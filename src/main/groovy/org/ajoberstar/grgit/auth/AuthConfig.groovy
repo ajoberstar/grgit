@@ -16,7 +16,6 @@
 package org.ajoberstar.grgit.auth
 
 import org.ajoberstar.grgit.Credentials
-import org.ajoberstar.grgit.exception.GrgitException
 
 /**
  * Stores configuration options for how to authenticate with remote
@@ -125,7 +124,7 @@ class AuthConfig {
       try {
         return [Option.valueOf(forceSetting.toUpperCase())]
       } catch (IllegalArgumentException e) {
-        throw new GrgitException("${FORCE_OPTION} must be set to one of ${Option.values() as List}. Currently set to: ${forceSetting}", e)
+        throw new IllegalArgumentException("${FORCE_OPTION} must be set to one of ${Option.values() as List}. Currently set to: ${forceSetting}", e)
       }
     } else {
       return (Option.values() as Set).findAll {
@@ -196,7 +195,7 @@ class AuthConfig {
    * @param properties the properties to use in this configuration
    * @param env the environment vars to use in this configuration
    * @return the constructed configuration
-   * @throws GrgitException if force is set to an invalid option
+   * @throws IllegalArgumentException if force is set to an invalid option
    */
   static AuthConfig fromMap(Map props, Map env = [:]) {
     return new AuthConfig(props, env)
@@ -206,7 +205,7 @@ class AuthConfig {
    * Factory method to construct an authentication configuration from the
    * current system properties and environment variables.
    * @return the constructed configuration
-   * @throws GrgitException if force is set to an invalid option
+   * @throws IllegalArgumentException if force is set to an invalid option
    */
   static AuthConfig fromSystem() {
     return fromMap(System.properties, System.env)

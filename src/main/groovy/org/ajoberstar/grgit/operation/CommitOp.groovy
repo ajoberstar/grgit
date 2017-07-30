@@ -20,12 +20,9 @@ import java.util.concurrent.Callable
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.JGitUtil
-
 import org.eclipse.jgit.api.CommitCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.lib.PersonIdent
 import org.eclipse.jgit.revwalk.RevCommit
 
@@ -119,11 +116,7 @@ class CommitOp implements Callable<Commit> {
     paths.each { cmd.setOnly(it) }
     if (all) { cmd.all = all }
     cmd.amend = amend
-    try {
-      RevCommit commit = cmd.call()
-      return JGitUtil.convertCommit(commit)
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem committing changes.', e)
-    }
+    RevCommit commit = cmd.call()
+    return JGitUtil.convertCommit(commit)
   }
 }

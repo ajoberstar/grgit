@@ -18,12 +18,9 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
-
 import org.eclipse.jgit.api.DeleteBranchCommand
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Removes one or more branches from the repository. Returns a list of
@@ -73,10 +70,6 @@ class BranchRemoveOp implements Callable<List<String>> {
     cmd.branchNames = names.collect { new ResolveService(repo).toBranchName(it) }
     cmd.force = force
 
-    try {
-      return cmd.call()
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem deleting branch(es).', e)
-    }
+    return cmd.call()
   }
 }

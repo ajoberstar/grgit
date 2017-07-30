@@ -18,14 +18,11 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.exception.GrgitException
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.service.ResolveService
 import org.ajoberstar.grgit.util.JGitUtil
-
 import org.eclipse.jgit.api.MergeCommand
 import org.eclipse.jgit.api.MergeResult
-import org.eclipse.jgit.api.errors.GitAPIException
 
 /**
  * Merges changes from a single head. This is a simplified version of
@@ -106,15 +103,11 @@ class MergeOp implements Callable<Void> {
         break
     }
 
-    try {
-      MergeResult result = cmd.call()
-      if (!result.mergeStatus.successful) {
-        throw new GrgitException("Could not merge (conflicting files can be retrieved with a call to grgit.status()): ${result}")
-      }
-      return null
-    } catch (GitAPIException e) {
-      throw new GrgitException('Problem merging.', e)
+    MergeResult result = cmd.call()
+    if (!result.mergeStatus.successful) {
+      throw new IllegalStateException("Could not merge (conflicting files can be retrieved with a call to grgit.status()): ${result}")
     }
+    return null
   }
 
   static enum Mode {

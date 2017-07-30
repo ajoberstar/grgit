@@ -27,11 +27,7 @@ import org.ajoberstar.grgit.Remote
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.Tag
-import org.ajoberstar.grgit.exception.GrgitException
-import org.eclipse.jgit.errors.AmbiguousObjectException
 import org.eclipse.jgit.errors.IncorrectObjectTypeException
-import org.eclipse.jgit.errors.MissingObjectException
-import org.eclipse.jgit.errors.RevisionSyntaxException
 import org.eclipse.jgit.lib.BranchConfig
 import org.eclipse.jgit.lib.Config
 import org.eclipse.jgit.lib.ObjectId
@@ -57,25 +53,10 @@ class JGitUtil {
    * @param repo the Grgit repository to resolve the object from
    * @param revstr the revision string to use
    * @return the resolved object
-   * @throws GrgitException if the object cannot be resolved
    */
   static ObjectId resolveObject(Repository repo, String revstr) {
-    try {
-      ObjectId object = repo.jgit.repository.resolve(revstr)
-      if (object == null) {
-        throw new GrgitException("No commit found for revision string: ${revstr}")
-      } else {
-        return object
-      }
-    } catch (AmbiguousObjectException e) {
-      throw new GrgitException("Revision string is ambiguous: ${revstr}", e)
-    } catch (RevisionSyntaxException e) {
-      throw new GrgitException("Revision string syntax isn't supported: ${revstr}", e)
-    } catch (IncorrectObjectTypeException e) {
-      throw new GrgitException("Revision string did not point to a commit: ${revstr}", e)
-    } catch (IOException e) {
-      throw new GrgitException("Problem resolving revision string: ${revstr}", e)
-    }
+    ObjectId object = repo.jgit.repository.resolve(revstr)
+    return object
   }
 
   /**
@@ -84,19 +65,12 @@ class JGitUtil {
    * @param revstr the revision string to use
    * @param peel whether or not to peel the resolved object
    * @return the resolved object
-   * @throws GrgitException if the object cannot be resolved
    */
   static RevObject resolveRevObject(Repository repo, String revstr, boolean peel = false) {
     ObjectId id = resolveObject(repo, revstr)
     RevWalk walk = new RevWalk(repo.jgit.repository)
-    try {
-      RevObject rev = walk.parseAny(id)
-      return peel ? walk.peel(rev) : rev
-    } catch (MissingObjectException e) {
-      throw new GrgitException("Supplied object does not exist: ${revstr}", e)
-    } catch (IOException e) {
-      throw new GrgitException("Could not read pack file or loose object for: ${revstr}", e)
-    }
+    RevObject rev = walk.parseAny(id)
+    return peel ? walk.peel(rev) : rev
   }
 
   /**
@@ -104,7 +78,6 @@ class JGitUtil {
    * @param repo the Grgit repository to resolve the parents from
    * @param id the object to get the parents of
    * @return the parents of the commit
-   * @throws GrgitException if the parents cannot be resolved
    */
   static Set<ObjectId> resolveParents(Repository repo, ObjectId id) {
     RevWalk walk = new RevWalk(repo.jgit.repository)
@@ -119,7 +92,6 @@ class JGitUtil {
    * @param repo the Grgit repository to resolve the commit from
    * @param revstr the revision string to use
    * @return the resolved commit
-   * @throws GrgitException if the commit cannot be resolved
    */
   static Commit resolveCommit(Repository repo, String revstr) {
     ObjectId id = resolveObject(repo, revstr)
@@ -131,7 +103,6 @@ class JGitUtil {
    * @param repo the Grgit repository to resolve the commit from
    * @param id the object id of the commit to resolve
    * @return the resolved commit
-   * @throws GrgitException if the commit cannot be resolved
    */
   static Commit resolveCommit(Repository repo, ObjectId id) {
     RevWalk walk = new RevWalk(repo.jgit.repository)
@@ -168,7 +139,6 @@ class JGitUtil {
    * @param repo the Grgit repository to resolve from
    * @param name the name of the tag to resolve
    * @return the resolved tag
-   * @throws GrgitException if the tag cannot be resolved
    */
   static Tag resolveTag(Repository repo, String name) {
     Ref ref = repo.jgit.repository.getRef(name)
@@ -211,7 +181,6 @@ class JGitUtil {
    * @param repo the Grgit repository to resolve from
    * @param name the name of the branch to resolve
    * @return the resolved branch
-   * @throws GrgitException if the branch cannot be resolved
    */
   static Branch resolveBranch(Repository repo, String name) {
     Ref ref = repo.jgit.repository.getRef(name)
