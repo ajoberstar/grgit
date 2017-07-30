@@ -9,11 +9,15 @@ A library providing a wrapper around link:https://eclipse.org/jgit/[Eclipse's JG
 
 == Where do I get Grgit?
 
-To use Grgit as a library, add a dependency on it to JCenter. Available versions can be found in the link:https://github.com/ajoberstar/grgit/releases[release notes].
+To use Grgit as a library, add a dependency on it to link:https://bintray.com/bintray/jcenter[JCenter]. Available versions can be found in the link:https://github.com/ajoberstar/grgit/releases[release notes].
 
 [source, groovy]
 .build.gradle
 ----
+repositories {
+  jcenter()
+}
+
 dependencies {
   compile 'org.ajoberstar:grgit:<version>'
 }
@@ -22,11 +26,14 @@ dependencies {
 [source, xml]
 .pom.xml
 ----
-<dependency>
-  <group>org.ajoberstar</group>
-  <artifactId>grgit</artifactId>
-  <version>...</version>
-</dependency>
+<!-- make sure you've specified JCenter in your repositories -->
+<dependencies>
+  <dependency>
+    <group>org.ajoberstar</group>
+    <artifactId>grgit</artifactId>
+    <version>...</version>
+  </dependency>
+</dependencies>
 ----
 
 To use Grgit in a Gradle build, see the documentation for link:gradle.html[org.ajoberstar.grgit].
