@@ -54,8 +54,18 @@ class BranchService {
    * Gets the branch associated with the current HEAD.
    * @return the branch or {@code null} if the HEAD is detached
    */
-  Branch getCurrent() {
+  Branch current() {
     Ref ref = repository.jgit.repository.getRef('HEAD')?.target
     return ref ? JGitUtil.resolveBranch(repository, ref) : null
+  }
+
+  /**
+   * Gets the branch associated with the current HEAD.
+   * @return the branch or {@code null} if the HEAD is detached
+   * @deprecated Use BranchService#current()
+   */
+  @Deprecated
+  Branch getCurrent() {
+    return current()
   }
 }
