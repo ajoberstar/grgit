@@ -1,5 +1,6 @@
 plugins {
   id 'org.ajoberstar.defaults' version '0.7.3'
+  id 'java-gradle-plugin'
   id 'groovy'
 }
 
@@ -14,10 +15,21 @@ repositories {
 
 def jgitVersion = '4.8.0.201706111038-r'
 
+sourceSets {
+  compatTest {
+    compileClasspath += main.output
+    runtimeClasspath += main.output
+  }
+}
+
+configurations.compatTestCompile.extendsFrom configurations.compile
+
 dependencies {
   // groovy
   compileOnly 'org.codehaus.groovy:groovy-all:2.4.12'
-  testCompile 'org.codehaus.groovy:groovy-all:2.4.12'
+
+  // gradle
+  compileOnly gradleApi()
 
   // jgit
   compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
@@ -35,7 +47,8 @@ dependencies {
   testRuntime 'org.slf4j:slf4j-simple:1.7.25'
 
   // testing
-  testCompile('org.spockframework:spock-core:1.0-groovy-2.4') { exclude group: 'org.codehaus.groovy' }
+  testCompile('org.spockframework:spock-core:1.1-groovy-2.4')
+  compatTestCompile('org.spockframework:spock-core:1.1-groovy-2.4')
 }
 
 test {
@@ -57,12 +70,34 @@ test {
   }
 }
 
+stutter {
+    supports '3.0', '3.1', '3.2', '3.2.1', '3.3', '3.4', '3.5', '3.5.1', '4.0', '4.0.1', '4.0.2', '4.1-rc-1'
+}
+
 model {
   bintray {
     owner = 'ajoberstar'
     repo = 'maven'
     pkg = 'grgit'
   }
+}
+
+pluginBundle {
+    website = 'https://github.com/ajoberstar/grgit'
+    vcsUrl = 'https://github.com/ajoberstar/grgit.git'
+    description = 'The Groovy way to use Git'
+    plugins {
+        publishPlugin {
+            id = 'org.ajoberstar.grgit'
+            displayName = 'The Groovy way to use Git'
+            tags = ['git', 'groovy']
+        }
+    }
+    mavenCoordinates {
+        groupId = project.group
+        artifactId = project.name
+        version = project.version
+    }
 }
 
 wrapper {

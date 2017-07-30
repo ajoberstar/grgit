@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
@@ -62,14 +61,8 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
       List<ClassNode> staticOps = getClassList(annotation, "staticOperations");
       List<ClassNode> instanceOps = getClassList(annotation, "instanceOperations");
 
-      staticOps.forEach(
-          op -> {
-            makeMethods(clazz, op, true);
-          });
-      instanceOps.forEach(
-          op -> {
-            makeMethods(clazz, op, false);
-          });
+      staticOps.forEach(op -> makeMethods(clazz, op, true));
+      instanceOps.forEach(op -> makeMethods(clazz, op, false));
     }
   }
 
@@ -88,7 +81,6 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
 
     targetClass.addMethod(makeNoArgMethod(targetClass, opName, opClass, opReturn, isStatic));
     targetClass.addMethod(makeMapMethod(targetClass, opName, opClass, opReturn, isStatic));
-    targetClass.addMethod(makeConsumerMethod(targetClass, opName, opClass, opReturn, isStatic));
     targetClass.addMethod(makeClosureMethod(targetClass, opName, opClass, opReturn, isStatic));
   }
 
@@ -134,31 +126,6 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
                     new ArrayExpression(
                         classFromType(Object.class), opConstructorParms(targetClass, isStatic)),
                     new VariableExpression("args"))));
-
-    return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
-  }
-
-  private MethodNode makeConsumerMethod(
-      ClassNode targetClass,
-      String opName,
-      ClassNode opClass,
-      ClassNode opReturn,
-      boolean isStatic) {
-    ClassNode parmType = classFromType(Consumer.class);
-    GenericsType[] generics = new GenericsType[] {new GenericsType(opReturn)};
-    parmType.setGenericsTypes(generics);
-    Parameter[] parms = new Parameter[] {new Parameter(parmType, "arg")};
-
-    Statement code =
-        new ExpressionStatement(
-            new StaticMethodCallExpression(
-                classFromType(OpSyntax.class),
-                "consumerOperation",
-                new ArgumentListExpression(
-                    new ClassExpression(opClass),
-                    new ArrayExpression(
-                        classFromType(Object.class), opConstructorParms(targetClass, isStatic)),
-                    new VariableExpression("arg"))));
 
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
   }
