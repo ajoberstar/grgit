@@ -1,5 +1,6 @@
 plugins {
   id 'org.ajoberstar.defaults' version '0.7.3'
+  id 'java-gradle-plugin'
   id 'groovy'
 }
 
@@ -18,6 +19,9 @@ dependencies {
   // groovy
   compileOnly 'org.codehaus.groovy:groovy-all:2.4.12'
   testCompile 'org.codehaus.groovy:groovy-all:2.4.12'
+
+  // gradle
+  compileOnly gradleApi()
 
   // jgit
   compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
@@ -63,6 +67,24 @@ model {
     repo = 'maven'
     pkg = 'grgit'
   }
+}
+
+pluginBundle {
+    website = 'https://github.com/ajoberstar/grgit'
+    vcsUrl = 'https://github.com/ajoberstar/grgit.git'
+    description = 'The Groovy way to use Git'
+    plugins {
+        publishPlugin {
+            id = 'org.ajoberstar.grgit'
+            displayName = 'The Groovy way to use Git'
+            tags = ['git', 'groovy']
+        }
+    }
+    mavenCoordinates {
+        groupId = project.group
+        artifactId = project.name
+        version = project.version
+    }
 }
 
 wrapper {
