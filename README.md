@@ -19,13 +19,14 @@ tooling.
 With the tooling focus, "porcelain" commands are the primary scope of what is included. Features that require
 more user interaction (such as resolving merge conflicts) are intentionally excluded.
 
-## Usage
+It also provides a Gradle plugin to easily get a Grgit instance for the build's repository.
 
-**NOTE:** Grgit requires Java 7 (or higher).
+## Documentation
 
+**NOTE:** grgit is available from JCenter or the Gradle Plugin Portal. It is not published to Maven Central.
+
+* [Documentation Site](http://ajoberstar.org/grgit/index.html)
 * [Release Notes](https://github.com/ajoberstar/grgit/releases)
-* [Usage examples and API documentation](http://ajoberstar.org/grgit/docs/groovydoc/index.html?org/ajoberstar/grgit/Grgit.html)
-* [Authentication](http://ajoberstar.org/grgit/docs/groovydoc/index.html?org/ajoberstar/grgit/auth/AuthConfig.html)
 
 ## Questions, Bugs, and Features
 

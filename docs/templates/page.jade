@@ -1,0 +1,8 @@
+extends base
+block content
+  div.container.mdl-grid
+    article.mdl-card.mdl-cell.mdl-cell--12-col
+      header.mdl-card__title
+        h1.mdl-card__title-text !{content.title}
+      section.mdl-card__supporting-text
+        !{content.body}

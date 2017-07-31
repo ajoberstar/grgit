@@ -1,5 +1,6 @@
 plugins {
   id 'org.ajoberstar.defaults' version '0.7.3'
+  id 'org.jbake.site' version '1.0.0'
   id 'java-gradle-plugin'
   id 'groovy'
 }
@@ -9,11 +10,7 @@ description = 'The Groovy way to use Git.'
 
 sourceCompatibility = '1.8'
 
-repositories {
-  mavenCentral()
-}
 
-def jgitVersion = '4.8.0.201706111038-r'
 
 sourceSets {
   compatTest {
@@ -23,6 +20,24 @@ sourceSets {
 }
 
 configurations.compatTestCompile.extendsFrom configurations.compile
+
+jbake {
+  srcDirName = 'docs'
+}
+
+gitPublish {
+  contents {
+    from "${buildDir}/${jbake.destDirName}"
+  }
+}
+
+gitPublishCopy.dependsOn bake
+
+repositories {
+  mavenCentral()
+}
+
+def jgitVersion = '4.8.0.201706111038-r'
 
 dependencies {
   // groovy

@@ -1,0 +1,55 @@
+/* BEGIN general sizing */
+.container {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* END general sizing */
+
+/* BEGIN h sizing in articles */
+article section h1 { font-size: 2em; line-height: normal; }
+article section h2 { font-size: 1.5em; line-height: normal; }
+article section h3 { font-size: 1.17em; line-height: normal; }
+article section h4 { font-size: 1em; line-height: normal; }
+article section h5 { font-size: 0.83em; line-height: normal; }
+article section h6 { font-size: 0.67em; line-height: normal; }
+/* END h sizing in articles */
+
+/* BEGIN fix overflow of code samples */
+pre.highlight { overflow-x: auto; }
+/* END fix overflow of code samples */
+
+/* BEGIN emphasis around code snippets */
+div.listingblock div.content pre {
+    padding: 5px;
+    border: 2px solid #B0BEC5; /* material blue-grey 500 */
+    border-radius: 2px;
+}
+/* END emphasis around code snippets */
+
+/* BEGIN put the language name in the code block */
+div.listingblock div.content {
+    position: relative;
+}
+
+pre.highlight.prettyprint code:before {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    opacity: 0.5;
+}
+
+code.language-java:before { content: "java"; }
+code.language-groovy:before { content: "groovy"; }
+code.language-clojure:before { content: "clojure"; }
+code.language-scala:before { content: "scala"; }
+code.language-kotlin:before { content: "kotlin"; }
+
+code.language-ruby:before { content: "ruby"; }
+code.language-io:before { content: "io"; }
+code.language-erlang:before { content: "erlang"; }
+code.language-haskell:before { content: "haskell"; }
+code.language-prolog:before { content: "prolog"; }
+code.language-php:before { content: "php"; }
+code.language-perl:before { content: "perl"; }
+/* END put the language name in the code block */

@@ -27,16 +27,8 @@ import org.eclipse.jgit.revwalk.RevCommit
 
 /**
  * Revert one or more commits. Returns the new HEAD {@link Commit}.
- *
- * <p>Revert one or more commits.</p>
- *
- * <pre>
- * grgit.revert(commits: ['1234567', '1234568'])
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-revert">git-revert Manual Page</a>.
- *
  * @since 0.1.0
+ * @see <a href="http://ajoberstar.org/grgit/revert.html">grgit-revert</a>
  * @see <a href="http://git-scm.com/docs/git-revert">git-revert Manual Page</a>
  */
 @Operation('revert')

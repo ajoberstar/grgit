@@ -1,0 +1,5 @@
+title=Grgit Reference
+type=reference
+status=published
+reference={"groups": [{"title": "Setup and Config", "pages": ["authentication", "gradle"]}, {"title": "Getting and Creating Projects", "pages": ["init", "clone", "open"]}, {"title": "Basic Snapshotting", "pages": ["add", "status", "commit", "reset", "remove"]}, {"title": "Branching and Merging", "pages": ["branch", "checkout", "merge", "tag"]}, {"title": "Sharing and Updating Projects", "pages": ["fetch", "pull", "push", "remote"]}, {"title": "Inspection and Comparison", "pages": ["head", "show", "log", "describe", "resolve", "isAncestorOf"]}, {"title": "Patching", "pages": ["apply", "revert"]}, {"title": "Administration", "pages": ["clean"]}, {"title": "Plumbing Commands", "pages": ["lsremote"]}]}
+~~~~~~

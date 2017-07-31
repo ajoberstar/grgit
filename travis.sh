@@ -5,7 +5,7 @@ export TERM=dumb
 
 if [ "${TRAVIS_BRANCH}" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 	echo 'Running Gradle check with SonarQube analysis'
-	./gradlew clean check sonarqube \
+	./gradlew clean check sonarqube -s \
 		-Dsonar.host.url=https://sonarqube.ajoberstar.com \
 		-Dsonar.login=$SONARQUBE_TOKEN
 elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${GITHUB_TOKEN:-}" ]; then
