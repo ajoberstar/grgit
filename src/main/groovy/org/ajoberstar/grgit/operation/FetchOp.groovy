@@ -26,34 +26,8 @@ import org.eclipse.jgit.transport.TagOpt
 
 /**
  * Fetch changes from remotes.
- *
- * <p>To fetch changes from the {@code origin} remote.</p>
- *
- * <pre>
- * grgit.fetch()
- * </pre>
- *
- * <p>To remove branches locally that were removed from the remote.</p>
- *
- * <pre>
- * grgit.fetch(prune: true)
- * </pre>
- *
- * <p>To pull down all tags from the remote.</p>
- *
- * <pre>
- * grgit.fetch(tagMode: FetchOp.TagMode.ALL)
- * </pre>
- *
- * <p>To fetch without pulling down tags.</p>
- *
- * <pre>
- * grgit.fetch(tagMode: FetchOp.TagMode.NONE)
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-fetch">git-fetch Manual Reference.</a>
- *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/fetch.html">grgit-fetch</a>
  * @see <a href="http://git-scm.com/docs/git-fetch">git-fetch Manual Reference.</a>
  */
 @Operation('fetch')
@@ -61,9 +35,9 @@ class FetchOp implements Callable<Void> {
   private final Repository repo
 
   /**
-   * Which remote should be fetched. Defaults to {@code origin}.
+   * Which remote should be fetched.
    */
-  String remote = 'origin'
+  String remote
 
   /**
    * List of refspecs to fetch.
@@ -85,10 +59,17 @@ class FetchOp implements Callable<Void> {
     this.repo = repo
   }
 
+  /**
+   * Provides a string conversion to the enums.
+   */
+  void setTagMode(String mode) {
+    tagMode = mode.toUpperCase()
+  }
+
   Void call() {
     FetchCommand cmd = repo.jgit.fetch()
     TransportOpUtil.configure(cmd, repo.credentials)
-    cmd.remote = remote
+    if (remote) { cmd.remote = remote }
     cmd.refSpecs = refSpecs.collect { new RefSpec(it) }
     cmd.removeDeletedRefs = prune
     cmd.tagOpt = tagMode.jgit

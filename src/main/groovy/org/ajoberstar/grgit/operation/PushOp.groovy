@@ -24,35 +24,8 @@ import org.eclipse.jgit.api.PushCommand
 
 /**
  * Push changes to a remote repository.
- *
- * <p>Push changes on the current branch. Fail if it wouldn't be a fast-forward.</p>
- *
- * <pre>
- * grgit.push()
- * grgit.push(all: false)
- * </pre>
- *
- * <p>Push changes on all branches. Fail if it wouldn't be a fast-forward.</p>
- *
- * <pre>
- * grgit.push(all: true)
- * </pre>
- *
- * <p>Push tags to the remote.</p>
- *
- * <pre>
- * grgit.push(tags: true)
- * </pre>
- *
- * <p>Push changes on the current branch, even if it's not a fast-forward.</p>
- *
- * <pre>
- * grgit.push(force: true)
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-push">git-push Manual Page</a>.
- *
  * @since 0.1.0
+ * @see <a href="http://ajoberstar.org/grgit/push.html">grgit-push</a>
  * @see <a href="http://git-scm.com/docs/git-push">git-push Manual Page</a>
  */
 @Operation('push')
@@ -60,9 +33,9 @@ class PushOp implements Callable<Void> {
   private final Repository repo
 
   /**
-   * The remote to push to. Defaults to {@code origin}.
+   * The remote to push to.
    */
-  String remote = 'origin'
+  String remote
 
   /**
    * The refs or refspecs to use when pushing. If {@code null}
@@ -103,7 +76,7 @@ class PushOp implements Callable<Void> {
   Void call() {
     PushCommand cmd = repo.jgit.push()
     TransportOpUtil.configure(cmd, repo.credentials)
-    cmd.remote = remote
+    if (remote) { cmd.remote = remote }
     refsOrSpecs.each { cmd.add(it) }
     if (all) { cmd.setPushAll() }
     if (tags) { cmd.setPushTags() }
