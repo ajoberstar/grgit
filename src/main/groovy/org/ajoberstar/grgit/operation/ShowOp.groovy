@@ -31,7 +31,7 @@ import org.eclipse.jgit.treewalk.TreeWalk
  * Show changes made in a commit.
  * Returns changes made in commit in the form of {@link org.ajoberstar.grgit.CommitDiff}.
  * @since 1.2.0
- * @see <a href="http://ajoberstar.org/grgit/show.html">grgit-show</a>
+ * @see <a href="http://ajoberstar.org/grgit/grgit-show.html">grgit-show</a>
  * @see <a href="http://git-scm.com/docs/git-show">git-show Manual Page</a>
  */
 @Operation('show')

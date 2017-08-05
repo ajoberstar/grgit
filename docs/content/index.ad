@@ -1,5 +1,5 @@
 = grgit
-:jbake-title: grgit
+:jbake-title: index
 :jbake-type: page
 :jbake-status: published
 
@@ -36,11 +36,11 @@ dependencies {
 </dependencies>
 ----
 
-To use Grgit in a Gradle build, see the documentation for link:gradle.html[org.ajoberstar.grgit].
+To use Grgit in a Gradle build, see the documentation for link:grgit-gradle.html[org.ajoberstar.grgit].
 
 == How do I use Grgit?
 
-First you need to get an instance of Grgit, by either link:init.html[initializing] a new repo or link:open.html[opening] or link:clone.html[cloning] an existing repo.
+First you need to get an instance of Grgit, by either link:grgit-init.html[initializing] a new repo or link:grgit-open.html[opening] or link:grgit-clone.html[cloning] an existing repo.
 
 Once you have a Grgit instance, you can use the available operations to inspect or modify the repo. Each operation has 3 variants, depending on your preference:
 
@@ -59,11 +59,11 @@ grgit.log {
 }
 ----
 
-Look in the link:reference.html[reference] documentation for information on each available operation, it's options, and example usage. Additionally, see the link:authentication.html[authentication] documentation if you plan to interact with a remote repository.
+Look in the link:reference.html[reference] documentation for information on each available operation, it's options, and example usage. Additionally, see the link:grgit-authentication.html[authentication] documentation if you plan to interact with a remote repository.
 
 == Example Usage
 
-In an example like this, using the HTTP protocol, you'll likely need to specify basic auth credentials. This can be done via system properties or environment variables. SSH access (including ssh-agent and Pageant) are also supported. (Again, see the link:authentication.html[authentication] documentation.)
+In an example like this, using the HTTP protocol, you'll likely need to specify basic auth credentials. This can be done via system properties or environment variables. SSH access (including ssh-agent and Pageant) are also supported. (Again, see the link:grgit-authentication.html[authentication] documentation.)
 
 [source]
 .Environment Variables

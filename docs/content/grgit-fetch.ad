@@ -59,6 +59,6 @@ tagMode:: (`String`, default `auto`) Must be one of `'auto'`, `'all'`, `'none'`.
 == See Also
 
 - link:https://git-scm.com/docs/git-fetch[git-fetch]
-- link:pull.html[grgit-pull]
-- link:push.html[grgit-push]
-- link:authentication.html[grgit-authentication]
+- link:grgit-pull.html[grgit-pull]
+- link:grgit-push.html[grgit-push]
+- link:grgit-authentication.html[grgit-authentication]

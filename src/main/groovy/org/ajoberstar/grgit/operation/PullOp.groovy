@@ -28,7 +28,7 @@ import org.eclipse.jgit.api.PullResult
  * conflict, the pull will fail, any conflicts can be retrieved with
  * {@code grgit.status()}, and throwing an exception.
  * @since 0.2.0
- * @see <a href="http://ajoberstar.org/grgit/pull.html">grgit-pull</a>
+ * @see <a href="http://ajoberstar.org/grgit/grgit-pull.html">grgit-pull</a>
  * @see <a href="http://git-scm.com/docs/git-pull">git-pull Manual Page</a>
  */
 @Operation('pull')

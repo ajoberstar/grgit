@@ -64,6 +64,6 @@ dryRun:: (`boolean`, default `false`) Do everything except actually send the upd
 == See Also
 
 - link:https://git-scm.com/docs/git-push[git-push]
-- link:fetch.html[grgit-fetch]
-- link:pull.html[grgit-pull]
-- link:authentication.html[grgit-authentication]
+- link:grgit-fetch.html[grgit-fetch]
+- link:grgit-pull.html[grgit-pull]
+- link:grgit-authentication.html[grgit-authentication]

@@ -65,6 +65,6 @@ rebase:: (`boolean`, default `false`) When true, rebase the current branch on to
 == See Also
 
 - link:https://git-scm.com/docs/git-pull[git-pull]
-- link:fetch.html[grgit-fetch]
-- link:push.html[grgit-push]
-- link:authentication.html[grgit-authentication]
+- link:grgit-fetch.html[grgit-fetch]
+- link:grgit-push.html[grgit-push]
+- link:grgit-authentication.html[grgit-authentication]

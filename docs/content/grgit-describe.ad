@@ -31,11 +31,11 @@ grgit.describe {
 
 The command finds the most recent tag that is reachable from a commit. If the tag points to the commit, then only the tag is shown. Otherwise, it suffixes the tag name with the number of additional commits on top of the tagged object and the abbreviated object name of the most recent commit.
 
-Describe only shows annotated tags. For more information about creating annotated tags see the `annotate` option to link:tag.html[grgit-tag].
+Describe only shows annotated tags. For more information about creating annotated tags see the `annotate` option to link:grgit-tag.html[grgit-tag].
 
 == Options
 
-commit:: (`Object`, default `null`) Commit-ish object names to describe. Defaults to HEAD if omitted. For a more complete list of ways to spell commit names, see link:resolve.html[grgit-resolve] (specifically the `toCommit` method).
+commit:: (`Object`, default `null`) Commit-ish object names to describe. Defaults to HEAD if omitted. For a more complete list of ways to spell commit names, see link:grgit-resolve.html[grgit-resolve] (specifically the `toCommit` method).
 longDescr:: (`boolean`, default `false`) Always output the long format (the tag, the number of commits and the abbreviated commit name) even when it matches a tag. This is useful when you want to see parts of the commit object name in "describe" output, even when the commit in question happens to be a tagged version. Instead of just emitting the tag name, it will describe such a commit as v1.2-0-gdeadbee (0th commit since tag v1.2 that points at object deadbee…​.).
 
 == Examples

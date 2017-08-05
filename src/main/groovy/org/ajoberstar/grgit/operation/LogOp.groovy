@@ -29,7 +29,7 @@ import org.eclipse.jgit.api.LogCommand
  * Since a Git history is not necessarilly a line, these commits may not be in
  * a strict order.
  * @since 0.1.0
- * @see <a href="http://ajoberstar.org/grgit/log.html">grgit-log</a>
+ * @see <a href="http://ajoberstar.org/grgit/grgit-log.html">grgit-log</a>
  * @see <a href="http://git-scm.com/docs/git-log">git-log Manual Page</a>
  */
 @Operation('log')

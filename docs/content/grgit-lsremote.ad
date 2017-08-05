@@ -59,5 +59,5 @@ c5db5456ae3b0873fc659c19fafdde22313cc441 refs/tags/v0.99.2
 == See Also
 
 - link:https://git-scm.com/docs/git-ls-remote[git-ls-remote]
-- link:remote.html[grgit-remote]
-- link:authentication.html[grgit-authentication]
+- link:grgit-remote.html[grgit-remote]
+- link:grgit-authentication.html[grgit-authentication]

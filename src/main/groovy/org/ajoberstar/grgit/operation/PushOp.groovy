@@ -25,7 +25,7 @@ import org.eclipse.jgit.api.PushCommand
 /**
  * Push changes to a remote repository.
  * @since 0.1.0
- * @see <a href="http://ajoberstar.org/grgit/push.html">grgit-push</a>
+ * @see <a href="http://ajoberstar.org/grgit/grgit-push.html">grgit-push</a>
  * @see <a href="http://git-scm.com/docs/git-push">git-push Manual Page</a>
  */
 @Operation('push')

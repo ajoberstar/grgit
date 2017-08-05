@@ -26,7 +26,7 @@ import org.eclipse.jgit.lib.ObjectId
 /**
  * List references in a remote repository.
  * @since 2.0.0
- * @see <a href="http://ajoberstar.org/grgit/lsremote.html">grgit-lsremote</a>
+ * @see <a href="http://ajoberstar.org/grgit/grgit-lsremote.html">grgit-lsremote</a>
  * @see <a href="https://git-scm.com/docs/git-ls-remote">git-ls-remote Manual Page</a>
  */
 @Operation('lsremote')

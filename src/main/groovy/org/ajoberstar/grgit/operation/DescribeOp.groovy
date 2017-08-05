@@ -24,7 +24,7 @@ import org.eclipse.jgit.api.DescribeCommand
 
 /**
  * Find the nearest tag reachable. Returns an {@link String}}.
- * @see <a href="http://ajoberstar.org/grgit/describe.html">grgit-describe</a>
+ * @see <a href="http://ajoberstar.org/grgit/grgit-describe.html">grgit-describe</a>
  * @see <a href="http://git-scm.com/docs/git-describe">git-describe Manual Page</a>
  */
 @Operation('describe')

@@ -49,12 +49,12 @@ url:: (`String`, default `null`) URL to fetch the remote repository from.
 pushUrl:: (`String`, default `null`) URL to push to for this remote. If omitted, `url` is used for push.
 fetchRefSpecs:: (`List<String>`, default `[+refs/heads/*:refs/remotes/<name>/*]`) default refspecs to use when fetching from this remote.
 pushRefSpecs:: (`List<String>`, default `[]`) default refspecs to use when pushing to this remote.
-mirror:: (`boolean`, default `false`) If `true` makes link:push.html[grgit-push] always behave as if `mirror` is specified.
+mirror:: (`boolean`, default `false`) If `true` makes link:grgit-push.html[grgit-push] always behave as if `mirror` is specified.
 
 == Examples
 
 == See Also
 
 - link:https://git-scm.com/docs/git-remote[git-remote]
-- link:push.html[grgit-push]
-- link:pull.html[grgit-pull]
+- link:grgit-push.html[grgit-push]
+- link:grgit-pull.html[grgit-pull]

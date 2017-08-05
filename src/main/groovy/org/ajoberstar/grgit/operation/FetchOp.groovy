@@ -27,7 +27,7 @@ import org.eclipse.jgit.transport.TagOpt
 /**
  * Fetch changes from remotes.
  * @since 0.2.0
- * @see <a href="http://ajoberstar.org/grgit/fetch.html">grgit-fetch</a>
+ * @see <a href="http://ajoberstar.org/grgit/grgit-fetch.html">grgit-fetch</a>
  * @see <a href="http://git-scm.com/docs/git-fetch">git-fetch Manual Reference.</a>
  */
 @Operation('fetch')

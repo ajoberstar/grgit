@@ -61,8 +61,8 @@ Returns a `List<Commit>` (link:http://ajoberstar.org/grgit/docs/groovydoc/org/aj
 
 == Options
 
-includes:: (`List<Object>`, default `[]`) Commit-ish object names to include the history of in the output. For a more complete list of ways to spell commit names, see link:resolve.html[grgit-resolve] (specifically the `toCommit` method).
-excludes:: (`List<Object>`, default `[]`) Commit-ish object names to exclude the history of in the output. For a more complete list of ways to spell commit names, see link:resolve.html[grgit-resolve] (specifically the `toCommit` method).
+includes:: (`List<Object>`, default `[]`) Commit-ish object names to include the history of in the output. For a more complete list of ways to spell commit names, see link:grgit-resolve.html[grgit-resolve] (specifically the `toCommit` method).
+excludes:: (`List<Object>`, default `[]`) Commit-ish object names to exclude the history of in the output. For a more complete list of ways to spell commit names, see link:grgit-resolve.html[grgit-resolve] (specifically the `toCommit` method).
 skipCommits:: (`int`, default `-1`) Skip `skipCommits` commits before starting to show the commit output. A negative value ignores this option.
 maxCommits:: (`int`, default `-1`) Limit the number of commits to output. A negative value ignores this option.
 paths:: (`List<String>`, defaul: `[]`) Commits modifying the given paths are selected. Omitting this will include all reachable commits.
