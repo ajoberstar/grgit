@@ -3,9 +3,9 @@
 :jbake-type: page
 :jbake-status: published
 
-For typical use cases of interacting with a Git repo, you should apply the `org.ajoberstar.grgit` plugin. This plugin makes a `grgit` property available to all projects (so you should only apply it once). It will be configured to search for a repo as if you had a console open to the `rootDir` of the build's root project, and we're using the Git CLI.
+## Applying the Plugin
 
-**[Plugins Block Dependency](https://github.com/ajoberstar/gradle-git/wiki#plugin-block-dependency)**
+Get the available versions from the link:https://github.com/ajoberstar/grgit/releases[releases] page. Generally, you should only apply the plugin to the root project of your build.
 
 ```groovy
 plugins {
@@ -13,13 +13,9 @@ plugins {
 }
 ```
 
-**[Classic Plugin Dependency](https://github.com/ajoberstar/gradle-git/wiki#classic-plugin-dependency)**
+## What does the plugin do?
 
-```groovy
-apply plugin: 'org.ajoberstar.grgit'
-```
-
-Once you have the plugin applied, you can create your own tasks or otherwise interact with the Git repo, as needed.
+The `org.ajoberstar.grgit` plugin adds a `grgit` property to your build, which is an instance of link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Grgit.html[Grgit] opened to the repository visible from your project's root dir. This will check the project directory and its parents for a `.git` directory. If no repository is found, the `grgit` property is `null`.
 
 ```groovy
 version = "1.0.0-${grgit.head().abbreviatedId}"
@@ -42,16 +38,31 @@ task pushToOrigin {
 }
 ```
 
-For details on the available methods/properties see the API docs of
-[Grgit](http://ajoberstar.org/grgit/docs/groovydoc/index.html?org/ajoberstar/grgit/Grgit.html).
-Examples of how to use each operation are provided there.
+For details on the available operations, see the link:grgit-reference.html[reference]. Examples are provided there.
 
-### Authentication
+## Just getting the library
 
-Grgit provides multiple ways to authenticate with remote repositories. If using hardcoded credentials, it is suggested to use the system properties rather than including them in the repository.
+If you don't want to interact with the project's repository, but still want to
 
-See Grgit's [AuthConfig](http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/auth/AuthConfig.html) docs for information on the
-various authentication options.
+```groovy
+plugins {
+  id 'org.ajoberstar.grgit' version '<version>' apply false
+}
+```
 
-Methods that produce a `Grgit` instance, which includes `clone`, `init`, and `open`, all take a `Credentials` instance if
-you want to provide hardcoded credentials programmatically.
+Then you can import Grgit and continue from there:
+
+```groovy
+import org.ajoberstar.grgit.Grgit
+
+task cloneSomeRepo {
+  doLast {
+    def grgit = Grgit.clone(dir: "$buildDir/my-repo", uri: "https://github.com/ajoberstar/grgit.git")
+    println grgit.describe()
+  }
+}
+```
+
+## Authentication
+
+If you will be doing a clone, fetch, push, or pull, review the link:grgit-authentication.html[grgit-authentication] page for details on how to configure credentials for these commands.
