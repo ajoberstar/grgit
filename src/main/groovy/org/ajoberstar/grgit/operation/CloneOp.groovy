@@ -29,16 +29,8 @@ import org.eclipse.jgit.api.Git
 /**
  * Clones an existing repository. Returns a {@link Grgit} pointing
  * to the resulting repository.
- *
- * <p>To clone a repository, checking out the {@code master} branch.</p>
- *
- * <pre>
- * def grgit = Grgit.clone(dir: 'gradle-git', uri: 'git@github.com:ajoberstar/gradle-git.git')
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-clone">git-clone Manual Reference.</a>
- *
  * @since 0.1.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-clone.html">grgit-clone</a>
  * @see <a href="http://git-scm.com/docs/git-clone">git-clone Manual Reference.</a>
  */
 @Operation('clone')

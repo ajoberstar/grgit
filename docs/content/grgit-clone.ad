@@ -1,0 +1,58 @@
+= grgit-clone
+:jbake-title: grgit-clone
+:jbake-type: page
+:jbake-status: published
+
+== Name
+
+grgit-clone - Clone a repository into a new directory
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.clone(dir: <path>, uri: <path or uri>, remote: <name>, bare: <boolean>,
+  checkout: <boolean>, refToCheckout: <name>, credentials: <credentials>)
+----
+
+[source, groovy]
+----
+grgit.clone {
+  dir = <path>
+  uri = <path or uri>
+  remote = <name>
+  bare = <boolean>
+  checkout = <boolean>
+  refToCheckout = <name>
+  credentials = <credentials>
+}
+----
+
+== Description
+
+Clones a repository into a newly created directory, creates remote-tracking branches for each branch in the cloned repository, and creates and checks out an initial branch that is forked from the cloned repository’s currently active branch.
+
+After the clone, a plain link:grgit-fetch.html[grgit-fetch] without arguments will update all the remote-tracking branches, and a link:grgit-pull.html[grgit-pull] without arguments will in addition merge the remote master branch into the current master branch.
+
+This default configuration is achieved by creating references to the remote branch heads under `refs/remotes/origin` and by initializing `remote.origin.url` and `remote.origin.fetch` configuration variables.
+
+Returns a link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Grgit.html[Grgit] instance.
+
+== Options
+
+dir:: (`Object`, default `null`) The directory the repository should be cloned into. Can be a `File`, `Path`, or `String`.
+uri:: (`String`, default `null`) The URI to the repository to be cloned.
+remote:: (`String`, default `origin`) Instead of using the remote name `origin` to keep track of the upstream repository, use `<name>`.
+bare:: (`boolean`, default `false`) Create a bare repository.
+checkout:: (`boolean`, default `true`) Set to `false` to skip checking out a `HEAD`.
+refToCheckout:: (`String`, default `null`) Instead of pointing the newly created `HEAD` to the branch pointed to by the cloned repository’s `HEAD`, point to `<name>` branch instead. In a non-bare repository, this is the branch that will be checked out. This can also take tags and detaches the `HEAD` at that commit in the resulting repository.
+credentials:: (`Credentials`, default `null`) An instance of link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Credentials.html[Credentials] containing username/password to be used in operations that require authentication. See link:grgit-authentication.html[grgit-authentication] for preferred ways to configure this.
+
+== Examples
+
+== See Also
+
+- link:https://git-scm.com/docs/git-clone[git-clone]
+- link:grgit-init.html[grgit-init]
+- link:grgit-open.html[grgit-open]
+- link:grgit-authentication.html[grgit-authentication]
