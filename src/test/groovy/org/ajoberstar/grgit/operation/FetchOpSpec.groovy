@@ -101,11 +101,8 @@ class FetchOpSpec extends MultiGitOpSpec {
     where:
     mode         | expectedTags
     'none' | []
-    'AUTO' | ['reachable-tag']
-    'ALL'  | ['reachable-tag', 'unreachable-tag']
-    // TagMode.NONE | []
-    // TagMode.AUTO | ['reachable-tag']
-    // TagMode.ALL  | ['reachable-tag', 'unreachable-tag']
+    'auto' | ['reachable-tag']
+    'all'  | ['reachable-tag', 'unreachable-tag']
   }
 
   def 'fetch with refspecs fetches those branches'() {
