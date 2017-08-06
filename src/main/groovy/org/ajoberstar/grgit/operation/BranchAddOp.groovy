@@ -28,42 +28,8 @@ import org.eclipse.jgit.lib.Ref
 
 /**
  * Adds a branch to the repository. Returns the newly created {@link Branch}.
- *
- * <p>To add a branch starting at the current HEAD.</p>
- *
- * <pre>
- * grgit.branch.add(name: 'new-branch')
- * </pre>
- *
- * <p>To add a branch starting at, but not tracking, a local start point.</p>
- *
- * <pre>
- * grgit.branch.add(name: 'new-branch', startPoint: 'local-branch')
- * grgit.branch.add(name: 'new-branch', startPoint: 'local-branch', mode: BranchAddOp.Mode.NO_TRACK)
- * </pre>
- *
- * <p>To add a branch starting at and tracking a local start point.</p>
- *
- * <pre>
- * grgit.branch.add(name: 'new-branch', startPoint: 'local-branch', mode: BranchAddOp.Mode.TRACK)
- * </pre>
- *
- * <p>To add a branch starting from and tracking a remote branch.</p>
- *
- * <pre>
- * grgit.branch.add(name: 'new-branch', startPoint: 'origin/remote-branch')
- * grgit.branch.add(name: 'new-branch', startPoint: 'origin/remote-branch', mode: BranchAddOp.Mode.TRACK)
- * </pre>
- *
- * <p>To add a branch starting from, but not tracking, a remote branch.</p>
- *
- * <pre>
- * grgit.branch.add(name: 'new-branch', startPoint: 'origin/remote-branch', mode: BranchAddOp.Mode.NO_TRACK)
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>.
- *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-branch.html">grgit-branch</a>
  * @see <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>
  */
 @Operation('add')
