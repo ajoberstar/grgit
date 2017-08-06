@@ -1,5 +1,5 @@
 plugins {
-  id 'org.ajoberstar.defaults' version '0.7.3'
+  id 'org.ajoberstar.defaults' version '0.8.0'
   id 'org.jbake.site' version '1.0.0'
   id 'java-gradle-plugin'
   id 'groovy'
@@ -37,33 +37,44 @@ repositories {
   mavenCentral()
 }
 
-def jgitVersion = '4.8.0.201706111038-r'
-
 dependencies {
   // groovy
-  compileOnly 'org.codehaus.groovy:groovy-all:2.4.12'
+  compileOnly 'org.codehaus.groovy:groovy-all:[2.4.0, 3.0.0)'
 
   // gradle
   compileOnly gradleApi()
 
   // jgit
+  def jgitVersion = '[4.8.0.201706111038-r,)'
   compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
   compile "org.eclipse.jgit:org.eclipse.jgit.ui:$jgitVersion"
 
   // agentproxy
-  ['jsch', 'pageant', 'sshagent', 'usocket-jna', 'usocket-nc'].each {
-    compile "com.jcraft:jsch.agentproxy.${it}:0.0.9"
-  }
+  def agentProxyVersion = '[0.0.9,)'
+  compile "com.jcraft:jsch.agentproxy.core:$agentProxyVersion"
+  compile "com.jcraft:jsch.agentproxy.jsch:$agentProxyVersion"
+  compile "com.jcraft:jsch.agentproxy.pageant:$agentProxyVersion"
+  compile "com.jcraft:jsch.agentproxy.sshagent:$agentProxyVersion"
+  compile "com.jcraft:jsch.agentproxy.usocket-jna:$agentProxyVersion"
+  compile "com.jcraft:jsch.agentproxy.usocket-nc:$agentProxyVersion"
   // agentproxy pulls this in, but we need to force a newer version
-  compile 'com.jcraft:jsch:0.1.54'
+  compile 'com.jcraft:jsch:[0.1.54,)'
 
   // logging
-  compile 'org.slf4j:slf4j-api:1.7.25'
-  testRuntime 'org.slf4j:slf4j-simple:1.7.25'
+  def slf4jVersion = '[1.7.25,1.8.0-alpha)' // wait for final 1.8.0 to come out before letting it in
+  gradleLint.ignore('duplicate-dependency-class') {
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    testRuntime "org.slf4j:slf4j-simple:$slf4jVersion"
+  }
+
 
   // testing
-  testCompile('org.spockframework:spock-core:1.1-groovy-2.4')
-  compatTestCompile('org.spockframework:spock-core:1.1-groovy-2.4')
+  def junitVersion = '4.12'
+  testCompile "junit:junit:$junitVersion"
+  compatTestCompile "junit:junit:$junitVersion"
+  def spockVersion = '1.1-groovy-2.4'
+  testCompile "org.spockframework:spock-core:$spockVersion"
+  compatTestCompile "org.spockframework:spock-core:$spockVersion"
 }
 
 test {
@@ -116,5 +127,5 @@ pluginBundle {
 }
 
 wrapper {
-  gradleVersion = '3.5.1'
+  gradleVersion = '4.0.2'
 }

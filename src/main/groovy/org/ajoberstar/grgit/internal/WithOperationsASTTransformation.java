@@ -15,6 +15,7 @@
  */
 package org.ajoberstar.grgit.internal;
 
+import groovy.lang.Closure;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -22,7 +23,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -45,8 +45,6 @@ import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
-
-import groovy.lang.Closure;
 
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class WithOperationsASTTransformation extends AbstractASTTransformation {
