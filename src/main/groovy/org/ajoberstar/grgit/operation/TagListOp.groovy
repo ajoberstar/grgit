@@ -25,16 +25,8 @@ import org.eclipse.jgit.api.ListTagCommand
 
 /**
  * Lists tags in the repository. Returns a list of {@link Tag}.
- *
- * <p>To list all tags.</p>
- *
- * <pre>
- * def tags = grgit.tag.list()
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>.
- *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-tag.html">grgit-tag</a>
  * @see <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>
  */
 @Operation('list')

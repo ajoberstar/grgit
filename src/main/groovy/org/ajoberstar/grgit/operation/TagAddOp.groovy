@@ -29,36 +29,8 @@ import org.eclipse.jgit.lib.Ref
 
 /**
  * Adds a tag to the repository. Returns the newly created {@link Tag}.
- *
- * <p>Add an annotated tag.</p>
- *
- * <pre>
- * grgit.tag.add(name: 'new-tag')
- * grgit.tag.add(name: 'new-tag', message: 'Some message')
- * grgit.tag.add(name: 'new-tag', annotate: true)
- * </pre>
- *
- * <p>Add an unannotated tag.</p>
- *
- * <pre>
- * grgit.tag.add(name: 'new-tag', annotate: false)
- * </pre>
- *
- * <p>Add a tag starting at a specific commit.</p>
- *
- * <pre>
- * grgit.tag.add(name: 'new-tag', pointsTo: 'other-branch')
- * </pre>
- *
- * <p>Overwrite an existing tag.</p>
- *
- * <pre>
- * grgit.tag.add(name: 'existing-tag', force: true)
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>.
- *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-tag.html">grgit-tag</a>
  * @see <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>
  */
 @Operation('add')
