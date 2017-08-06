@@ -37,7 +37,7 @@ These are presented in precedence order (direct parameter in code, system proper
 
 ==== Parameter to Grgit operations
 
-Some Grgit operations, such as link:clone.html[clone] allow you to provide credentials programmatically.
+Some Grgit operations, such as link:grgit-clone.html[grgit-clone] allow you to provide credentials programmatically.
 
 [source, groovy]
 ----

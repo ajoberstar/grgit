@@ -25,16 +25,8 @@ import org.eclipse.jgit.api.DeleteTagCommand
 /**
  * Removes one or more tags from the repository. Returns a list of
  * the fully qualified tag names that were removed.
- *
- * <p>Remove tags.</p>
- *
- * <pre>
- * def removedTags = grgit.tag.remove(names: ['the-tag'])
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>.
- *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-tag.html">grgit-tag</a>
  * @see <a href="http://git-scm.com/docs/git-tag">git-tag Manual Page</a>
  */
 @Operation('remove')

@@ -26,35 +26,8 @@ import org.eclipse.jgit.api.ListBranchCommand
 
 /**
  * Lists branches in the repository. Returns a list of {@link Branch}.
- *
- * <p>To list local branches only.</p>
- *
- * <pre>
- * def branches = grgit.branch.list()
- * def branches = grgit.branch.list(mode: BranchListOp.Mode.LOCAL)
- * </pre>
- *
- * <p>To list remote branches only.</p>
- *
- * <pre>
- * def branches = grgit.branch.list(mode: BranchListOp.Mode.REMOTE)
- * </pre>
- *
- * <p>To list all branches.</p>
- *
- * <pre>
- * def branches = grgit.branch.list(mode: BranchListOp.Mode.ALL)
- * </pre>
- *
- * <p>To list all branches contains specified commit</p>
- *
- * <pre>
- * def branches = grgit.branch.list(contains: %Commit hash or tag name%)
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>.
- *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-branch.html">grgit-branch</a>
  * @see <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>
  */
 @Operation('list')

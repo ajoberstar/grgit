@@ -42,7 +42,7 @@ class ResetOpSpec extends SimpleGitOpSpec {
 
   def 'reset soft changes HEAD only'() {
     when:
-    grgit.reset(mode:ResetOp.Mode.SOFT, commit:commits[0].id)
+    grgit.reset(mode:'soft', commit:commits[0].id)
     then:
     commits[0] == grgit.head()
     grgit.status() == new Status(
@@ -53,7 +53,7 @@ class ResetOpSpec extends SimpleGitOpSpec {
 
   def 'reset mixed changes HEAD and index'() {
     when:
-    grgit.reset(mode:ResetOp.Mode.MIXED, commit:commits[0].id)
+    grgit.reset(mode:'mixed', commit:commits[0].id)
     then:
     commits[0] == grgit.head()
     grgit.status() == new Status(
@@ -62,7 +62,7 @@ class ResetOpSpec extends SimpleGitOpSpec {
 
   def 'reset hard changes HEAD, index, and working tree'() {
     when:
-    grgit.reset(mode:ResetOp.Mode.HARD, commit:commits[0].id)
+    grgit.reset(mode:'hard', commit:commits[0].id)
     then:
     commits[0] == grgit.head()
     grgit.status().clean
@@ -81,7 +81,7 @@ class ResetOpSpec extends SimpleGitOpSpec {
 
   def 'reset with paths and mode set not supported'() {
     when:
-    grgit.reset(mode:ResetOp.Mode.HARD, paths:['.'])
+    grgit.reset(mode:'hard', paths:['.'])
     then:
     thrown(IllegalStateException)
   }

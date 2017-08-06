@@ -25,41 +25,8 @@ import org.eclipse.jgit.api.CheckoutCommand
 /**
  * Checks out a branch to the working tree. Does not support checking out
  * specific paths.
- *
- * <p>To checkout an existing branch.</p>
- *
- * <pre>
- * grgit.checkout(branch: 'existing-branch')
- * grgit.checkout(branch: 'existing-branch', createBranch: false)
- * </pre>
- *
- * <p>To checkout a new branch starting at, but not tracking, the current HEAD.</p>
- *
- * <pre>
- * grgit.checkout(branch: 'new-branch', createBranch: true)
- * </pre>
- *
- * <p>To checkout a new branch starting at, but not tracking, a start point.</p>
- *
- * <pre>
- * grgit.checkout(branch: 'new-branch', startPoint: 'any-branch', createBranch: true)
- * </pre>
- *
- * <p>To checkout a new orphan branch starting at, but not tracking, the current HEAD.</p>
- *
- * <pre>
- * grgit.checkout(branch: 'new-branch', orphan: true)
- * </pre>
- *
- * <p>To checkout a new orphan branch starting at, but not tracking, a start point.</p>
- *
- * <pre>
- * grgit.checkout(branch: 'new-branch', startPoint: 'any-branch', orphan: true)
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-checkout">git-checkout Manual Page</a>.
- *
  * @since 0.1.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-checkout.html">grgit-checkout</a>
  * @see <a href="http://git-scm.com/docs/git-checkout">git-checkout Manual Page</a>
  */
 @Operation('checkout')

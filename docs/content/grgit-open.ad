@@ -1,0 +1,48 @@
+= grgit-open
+:jbake-title: grgit-open
+:jbake-type: page
+:jbake-status: published
+
+== Name
+
+grgit-open - Open an existing Git repository
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.open()
+----
+
+[source, groovy]
+----
+grgit.open(dir: <path>, currentDir: <path>, creds: <credentials>)
+----
+
+[source, groovy]
+----
+grgit.open {
+  dir = <path>
+  currentDir = <path>
+  creds = <credentals>
+}
+----
+
+== Description
+
+This command opens an existing Git repository. If both `dir` and `currentDir` are `null`, acts as if the `currentDir` is the JVM's working directory.
+
+Returns a link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Grgit.html[Grgit] instance.
+
+== Options
+
+dir:: (`Object`, default `null`) The directory the repository is in. Can be a `File`, `Path`, or `String`.
+currentDir:: (`Object`, default `null`) The directory to start searching for the repository from. Can be a `File`, `Path`, or `String`.
+creds:: (`Credentials`, default `null`) An instance of link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Credentials.html[Credentials] containing username/password to be used in operations that require authentication. See link:grgit-authentication.html[grgit-authentication] for preferred ways to configure this.
+
+== Examples
+
+== See Also
+
+- link:grgit-init.html[grgit-init]
+- link:grgit-clone.html[grgit-clone]

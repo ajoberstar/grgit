@@ -1,0 +1,64 @@
+= grgit-fetch
+:jbake-title: grgit-fetch
+:jbake-type: page
+:jbake-status: published
+
+== Name
+
+grgit-fetch - Download objects and refs from another repository
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.fetch()
+----
+
+[source, groovy]
+----
+grgit.fetch(remote: '<name or uri>', refSpecs: [<refspec>, ...], prune: <boolean>, tagMode: <mode>)
+----
+
+[source, groovy]
+----
+grgit.fetch {
+  remote = '<name or uri>'
+  refspecs = [<refspec>, ...]
+  prune = <boolean>
+  tagMode = <mode>
+}
+----
+
+== Description
+
+Fetch branches and/or tags (collectively, "refs") from one or more other repositories, along with the objects necessary to complete their histories. Remote-tracking branches are updated (see the description of <refspec> below for ways to control this behavior).
+
+By default, any tag that points into the histories being fetched is also fetched; the effect is to fetch tags that point at branches that you are interested in. This default behavior can be changed by using a `tagMode` of `'all'` or `'none'' or by configuring `remote.<name>.tagOpt`. By using a refspec that fetches tags explicitly, you can fetch tags that do not point into branches you are interested in as well.
+
+When no remote is specified, by default the origin remote will be used, unless there’s an upstream branch configured for the current branch.
+
+== Options
+
+remote:: (`String`, default `null`) The "remote" repository that is source of a fetch operation. This parameter can be either a URL or the name of a remote.
+refspecs:: (`List<String>`, default `[]`) Specifies which refs to fetch and which local refs to update. When no <refspec>s are provided, the refs to fetch are read from `remote.<repository>.fetch` variables instead.
++
+The format of a <refspec> parameter is an optional plus +, followed by the source ref <src>, followed by a colon :, followed by the destination ref <dst>. The colon can be omitted when <dst> is empty.
++
+The remote ref that matches <src> is fetched, and if <dst> is not empty string, the local ref that matches it is fast-forwarded using <src>. If the optional plus + is used, the local ref is updated even if it does not result in a fast-forward update.
+prune:: (`boolean`, default `false`) Before fetching, remove any remote-tracking references that no longer exist on the remote. Tags are not subject to pruning if they are fetched only because of the default tag auto-following or due to a `tagMode` option. However, if tags are fetched due to an explicit refspec, then they are also subject to pruning.
+tagMode:: (`String`, default `auto`) Must be one of `'auto'`, `'all'`, `'none'`.
++
+`'auto'` - tags that point at objects that are downloaded from the remote repository are fetched and stored locally.
++
+`'none'` - disables automatic tag following.
++
+`'all'` - Fetch all tags from the remote (i.e., fetch remote tags `refs/tags/*` into local tags with the same name), in addition to whatever else would otherwise be fetched.
+
+== Examples
+
+== See Also
+
+- link:https://git-scm.com/docs/git-fetch[git-fetch]
+- link:grgit-pull.html[grgit-pull]
+- link:grgit-push.html[grgit-push]
+- link:grgit-authentication.html[grgit-authentication]

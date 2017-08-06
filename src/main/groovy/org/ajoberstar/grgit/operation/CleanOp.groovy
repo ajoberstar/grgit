@@ -25,7 +25,7 @@ import org.eclipse.jgit.api.CleanCommand
  * Remove untracked files from the working tree. Returns the list of
  * file paths deleted.
  * @since 0.2.0
- * @see <a href="http://ajoberstar.org/grgit/clean.html">grgit-clean</a>
+ * @see <a href="http://ajoberstar.org/grgit/grgit-clean.html">grgit-clean</a>
  * @see <a href="http://git-scm.com/docs/git-clean">git-clean Manual Page</a>
  */
 @Operation('clean')

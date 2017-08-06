@@ -24,23 +24,8 @@ import org.eclipse.jgit.api.RmCommand
 /**
  * Remove files from the index and (optionally) delete them from the working tree.
  * Note that wildcards are not supported.
- *
- * <p>Remove specific file or directory from both the index and working tree.</p>
- *
- * <pre>
- * grgit.remove(patterns: ['1.txt', 'some/dir'])
- * grgit.remove(patterns: ['1.txt', 'some/dir'], cached: false)
- * </pre>
- *
- * <p>Remove specific file or directory from the index, but leave the in the working tree.</p>
- *
- * <pre>
- * grgit.remove(patterns: ['1.txt', 'some/dir'], cached: true)
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-rm">git-rm Manual Page</a>.
- *
  * @since 0.1.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-remove.html">grgit-remove</a>
  * @see <a href="http://git-scm.com/docs/git-rm">git-rm Manual Page</a>
  */
 @Operation('remove')

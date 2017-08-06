@@ -25,7 +25,7 @@ import org.eclipse.jgit.transport.RemoteConfig
 
 /**
  * Lists remotes in the repository. Returns a list of {@link org.ajoberstar.grgit.Remote}.
- * @see <a href="http://ajoberstar.org/grgit/remote.html">grgit-remote</a>
+ * @see <a href="http://ajoberstar.org/grgit/grgit-remote.html">grgit-remote</a>
  * @see <a href="http://git-scm.com/docs/git-remote">git-remote Manual Page</a>
  */
 @Operation('list')

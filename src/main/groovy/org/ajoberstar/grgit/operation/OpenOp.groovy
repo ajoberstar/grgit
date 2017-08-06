@@ -29,32 +29,8 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 /**
  * Opens an existing repository. Returns a {@link Grgit} pointing
  * to the resulting repository.
- *
- * <p>To open a repository by checking for GIT_DIR and/or walking up from the current working directory.</p>
- *
- * <pre>
- * def grgit = Grgit.open()
- * </pre>
- *
- * <p>To open a repository by checking for GIT_DIR and/or walking up from the specified dir.</p>
- *
- * <pre>
- * def grgit = Grgit.open(currentDir: 'some/dir/besides/workdir')
- * </pre>
- *
- * <p>To open a repository in a specific directory.</p>
- *
- * <pre>
- * def grgit = Grgit.open(dir: 'some/dir/path')
- * </pre>
- *
- * <p>To open a repository using hard-coded credentials.</p>
- *
- * <pre>
- * def grgit = Grgit.open(dir: 'some/dir/path', creds: new Credentials(username: 'user', password: 'pass'))
- * </pre>
- *
  * @since 1.0.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-open.html">grgit-open</a>
  */
 @Operation('open')
 class OpenOp implements Callable<Grgit> {

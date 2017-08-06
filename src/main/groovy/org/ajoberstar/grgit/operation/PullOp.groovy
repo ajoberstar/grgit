@@ -27,35 +27,8 @@ import org.eclipse.jgit.api.PullResult
  * Pulls changes from the remote on the current branch. If the changes
  * conflict, the pull will fail, any conflicts can be retrieved with
  * {@code grgit.status()}, and throwing an exception.
- *
- * <p>Pull changes.</p>
- *
- * <pre>
- * grgit.pull()
- * grgit.pull(rebase: false)
- * </pre>
- *
- * <p>Pull changes and rebase the current branch on top of the remote changes.</p>
- *
- * <pre>
- * grgit.pull(rebase: true)
- * </pre>
- *
- * <p>Pull changes from another remote.</p>
- *
- * <pre>
- * grgit.pull(remote: 'other-remote')
- * </pre>
- *
- * <p>Pull changes from another branch.</p>
- *
- * <pre>
- * grgit.pull(branch: 'other-branch')
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-pull">git-pull Manual Page</a>.
- *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-pull.html">grgit-pull</a>
  * @see <a href="http://git-scm.com/docs/git-pull">git-pull Manual Page</a>
  */
 @Operation('pull')

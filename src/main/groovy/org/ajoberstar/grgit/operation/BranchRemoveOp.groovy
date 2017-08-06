@@ -25,23 +25,8 @@ import org.eclipse.jgit.api.DeleteBranchCommand
 /**
  * Removes one or more branches from the repository. Returns a list of
  * the fully qualified branch names that were removed.
- *
- * <p>Remove branches that have been merged.</p>
- *
- * <pre>
- * def removedBranches = grgit.branch.remove(names: ['the-branch'])
- * def removedBranches = grgit.branch.remove(names: ['the-branch', 'other-branch'], force: false)
- * </pre>
- *
- * <p>Remove branches, even if they haven't been merged.</p>
- *
- * <pre>
- * def removedBranches = grgit.branch.remove(names: ['the-branch'], force: true)
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>.
- *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-branch.html">grgit-branch</a>
  * @see <a href="http://git-scm.com/docs/git-branch">git-branch Manual Page</a>
  */
 @Operation('remove')

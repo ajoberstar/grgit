@@ -25,16 +25,8 @@ import org.eclipse.jgit.api.StatusCommand
 
 /**
  * Gets the current status of the repository. Returns an {@link Status}.
- *
- * <p>Get the current status.</p>
- *
- * <pre>
- * def status = grgit.status()
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-status">git-status Manual Page</a>.
- *
  * @since 0.1.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-status.html">grgit-status</a>
  * @see <a href="http://git-scm.com/docs/git-status">git-status Manual Page</a>
  */
 @Operation('status')

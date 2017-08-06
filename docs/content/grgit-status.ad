@@ -1,0 +1,34 @@
+= grgit-status
+:jbake-title: grgit-status
+:jbake-type: page
+:jbake-status: published
+
+== Name
+
+grgit-status - Show the working tree status
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.status()
+----
+
+== Description
+
+Displays paths that have differences between the index file and the current `HEAD` commit, paths that have differences between the working tree and the index file, and paths in the working tree that are not tracked by Git (and are not ignored by gitignore). The first are what you would commit by running `commit`; the second and third are what you could commit by running `add` before running `commit`.
+
+Returns a link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Status.html[Status] instance detailing the paths that differ.
+
+== Options
+
+_None_
+
+== Examples
+
+== See Also
+
+- link:https://git-scm.com/docs/git-status[git-status]
+- link:grgit-add.html[grgit-add]
+- link:grgit-remove.html[grgit-remove]
+- link:grgit-commit.html[grgit-commit]

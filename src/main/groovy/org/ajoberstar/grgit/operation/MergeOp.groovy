@@ -44,6 +44,7 @@ import org.eclipse.jgit.api.MergeResult
  * See <a href="http://git-scm.com/docs/git-merge">git-merge Manual Page</a>.
  *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-merge.html">grgit-merge</a>
  * @see <a href="http://git-scm.com/docs/git-merge">git-merge Manual Page</a>
  */
 @Operation('merge')
@@ -68,6 +69,10 @@ class MergeOp implements Callable<Void> {
 
   MergeOp(Repository repo) {
     this.repo = repo
+  }
+
+  void setMode(String mode) {
+    this.mode = mode.toUpperCase().replace('-', '_')
   }
 
   Void call() {

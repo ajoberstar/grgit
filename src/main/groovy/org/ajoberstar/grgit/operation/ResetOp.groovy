@@ -24,35 +24,8 @@ import org.eclipse.jgit.api.ResetCommand
 
 /**
  * Reset changes in the repository.
- *
- * <p>Reset the HEAD to a different commit.</p>
- *
- * <pre>
- * grgit.reset(commit: 'HEAD~1', mode: ResetOp.Mode.SOFT)
- * </pre>
- *
- * <p>Reset the HEAD, index, and working tree to a different commit.</p>
- *
- * <pre>
- * grgit.reset(commit: 'other-branch', mode: ResetOp.Mode.HARD)
- * </pre>
- *
- * <p>Reset the HEAD and index to a different commit.</p>
- *
- * <pre>
- * grgit.reset(commit: 'HEAD~2')
- * grgit.reset(commit: 'HEAD~2', mode: ResetOp.Mode.MIXED)
- * </pre>
- *
- * <p>Reset the index for specific paths back to the HEAD</p>
- *
- * <pre>
- * grgit.reset(paths: ['some/file.txt'])
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-reset">git-reset Manual Page</a>.
- *
  * @since 0.1.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-reset.html">grgit-reset</a>
  * @see <a href="http://git-scm.com/docs/git-reset">git-reset Manual Page</a>
  */
 @Operation('reset')
@@ -77,6 +50,10 @@ class ResetOp implements Callable<Void> {
 
   ResetOp(Repository repo) {
     this.repo = repo
+  }
+
+  void setMode(String mode) {
+    this.mode = mode.toUpperCase()
   }
 
   Void call() {

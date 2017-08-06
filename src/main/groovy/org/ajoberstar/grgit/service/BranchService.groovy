@@ -41,6 +41,7 @@ import org.eclipse.jgit.lib.Ref
  * </ul>
  *
  * @since 0.2.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-branch.html">grgit-branch</a>
  */
 @WithOperations(instanceOperations=[BranchListOp, BranchAddOp, BranchRemoveOp, BranchChangeOp, BranchStatusOp])
 class BranchService {

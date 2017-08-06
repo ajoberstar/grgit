@@ -21,7 +21,7 @@ import org.ajoberstar.grgit.Credentials
  * Stores configuration options for how to authenticate with remote
  * repositories.
  * @since 0.2.0
- * @see <a href="http://ajoberstar.org/grgit/authentication.html">grgit-authentication</a>
+ * @see <a href="http://ajoberstar.org/grgit/grgit-authentication.html">grgit-authentication</a>
  */
 class AuthConfig {
   /**

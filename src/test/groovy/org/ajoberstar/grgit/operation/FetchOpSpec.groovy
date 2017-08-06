@@ -99,10 +99,10 @@ class FetchOpSpec extends MultiGitOpSpec {
     then:
     assert GitTestUtil.tags(localGrgit) == expectedTags
     where:
-    mode  | expectedTags
-    TagMode.NONE | []
-    TagMode.AUTO | ['reachable-tag']
-    TagMode.ALL  | ['reachable-tag', 'unreachable-tag']
+    mode         | expectedTags
+    'none' | []
+    'auto' | ['reachable-tag']
+    'all'  | ['reachable-tag', 'unreachable-tag']
   }
 
   def 'fetch with refspecs fetches those branches'() {

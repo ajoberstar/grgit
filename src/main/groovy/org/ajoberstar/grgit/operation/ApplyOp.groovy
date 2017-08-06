@@ -25,7 +25,7 @@ import org.eclipse.jgit.api.ApplyCommand
 /**
  * Apply a patch to the index.
  * @since 0.1.0
- * @see <a href="http://ajoberstar.org/grgit/apply.html">grgit-apply</a>
+ * @see <a href="http://ajoberstar.org/grgit/grgit-apply.html">grgit-apply</a>
  * @see <a href="http://git-scm.com/docs/git-apply">git-apply Manual Page</a>
  */
 @Operation('apply')
