@@ -23,25 +23,8 @@ import org.eclipse.jgit.api.AddCommand
 
 /**
  * Adds files to the index.
- *
- * <p>
- *   To add specific files or directories to the path. Wildcards are not
- *   supported.
- * </p>
- *
- * <pre>
- * grgit.add(patterns: ['1.txt', 'some/dir'])
- * </pre>
- *
- * <p>To add changes to all currently tracked files.</p>
- *
- * <pre>
- * grgit.add(update: true)
- * </pre>
- *
- * See <a href="http://git-scm.com/docs/git-add">git-add Manual Page</a>.
- *
  * @since 0.1.0
+ * @see <a href="http://ajoberstar.org/grgit/grgit-add.html">grgit-add</a>
  * @see <a href="http://git-scm.com/docs/git-add">git-add Manual Page</a>
  */
 @Operation('add')
