@@ -76,7 +76,7 @@ class Commit {
    */
   @Deprecated
   Date getDate() {
-    return dateTime.toDate()
+    return Date.from(dateTime.toInstant())
   }
 
   /**
