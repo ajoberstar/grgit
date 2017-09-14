@@ -110,8 +110,7 @@ class JGitUtilSpec extends Specification {
     Instant instant = Instant.ofEpochSecond(commits[1].commitTime)
     ZoneId zone = ZoneId.ofOffset('GMT', ZoneId.systemDefault().getRules().getOffset(instant))
     ZonedDateTime commitTime = ZonedDateTime.ofInstant(instant, zone)
-    expect:
-    JGitUtil.convertCommit(commits[1]) == new Commit(
+    Commit expectedCommit = new Commit(
       ObjectId.toString(commits[1]),
       [ObjectId.toString(commits[0])],
       person,
@@ -120,6 +119,10 @@ class JGitUtilSpec extends Specification {
       'second commit',
       'second commit'
     )
+    expect:
+    def result = JGitUtil.convertCommit(commits[1])
+    result == expectedCommit
+    result.date.toInstant() == commitTime.toInstant()
   }
 
   def 'resolveTag works for annotated tag ref'() {
