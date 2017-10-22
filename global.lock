@@ -33,11 +33,11 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -83,11 +83,11 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -133,11 +133,11 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -183,11 +183,11 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -229,11 +229,11 @@
             "requested": "[0.0.9,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -275,11 +275,11 @@
             "requested": "[2.4.0, 3.0.0)"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -323,11 +323,11 @@
             "requested": "[0.0.9,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -405,11 +405,11 @@
             "requested": "[0.0.9,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -447,11 +447,11 @@
             "requested": "[0.0.9,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -493,11 +493,11 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -543,11 +543,11 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -593,11 +593,11 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
@@ -647,11 +647,11 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.8.0.201706111038-r",
+            "locked": "4.9.0.201710071750-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.slf4j:slf4j-api": {
