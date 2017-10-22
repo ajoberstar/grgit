@@ -46,12 +46,20 @@ class DescribeOp implements Callable<String> {
    */
   boolean longDescr
 
+  /**
+   * glob patterns to match tags against before they are considered
+   */
+  List<String> match = []
+
   String call(){
     DescribeCommand cmd = repo.jgit.describe()
     if (commit) {
       cmd.setTarget(new ResolveService(repo).toRevisionString(commit))
     }
     cmd.setLong(longDescr)
+    if (match) {
+      cmd.setMatch(match as String[])
+    }
     return cmd.call()
   }
 }

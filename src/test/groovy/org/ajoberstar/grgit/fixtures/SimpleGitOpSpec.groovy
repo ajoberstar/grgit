@@ -34,6 +34,10 @@ class SimpleGitOpSpec extends Specification {
   def setup() {
     File repoDir = tempDir.newFolder('repo')
     Git git = Git.init().setDirectory(repoDir).call()
+
+    // Don't want the user's git config to conflict with test expectations
+    git.repo.FS.userHome = null
+
     git.repo.config.with {
       setString('user', null, 'name', person.name)
       setString('user', null, 'email', person.email)

@@ -33,6 +33,10 @@ class MultiGitOpSpec extends Specification {
   protected Grgit init(String name) {
     File repoDir = tempDir.newFolder(name).canonicalFile
     Git git = Git.init().setDirectory(repoDir).call()
+
+    // Don't want the user's git config to conflict with test expectations
+    git.repo.FS.userHome = null
+
     git.repo.config.with {
       setString('user', null, 'name', person.name)
       setString('user', null, 'email', person.email)
