@@ -1,6 +1,6 @@
 # grgit
 
-[![Bintray](https://img.shields.io/bintray/v/ajoberstar/maven/grgit.svg?style=flat-square)](https://bintray.com/ajoberstar/maven/grgit/_latestVersion)
+[![Download](https://api.bintray.com/packages/ajoberstar/maven/grgit/images/download.svg)](https://bintray.com/ajoberstar/maven/grgit/_latestVersion)
 [![Travis](https://img.shields.io/travis/ajoberstar/grgit.svg?style=flat-square)](https://travis-ci.org/ajoberstar/grgit)
 [![GitHub license](https://img.shields.io/github/license/ajoberstar/grgit.svg?style=flat-square)](https://github.com/ajoberstar/grgit/blob/master/LICENSE)
 
