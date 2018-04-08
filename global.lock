@@ -33,16 +33,12 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -83,16 +79,12 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -133,16 +125,12 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -183,16 +171,12 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -229,16 +213,12 @@
             "requested": "[0.0.9,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         }
     },
     "compileClasspath": {
@@ -275,16 +255,12 @@
             "requested": "[2.4.0, 3.0.0)"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         }
     },
     "compileOnly": {
@@ -323,26 +299,12 @@
             "requested": "[0.0.9,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
-        }
-    },
-    "jacocoAgent": {
-        "org.jacoco:org.jacoco.agent": {
-            "locked": "0.7.8"
-        }
-    },
-    "jacocoAnt": {
-        "org.jacoco:org.jacoco.ant": {
-            "locked": "0.7.8"
         }
     },
     "jbake": {
@@ -405,16 +367,12 @@
             "requested": "[0.0.9,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         }
     },
     "runtimeClasspath": {
@@ -447,16 +405,12 @@
             "requested": "[0.0.9,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         }
     },
     "testCompile": {
@@ -493,16 +447,12 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -543,16 +493,12 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -593,20 +539,12 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
-        },
-        "org.slf4j:slf4j-simple": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -647,20 +585,12 @@
             "requested": "4.12"
         },
         "org.eclipse.jgit:org.eclipse.jgit": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
         },
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
-            "locked": "4.10.0.201712302008-r",
+            "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        },
-        "org.slf4j:slf4j-api": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
-        },
-        "org.slf4j:slf4j-simple": {
-            "locked": "1.7.25",
-            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",

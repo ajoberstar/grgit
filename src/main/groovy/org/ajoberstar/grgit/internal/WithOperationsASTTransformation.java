@@ -1,18 +1,3 @@
-/*
- * Copyright 2012-2017 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.ajoberstar.grgit.internal;
 
 import groovy.lang.Closure;
@@ -65,15 +50,9 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
   }
 
   private void makeMethods(ClassNode targetClass, ClassNode opClass, boolean isStatic) {
-    AnnotationNode annotation =
-        opClass
-            .getAnnotations(classFromType(Operation.class))
-            .stream()
-            .findFirst()
-            .orElseThrow(
-                () ->
-                    new IllegalArgumentException(
-                        "Class is not annotated with @Operation: " + opClass));
+    AnnotationNode annotation = opClass.getAnnotations(classFromType(Operation.class)).stream()
+        .findFirst()
+        .orElseThrow(() -> new IllegalArgumentException("Class is not annotated with @Operation: " + opClass));
     String opName = getMemberStringValue(annotation, "value");
     ClassNode opReturn = opClass.getDeclaredMethod("call", new Parameter[] {}).getReturnType();
 
@@ -82,71 +61,56 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
     targetClass.addMethod(makeClosureMethod(targetClass, opName, opClass, opReturn, isStatic));
   }
 
-  private MethodNode makeNoArgMethod(
-      ClassNode targetClass,
-      String opName,
-      ClassNode opClass,
-      ClassNode opReturn,
-      boolean isStatic) {
+  private MethodNode makeNoArgMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
     Parameter[] parms = new Parameter[] {};
 
-    Statement code =
-        new ExpressionStatement(
-            new StaticMethodCallExpression(
-                classFromType(OpSyntax.class),
-                "noArgOperation",
-                new ArgumentListExpression(
-                    new ClassExpression(opClass),
-                    new ArrayExpression(
-                        classFromType(Object.class), opConstructorParms(targetClass, isStatic)))));
+    Statement code = new ExpressionStatement(
+        new StaticMethodCallExpression(
+            classFromType(OpSyntax.class),
+            "noArgOperation",
+            new ArgumentListExpression(
+                new ClassExpression(opClass),
+                new ArrayExpression(
+                    classFromType(Object.class),
+                    opConstructorParms(targetClass, isStatic)))));
 
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
   }
 
-  private MethodNode makeMapMethod(
-      ClassNode targetClass,
-      String opName,
-      ClassNode opClass,
-      ClassNode opReturn,
-      boolean isStatic) {
+  private MethodNode makeMapMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
     ClassNode parmType = classFromType(Map.class);
     GenericsType[] generics = genericsFromTypes(String.class, Object.class);
     parmType.setGenericsTypes(generics);
     Parameter[] parms = new Parameter[] {new Parameter(parmType, "args")};
 
-    Statement code =
-        new ExpressionStatement(
-            new StaticMethodCallExpression(
-                classFromType(OpSyntax.class),
-                "mapOperation",
-                new ArgumentListExpression(
-                    new ClassExpression(opClass),
-                    new ArrayExpression(
-                        classFromType(Object.class), opConstructorParms(targetClass, isStatic)),
-                    new VariableExpression("args"))));
+    Statement code = new ExpressionStatement(
+        new StaticMethodCallExpression(
+            classFromType(OpSyntax.class),
+            "mapOperation",
+            new ArgumentListExpression(
+                new ClassExpression(opClass),
+                new ArrayExpression(
+                    classFromType(Object.class),
+                    opConstructorParms(targetClass, isStatic)),
+                new VariableExpression("args"))));
 
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
   }
 
-  private MethodNode makeClosureMethod(
-      ClassNode targetClass,
-      String opName,
-      ClassNode opClass,
-      ClassNode opReturn,
-      boolean isStatic) {
+  private MethodNode makeClosureMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
     ClassNode parmType = classFromType(Closure.class);
     Parameter[] parms = new Parameter[] {new Parameter(parmType, "arg")};
 
-    Statement code =
-        new ExpressionStatement(
-            new StaticMethodCallExpression(
-                classFromType(OpSyntax.class),
-                "closureOperation",
-                new ArgumentListExpression(
-                    new ClassExpression(opClass),
-                    new ArrayExpression(
-                        classFromType(Object.class), opConstructorParms(targetClass, isStatic)),
-                    new VariableExpression("arg"))));
+    Statement code = new ExpressionStatement(
+        new StaticMethodCallExpression(
+            classFromType(OpSyntax.class),
+            "closureOperation",
+            new ArgumentListExpression(
+                new ClassExpression(opClass),
+                new ArrayExpression(
+                    classFromType(Object.class),
+                    opConstructorParms(targetClass, isStatic)),
+                new VariableExpression("arg"))));
 
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
   }

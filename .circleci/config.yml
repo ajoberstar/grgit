@@ -1,0 +1,128 @@
+###############################################################################
+# Anchors for common settings
+###############################################################################
+defaults: &defaults
+  steps:
+    - checkout
+    - restore_cache:
+        keys:
+          - v1-gradle-caches-{{ checksum "global.lock" }}
+    - attach_workspace:
+        at: '.'
+    - run:
+        name: Compile and test
+        command: ./gradlew clean check --continue
+    - save_cache:
+        paths:
+          - '~/.gradle/caches'
+        key: v1-gradle-caches-{{ checksum "global.lock" }}
+    - store_test_results:
+        path: '~/gradle-test-results'
+        when: always
+branches-and-tags: &branches-and-tags
+  filters:
+    branches:
+      ignore: gh-pages
+    tags:
+      only: /^\d+\.\d+\.\d+(?:-.+)?$/
+tags-only: &tags-only
+  filters:
+    branches:
+      ignore: /.*/
+    tags:
+      only: /^\d+\.\d+\.\d+(?:-.+)?$/
+
+###############################################################################
+# Jobs
+###############################################################################
+version: 2
+jobs:
+  update-dependencies:
+    docker:
+      - image: ajoberstar/circleci-openjdk-gradle:8-jdk
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-gradle-caches-{{ checksum "global.lock" }}
+      - run:
+          name: Update locks
+          command: ./gradlew generateGlobalLock saveGlobalLock stutterWriteLocks
+      - run:
+          name: Diff lock files
+          command: git --no-pager diff
+      - persist_to_workspace:
+          root: '.'
+          paths:
+            - 'global.lock'
+            - '.stutter/'
+            - '*/.stutter/'
+            - '*/*/.stutter/'
+  build-java-8:
+    <<: *defaults
+    docker:
+      - image: ajoberstar/circleci-openjdk-gradle:8-jdk
+  build-java-9:
+    <<: *defaults
+    docker:
+      - image: ajoberstar/circleci-openjdk-gradle:9-jdk
+  build-java-10:
+    <<: *defaults
+    docker:
+      - image: ajoberstar/circleci-openjdk-gradle:10-jdk
+  publish:
+    docker:
+      - image: ajoberstar/circleci-openjdk-gradle:8-jdk
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-gradle-caches-{{ checksum "global.lock" }}
+      - run:
+          name: Decrypt Gradle properties
+          command: openssl enc -d -aes256 -base64 -in gradle.properties.enc -out gradle.properties -pass 'pass:$GRADLE_PROPS_KEY'
+      - run:
+          name: Publish Artifacts
+          command: ./gradlew publish publishPlugins
+###############################################################################
+# Workflows
+###############################################################################
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build-java-8:
+          <<: *branches-and-tags
+      - build-java-9:
+          <<: *branches-and-tags
+          requires:
+            - build-java-8
+      - build-java-10:
+          <<: *branches-and-tags
+          requires:
+            - build-java-8
+      - publish:
+          <<: *tags-only
+          requires:
+            - build-java-8
+            - build-java-9
+            - build-java-10
+          context: ajoberstar
+  nightly-deps:
+    triggers:
+      - schedule:
+          cron: "0 3 * * *"
+          filters:
+            branches:
+              only: master
+    jobs:
+      - update-dependencies
+      - build-java-8:
+          requires:
+            - update-dependencies
+      - build-java-9:
+          requires:
+            - build-java-8
+      - build-java-10:
+          requires:
+            - build-java-8

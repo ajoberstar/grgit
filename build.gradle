@@ -1,16 +1,16 @@
 plugins {
-  id 'org.ajoberstar.defaults' version '0.8.3-milestone.2'
+  id 'org.ajoberstar.defaults' version '0.10.0'
   id 'org.jbake.site' version '1.0.0'
   id 'java-gradle-plugin'
   id 'groovy'
+  // TODO remove when Gradle dependency locking is available
+  id 'nebula.dependency-lock' version '5.0.4'
 }
 
 group = 'org.ajoberstar'
 description = 'The Groovy way to use Git.'
 
 sourceCompatibility = '1.8'
-
-
 
 sourceSets {
   compatTest {
@@ -62,11 +62,6 @@ dependencies {
 
   // logging
   def slf4jVersion = '[1.7.25,1.8.0-alpha)' // wait for final 1.8.0 to come out before letting it in
-  gradleLint.ignore('duplicate-dependency-class') {
-    compile "org.slf4j:slf4j-api:$slf4jVersion"
-    testRuntime "org.slf4j:slf4j-simple:$slf4jVersion"
-  }
-
 
   // testing
   def junitVersion = '4.12'
@@ -97,15 +92,28 @@ test {
 }
 
 stutter {
-    supports '3.0', '3.1', '3.2', '3.2.1', '3.3', '3.4', '3.5', '3.5.1'
-    supports '4.0', '4.0.1', '4.0.2', '4.1', '4.2', '4.2.1', '4.3', '4.3.1', '4.4', '4.4.1', '4.5', '4.5.1'
+  includeActiveRc = true
+  java(8) {
+    compatibleRange '3.0'
+  }
+  java(9) {
+    compatibleRange '4.0'
+  }
+  java(10) {
+    compatibleRange '4.0'
+  }
 }
 
-model {
-  bintray {
-    owner = 'ajoberstar'
-    repo = 'maven'
-    pkg = 'grgit'
+publishing {
+  repositories {
+    maven {
+      name = 'bintray'
+      url = 'https://api.bintray.com/maven/ajoberstar/maven/reckon/;publish=1'
+      credentials {
+        username = System.env['BINTRAY_USER']
+        password = System.env['BINTRAY_KEY']
+      }
+    }
   }
 }
 
