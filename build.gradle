@@ -12,6 +12,7 @@ description = 'The Groovy way to use Git.'
 
 sourceCompatibility = '1.8'
 
+// compat tests use grgit to set up and verify the tests
 sourceSets {
   compatTest {
     compileClasspath += main.output
@@ -20,6 +21,11 @@ sourceSets {
 }
 
 configurations.compatTestCompile.extendsFrom configurations.compile
+
+// workaround for https://github.com/ajoberstar/gradle-stutter/issues/13
+tasks.withType(Test).matching { it.name =~ '^compatTest' }.all {
+  classpath = sourceSets.compatTest.runtimeClasspath
+}
 
 jbake {
   srcDirName = 'docs'
