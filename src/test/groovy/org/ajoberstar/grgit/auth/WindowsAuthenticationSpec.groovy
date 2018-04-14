@@ -11,6 +11,7 @@ import org.junit.experimental.categories.Category
 import org.junit.rules.TemporaryFolder
 
 import spock.lang.Specification
+import spock.lang.Timeout
 import spock.lang.Unroll
 
 @Category(WindowsSpecific)
@@ -26,38 +27,24 @@ class WindowsAuthenticationSpec extends Specification {
   Grgit grgit
   Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
 
-
-  def setupSpec() {
-    def username = System.properties['org.ajoberstar.grgit.test.username']
-    def password = System.properties['org.ajoberstar.grgit.test.password']
-    hardcodedCreds = new Credentials(username, password)
-    partialCreds = new Credentials(password, null)
-    assert hardcodedCreds.username && hardcodedCreds.password
-  }
-
   def cleanup() {
     System.properties.remove(AuthConfig.FORCE_OPTION)
     System.properties.remove(AuthConfig.USERNAME_OPTION)
     System.properties.remove(AuthConfig.PASSWORD_OPTION)
   }
 
+  @Timeout(10)
   @Unroll('#method works using ssh? (#ssh) and creds? (#creds)')
   def 'auth method works'() {
     given:
     assert System.properties[AuthConfig.FORCE_OPTION] == null, 'Force should not already be set.'
-    assert System.properties[AuthConfig.USERNAME_OPTION] == null, 'Username should not already be set.'
-    assert System.properties[AuthConfig.PASSWORD_OPTION] == null, 'Password should not already be set.'
     System.properties[AuthConfig.FORCE_OPTION] = method
     ready(ssh)
-    if (!creds) {
-      System.properties[AuthConfig.USERNAME_OPTION] = hardcodedCreds.username
-      System.properties[AuthConfig.PASSWORD_OPTION] = hardcodedCreds.password
-    }
-    assert grgit.branch.status(branch: 'master').aheadCount == 1
+    assert grgit.branch.status(name: 'master').aheadCount == 1
     when:
     grgit.push()
     then:
-    grgit.branch.status(branch: 'master').aheadCount == 0
+    grgit.branch.status(name: 'master').aheadCount == 0
     where:
     method		    | ssh   | creds
     'hardcoded'   | false | hardcodedCreds
@@ -65,8 +52,9 @@ class WindowsAuthenticationSpec extends Specification {
     'hardcoded'   | false | null
     'interactive' | false | null
     'interactive' | true  | null
-    'sshagent'	  | true  | null
-    'pageant'	    | true  | null
+    'sshagent'    | true  | null
+    'pageant'     | true  | null
+    'command'     | true  | null
   }
 
   private void ready(boolean ssh) {
