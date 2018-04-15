@@ -26,15 +26,6 @@ class LinuxAuthenticationSpec extends Specification {
   Grgit grgit
   Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
 
-
-  def setupSpec() {
-    def username = System.properties['org.ajoberstar.grgit.test.username']
-    def password = System.properties['org.ajoberstar.grgit.test.password']
-    hardcodedCreds = new Credentials(username, password)
-    partialCreds = new Credentials(password, null)
-    assert hardcodedCreds.username && hardcodedCreds.password
-  }
-
   def cleanup() {
     System.properties.remove(AuthConfig.FORCE_OPTION)
     System.properties.remove(AuthConfig.USERNAME_OPTION)
@@ -46,13 +37,7 @@ class LinuxAuthenticationSpec extends Specification {
     given:
     assert System.properties[AuthConfig.FORCE_OPTION] == null, 'Force should not already be set.'
     System.properties[AuthConfig.FORCE_OPTION] = method
-    assert System.properties[AuthConfig.USERNAME_OPTION] == null, 'Username should not already be set.'
-    assert System.properties[AuthConfig.PASSWORD_OPTION] == null, 'Password should not already be set.'
     ready(ssh)
-    if (!creds) {
-      System.properties[AuthConfig.USERNAME_OPTION] = hardcodedCreds.username
-      System.properties[AuthConfig.PASSWORD_OPTION] = hardcodedCreds.password
-    }
     assert grgit.branch.status(branch: 'master').aheadCount == 1
     when:
     grgit.push()
@@ -65,6 +50,7 @@ class LinuxAuthenticationSpec extends Specification {
     'interactive' | false | null
     'interactive' | true  | null
     'sshagent'	  | true  | null
+    'command'     | true  | null
   }
 
   private void ready(boolean ssh) {

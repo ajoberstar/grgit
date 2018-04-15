@@ -43,9 +43,22 @@ repositories {
   mavenCentral()
 }
 
+// workaround for java-gradle-plugin adding gradleApi() to the compile classpath
+configurations.compile.withDependencies { deps ->
+  deps.remove(dependencies.gradleApi())
+}
+
+// workaround for gradle-defaults excluding groovy from all configurations
+configurations.all {
+  excludeRules = []
+}
+configurations.compatTestCompile {
+  exclude group: 'org.codehaus.groovy'
+}
+
 dependencies {
   // groovy
-  compileOnly 'org.codehaus.groovy:groovy-all:[2.4.0, 3.0.0)'
+  testCompile 'org.codehaus.groovy:groovy-all:[2.4.0, 3.0.0)'
 
   // gradle
   compileOnly gradleApi()
@@ -68,6 +81,8 @@ dependencies {
 
   // logging
   def slf4jVersion = '[1.7.25,1.8.0-alpha)' // wait for final 1.8.0 to come out before letting it in
+  testCompile "org.slf4j:slf4j-api:${slf4jVersion}"
+  testRuntime "org.slf4j:slf4j-simple:${slf4jVersion}"
 
   // testing
   def junitVersion = '4.12'
@@ -84,16 +99,12 @@ test {
   }
 }
 
-['Windows', 'Linux', 'Mac'].each { platform ->
+['Windows', 'Linux'].each { platform ->
   tasks.create("test${platform}", Test) {
     useJUnit {
       includeCategories "org.ajoberstar.grgit.fixtures.${platform}Specific"
     }
-    System.properties.each { key, value ->
-      if (key.startsWith('org.ajoberstar.grgit.test')) {
-        systemProperties((key): value)
-      }
-    }
+    systemProperty 'org.slf4j.simpleLogger.defaultLogLevel', 'debug'
   }
 }
 
@@ -107,7 +118,6 @@ stutter {
   }
   java(10) {
     compatibleRange '4.2.1'
-    incompatible '4.7-rc-1'
   }
 }
 

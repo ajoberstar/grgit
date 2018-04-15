@@ -250,10 +250,6 @@
             "locked": "0.0.9",
             "requested": "[0.0.9,)"
         },
-        "org.codehaus.groovy:groovy-all": {
-            "project": true,
-            "requested": "[2.4.0, 3.0.0)"
-        },
         "org.eclipse.jgit:org.eclipse.jgit": {
             "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
@@ -261,12 +257,6 @@
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
             "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
-        }
-    },
-    "compileOnly": {
-        "org.codehaus.groovy:groovy-all": {
-            "project": true,
-            "requested": "[2.4.0, 3.0.0)"
         }
     },
     "default": {
@@ -317,7 +307,7 @@
             "requested": "1.5.4.1"
         },
         "org.codehaus.groovy:groovy-templates": {
-            "project": true,
+            "locked": "2.4.8",
             "requested": "2.4.8"
         },
         "org.freemarker:freemarker": {
@@ -446,6 +436,10 @@
             "locked": "4.12",
             "requested": "4.12"
         },
+        "org.codehaus.groovy:groovy-all": {
+            "locked": "2.4.9",
+            "requested": "[2.4.0, 3.0.0)"
+        },
         "org.eclipse.jgit:org.eclipse.jgit": {
             "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
@@ -453,6 +447,10 @@
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
             "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
+        },
+        "org.slf4j:slf4j-api": {
+            "locked": "1.7.25",
+            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -492,6 +490,10 @@
             "locked": "4.12",
             "requested": "4.12"
         },
+        "org.codehaus.groovy:groovy-all": {
+            "locked": "2.4.9",
+            "requested": "[2.4.0, 3.0.0)"
+        },
         "org.eclipse.jgit:org.eclipse.jgit": {
             "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
@@ -499,6 +501,10 @@
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
             "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
+        },
+        "org.slf4j:slf4j-api": {
+            "locked": "1.7.25",
+            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -538,6 +544,10 @@
             "locked": "4.12",
             "requested": "4.12"
         },
+        "org.codehaus.groovy:groovy-all": {
+            "locked": "2.4.9",
+            "requested": "[2.4.0, 3.0.0)"
+        },
         "org.eclipse.jgit:org.eclipse.jgit": {
             "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
@@ -545,6 +555,14 @@
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
             "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
+        },
+        "org.slf4j:slf4j-api": {
+            "locked": "1.7.25",
+            "requested": "[1.7.25,1.8.0-alpha)"
+        },
+        "org.slf4j:slf4j-simple": {
+            "locked": "1.7.25",
+            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -584,6 +602,10 @@
             "locked": "4.12",
             "requested": "4.12"
         },
+        "org.codehaus.groovy:groovy-all": {
+            "locked": "2.4.9",
+            "requested": "[2.4.0, 3.0.0)"
+        },
         "org.eclipse.jgit:org.eclipse.jgit": {
             "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
@@ -591,6 +613,14 @@
         "org.eclipse.jgit:org.eclipse.jgit.ui": {
             "locked": "4.11.0.201803080745-r",
             "requested": "[4.8.0.201706111038-r,)"
+        },
+        "org.slf4j:slf4j-api": {
+            "locked": "1.7.25",
+            "requested": "[1.7.25,1.8.0-alpha)"
+        },
+        "org.slf4j:slf4j-simple": {
+            "locked": "1.7.25",
+            "requested": "[1.7.25,1.8.0-alpha)"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",

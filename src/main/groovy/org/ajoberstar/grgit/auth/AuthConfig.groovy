@@ -1,6 +1,9 @@
 package org.ajoberstar.grgit.auth
 
 import org.ajoberstar.grgit.Credentials
+import org.eclipse.jgit.util.SystemReader
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * Stores configuration options for how to authenticate with remote
@@ -9,6 +12,8 @@ import org.ajoberstar.grgit.Credentials
  * @see <a href="http://ajoberstar.org/grgit/grgit-authentication.html">grgit-authentication</a>
  */
 class AuthConfig {
+  private static final Logger logger = LoggerFactory.getLogger(AuthConfig)
+
   /**
    * System property name used to force a specific authentication option.
    */
@@ -28,6 +33,14 @@ class AuthConfig {
   private AuthConfig(Map<String, String> props, Map<String, String> env) {
     this.props = props
     this.env = env
+
+    if (allows(Option.COMMAND)) {
+      GrgitSystemReader.install()
+      logger.info('If SSH is used, the following external command (if non-null) will be used instead of JSch: {}', SystemReader.instance.getenv('GIT_SSH'))
+    } else {
+      // TODO raise this to a warning if COMMAND seems to work well
+      logger.debug('JSch being used for SSH commands. Try org.ajoberstar.grgit.auth.force=command to use ssh or plink directly.')
+    }
   }
 
   /**
@@ -45,7 +58,7 @@ class AuthConfig {
     } else {
       return (Option.values() as Set).findAll {
         String setting = props[it.systemPropertyName]
-        setting == null ? true : Boolean.valueOf(setting)
+        setting == null ? it.defaultValue : Boolean.valueOf(setting)
       }
     }
   }
@@ -134,22 +147,33 @@ class AuthConfig {
     /**
      * Use credentials provided directly to Grgit.
      */
-    HARDCODED,
+    HARDCODED(true),
 
     /**
      * Will prompt for credentials using an AWT window, if needed.
      */
-    INTERACTIVE,
+    INTERACTIVE(true),
 
     /**
      * Use SSH keys in the system's sshagent process.
      */
-    SSHAGENT,
+    SSHAGENT(true),
 
     /**
      * Use SSH keys in the system's pageant process.
      */
-    PAGEANT
+    PAGEANT(true),
+
+    /**
+     * Use external command to create SSH session.
+     */
+    COMMAND(false)
+
+    final defaultValue
+
+    private Option(boolean defaultValue) {
+      this.defaultValue = defaultValue
+    }
 
     /**
      * Gets the system property name used to configure whether this
