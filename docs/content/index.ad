@@ -59,7 +59,7 @@ grgit.log {
 }
 ----
 
-Look in the link:reference.html[reference] documentation for information on each available operation, it's options, and example usage. Additionally, see the link:grgit-authentication.html[authentication] documentation if you plan to interact with a remote repository.
+Look in the link:reference.html[grgit-reference] documentation for information on each available operation, it's options, and example usage. Additionally, see the link:grgit-authentication.html[authentication] documentation if you plan to interact with a remote repository.
 
 == Example Usage
 
