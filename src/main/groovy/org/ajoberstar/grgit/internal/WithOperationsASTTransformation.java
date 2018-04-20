@@ -101,7 +101,7 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
 
   private MethodNode makeConsumerMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
     ClassNode parmType = classFromType(Consumer.class);
-    GenericsType[] generics = new GenericsType[] {new GenericsType(opReturn)};
+    GenericsType[] generics = new GenericsType[] {new GenericsType(opClass)};
     parmType.setGenericsTypes(generics);
     Parameter[] parms = new Parameter[] {new Parameter(parmType, "arg")};
 
