@@ -108,10 +108,10 @@ workflows:
             - build-java-9
             - build-java-10
           context: ajoberstar
-  nightly-deps:
+  weekly-deps:
     triggers:
       - schedule:
-          cron: "0 3 * * *"
+          cron: "0 8 * * 5"
           filters:
             branches:
               only: master
