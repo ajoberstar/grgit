@@ -2,10 +2,12 @@ package org.ajoberstar.grgit.operation
 
 import java.util.concurrent.Callable
 
+import org.ajoberstar.grgit.PushException
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.auth.TransportOpUtil
 import org.ajoberstar.grgit.internal.Operation
 import org.eclipse.jgit.api.PushCommand
+import org.eclipse.jgit.transport.RemoteRefUpdate
 
 /**
  * Push changes to a remote repository.
@@ -67,7 +69,20 @@ class PushOp implements Callable<Void> {
     if (tags) { cmd.setPushTags() }
     cmd.force = force
     cmd.dryRun = dryRun
-    cmd.call()
+
+    def failures = []
+    cmd.call().each { result ->
+      result.remoteUpdates.findAll { update ->
+        !(update.status == RemoteRefUpdate.Status.OK || update.status == RemoteRefUpdate.Status.UP_TO_DATE)
+      }.each { update ->
+        String info = "${update.srcRef} to ${update.remoteName}"
+        String message = update.message ? " (${update.message})" : ''
+        failures << "${info}${message}"
+      }
+    }
+    if (failures) {
+      throw new PushException("Failed to push: ${failures.join(',')}")
+    }
     return null
   }
 }

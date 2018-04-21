@@ -1,6 +1,7 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.PushException
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 import org.eclipse.jgit.api.errors.GitAPIException
@@ -18,6 +19,11 @@ class PushOpSpec extends MultiGitOpSpec {
     remoteGrgit.commit(message: 'do', all: true)
 
     remoteGrgit.branch.add(name: 'my-branch')
+
+    remoteGrgit.checkout(branch: 'some-branch', createBranch: true)
+    repoFile(remoteGrgit, '1.txt') << '1.5.1'
+    remoteGrgit.commit(message: 'do', all: true)
+    remoteGrgit.checkout(branch: 'master')
 
     localGrgit = clone('local', remoteGrgit)
     localGrgit.checkout(branch: 'my-branch', createBranch: true)
@@ -86,6 +92,14 @@ class PushOpSpec extends MultiGitOpSpec {
     GitTestUtil.resolve(localGrgit, 'refs/heads/my-branch') != GitTestUtil.resolve(remoteGrgit, 'refs/heads/my-branch')
     GitTestUtil.resolve(localGrgit, 'refs/heads/my-branch') == GitTestUtil.resolve(remoteGrgit, 'refs/heads/other-branch')
     !GitTestUtil.tags(remoteGrgit)
+  }
+
+  def 'push with non-fastforward fails'() {
+    when:
+    localGrgit.push(refsOrSpecs: ['refs/heads/master:refs/heads/some-branch'])
+    then:
+    GitTestUtil.resolve(localGrgit, 'refs/heads/master') != GitTestUtil.resolve(remoteGrgit, 'refs/heads/some-branch')
+    thrown(PushException)
   }
 
   def 'push in dryRun mode does not push commits'() {
