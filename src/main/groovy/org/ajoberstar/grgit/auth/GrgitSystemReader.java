@@ -1,12 +1,5 @@
 package org.ajoberstar.grgit.auth;
 
-import org.eclipse.jgit.errors.CorruptObjectException;
-import org.eclipse.jgit.lib.Config;
-import org.eclipse.jgit.storage.file.FileBasedConfig;
-import org.eclipse.jgit.util.FS;
-import org.eclipse.jgit.util.SystemReader;
-import org.eclipse.jgit.util.time.MonotonicClock;
-
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +11,13 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.eclipse.jgit.errors.CorruptObjectException;
+import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.storage.file.FileBasedConfig;
+import org.eclipse.jgit.util.FS;
+import org.eclipse.jgit.util.SystemReader;
+import org.eclipse.jgit.util.time.MonotonicClock;
 
 public class GrgitSystemReader extends SystemReader {
   private static final Pattern PATH_SPLITTER = Pattern.compile(Pattern.quote(File.pathSeparator));
