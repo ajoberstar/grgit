@@ -64,7 +64,7 @@ dependencies {
   compileOnly gradleApi()
 
   // jgit
-  def jgitVersion = '[4.8.0.201706111038-r,)'
+  def jgitVersion = '4.11.0.201803080745-r'
   compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
   compile "org.eclipse.jgit:org.eclipse.jgit.ui:$jgitVersion"
 
