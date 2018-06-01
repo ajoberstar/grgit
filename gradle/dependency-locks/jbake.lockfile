@@ -1,0 +1,44 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+args4j:args4j:2.33
+com.beust:jcommander:1.35
+com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4.2
+com.googlecode.json-simple:json-simple:1.1.1
+com.orientechnologies:orient-commons:1.7.10
+com.orientechnologies:orientdb-core:1.7.10
+com.orientechnologies:orientdb-nativeos:1.7.10
+commons-collections:commons-collections:3.2.2
+commons-configuration:commons-configuration:1.10
+commons-io:commons-io:2.5
+commons-lang:commons-lang:2.6
+commons-logging:commons-logging:1.1.1
+de.neuland-bfi:jade4j:1.2.5
+junit:junit:4.10
+net.java.dev.jna:jna-platform:4.0.0
+net.java.dev.jna:jna:4.0.0
+ognl:ognl:3.1.12
+org.apache.commons:commons-jexl:2.1.1
+org.apache.commons:commons-lang3:3.4
+org.asciidoctor:asciidoctorj:1.5.4.1
+org.attoparser:attoparser:2.0.2.RELEASE
+org.codehaus.groovy:groovy-templates:2.4.8
+org.codehaus.groovy:groovy-xml:2.4.8
+org.codehaus.groovy:groovy:2.4.8
+org.freemarker:freemarker:2.3.25-incubating
+org.hamcrest:hamcrest-core:1.1
+org.javassist:javassist:3.20.0-GA
+org.jbake:jbake-core:2.5.1
+org.jruby:jruby-complete:1.7.25
+org.ow2.asm:asm-analysis:5.0.3
+org.ow2.asm:asm-tree:5.0.3
+org.ow2.asm:asm-util:5.0.3
+org.ow2.asm:asm:5.0.3
+org.parboiled:parboiled-core:1.1.7
+org.parboiled:parboiled-java:1.1.7
+org.pegdown:pegdown:1.6.0
+org.slf4j:jul-to-slf4j:1.7.22
+org.slf4j:slf4j-api:1.7.22
+org.thymeleaf:thymeleaf:3.0.3.RELEASE
+org.unbescape:unbescape:1.1.4.RELEASE
+org.xerial.snappy:snappy-java:1.1.0.1

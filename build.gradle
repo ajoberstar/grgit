@@ -1,16 +1,14 @@
 plugins {
-  id 'org.ajoberstar.defaults' version '0.11.0'
+  id 'org.ajoberstar.defaults' version '0.12.0-rc.2'
   id 'org.jbake.site' version '1.0.0'
   id 'java-gradle-plugin'
   id 'groovy'
-  // TODO remove when Gradle dependency locking is available
-  id 'nebula.dependency-lock' version '5.0.4'
 }
 
 group = 'org.ajoberstar'
 description = 'The Groovy way to use Git.'
 
-sourceCompatibility = '1.8'
+sourceCompatibility = 8
 
 // compat tests use grgit to set up and verify the tests
 sourceSets {
@@ -56,6 +54,10 @@ configurations.compatTestCompile {
   exclude group: 'org.codehaus.groovy'
 }
 
+dependencyLocking {
+  lockAllConfigurations()
+}
+
 dependencies {
   // groovy
   testCompile 'org.codehaus.groovy:groovy-all:[2.4.0, 3.0.0)'
@@ -80,17 +82,14 @@ dependencies {
   compile 'com.jcraft:jsch:[0.1.54,)'
 
   // logging
-  def slf4jVersion = '[1.7.25,1.8.0-alpha)' // wait for final 1.8.0 to come out before letting it in
-  testCompile "org.slf4j:slf4j-api:${slf4jVersion}"
-  testRuntime "org.slf4j:slf4j-simple:${slf4jVersion}"
+  testCompile "org.slf4j:slf4j-api:[1.7.25,1.8.0-alpha)" // wait for final 1.8.0 to come out before letting it in
+  testRuntime "org.slf4j:slf4j-simple:[1.7.25,1.8.0-alpha)"
 
   // testing
-  def junitVersion = '4.12'
-  testCompile "junit:junit:$junitVersion"
-  compatTestCompile "junit:junit:$junitVersion"
-  def spockVersion = '1.1-groovy-2.4'
-  testCompile "org.spockframework:spock-core:$spockVersion"
-  compatTestCompile "org.spockframework:spock-core:$spockVersion"
+  testCompile "junit:junit:latest.release"
+  compatTestCompile "junit:junit:latest.release"
+  testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+  compatTestCompile "org.spockframework:spock-core:1.1-groovy-2.4"
 }
 
 test {
@@ -109,14 +108,12 @@ test {
 }
 
 stutter {
+  sparse = true
   includeActiveRc = true
   java(8) {
     compatibleRange '3.0'
   }
   java(9) {
-    compatibleRange '4.2.1'
-  }
-  java(10) {
     compatibleRange '4.2.1'
   }
 }
