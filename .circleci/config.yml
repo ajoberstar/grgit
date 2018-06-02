@@ -22,7 +22,8 @@ defaults: &defaults
 branches-and-tags: &branches-and-tags
   filters:
     branches:
-      ignore: gh-pages
+      ignore:
+        - gh-pages
     tags:
       only: /^\d+\.\d+\.\d+(?:-.+)?$/
 tags-only: &tags-only
