@@ -168,7 +168,7 @@ class JGitUtil {
    * @return the resolved branch
    */
   static Branch resolveBranch(Repository repo, String name) {
-    Ref ref = repo.jgit.repository.getRef(name)
+    Ref ref = repo.jgit.repository.findRef(name)
     return resolveBranch(repo, ref)
   }
 

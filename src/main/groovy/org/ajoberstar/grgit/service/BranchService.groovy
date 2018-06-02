@@ -41,7 +41,7 @@ class BranchService {
    * @return the branch or {@code null} if the HEAD is detached
    */
   Branch current() {
-    Ref ref = repository.jgit.repository.getRef('HEAD')?.target
+    Ref ref = repository.jgit.repository.exactRef('HEAD')?.target
     return ref ? JGitUtil.resolveBranch(repository, ref) : null
   }
 

@@ -2,6 +2,7 @@ plugins {
   id 'org.ajoberstar.defaults' version '0.12.0'
   id 'org.jbake.site' version '1.0.0'
   id 'java-gradle-plugin'
+  id 'java-library'
   id 'groovy'
 }
 
@@ -18,7 +19,7 @@ sourceSets {
   }
 }
 
-configurations.compatTestCompile.extendsFrom configurations.compile
+configurations.compatTestRuntimeClasspath.extendsFrom configurations.runtimeClasspath
 
 jbake {
   srcDirName = 'docs'
@@ -55,36 +56,39 @@ dependencyLocking {
 
 dependencies {
   // groovy
-  testCompile 'org.codehaus.groovy:groovy-all:[2.4.0, 3.0.0)'
+  testImplementation 'org.codehaus.groovy:groovy-all:[2.4.0, 3.0.0)'
 
   // gradle
   compileOnly gradleApi()
 
   // jgit
-  def jgitVersion = '4.11.0.201803080745-r'
-  compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
-  compile "org.eclipse.jgit:org.eclipse.jgit.ui:$jgitVersion"
+  api "org.eclipse.jgit:org.eclipse.jgit:latest.release"
+  implementation "org.eclipse.jgit:org.eclipse.jgit.ui:latest.release"
 
   // agentproxy
-  def agentProxyVersion = '[0.0.9,)'
-  compile "com.jcraft:jsch.agentproxy.core:$agentProxyVersion"
-  compile "com.jcraft:jsch.agentproxy.jsch:$agentProxyVersion"
-  compile "com.jcraft:jsch.agentproxy.pageant:$agentProxyVersion"
-  compile "com.jcraft:jsch.agentproxy.sshagent:$agentProxyVersion"
-  compile "com.jcraft:jsch.agentproxy.usocket-jna:$agentProxyVersion"
-  compile "com.jcraft:jsch.agentproxy.usocket-nc:$agentProxyVersion"
-  // agentproxy pulls this in, but we need to force a newer version
-  compile 'com.jcraft:jsch:[0.1.54,)'
+  implementation "com.jcraft:jsch.agentproxy.core:latest.release"
+  implementation "com.jcraft:jsch.agentproxy.jsch:latest.release"
+  implementation "com.jcraft:jsch.agentproxy.pageant:latest.release"
+  implementation "com.jcraft:jsch.agentproxy.sshagent:latest.release"
+  implementation "com.jcraft:jsch.agentproxy.usocket-jna:latest.release"
+  implementation "com.jcraft:jsch.agentproxy.usocket-nc:latest.release"
+
+  constraints {
+    implementation('com.jcraft:jsch') {
+      version { prefer '0.1.54' }
+      because 'ECDSA key support was introduced in this version.'
+    }
+  }
 
   // logging
-  testCompile "org.slf4j:slf4j-api:[1.7.25,1.8.0-alpha)" // wait for final 1.8.0 to come out before letting it in
-  testRuntime "org.slf4j:slf4j-simple:[1.7.25,1.8.0-alpha)"
+  testImplementation "org.slf4j:slf4j-api:[1.7.25,1.8.0-alpha)" // wait for final 1.8.0 to come out before letting it in
+  testRuntimeOnly "org.slf4j:slf4j-simple:[1.7.25,1.8.0-alpha)"
 
   // testing
-  testCompile "junit:junit:latest.release"
-  compatTestCompile "junit:junit:latest.release"
-  testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
-  compatTestCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+  testImplementation "junit:junit:latest.release"
+  compatTestImplementation "junit:junit:latest.release"
+  testImplementation "org.spockframework:spock-core:1.1-groovy-2.4"
+  compatTestImplementation "org.spockframework:spock-core:1.1-groovy-2.4"
 }
 
 test {

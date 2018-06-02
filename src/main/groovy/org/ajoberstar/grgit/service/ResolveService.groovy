@@ -40,7 +40,7 @@ class ResolveService {
     } else if (object instanceof Commit) {
       return object.id
     } else if (object instanceof Branch || object instanceof Tag || object instanceof Ref) {
-      return ObjectId.toString(repository.jgit.repository.getRef(object.fullName).objectId)
+      return ObjectId.toString(repository.jgit.repository.exactRef(object.fullName).objectId)
     } else {
       throwIllegalArgument(object)
     }
