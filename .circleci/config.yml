@@ -48,7 +48,7 @@ jobs:
             - v2-gradle-caches-{{ checksum "gradle/dependency-locks/runtimeClasspath.lockfile" }}
       - run:
           name: Update locks
-          command: ./gradlew generateGlobalLock saveGlobalLock stutterWriteLocks
+          command: ./gradlew stutterWriteLocks dependencies --write-locks
       - run:
           name: Diff lock files
           command: git --no-pager diff
