@@ -1,5 +1,5 @@
 plugins {
-  id 'org.ajoberstar.defaults' version '0.12.0-rc.2'
+  id 'org.ajoberstar.defaults' version '0.12.0-rc.4'
   id 'org.jbake.site' version '1.0.0'
   id 'java-gradle-plugin'
   id 'groovy'
@@ -19,11 +19,6 @@ sourceSets {
 }
 
 configurations.compatTestCompile.extendsFrom configurations.compile
-
-// workaround for https://github.com/ajoberstar/gradle-stutter/issues/13
-tasks.withType(Test).matching { it.name =~ '^compatTest' }.all {
-  classpath = sourceSets.compatTest.runtimeClasspath
-}
 
 jbake {
   srcDirName = 'docs'
