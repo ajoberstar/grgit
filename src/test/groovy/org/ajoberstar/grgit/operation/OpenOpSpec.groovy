@@ -135,4 +135,15 @@ class OpenOpSpec extends SimpleGitOpSpec {
     then:
     opened.repository.rootDir.deleteDir()
   }
+
+  def 'opened repo is automatically closed in withCloseable'() {
+    given:
+    Grgit opened = Grgit.open(dir: repoDir('.').canonicalFile)
+    when:
+    opened.withCloseable {
+      it.log()
+    }
+    then:
+    opened.repository.rootDir.deleteDir()
+  }
 }

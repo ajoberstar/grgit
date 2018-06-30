@@ -96,7 +96,7 @@ import org.ajoberstar.grgit.util.JGitUtil
  * @since 0.1.0
  */
 @WithOperations(staticOperations=[InitOp, CloneOp, OpenOp], instanceOperations=[CleanOp, StatusOp, AddOp, RmOp, ResetOp, ApplyOp, PullOp, PushOp, FetchOp, LsRemoteOp, CheckoutOp, LogOp, CommitOp, RevertOp, MergeOp, DescribeOp, ShowOp])
-class Grgit implements AutoCloseable {
+class Grgit implements Closeable {
   /**
    * The repository opened by this object.
    */
