@@ -3,9 +3,15 @@ plugins {
   id 'groovy'
 }
 
+repositories {
+  maven {
+    url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+  }
+}
+
 dependencies {
   // groovy
-  implementation 'org.codehaus.groovy:groovy-all:2.4.15'
+  implementation 'org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)'
 
   // jgit
   def jgitVersion = '4.11.0.201803080745-r'
@@ -32,7 +38,9 @@ dependencies {
 
   // testing
   testImplementation 'junit:junit:latest.release'
-  testImplementation 'org.spockframework:spock-core:1.1-groovy-2.4'
+  testImplementation('org.spockframework:spock-core:1.2-groovy-2.5-SNAPSHOT') {
+    exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
+  }
 }
 
 test {
