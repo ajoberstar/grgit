@@ -1,0 +1,51 @@
+plugins {
+  id 'java-gradle-plugin'
+  id 'groovy'
+}
+
+// compat tests use grgit to set up and verify the tests
+sourceSets {
+  compatTest {
+    compileClasspath += main.output
+    runtimeClasspath += main.output
+  }
+}
+
+dependencies {
+  compileOnly gradleApi()
+
+  implementation project(':grgit-core')
+  compatTestImplementation project(':grgit-core')
+
+  compatTestCompile 'junit:junit:latest.release'
+  compatTestCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+}
+
+stutter {
+  sparse = true
+  includeActiveRc = true
+  java(8) {
+    compatibleRange '3.0'
+  }
+  java(9) {
+    compatibleRange '4.2.1'
+  }
+}
+
+pluginBundle {
+    website = 'https://github.com/ajoberstar/grgit'
+    vcsUrl = 'https://github.com/ajoberstar/grgit.git'
+    description = 'The Groovy way to use Git'
+    plugins {
+        publishPlugin {
+            id = 'org.ajoberstar.grgit'
+            displayName = 'The Groovy way to use Git'
+            tags = ['git', 'groovy']
+        }
+    }
+    mavenCoordinates {
+        groupId = project.group
+        artifactId = project.name
+        version = project.version
+    }
+}

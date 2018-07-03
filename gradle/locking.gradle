@@ -1,0 +1,20 @@
+allprojects {
+  plugins.withId('java-base') {
+    sourceSets.all { sourceSet ->
+      configurations[sourceSet.compileClasspathConfigurationName].resolutionStrategy.activateDependencyLocking()
+      configurations[sourceSet.runtimeClasspathConfigurationName].resolutionStrategy.activateDependencyLocking()
+    }
+
+    task lock {
+      doFirst {
+        assert gradle.startParameter.writeDependencyLocks
+      }
+      doLast {
+        sourceSets.all { sourceSet ->
+          configurations[sourceSet.compileClasspathConfigurationName].resolve()
+          configurations[sourceSet.runtimeClasspathConfigurationName].resolve()
+        }
+      }
+    }
+  }
+}

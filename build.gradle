@@ -1,145 +1,20 @@
 plugins {
   id 'org.ajoberstar.defaults' version '0.12.0'
-  id 'org.jbake.site' version '1.0.0'
-  id 'java-gradle-plugin'
-  id 'groovy'
+  id 'org.jbake.site' version '1.0.0' apply false
 }
 
-group = 'org.ajoberstar'
-description = 'The Groovy way to use Git.'
+apply from: 'gradle/locking.gradle'
+apply from: 'gradle/bintray.gradle'
 
-sourceCompatibility = 8
+allprojects {
+  group = 'org.ajoberstar.grgit'
+  description = 'The Groovy way to use Git.'
 
-// compat tests use grgit to set up and verify the tests
-sourceSets {
-  compatTest {
-    compileClasspath += main.output
-    runtimeClasspath += main.output
-  }
-}
+  plugins.withId('java') {
+    sourceCompatibility = 8
 
-configurations.compatTestCompile.extendsFrom configurations.compile
-
-jbake {
-  srcDirName = 'docs'
-}
-
-gitPublish {
-  contents {
-    from "${buildDir}/${jbake.destDirName}"
-  }
-}
-
-gitPublishCopy.dependsOn bake
-
-repositories {
-  mavenCentral()
-}
-
-// workaround for java-gradle-plugin adding gradleApi() to the compile classpath
-configurations.compile.withDependencies { deps ->
-  deps.remove(dependencies.gradleApi())
-}
-
-// workaround for gradle-defaults excluding groovy from all configurations
-configurations.all {
-  excludeRules = []
-}
-configurations.compatTestCompile {
-  exclude group: 'org.codehaus.groovy'
-}
-
-dependencyLocking {
-  lockAllConfigurations()
-}
-
-dependencies {
-  // groovy
-  testCompile 'org.codehaus.groovy:groovy-all:[2.4.0, 3.0.0)'
-
-  // gradle
-  compileOnly gradleApi()
-
-  // jgit
-  def jgitVersion = '4.11.0.201803080745-r'
-  compile "org.eclipse.jgit:org.eclipse.jgit:$jgitVersion"
-  compile "org.eclipse.jgit:org.eclipse.jgit.ui:$jgitVersion"
-
-  // agentproxy
-  def agentProxyVersion = '[0.0.9,)'
-  compile "com.jcraft:jsch.agentproxy.core:$agentProxyVersion"
-  compile "com.jcraft:jsch.agentproxy.jsch:$agentProxyVersion"
-  compile "com.jcraft:jsch.agentproxy.pageant:$agentProxyVersion"
-  compile "com.jcraft:jsch.agentproxy.sshagent:$agentProxyVersion"
-  compile "com.jcraft:jsch.agentproxy.usocket-jna:$agentProxyVersion"
-  compile "com.jcraft:jsch.agentproxy.usocket-nc:$agentProxyVersion"
-  // agentproxy pulls this in, but we need to force a newer version
-  compile 'com.jcraft:jsch:[0.1.54,)'
-
-  // logging
-  testCompile "org.slf4j:slf4j-api:[1.7.25,1.8.0-alpha)" // wait for final 1.8.0 to come out before letting it in
-  testRuntime "org.slf4j:slf4j-simple:[1.7.25,1.8.0-alpha)"
-
-  // testing
-  testCompile "junit:junit:latest.release"
-  compatTestCompile "junit:junit:latest.release"
-  testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
-  compatTestCompile "org.spockframework:spock-core:1.1-groovy-2.4"
-}
-
-test {
-  useJUnit {
-    excludeCategories 'org.ajoberstar.grgit.fixtures.PlatformSpecific'
-  }
-}
-
-['Windows', 'Linux'].each { platform ->
-  tasks.create("test${platform}", Test) {
-    useJUnit {
-      includeCategories "org.ajoberstar.grgit.fixtures.${platform}Specific"
-    }
-    systemProperty 'org.slf4j.simpleLogger.defaultLogLevel', 'debug'
-  }
-}
-
-stutter {
-  sparse = true
-  includeActiveRc = true
-  java(8) {
-    compatibleRange '3.0'
-  }
-  java(9) {
-    compatibleRange '4.2.1'
-  }
-}
-
-publishing {
-  repositories {
-    maven {
-      name = 'bintray'
-      url = 'https://api.bintray.com/maven/ajoberstar/maven/grgit/;publish=1'
-      credentials {
-        username = System.env['BINTRAY_USER']
-        password = System.env['BINTRAY_KEY']
-      }
+    repositories {
+      mavenCentral()
     }
   }
-}
-
-pluginBundle {
-    website = 'https://github.com/ajoberstar/grgit'
-    vcsUrl = 'https://github.com/ajoberstar/grgit.git'
-    description = 'The Groovy way to use Git'
-    plugins {
-        publishPlugin {
-            id = 'org.ajoberstar.grgit'
-            displayName = 'The Groovy way to use Git'
-            tags = ['git', 'groovy']
-        }
-    }
-    mavenCoordinates {
-        groupId = project.group
-        artifactId = project.name
-        version = project.version
-    }
 }
