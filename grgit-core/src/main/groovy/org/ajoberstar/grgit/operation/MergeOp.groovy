@@ -67,7 +67,7 @@ class MergeOp implements Callable<Void> {
        * we want to preserve ref name in merge commit msg. if it's a ref, don't
        * resolve down to commit id
        */
-      def ref = repo.jgit.repository.getRef(head)
+      def ref = repo.jgit.repository.findRef(head)
       if (ref == null) {
         def revstr = new ResolveService(repo).toRevisionString(head)
         cmd.include(JGitUtil.resolveObject(repo, revstr))

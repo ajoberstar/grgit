@@ -8,7 +8,7 @@ commons-codec:commons-codec:1.9
 commons-logging:commons-logging:1.2
 org.apache.httpcomponents:httpclient:4.5.2
 org.apache.httpcomponents:httpcore:4.4.4
-org.eclipse.jgit:org.eclipse.jgit.ui:4.11.0.201803080745-r
-org.eclipse.jgit:org.eclipse.jgit:4.11.0.201803080745-r
+org.eclipse.jgit:org.eclipse.jgit.ui:5.0.1.201806211838-r
+org.eclipse.jgit:org.eclipse.jgit:5.0.1.201806211838-r
 org.slf4j:slf4j-api:1.8.0-beta2
 org.slf4j:slf4j-simple:1.8.0-beta2
