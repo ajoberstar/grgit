@@ -42,6 +42,12 @@ dependencies {
   }
 }
 
+jar {
+  manifest {
+    attributes 'Automatic-Module-Name': 'org.ajoberstar.grgit'
+  }
+}
+
 test {
   useJUnit {
     excludeCategories 'org.ajoberstar.grgit.fixtures.PlatformSpecific'
