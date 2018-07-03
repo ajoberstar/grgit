@@ -27,4 +27,17 @@ class RevertOpSpec extends SimpleGitOpSpec {
     grgit.log().size() == 7
     repoFile('.').listFiles().collect { it.name }.findAll { !it.startsWith('.') } as Set == [0, 2, 4].collect { "${it}.txt" } as Set
   }
+
+  def 'revert with conflicts raises exception'() {
+    given:
+    repoFile("1.txt") << "Edited"
+    grgit.add(patterns:['.'])
+    commits << grgit.commit(message:'Modified', all: true)
+    when:
+    grgit.revert(commits:[1, 3].collect { commits[it].id })
+    then:
+    thrown(IllegalStateException)
+    grgit.log().size() == 6
+    grgit.status().conflicts.containsAll('1.txt')
+  }
 }
