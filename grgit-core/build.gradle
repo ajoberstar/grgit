@@ -15,7 +15,6 @@ dependencies {
 
   // jgit
   compile 'org.eclipse.jgit:org.eclipse.jgit:latest.release'
-  compile 'org.eclipse.jgit:org.eclipse.jgit.ui:latest.release'
 
   // agentproxy
   implementation 'com.jcraft:jsch.agentproxy.core:latest.release'

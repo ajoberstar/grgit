@@ -150,11 +150,6 @@ class AuthConfig {
     HARDCODED(true),
 
     /**
-     * Will prompt for credentials using an AWT window, if needed.
-     */
-    INTERACTIVE(true),
-
-    /**
      * Use SSH keys in the system's sshagent process.
      */
     SSHAGENT(true),

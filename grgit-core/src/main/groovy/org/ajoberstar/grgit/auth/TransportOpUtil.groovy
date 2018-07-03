@@ -43,9 +43,6 @@ final class TransportOpUtil {
     } else if (config.allows(AuthConfig.Option.HARDCODED) && systemCreds?.populated) {
       logger.info('using hardcoded credentials from system properties')
       return new UsernamePasswordCredentialsProvider(systemCreds.username, systemCreds.password)
-    } else if (config.allows(AuthConfig.Option.INTERACTIVE) && !GraphicsEnvironment.isHeadless()) {
-      logger.info('using interactive credentials, if needed')
-      return new AwtCredentialsProvider()
     } else {
       return null
     }
