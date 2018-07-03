@@ -91,7 +91,7 @@ class JGitUtil {
    */
   static Commit resolveCommit(Repository repo, ObjectId id) {
     RevWalk walk = new RevWalk(repo.jgit.repository)
-    return convertCommit(walk.parseCommit(id))
+    return convertCommit(repo, walk.parseCommit(id))
   }
 
   /**
@@ -99,9 +99,10 @@ class JGitUtil {
    * @param rev the JGit commit to convert
    * @return a corresponding Grgit commit
    */
-  static Commit convertCommit(RevCommit rev) {
+  static Commit convertCommit(Repository repo, RevCommit rev) {
     Map props = [:]
     props.id = ObjectId.toString(rev)
+    props.abbreviatedId = repo.jgit.repository.newObjectReader().abbreviate(rev).name()
     PersonIdent committer = rev.committerIdent
     props.committer = new Person(committer.name, committer.emailAddress)
     PersonIdent author = rev.authorIdent
@@ -144,7 +145,7 @@ class JGitUtil {
       RevTag rev = walk.parseTag(ref.objectId)
       RevObject target = walk.peel(rev)
       walk.parseBody(rev.object)
-      props.commit = convertCommit(target)
+      props.commit = convertCommit(repo, target)
       PersonIdent tagger = rev.taggerIdent
       props.tagger = new Person(tagger.name, tagger.emailAddress)
       props.fullMessage = rev.fullMessage

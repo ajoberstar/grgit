@@ -97,6 +97,7 @@ class JGitUtilSpec extends Specification {
     ZonedDateTime commitTime = ZonedDateTime.ofInstant(instant, zone)
     Commit expectedCommit = new Commit(
       ObjectId.toString(commits[1]),
+      ObjectId.toString(commits[1])[0..6],
       [ObjectId.toString(commits[0])],
       person,
       person,
@@ -105,7 +106,7 @@ class JGitUtilSpec extends Specification {
       'second commit'
     )
     expect:
-    def result = JGitUtil.convertCommit(commits[1])
+    def result = JGitUtil.convertCommit(repo, commits[1])
     result == expectedCommit
     result.date.toInstant() == commitTime.toInstant()
   }
@@ -119,7 +120,7 @@ class JGitUtilSpec extends Specification {
     and:
     ZonedDateTime after = ZonedDateTime.now().plusSeconds(2)
     then:
-    tag.commit == JGitUtil.convertCommit(commits[0])
+    tag.commit == JGitUtil.convertCommit(repo, commits[0])
     tag.tagger == person
     tag.fullName == 'refs/tags/v1.0.0'
     tag.fullMessage == 'first tag\ntesting'
@@ -137,7 +138,7 @@ class JGitUtilSpec extends Specification {
     and:
     ZonedDateTime after = ZonedDateTime.now().plusSeconds(2)
     then:
-    tag.commit == JGitUtil.convertCommit(commits[0])
+    tag.commit == JGitUtil.convertCommit(repo, commits[0])
     tag.tagger == null
     tag.fullName == 'refs/tags/v2.0.0'
     tag.fullMessage == null
@@ -154,7 +155,7 @@ class JGitUtilSpec extends Specification {
     and:
     ZonedDateTime after = ZonedDateTime.now().plusSeconds(2)
     then:
-    tag.commit == JGitUtil.convertCommit(commits[0])
+    tag.commit == JGitUtil.convertCommit(repo, commits[0])
     tag.tagger == person
     tag.fullName == 'refs/tags/v1.1.0'
     tag.fullMessage == 'testing'
