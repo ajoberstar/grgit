@@ -16,20 +16,6 @@ dependencies {
   // jgit
   compile 'org.eclipse.jgit:org.eclipse.jgit:latest.release'
 
-  // agentproxy
-  implementation 'com.jcraft:jsch.agentproxy.core:latest.release'
-  implementation 'com.jcraft:jsch.agentproxy.jsch:latest.release'
-  implementation 'com.jcraft:jsch.agentproxy.pageant:latest.release'
-  implementation 'com.jcraft:jsch.agentproxy.sshagent:latest.release'
-  implementation 'com.jcraft:jsch.agentproxy.usocket-jna:latest.release'
-  implementation 'com.jcraft:jsch.agentproxy.usocket-nc:latest.release'
-
-  constraints {
-    implementation('com.jcraft:jsch:[0.1.54,)') {
-      because 'agentproxy pulls this in, but we need fixes from a newer version'
-    }
-  }
-
   // logging
   testImplementation 'org.slf4j:slf4j-api:latest.release'
   testRuntime 'org.slf4j:slf4j-simple:latest.release'
@@ -44,21 +30,6 @@ dependencies {
 jar {
   manifest {
     attributes 'Automatic-Module-Name': 'org.ajoberstar.grgit'
-  }
-}
-
-test {
-  useJUnit {
-    excludeCategories 'org.ajoberstar.grgit.fixtures.PlatformSpecific'
-  }
-}
-
-['Windows', 'Linux'].each { platform ->
-  tasks.create("test${platform}", Test) {
-    useJUnit {
-      includeCategories "org.ajoberstar.grgit.fixtures.${platform}Specific"
-    }
-    systemProperty 'org.slf4j.simpleLogger.defaultLogLevel', 'debug'
   }
 }
 

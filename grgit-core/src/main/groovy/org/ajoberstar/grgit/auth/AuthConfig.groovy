@@ -14,15 +14,8 @@ import org.slf4j.LoggerFactory
 class AuthConfig {
   private static final Logger logger = LoggerFactory.getLogger(AuthConfig)
 
-  /**
-   * System property name used to force a specific authentication option.
-   */
-  static final String FORCE_OPTION = 'org.ajoberstar.grgit.auth.force'
   static final String USERNAME_OPTION = 'org.ajoberstar.grgit.auth.username'
   static final String PASSWORD_OPTION = 'org.ajoberstar.grgit.auth.password'
-  static final String SSH_PRIVATE_KEY_OPTION = 'org.ajoberstar.grgit.auth.ssh.private'
-  static final String SSH_PASSPHRASE_OPTION = 'org.ajoberstar.grgit.auth.ssh.passphrase'
-  static final String SSH_SESSION_CONFIG_OPTION_PREFIX = 'org.ajoberstar.grgit.auth.session.config.'
 
   static final String USERNAME_ENV_VAR = 'GRGIT_USER'
   static final String PASSWORD_ENV_VAR = 'GRGIT_PASS'
@@ -34,44 +27,8 @@ class AuthConfig {
     this.props = props
     this.env = env
 
-    if (allows(Option.COMMAND)) {
-      GrgitSystemReader.install()
-      logger.info('If SSH is used, the following external command (if non-null) will be used instead of JSch: {}', SystemReader.instance.getenv('GIT_SSH'))
-    } else {
-      // TODO raise this to a warning if COMMAND seems to work well
-      logger.debug('JSch being used for SSH commands. Try org.ajoberstar.grgit.auth.force=command to use ssh or plink directly.')
-    }
-  }
-
-  /**
-   * Set of all authentication options that are allowed in this
-   * configuration.
-   */
-  Set<Option> getAllowed() {
-    String forceSetting = props[FORCE_OPTION]
-    if (forceSetting) {
-      try {
-        return [Option.valueOf(forceSetting.toUpperCase())]
-      } catch (IllegalArgumentException e) {
-        throw new IllegalArgumentException("${FORCE_OPTION} must be set to one of ${Option.values() as List}. Currently set to: ${forceSetting}", e)
-      }
-    } else {
-      return (Option.values() as Set).findAll {
-        String setting = props[it.systemPropertyName]
-        setting == null ? it.defaultValue : Boolean.valueOf(setting)
-      }
-    }
-  }
-
-  /**
-   * Test whether the given authentication option is allowed by this
-   * configuration.
-   * @param option the authentication option to test for
-   * @return {@code true} if the given option is allowed, {@code false}
-   * otherwise
-   */
-  boolean allows(Option option) {
-    return getAllowed().contains(option)
+    GrgitSystemReader.install()
+    logger.debug('If SSH is used, the following external command (if non-null) will be used instead of JSch: {}', SystemReader.instance.getenv('GIT_SSH'))
   }
 
   /**
@@ -81,41 +38,9 @@ class AuthConfig {
    * properties, or, if the username isn't set, {@code null}
    */
   Credentials getHardcodedCreds() {
-    if (allows(Option.HARDCODED)) {
-      String username = props[USERNAME_OPTION] ?: env[USERNAME_ENV_VAR]
-      String password = props[PASSWORD_OPTION] ?: env[PASSWORD_ENV_VAR]
-      return new Credentials(username, password)
-    } else {
-      return null
-    }
-  }
-
-  /**
-   * Gets the path to your SSH private key to use during authentication reflecting
-   * the value set in the system properties.
-   * @return the path to the SSH key, if set, otherwise {@code null}
-   */
-  String getSshPrivateKeyPath() {
-    return props[SSH_PRIVATE_KEY_OPTION]
-  }
-
-  /**
-   * Gets the passphrase for your SSH private key to use during authentication reflecting
-   * the value set in the system properties.
-   * @return the passphrase of the SSH key, if set, otherwise {@code null}
-   */
-  String getSshPassphrase() {
-    return props[SSH_PASSPHRASE_OPTION]
-  }
-
-  /**
-   * Gets session config override for SSH session that is used underneath by JGit
-   * @return map with configuration or empty if nothing was specified in system property
-   */
-  Map<String, String> getSessionConfig() {
-    return props
-      .findAll { key, value -> key.startsWith(SSH_SESSION_CONFIG_OPTION_PREFIX) }
-      .collectEntries { key, value -> [key.substring(SSH_SESSION_CONFIG_OPTION_PREFIX.length()), value] }
+    String username = props[USERNAME_OPTION] ?: env[USERNAME_ENV_VAR]
+    String password = props[PASSWORD_OPTION] ?: env[PASSWORD_ENV_VAR]
+    return new Credentials(username, password)
   }
 
   /**
@@ -138,48 +63,5 @@ class AuthConfig {
    */
   static AuthConfig fromSystem() {
     return fromMap(System.properties, System.env)
-  }
-
-  /**
-   * Available authentication options.
-   */
-  static enum Option {
-    /**
-     * Use credentials provided directly to Grgit.
-     */
-    HARDCODED(true),
-
-    /**
-     * Use SSH keys in the system's sshagent process.
-     */
-    SSHAGENT(true),
-
-    /**
-     * Use SSH keys in the system's pageant process.
-     */
-    PAGEANT(true),
-
-    /**
-     * Use external command to create SSH session.
-     */
-    COMMAND(false)
-
-    final defaultValue
-
-    private Option(boolean defaultValue) {
-      this.defaultValue = defaultValue
-    }
-
-    /**
-     * Gets the system property name used to configure whether this
-     * option is allowed or not. By default, all are allowed.
-     * The system properties are of the form
-     * {@code org.ajoberstar.grgit.auth.<lowercase option name>.allow}
-     * Can be set to {@code true} or {@code false}.
-     * @return the system property name
-     */
-    String getSystemPropertyName() {
-      return "org.ajoberstar.grgit.auth.${name().toLowerCase()}.allow"
-    }
   }
 }

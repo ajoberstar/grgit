@@ -1,12 +1,12 @@
 package org.ajoberstar.grgit.auth
 
-import java.awt.GraphicsEnvironment
-
 import org.ajoberstar.grgit.Credentials
 
 import org.eclipse.jgit.api.TransportCommand
-import org.eclipse.jgit.awtui.AwtCredentialsProvider
+import org.eclipse.jgit.errors.UnsupportedCredentialItem
+import org.eclipse.jgit.transport.CredentialItem
 import org.eclipse.jgit.transport.CredentialsProvider
+import org.eclipse.jgit.transport.URIish
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 
 import org.slf4j.Logger
@@ -30,17 +30,15 @@ final class TransportOpUtil {
    */
   static void configure(TransportCommand cmd, Credentials creds) {
     AuthConfig config = AuthConfig.fromSystem()
-    logger.info('The following authentication options are allowed (though they may not be available): {}', config.allowed)
     cmd.credentialsProvider = determineCredentialsProvider(config, creds)
-    cmd.transportConfigCallback = new JschAgentProxyConfigCallback(config)
   }
 
   private static CredentialsProvider determineCredentialsProvider(AuthConfig config, Credentials creds) {
     Credentials systemCreds = config.hardcodedCreds
-    if (config.allows(AuthConfig.Option.HARDCODED) && creds?.populated) {
+    if (creds?.populated) {
       logger.info('using hardcoded credentials provided programmatically')
       return new UsernamePasswordCredentialsProvider(creds.username, creds.password)
-    } else if (config.allows(AuthConfig.Option.HARDCODED) && systemCreds?.populated) {
+    } else if (systemCreds?.populated) {
       logger.info('using hardcoded credentials from system properties')
       return new UsernamePasswordCredentialsProvider(systemCreds.username, systemCreds.password)
     } else {
