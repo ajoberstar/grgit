@@ -37,6 +37,9 @@ class RevertOp implements Callable<Commit> {
       cmd.include(JGitUtil.resolveObject(repo, revstr))
     }
     RevCommit commit = cmd.call()
+    if (cmd.failingResult) {
+      throw new IllegalStateException("Could not merge reverted commits (conflicting files can be retrieved with a call to grgit.status()): ${cmd.failingResult}")
+    }
     return JGitUtil.convertCommit(commit)
   }
 }
