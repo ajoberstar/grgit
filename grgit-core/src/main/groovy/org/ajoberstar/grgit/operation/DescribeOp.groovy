@@ -32,6 +32,11 @@ class DescribeOp implements Callable<String> {
   boolean longDescr
 
   /**
+   * Include non-annotated tags when determining nearest tag.
+   */
+  boolean tags
+
+  /**
    * glob patterns to match tags against before they are considered
    */
   List<String> match = []
@@ -42,6 +47,7 @@ class DescribeOp implements Callable<String> {
       cmd.setTarget(new ResolveService(repo).toRevisionString(commit))
     }
     cmd.setLong(longDescr)
+    cmd.setTags(tags)
     if (match) {
       cmd.setMatch(match as String[])
     }
