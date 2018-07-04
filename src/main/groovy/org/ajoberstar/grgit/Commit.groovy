@@ -15,6 +15,11 @@ class Commit {
   String id
 
   /**
+   * The abbreviated hash of the commit.
+   */
+  String abbreviatedId
+
+  /**
    * Hashes of any parent commits.
    */
   List<String> parentIds
@@ -67,9 +72,10 @@ class Commit {
   /**
    * The first {@code length} characters of the commit hash.
    * @param length the number of characters to abbreviate the
-   * hash to (defaults to 7)
+   * hash.
    */
-  String getAbbreviatedId(int length = 7) {
+  @Deprecated
+  String getAbbreviatedId(int length) {
     return id[0..(length - 1)]
   }
 }

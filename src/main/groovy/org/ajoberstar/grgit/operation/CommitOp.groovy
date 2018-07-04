@@ -75,6 +75,6 @@ class CommitOp implements Callable<Commit> {
     if (all) { cmd.all = all }
     cmd.amend = amend
     RevCommit commit = cmd.call()
-    return JGitUtil.convertCommit(commit)
+    return JGitUtil.convertCommit(repo, commit)
   }
 }

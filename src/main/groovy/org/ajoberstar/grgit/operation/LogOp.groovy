@@ -61,6 +61,6 @@ class LogOp implements Callable<List<Commit>> {
     }
     cmd.skip = skipCommits
     cmd.maxCount = maxCommits
-    return cmd.call().collect { JGitUtil.convertCommit(it) }.asImmutable()
+    return cmd.call().collect { JGitUtil.convertCommit(repo, it) }.asImmutable()
   }
 }

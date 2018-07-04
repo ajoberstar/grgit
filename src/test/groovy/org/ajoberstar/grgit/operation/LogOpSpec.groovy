@@ -34,7 +34,7 @@ class LogOpSpec extends SimpleGitOpSpec {
     grgit.checkout(branch: 'master')
     def jgitId = JGitUtil.resolveObject(grgit.repository, commits[2].id)
     def mergeCommit = grgit.repository.jgit.merge().include(jgitId).setStrategy(MergeStrategy.OURS).call().newHead
-    commits << JGitUtil.convertCommit(mergeCommit)
+    commits << JGitUtil.convertCommit(grgit.repository, mergeCommit)
 
     testFile1 << '4'
     grgit.add(patterns: ['.'])
