@@ -1,0 +1,33 @@
+plugins {
+  id 'groovy'
+}
+
+repositories {
+  maven {
+    url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+  }
+}
+
+dependencies {
+  // groovy
+  implementation 'org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)'
+
+  // jgit
+  compile 'org.eclipse.jgit:org.eclipse.jgit:latest.release'
+
+  // logging
+  testImplementation 'org.slf4j:slf4j-api:latest.release'
+  testRuntime 'org.slf4j:slf4j-simple:latest.release'
+
+  // testing
+  testImplementation 'junit:junit:latest.release'
+  testImplementation('org.spockframework:spock-core:1.2-groovy-2.5-SNAPSHOT') {
+    exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
+  }
+}
+
+jar {
+  manifest {
+    attributes 'Automatic-Module-Name': 'org.ajoberstar.grgit'
+  }
+}

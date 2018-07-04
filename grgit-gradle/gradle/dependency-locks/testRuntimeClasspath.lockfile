@@ -1,0 +1,12 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+com.googlecode.javaewah:JavaEWAH:1.1.6
+com.jcraft:jsch:0.1.54
+com.jcraft:jzlib:1.1.1
+commons-codec:commons-codec:1.9
+commons-logging:commons-logging:1.2
+org.apache.httpcomponents:httpclient:4.5.2
+org.apache.httpcomponents:httpcore:4.4.4
+org.eclipse.jgit:org.eclipse.jgit:5.0.1.201806211838-r
+org.slf4j:slf4j-api:1.7.2
