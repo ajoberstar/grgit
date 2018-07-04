@@ -28,7 +28,7 @@ Given one or more existing commits, revert the changes that the related patches 
 
 Note: git revert is used to record some new commits to reverse the effect of some earlier commits (often only a faulty one). If you want to throw away all uncommitted changes in your working directory, you should see link:grgit-reset.html[grgit-reset], particularly the `hard` option. Take care with these alternatives as they will discard uncommitted changes in your working directory.
 
-Returns a link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Commit.html[Commit] representing the new `HEAD`.
+Returns a link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Commit.html[Commit] representing the new `HEAD`.
 
 == Options
 

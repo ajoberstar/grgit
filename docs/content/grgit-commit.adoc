@@ -41,7 +41,7 @@ The content to be added can be specified in several ways:
 
 If you make a commit and then find a mistake immediately after that, you can recover from it with link:grgit-reset.html[grgit-reset].
 
-Returns a link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Commit.html[Commit] representing the new `HEAD`.
+Returns a link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Commit.html[Commit] representing the new `HEAD`.
 
 == Options
 
@@ -50,8 +50,8 @@ paths:: (`Set<String>`, default `[]`) When files are given on the command line, 
 all:: (`boolean`, default `false`) Tell the command to automatically stage files that have been modified and deleted, but new files you have not told Git about are not affected.
 amend:: (`boolean`, default `false`) Replace the tip of the current branch by creating a new commit. The recorded tree is prepared as usual, and the message from the original commit is used as the starting point, instead of an empty message, when no other message is specified from the command line. The new commit has the same parents and author as the current one.
 reflogComment:: (`String`, default `null`) Use a different comment in the reflog for this commit.
-committer:: (`Person`, default `null`) Override the committer recorded in the commit. This must be a link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Person.html[Person].
-author:: (`Person`, default `null`) Override the author recorded in the commit. This must be a link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Person.html[Person].
+committer:: (`Person`, default `null`) Override the committer recorded in the commit. This must be a link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Person.html[Person].
+author:: (`Person`, default `null`) Override the author recorded in the commit. This must be a link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Person.html[Person].
 
 == Examples
 

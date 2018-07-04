@@ -50,19 +50,19 @@ Various methods to resolve objects to types needed by Grgit operations. These ar
 
 == Options
 
-toObjectId:: Accepts link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Commit.html[Commit], link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Tag.html[Tag], link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Branch.html[Branch], link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Ref.html[Ref]
+toObjectId:: Accepts link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Commit.html[Commit], link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Tag.html[Tag], link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Branch.html[Branch], link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Ref.html[Ref]
 
-toCommit:: Accepts link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Commit.html[Commit], link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Tag.html[Tag], link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Branch.html[Branch], String, GString
+toCommit:: Accepts link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Commit.html[Commit], link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Tag.html[Tag], link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Branch.html[Branch], String, GString
 
-toBranch:: Accepts link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Branch.html[Branch], String, GString
+toBranch:: Accepts link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Branch.html[Branch], String, GString
 
-toBranchName:: Accepts link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Branch.html[Branch], String, GString
+toBranchName:: Accepts link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Branch.html[Branch], String, GString
 
-toTag:: Accepts link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Tag.html[Tag], String, GString
+toTag:: Accepts link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Tag.html[Tag], String, GString
 
-toTagName:: Accepts link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Tag.html[Tag], String, GString
+toTagName:: Accepts link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Tag.html[Tag], String, GString
 
-toRevisionString:: Accepts link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Commit.html[Commit], link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Tag.html[Tag], link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Branch.html[Branch], String, GString
+toRevisionString:: Accepts link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Commit.html[Commit], link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Tag.html[Tag], link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Branch.html[Branch], String, GString
 
 == Examples
 

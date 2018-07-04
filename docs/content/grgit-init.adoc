@@ -26,7 +26,7 @@ grgit.init {
 
 This command creates an empty Git repository - basically a `.git` directory with subdirectories for `objects`, `refs/heads`, `refs/tags`, and template files. An initial `HEAD` file that references the HEAD of the master branch is also created.
 
-Returns a link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Grgit.html[Grgit] instance.
+Returns a link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Grgit.html[Grgit] instance.
 
 == Options
 

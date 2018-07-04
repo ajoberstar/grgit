@@ -57,7 +57,7 @@ grgit.log {
 }
 ----
 
-Returns a `List<Commit>` (link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Commit.html[Commit]) with the commits matching the criteria given.
+Returns a `List<Commit>` (link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Commit.html[Commit]) with the commits matching the criteria given.
 
 == Options
 

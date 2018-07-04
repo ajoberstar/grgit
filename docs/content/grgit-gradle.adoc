@@ -15,7 +15,7 @@ plugins {
 
 ## What does the plugin do?
 
-The `org.ajoberstar.grgit` plugin adds a `grgit` property to your build, which is an instance of link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Grgit.html[Grgit] opened to the repository visible from your project's root dir. This will check the project directory and its parents for a `.git` directory. If no repository is found, the `grgit` property is `null`.
+The `org.ajoberstar.grgit` plugin adds a `grgit` property to your build, which is an instance of link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Grgit.html[Grgit] opened to the repository visible from your project's root dir. This will check the project directory and its parents for a `.git` directory. If no repository is found, the `grgit` property is `null`.
 
 ```groovy
 version = "1.0.0-${grgit.head().abbreviatedId}"

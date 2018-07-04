@@ -28,8 +28,8 @@ grgit.tag.remove(names: [<name>, ...])
 == Description
 
 
-`grgit.tag.list()`:: Returns a list of tags (link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Tag.html[Tag]).
-`grgit.tag.add(name: <name>, pointsTo: <commit>, force: <boolean>, annotate: <boolean>, message: <msg>, tagger: <person>)`:: Creates a new tag named `<name>` pointing at `<pointsTo>`. Returns the created link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Tag.html[Tag].
+`grgit.tag.list()`:: Returns a list of tags (link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Tag.html[Tag]).
+`grgit.tag.add(name: <name>, pointsTo: <commit>, force: <boolean>, annotate: <boolean>, message: <msg>, tagger: <person>)`:: Creates a new tag named `<name>` pointing at `<pointsTo>`. Returns the created link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Tag.html[Tag].
 `grgit.tag.remove(names: [<name>, ...])`:: Removes one or more tages. Returns a `List<String>` of tag names removed.
 
 == Options
@@ -38,7 +38,7 @@ grgit.tag.remove(names: [<name>, ...])
 
 name:: (`String`, default `null`) Name of the tag
 message:: (`String`, default `null`) Use the given <msg> as the commit message.
-tagger:: (`Person`, default `null`) Override the tagger recorded in the tag. This must be a link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Person.html[Person].
+tagger:: (`Person`, default `null`) Override the tagger recorded in the tag. This must be a link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Person.html[Person].
 annotate:: (`boolean`, default `true`) Make an unsigned, annotated tag object
 force:: (`boolean`, default `false`) Replace an existing tag with the given name (instead of failing)
 pointsTo:: (`Object`, default `null`) Point new tag at this commit. For a more complete list of acceptable inputs, see link:grgit-resolve.html[grgit-resolve] (specifically the `toRevisionString` method).

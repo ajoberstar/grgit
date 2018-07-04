@@ -30,7 +30,7 @@ grgit.lsremote {
 
 == Description
 
-Returns a `Map<Ref, String>` (link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Ref.html[Ref]) containing references available in the remote, and the object ID they currently point to.
+Returns a `Map<Ref, String>` (link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Ref.html[Ref]) containing references available in the remote, and the object ID they currently point to.
 
 == Options
 

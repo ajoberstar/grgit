@@ -38,10 +38,10 @@ grgit.branch.remove(names: [<name>, ...], force: <boolean>)
 == Description
 
 
-`grgit.branch.current()`:: Returns the current link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Branch.html[Branch].
-`grgit.branch.list()`:: Returns a list of branches (link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Branch.html[Branch]). The branches returned can be filtered using `mode` and `contains`.
-`grgit.branch.add(name: <name>, startPoint: <startPoint>, mode: <mode>)`:: Creates a new branch named `<name>` pointing at `<startPoint>`, possibly tracking a remote depending on `<mode>`. Returns the created link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Branch.html[Branch].
-`grgit.branch.change(name: <name>, startPoint: <startPoint>, mode: <mode>)`:: Modify an existing branch named `<name>` pointing at `<startPoint>`, possibly tracking a remote depending on `<mode>`. Returns the modified link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Branch.html[Branch].
+`grgit.branch.current()`:: Returns the current link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Branch.html[Branch].
+`grgit.branch.list()`:: Returns a list of branches (link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Branch.html[Branch]). The branches returned can be filtered using `mode` and `contains`.
+`grgit.branch.add(name: <name>, startPoint: <startPoint>, mode: <mode>)`:: Creates a new branch named `<name>` pointing at `<startPoint>`, possibly tracking a remote depending on `<mode>`. Returns the created link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Branch.html[Branch].
+`grgit.branch.change(name: <name>, startPoint: <startPoint>, mode: <mode>)`:: Modify an existing branch named `<name>` pointing at `<startPoint>`, possibly tracking a remote depending on `<mode>`. Returns the modified link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Branch.html[Branch].
 `grgit.branch.remove(names: [<name>, ...], force: <boolean>)`:: Removes one or more branches. Returns a `List<String>` of branch names removed.
 
 == Options

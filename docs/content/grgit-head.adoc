@@ -16,7 +16,7 @@ grgit.head()
 
 == Description
 
-Returns the link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/Commit.html[Commit] that the current `HEAD` points to.
+Returns the link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Commit.html[Commit] that the current `HEAD` points to.
 
 == Options
 

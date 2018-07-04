@@ -30,7 +30,7 @@ grgit.show {
 
 Shows a commit including it's message and diff.
 
-Returns a link:http://ajoberstar.org/grgit/docs/groovydoc/org/ajoberstar/grgit/CommitDiff.html[CommitDiff] for the given commit.
+Returns a link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/CommitDiff.html[CommitDiff] for the given commit.
 
 == Options
 
