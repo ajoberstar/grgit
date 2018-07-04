@@ -9,6 +9,19 @@ A library providing a wrapper around link:https://eclipse.org/jgit/[Eclipse's JG
 
 == Where do I get Grgit?
 
+[IMPORTANT]
+====
+As of Grgit 3, the coordinates for the library have changed.
+
+* Instead of:
+** `org.ajoberstar:grgit:<version>`
+* Use one of:
+** org.ajoberstar.grgit:grgit-core:<version>
+** org.ajoberstar.grgit:grgit-gradle:<version>
+
+The Gradle plugin ID **has not** changed. It is still `org.ajoberstar.grgit`.
+====
+
 To use Grgit as a library, add a dependency on it to link:https://bintray.com/bintray/jcenter[JCenter]. Available versions can be found in the link:https://github.com/ajoberstar/grgit/releases[release notes].
 
 [source, groovy]
@@ -19,7 +32,7 @@ repositories {
 }
 
 dependencies {
-  compile 'org.ajoberstar:grgit:<version>'
+  compile 'org.ajoberstar.grgit:grgit-core:<version>'
 }
 ----
 
@@ -29,8 +42,8 @@ dependencies {
 <!-- make sure you've specified JCenter in your repositories -->
 <dependencies>
   <dependency>
-    <group>org.ajoberstar</group>
-    <artifactId>grgit</artifactId>
+    <group>org.ajoberstar.grgit</group>
+    <artifactId>grgit-core</artifactId>
     <version>...</version>
   </dependency>
 </dependencies>
