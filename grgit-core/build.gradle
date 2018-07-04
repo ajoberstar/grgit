@@ -1,5 +1,4 @@
 plugins {
-  id 'org.jbake.site'
   id 'groovy'
 }
 
@@ -32,15 +31,3 @@ jar {
     attributes 'Automatic-Module-Name': 'org.ajoberstar.grgit'
   }
 }
-
-jbake {
-  srcDirName = 'docs'
-}
-
-rootProject.gitPublish {
-  contents {
-    from "${buildDir}/${jbake.destDirName}"
-  }
-}
-
-rootProject.gitPublishCopy.dependsOn bake
