@@ -1,7 +1,8 @@
 package org.ajoberstar.grgit.internal
 
+import org.gradle.api.Action
+
 import java.util.concurrent.Callable
-import java.util.function.Consumer
 
 class OpSyntax {
   static def noArgOperation(Class<Callable> opClass, Object[] classArgs) {
@@ -19,9 +20,9 @@ class OpSyntax {
     return op.call()
   }
 
-  static def consumerOperation(Class<Callable> opClass, Object[] classArgs, Consumer arg) {
+  static def actionOperation(Class<Callable> opClass, Object[] classArgs, Action arg) {
     def op = opClass.newInstance(classArgs)
-    arg.accept(op)
+    arg.execute(op)
     return op.call()
   }
 

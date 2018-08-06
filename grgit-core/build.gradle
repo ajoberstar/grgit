@@ -11,6 +11,7 @@ repositories {
 dependencies {
   // groovy
   implementation 'org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)'
+  compileOnly gradleApi()
 
   // jgit
   compile 'org.eclipse.jgit:org.eclipse.jgit:latest.release'
@@ -20,9 +21,11 @@ dependencies {
   testRuntime 'org.slf4j:slf4j-simple:latest.release'
 
   // testing
+  testImplementation gradleApi()
   testImplementation 'junit:junit:latest.release'
-  testImplementation('org.spockframework:spock-core:1.2-groovy-2.5-SNAPSHOT') {
+  testImplementation('org.spockframework:spock-core:1.2-groovy-2.4-SNAPSHOT') {
     exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
+    exclude group: 'org.codehaus.groovy', module: 'groovy-all'
   }
 }
 

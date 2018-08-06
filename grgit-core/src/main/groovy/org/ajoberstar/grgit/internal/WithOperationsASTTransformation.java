@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ASTNode;
@@ -32,6 +31,7 @@ import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
+import org.gradle.api.Action;
 
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class WithOperationsASTTransformation extends AbstractASTTransformation {
@@ -60,7 +60,7 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
 
     targetClass.addMethod(makeNoArgMethod(targetClass, opName, opClass, opReturn, isStatic));
     targetClass.addMethod(makeMapMethod(targetClass, opName, opClass, opReturn, isStatic));
-    targetClass.addMethod(makeConsumerMethod(targetClass, opName, opClass, opReturn, isStatic));
+    targetClass.addMethod(makeActionMethod(targetClass, opName, opClass, opReturn, isStatic));
     targetClass.addMethod(makeClosureMethod(targetClass, opName, opClass, opReturn, isStatic));
   }
 
@@ -100,8 +100,8 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
   }
 
-  private MethodNode makeConsumerMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
-    ClassNode parmType = classFromType(Consumer.class);
+  private MethodNode makeActionMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
+    ClassNode parmType = classFromType(Action.class);
     GenericsType[] generics = new GenericsType[] {new GenericsType(opClass)};
     parmType.setGenericsTypes(generics);
     Parameter[] parms = new Parameter[] {new Parameter(parmType, "arg")};
@@ -109,11 +109,12 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
     Statement code = new ExpressionStatement(
         new StaticMethodCallExpression(
             classFromType(OpSyntax.class),
-            "consumerOperation",
+            "actionOperation",
             new ArgumentListExpression(
                 new ClassExpression(opClass),
                 new ArrayExpression(
-                    classFromType(Object.class), opConstructorParms(targetClass, isStatic)),
+                    classFromType(Object.class),
+                    opConstructorParms(targetClass, isStatic)),
                 new VariableExpression("arg"))));
 
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
