@@ -1,6 +1,5 @@
 package org.ajoberstar.grgit.operation
 
-
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 import org.ajoberstar.grgit.util.JGitUtil
 

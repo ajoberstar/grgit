@@ -1,13 +1,13 @@
 package org.ajoberstar.grgit.operation
 
+import java.util.concurrent.Callable
+
 import org.ajoberstar.grgit.GrgitBase
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.CoercionUtil
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.InitCommand
-
-import java.util.concurrent.Callable
 
 /**
  * Initializes a new repository. Returns a {@link GrgitBase} pointing

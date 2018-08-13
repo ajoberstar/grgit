@@ -2,11 +2,12 @@ package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.fixtures.GitTestUtil
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 import org.eclipse.jgit.api.errors.GitAPIException
 
 import spock.lang.Unroll
 
-class BranchRemoveOpSpec extends org.ajoberstar.grgit.fixtures.SimpleGitOpSpec {
+class BranchRemoveOpSpec extends SimpleGitOpSpec {
   def setup() {
     repoFile('1.txt') << '1'
     grgit.commit(message: 'do', all: true)

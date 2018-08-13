@@ -2,8 +2,9 @@ package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.CommitDiff
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 
-class ShowOpSpec extends org.ajoberstar.grgit.fixtures.SimpleGitOpSpec {
+class ShowOpSpec extends SimpleGitOpSpec {
 
   def 'can show diffs in commit that added new file'() {
     File fooFile = repoFile("dir1/foo.txt")

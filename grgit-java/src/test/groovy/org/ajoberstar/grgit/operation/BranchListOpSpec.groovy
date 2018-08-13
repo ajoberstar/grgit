@@ -1,6 +1,5 @@
 package org.ajoberstar.grgit.operation
 
-
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec

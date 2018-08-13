@@ -1,6 +1,8 @@
 package org.ajoberstar.grgit.operation
 
-class DescribeOpSpec extends org.ajoberstar.grgit.fixtures.SimpleGitOpSpec {
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
+
+class DescribeOpSpec extends SimpleGitOpSpec {
   def setup() {
     grgit.commit(message:'initial commit')
     grgit.tag.add(name:'initial')

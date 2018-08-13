@@ -1,6 +1,8 @@
 package org.ajoberstar.grgit.operation
 
-class RevertOpSpec extends org.ajoberstar.grgit.fixtures.SimpleGitOpSpec {
+import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
+
+class RevertOpSpec extends SimpleGitOpSpec {
   List commits = []
 
   def setup() {

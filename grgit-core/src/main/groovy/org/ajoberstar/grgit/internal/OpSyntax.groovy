@@ -1,6 +1,5 @@
 package org.ajoberstar.grgit.internal
 
-
 import java.util.concurrent.Callable
 
 class OpSyntax {
