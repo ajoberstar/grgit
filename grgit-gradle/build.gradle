@@ -17,6 +17,7 @@ dependencies {
   implementation project(':grgit-core')
   compatTestImplementation project(':grgit-core')
 
+  testCompile 'junit:junit:latest.release'
   compatTestCompile 'junit:junit:latest.release'
   compatTestCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
 }

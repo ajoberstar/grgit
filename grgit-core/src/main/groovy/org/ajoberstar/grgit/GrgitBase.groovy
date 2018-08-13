@@ -1,0 +1,164 @@
+package org.ajoberstar.grgit
+
+import groovy.transform.PackageScope
+import org.ajoberstar.grgit.service.*
+import org.ajoberstar.grgit.util.JGitUtil
+
+/**
+ * Provides support for performing operations on and getting information about
+ * a Git repository.
+ *
+ * <p>A Grgit instance can be obtained via 3 methods.</p>
+ *
+ * <ul>
+ *   <li>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.OpenOpBase Open} an existing repository.</p>
+ *	 <pre>def grgit = Grgit.open(dir: 'path/to/my/repo')</pre>
+ *   </li>
+ *   <li>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.InitOpBase Initialize} a new repository.</p>
+ *	 <pre>def grgit = Grgit.init(dir: 'path/to/my/repo')</pre>
+ *   </li>
+ *   <li>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.CloneOpBase Clone} an existing repository.</p>
+ *	 <pre>def grgit = Grgit.clone(dir: 'path/to/my/repo', uri: 'git@github.com:ajoberstar/grgit.git')</pre>
+ *   </li>
+ * </ul>
+ *
+ * <p>
+ *   Once obtained, operations can be called with two syntaxes.
+ * </p>
+ *
+ * <ul>
+ *   <li>
+ *	 <p>Map syntax. Any public property on the {@code *Op} class can be provided as a Map entry.</p>
+ *	 <pre>grgit.commit(message: 'Committing my code.', amend: true)</pre>
+ *   </li>
+ *   <li>
+ *	 <p>Closure syntax. Any public property or method on the {@code *Op} class can be used.</p>
+ *	 <pre>
+ * grgit.log {
+ *   range 'master', 'my-new-branch'
+ *   maxCommits = 5
+ * }
+ *	 </pre>
+ *   </li>
+ * </ul>
+ *
+ * <p>
+ *   Details of each operation's properties and methods are available on the
+ *   doc page for the class. The following operations are supported directly on a
+ *   Grgit instance.
+ * </p>
+ *
+ * <ul>
+ *   <li>{@link org.ajoberstar.grgit.operation.AddOp add}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.ApplyOp apply}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.CheckoutOp checkout}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.CleanOp clean}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.CommitOp commit}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.DescribeOp describe}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.FetchOp fetch}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.LogOp log}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.LsRemoteOp lsremote}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.MergeOp merge}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.PullOp pull}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.PushOp push}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.RmOp remove}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.ResetOp reset}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.RevertOp revert}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.ShowOp show}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.StatusOp status}</li>
+ * </ul>
+ *
+ * <p>
+ *   And the following operations are supported statically on the Grgit class.
+ * </p>
+ *
+ * <ul>
+ *   <li>{@link org.ajoberstar.grgit.operation.CloneOpBase clone}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.InitOpBase init}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.OpenOpBase open}</li>
+ * </ul>
+ *
+ * <p>
+ *   Further operations are available on the following services.
+ * </p>
+ *
+ * <ul>
+ *   <li>{@link org.ajoberstar.grgit.service.BranchServiceBase branch}</li>
+ *   <li>{@link org.ajoberstar.grgit.service.RemoteServiceBase remote}</li>
+ *   <li>{@link org.ajoberstar.grgit.service.ResolveService resolve}</li>
+ *   <li>{@link org.ajoberstar.grgit.service.TagServiceBase tag}</li>
+ * </ul>
+ *
+ * @since 0.1.0
+ */
+class GrgitBase implements AutoCloseable {
+  /**
+   * The repository opened by this object.
+   */
+  @PackageScope
+  final Repository repository
+
+  /**
+   * Supports operations on branches.
+   */
+  final BranchServiceBase branch
+
+  /**
+   * Supports operations on remotes.
+   */
+  final RemoteServiceBase remote
+
+  /**
+   * Convenience methods for resolving various objects.
+   */
+  final ResolveService resolve
+
+  /**
+   * Supports operations on tags.
+   */
+  final TagServiceBase tag
+
+  protected GrgitBase(Repository repository) {
+    this.repository = repository
+    this.branch = BranchServiceBase.newInstance(repository)
+    this.remote = RemoteServiceBase.newInstance(repository)
+    this.tag = TagServiceBase.newInstance(repository)
+    this.resolve = new ResolveService(repository)
+  }
+
+  static GrgitBase newInstance(Repository repository) {
+    Class.forName("org.ajoberstar.grgit.Grgit").newInstance(repository)
+  }
+
+  /**
+   * Returns the commit located at the current HEAD of the repository.
+   * @return the current HEAD commit
+   */
+  Commit head() {
+    return resolve.toCommit('HEAD')
+  }
+
+  /**
+   * Checks if {@code base} is an ancestor of {@code tip}.
+   * @param base the version that might be an ancestor
+   * @param tip the tip version
+   * @since 0.2.2
+   */
+  boolean isAncestorOf(Object base, Object tip) {
+    Commit baseCommit = resolve.toCommit(base)
+    Commit tipCommit = resolve.toCommit(tip)
+    return JGitUtil.isAncestorOf(repository, baseCommit, tipCommit)
+  }
+
+  /**
+   * Release underlying resources used by this instance. After calling close
+   * you should not use this instance anymore.
+   */
+  @Override
+  void close() {
+    repository.jgit.close()
+  }
+}
