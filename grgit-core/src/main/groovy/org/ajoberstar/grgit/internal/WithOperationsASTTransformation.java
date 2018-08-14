@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import groovy.lang.Closure;
+import org.ajoberstar.grgit.Configurable;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -30,8 +31,10 @@ import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
+import org.codehaus.groovy.transform.GroovyASTTransformation;
 
-public abstract class WithOperationsASTTransformationBase extends AbstractASTTransformation {
+@GroovyASTTransformation
+public final class WithOperationsASTTransformation extends AbstractASTTransformation {
   @Override
   public void visit(ASTNode[] nodes, SourceUnit source) {
     AnnotationNode annotation = (AnnotationNode) nodes[0];
@@ -115,7 +118,25 @@ public abstract class WithOperationsASTTransformationBase extends AbstractASTTra
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
   }
 
-  protected abstract MethodNode makeSamMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic);
+  private MethodNode makeSamMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
+    ClassNode parmType = classFromType(Configurable.class);
+    GenericsType[] generics = new GenericsType[] {new GenericsType(opClass)};
+    parmType.setGenericsTypes(generics);
+    Parameter[] parms = new Parameter[] {new Parameter(parmType, "arg")};
+
+    Statement code = new ExpressionStatement(
+        new StaticMethodCallExpression(
+            classFromType(OpSyntax.class),
+            "samOperation",
+            new ArgumentListExpression(
+                new ClassExpression(opClass),
+                new ArrayExpression(
+                    classFromType(Object.class),
+                    opConstructorParms(targetClass, isStatic)),
+                new VariableExpression("arg"))));
+
+    return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
+  }
 
   private MethodNode makeClosureMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
     ClassNode parmType = classFromType(Closure.class);
@@ -135,7 +156,7 @@ public abstract class WithOperationsASTTransformationBase extends AbstractASTTra
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
   }
 
-  protected ClassNode classFromType(Type type) {
+  private ClassNode classFromType(Type type) {
     if (type instanceof Class) {
       Class<?> clazz = (Class<?>) type;
       if (clazz.isPrimitive()) {
@@ -161,7 +182,7 @@ public abstract class WithOperationsASTTransformationBase extends AbstractASTTra
         .toArray(GenericsType[]::new);
   }
 
-  protected List<Expression> opConstructorParms(ClassNode targetClass, boolean isStatic) {
+  private List<Expression> opConstructorParms(ClassNode targetClass, boolean isStatic) {
     if (isStatic) {
       return Collections.emptyList();
     } else {
@@ -170,7 +191,7 @@ public abstract class WithOperationsASTTransformationBase extends AbstractASTTra
     }
   }
 
-  protected int modifiers(boolean isStatic) {
+  private int modifiers(boolean isStatic) {
     int modifiers = Modifier.PUBLIC | Modifier.FINAL;
     if (isStatic) {
       modifiers |= Modifier.STATIC;

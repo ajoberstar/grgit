@@ -1,13 +1,14 @@
 package org.ajoberstar.grgit
 
-import groovy.transform.Immutable
 import java.time.ZonedDateTime
+
+import groovy.transform.Immutable
 
 /**
  * A commit.
  * @since 0.1.0
  */
- @Immutable(knownImmutableClasses=[ZonedDateTime])
+@Immutable(knownImmutableClasses = [ZonedDateTime])
 class Commit {
   /**
    * The full hash of the commit.

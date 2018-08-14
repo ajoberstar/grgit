@@ -11,6 +11,7 @@ repositories {
 dependencies {
   // groovy
   implementation 'org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)'
+  compileOnly gradleApi()
 
   // jgit
   compile 'org.eclipse.jgit:org.eclipse.jgit:latest.release'

@@ -1,7 +1,9 @@
 package org.ajoberstar.grgit.service
 
-import groovy.transform.PackageScope
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.internal.WithOperations
+import org.ajoberstar.grgit.operation.RemoteAddOp
+import org.ajoberstar.grgit.operation.RemoteListOp
 
 /**
  * Provides support for remote-related operations on a Git repository.
@@ -17,15 +19,11 @@ import org.ajoberstar.grgit.Repository
  *   <li>{@link org.ajoberstar.grgit.operation.RemoteListOp list}</li>
  * </ul>
  */
-abstract class RemoteServiceBase {
-  @PackageScope
-  final Repository repository
+@WithOperations(instanceOperations = [RemoteListOp, RemoteAddOp])
+class RemoteService {
+  private final Repository repository
 
-  RemoteServiceBase(Repository repository) {
+  RemoteService(Repository repository) {
     this.repository = repository
-  }
-
-  static RemoteServiceBase newInstance(Repository repository) {
-    Class.forName("org.ajoberstar.grgit.service.RemoteService").newInstance(repository)
   }
 }

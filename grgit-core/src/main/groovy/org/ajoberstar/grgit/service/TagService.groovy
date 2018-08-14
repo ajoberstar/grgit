@@ -1,7 +1,10 @@
 package org.ajoberstar.grgit.service
 
-import groovy.transform.PackageScope
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.internal.WithOperations
+import org.ajoberstar.grgit.operation.TagAddOp
+import org.ajoberstar.grgit.operation.TagListOp
+import org.ajoberstar.grgit.operation.TagRemoveOp
 
 /**
  * Provides support for performing tag-related operations on
@@ -22,15 +25,11 @@ import org.ajoberstar.grgit.Repository
  * @since 0.2.0
  * @see <a href="http://ajoberstar.org/grgit/grgit-tag.html">grgit-tag</a>
  */
-abstract class TagServiceBase {
-  @PackageScope
-  final Repository repository
+@WithOperations(instanceOperations = [TagListOp, TagAddOp, TagRemoveOp])
+class TagService {
+  private final Repository repository
 
-  TagServiceBase(Repository repository) {
+  TagService(Repository repository) {
     this.repository = repository
-  }
-
-  static TagServiceBase newInstance(Repository repository) {
-    Class.forName("org.ajoberstar.grgit.service.TagService").newInstance(repository)
   }
 }

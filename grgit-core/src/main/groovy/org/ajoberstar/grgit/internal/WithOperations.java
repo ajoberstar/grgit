@@ -10,8 +10,8 @@ import org.codehaus.groovy.transform.GroovyASTTransformationClass;
 
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
-@GroovyASTTransformationClass("org.ajoberstar.grgit.internal.WithJavaOperationsASTTransformation")
-public @interface WithJavaOperations {
+@GroovyASTTransformationClass("org.ajoberstar.grgit.internal.WithOperationsASTTransformation")
+public @interface WithOperations {
   Class<? extends Callable<?>>[] staticOperations() default {};
 
   Class<? extends Callable<?>>[] instanceOperations() default {};

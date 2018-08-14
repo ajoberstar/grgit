@@ -1,7 +1,11 @@
 package org.ajoberstar.grgit
 
-import groovy.transform.PackageScope
-import org.ajoberstar.grgit.service.*
+import org.ajoberstar.grgit.internal.WithOperations
+import org.ajoberstar.grgit.operation.*
+import org.ajoberstar.grgit.service.BranchService
+import org.ajoberstar.grgit.service.RemoteService
+import org.ajoberstar.grgit.service.ResolveService
+import org.ajoberstar.grgit.service.TagService
 import org.ajoberstar.grgit.util.JGitUtil
 
 /**
@@ -12,15 +16,15 @@ import org.ajoberstar.grgit.util.JGitUtil
  *
  * <ul>
  *   <li>
- * 	 <p>{@link org.ajoberstar.grgit.operation.OpenOpBase Open} an existing repository.</p>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.OpenOp Open} an existing repository.</p>
  *	 <pre>def grgit = Grgit.open(dir: 'path/to/my/repo')</pre>
  *   </li>
  *   <li>
- * 	 <p>{@link org.ajoberstar.grgit.operation.InitOpBase Initialize} a new repository.</p>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.InitOp Initialize} a new repository.</p>
  *	 <pre>def grgit = Grgit.init(dir: 'path/to/my/repo')</pre>
  *   </li>
  *   <li>
- * 	 <p>{@link org.ajoberstar.grgit.operation.CloneOpBase Clone} an existing repository.</p>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.CloneOp Clone} an existing repository.</p>
  *	 <pre>def grgit = Grgit.clone(dir: 'path/to/my/repo', uri: 'git@github.com:ajoberstar/grgit.git')</pre>
  *   </li>
  * </ul>
@@ -76,9 +80,9 @@ import org.ajoberstar.grgit.util.JGitUtil
  * </p>
  *
  * <ul>
- *   <li>{@link org.ajoberstar.grgit.operation.CloneOpBase clone}</li>
- *   <li>{@link org.ajoberstar.grgit.operation.InitOpBase init}</li>
- *   <li>{@link org.ajoberstar.grgit.operation.OpenOpBase open}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.CloneOp clone}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.InitOp init}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.OpenOp open}</li>
  * </ul>
  *
  * <p>
@@ -86,30 +90,30 @@ import org.ajoberstar.grgit.util.JGitUtil
  * </p>
  *
  * <ul>
- *   <li>{@link org.ajoberstar.grgit.service.BranchServiceBase branch}</li>
- *   <li>{@link org.ajoberstar.grgit.service.RemoteServiceBase remote}</li>
+ *   <li>{@link org.ajoberstar.grgit.service.BranchService branch}</li>
+ *   <li>{@link org.ajoberstar.grgit.service.RemoteService remote}</li>
  *   <li>{@link org.ajoberstar.grgit.service.ResolveService resolve}</li>
- *   <li>{@link org.ajoberstar.grgit.service.TagServiceBase tag}</li>
+ *   <li>{@link org.ajoberstar.grgit.service.TagService tag}</li>
  * </ul>
  *
  * @since 0.1.0
  */
-class GrgitBase implements AutoCloseable {
+@WithOperations(staticOperations = [InitOp, CloneOp, OpenOp], instanceOperations = [CleanOp, StatusOp, AddOp, RmOp, ResetOp, ApplyOp, PullOp, PushOp, FetchOp, LsRemoteOp, CheckoutOp, LogOp, CommitOp, RevertOp, MergeOp, DescribeOp, ShowOp])
+class Grgit implements AutoCloseable {
   /**
    * The repository opened by this object.
    */
-  @PackageScope
   final Repository repository
 
   /**
    * Supports operations on branches.
    */
-  final BranchServiceBase branch
+  final BranchService branch
 
   /**
    * Supports operations on remotes.
    */
-  final RemoteServiceBase remote
+  final RemoteService remote
 
   /**
    * Convenience methods for resolving various objects.
@@ -119,18 +123,14 @@ class GrgitBase implements AutoCloseable {
   /**
    * Supports operations on tags.
    */
-  final TagServiceBase tag
+  final TagService tag
 
-  protected GrgitBase(Repository repository) {
+  private Grgit(Repository repository) {
     this.repository = repository
-    this.branch = BranchServiceBase.newInstance(repository)
-    this.remote = RemoteServiceBase.newInstance(repository)
-    this.tag = TagServiceBase.newInstance(repository)
+    this.branch = new BranchService(repository)
+    this.remote = new RemoteService(repository)
+    this.tag = new TagService(repository)
     this.resolve = new ResolveService(repository)
-  }
-
-  static GrgitBase newInstance(Repository repository) {
-    Class.forName("org.ajoberstar.grgit.Grgit").newInstance(repository)
   }
 
   /**

@@ -3,7 +3,7 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Credentials
-import org.ajoberstar.grgit.GrgitBase
+import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.auth.TransportOpUtil
 import org.ajoberstar.grgit.internal.Operation
@@ -12,14 +12,14 @@ import org.eclipse.jgit.api.CloneCommand
 import org.eclipse.jgit.api.Git
 
 /**
- * Clones an existing repository. Returns a {@link GrgitBase} pointing
+ * Clones an existing repository. Returns a {@link Grgit} pointing
  * to the resulting repository.
  * @since 0.1.0
  * @see <a href="http://ajoberstar.org/grgit/grgit-clone.html">grgit-clone</a>
  * @see <a href="http://git-scm.com/docs/git-clone">git-clone Manual Reference.</a>
  */
 @Operation('clone')
-abstract class CloneOpBase<T extends GrgitBase> implements Callable<T> {
+class CloneOp implements Callable<Grgit> {
   /**
    * The directory to put the cloned repository.
    * @see {@link CoercionUtil#toFile(Object)}
@@ -64,7 +64,7 @@ abstract class CloneOpBase<T extends GrgitBase> implements Callable<T> {
    */
   Credentials credentials
 
-  T _call() {
+  Grgit call() {
     if (!checkout && refToCheckout) {
       throw new IllegalArgumentException('Cannot specify a refToCheckout and set checkout to false.')
     }
@@ -81,6 +81,6 @@ abstract class CloneOpBase<T extends GrgitBase> implements Callable<T> {
 
     Git jgit = cmd.call()
     Repository repo = new Repository(CoercionUtil.toFile(dir), jgit, credentials)
-    return GrgitBase.newInstance(repo)
+    return new Grgit(repo)
   }
 }

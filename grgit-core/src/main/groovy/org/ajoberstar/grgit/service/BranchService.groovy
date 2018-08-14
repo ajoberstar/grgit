@@ -1,8 +1,13 @@
 package org.ajoberstar.grgit.service
 
-import groovy.transform.PackageScope
 import org.ajoberstar.grgit.Branch
 import org.ajoberstar.grgit.Repository
+import org.ajoberstar.grgit.internal.WithOperations
+import org.ajoberstar.grgit.operation.BranchAddOp
+import org.ajoberstar.grgit.operation.BranchChangeOp
+import org.ajoberstar.grgit.operation.BranchListOp
+import org.ajoberstar.grgit.operation.BranchRemoveOp
+import org.ajoberstar.grgit.operation.BranchStatusOp
 import org.ajoberstar.grgit.util.JGitUtil
 import org.eclipse.jgit.lib.Ref
 
@@ -27,16 +32,12 @@ import org.eclipse.jgit.lib.Ref
  * @since 0.2.0
  * @see <a href="http://ajoberstar.org/grgit/grgit-branch.html">grgit-branch</a>
  */
-abstract class BranchServiceBase {
-  @PackageScope
-  final Repository repository
+@WithOperations(instanceOperations = [BranchListOp, BranchAddOp, BranchRemoveOp, BranchChangeOp, BranchStatusOp])
+class BranchService {
+  private final Repository repository
 
-  BranchServiceBase(Repository repository) {
+  BranchService(Repository repository) {
     this.repository = repository
-  }
-
-  static BranchServiceBase newInstance(Repository repository) {
-    Class.forName("org.ajoberstar.grgit.service.BranchService").newInstance(repository)
   }
 
   /**

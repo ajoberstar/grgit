@@ -3,7 +3,7 @@ package org.ajoberstar.grgit.operation
 import java.util.concurrent.Callable
 
 import org.ajoberstar.grgit.Credentials
-import org.ajoberstar.grgit.GrgitBase
+import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.internal.Operation
 import org.ajoberstar.grgit.util.CoercionUtil
@@ -12,13 +12,13 @@ import org.eclipse.jgit.internal.storage.file.FileRepository
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 
 /**
- * Opens an existing repository. Returns a {@link GrgitBase} pointing
+ * Opens an existing repository. Returns a {@link Grgit} pointing
  * to the resulting repository.
  * @since 1.0.0
  * @see <a href="http://ajoberstar.org/grgit/grgit-open.html">grgit-open</a>
  */
 @Operation('open')
-abstract class OpenOpBase<T extends GrgitBase> implements Callable<T> {
+class OpenOp implements Callable<Grgit> {
   /**
    * Hardcoded credentials to use for remote operations.
    */
@@ -38,13 +38,13 @@ abstract class OpenOpBase<T extends GrgitBase> implements Callable<T> {
    */
   Object currentDir
 
-  T _call() {
+  Grgit call() {
     if (dir && currentDir) {
       throw new IllegalArgumentException('Cannot use both dir and currentDir.')
     } else if (dir) {
       def dirFile = CoercionUtil.toFile(dir)
       def repo = new Repository(dirFile, Git.open(dirFile), creds)
-      return GrgitBase.newInstance(repo)
+      return new Grgit(repo)
     } else {
       FileRepositoryBuilder builder = new FileRepositoryBuilder()
       builder.readEnvironment()
@@ -62,7 +62,7 @@ abstract class OpenOpBase<T extends GrgitBase> implements Callable<T> {
       FileRepository jgitRepo = builder.build()
       Git jgit = new Git(jgitRepo)
       Repository repo = new Repository(jgitRepo.directory, jgit, creds)
-      return GrgitBase.newInstance(repo)
+      return new Grgit(repo)
     }
   }
 }

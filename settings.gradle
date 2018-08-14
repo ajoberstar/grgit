@@ -1,7 +1,6 @@
 rootProject.name = 'grgit'
 
 include 'grgit-core'
-include 'grgit-java'
 include 'grgit-gradle'
 
 enableFeaturePreview('STABLE_PUBLISHING')
