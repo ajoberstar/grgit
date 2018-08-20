@@ -22,7 +22,7 @@ class OpenOp implements Callable<Grgit> {
   /**
    * Hardcoded credentials to use for remote operations.
    */
-  Credentials creds
+  Credentials credentials
 
   /**
    * The directory to open the repository from. Incompatible
@@ -43,7 +43,7 @@ class OpenOp implements Callable<Grgit> {
       throw new IllegalArgumentException('Cannot use both dir and currentDir.')
     } else if (dir) {
       def dirFile = CoercionUtil.toFile(dir)
-      def repo = new Repository(dirFile, Git.open(dirFile), creds)
+      def repo = new Repository(dirFile, Git.open(dirFile), credentials)
       return new Grgit(repo)
     } else {
       FileRepositoryBuilder builder = new FileRepositoryBuilder()
@@ -61,7 +61,7 @@ class OpenOp implements Callable<Grgit> {
 
       FileRepository jgitRepo = builder.build()
       Git jgit = new Git(jgitRepo)
-      Repository repo = new Repository(jgitRepo.directory, jgit, creds)
+      Repository repo = new Repository(jgitRepo.directory, jgit, credentials)
       return new Grgit(repo)
     }
   }
