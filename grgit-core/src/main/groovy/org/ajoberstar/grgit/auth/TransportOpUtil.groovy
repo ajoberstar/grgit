@@ -26,18 +26,18 @@ final class TransportOpUtil {
   /**
    * Configures the given transport command with the given credentials.
    * @param cmd the command to configure
-   * @param creds the hardcoded credentials to use, if not {@code null}
+   * @param credentials the hardcoded credentials to use, if not {@code null}
    */
-  static void configure(TransportCommand cmd, Credentials creds) {
+  static void configure(TransportCommand cmd, Credentials credentials) {
     AuthConfig config = AuthConfig.fromSystem()
-    cmd.credentialsProvider = determineCredentialsProvider(config, creds)
+    cmd.credentialsProvider = determineCredentialsProvider(config, credentials)
   }
 
-  private static CredentialsProvider determineCredentialsProvider(AuthConfig config, Credentials creds) {
+  private static CredentialsProvider determineCredentialsProvider(AuthConfig config, Credentials credentials) {
     Credentials systemCreds = config.hardcodedCreds
-    if (creds?.populated) {
+    if (credentials?.populated) {
       logger.info('using hardcoded credentials provided programmatically')
-      return new UsernamePasswordCredentialsProvider(creds.username, creds.password)
+      return new UsernamePasswordCredentialsProvider(credentials.username, credentials.password)
     } else if (systemCreds?.populated) {
       logger.info('using hardcoded credentials from system properties')
       return new UsernamePasswordCredentialsProvider(systemCreds.username, systemCreds.password)

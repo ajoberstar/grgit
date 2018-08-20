@@ -24,7 +24,7 @@ grgit.open(dir: <path>, currentDir: <path>, credentials: <credentials>)
 grgit.open {
   dir = <path>
   currentDir = <path>
-  creds = <credentals>
+  credentials = <credentals>
 }
 ----
 
