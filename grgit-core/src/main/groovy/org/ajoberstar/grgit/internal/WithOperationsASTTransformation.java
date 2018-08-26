@@ -28,14 +28,12 @@ import org.codehaus.groovy.ast.expr.StaticMethodCallExpression;
 import org.codehaus.groovy.ast.expr.VariableExpression;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
-import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
-@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
-public class WithOperationsASTTransformation extends AbstractASTTransformation {
-
+@GroovyASTTransformation
+public final class WithOperationsASTTransformation extends AbstractASTTransformation {
   @Override
   public void visit(ASTNode[] nodes, SourceUnit source) {
     AnnotationNode annotation = (AnnotationNode) nodes[0];
@@ -113,7 +111,8 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
             new ArgumentListExpression(
                 new ClassExpression(opClass),
                 new ArrayExpression(
-                    classFromType(Object.class), opConstructorParms(targetClass, isStatic)),
+                    classFromType(Object.class),
+                    opConstructorParms(targetClass, isStatic)),
                 new VariableExpression("arg"))));
 
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
@@ -137,7 +136,7 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
   }
 
-  public ClassNode classFromType(Type type) {
+  private ClassNode classFromType(Type type) {
     if (type instanceof Class) {
       Class<?> clazz = (Class<?>) type;
       if (clazz.isPrimitive()) {
@@ -156,23 +155,23 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
     }
   }
 
-  public GenericsType[] genericsFromTypes(Type... types) {
+  private GenericsType[] genericsFromTypes(Type... types) {
     return Arrays.stream(types)
         .map(this::classFromType)
         .map(GenericsType::new)
-        .toArray(size -> new GenericsType[size]);
+        .toArray(GenericsType[]::new);
   }
 
-  public List<Expression> opConstructorParms(ClassNode targetClass, boolean isStatic) {
+  private List<Expression> opConstructorParms(ClassNode targetClass, boolean isStatic) {
     if (isStatic) {
       return Collections.emptyList();
     } else {
       FieldNode repo = targetClass.getField("repository");
-      return Arrays.asList(new FieldExpression(repo));
+      return Collections.singletonList(new FieldExpression(repo));
     }
   }
 
-  public int modifiers(boolean isStatic) {
+  private int modifiers(boolean isStatic) {
     int modifiers = Modifier.PUBLIC | Modifier.FINAL;
     if (isStatic) {
       modifiers |= Modifier.STATIC;

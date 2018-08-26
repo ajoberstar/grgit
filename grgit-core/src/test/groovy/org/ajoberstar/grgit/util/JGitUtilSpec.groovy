@@ -2,16 +2,13 @@ package org.ajoberstar.grgit.util
 
 import java.time.Instant
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Repository
-import org.ajoberstar.grgit.Tag
 import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.api.errors.GitAPIException
 import org.eclipse.jgit.errors.RevisionSyntaxException
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Ref
@@ -20,7 +17,6 @@ import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.revwalk.RevWalk
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
-
 import spock.lang.Specification
 
 class JGitUtilSpec extends Specification {
