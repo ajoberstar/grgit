@@ -1,6 +1,5 @@
 package org.ajoberstar.grgit.operation
 
-import java.nio.file.Files
 
 import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
@@ -9,8 +8,6 @@ import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.errors.RepositoryNotFoundException
-import org.eclipse.jgit.api.errors.GitAPIException
-
 import spock.util.environment.RestoreSystemProperties
 
 class OpenOpSpec extends SimpleGitOpSpec {

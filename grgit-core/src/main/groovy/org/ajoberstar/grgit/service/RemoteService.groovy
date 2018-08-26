@@ -19,7 +19,7 @@ import org.ajoberstar.grgit.operation.RemoteListOp
  *   <li>{@link org.ajoberstar.grgit.operation.RemoteListOp list}</li>
  * </ul>
  */
-@WithOperations(instanceOperations=[RemoteListOp, RemoteAddOp])
+@WithOperations(instanceOperations = [RemoteListOp, RemoteAddOp])
 class RemoteService {
   private final Repository repository
 

@@ -6,7 +6,7 @@ import groovy.transform.Immutable
  * A person.
  * @since 0.1.0
  */
- @Immutable
+@Immutable
 class Person {
   /**
    * Name of person.

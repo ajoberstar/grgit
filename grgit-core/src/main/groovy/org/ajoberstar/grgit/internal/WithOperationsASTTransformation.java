@@ -7,9 +7,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.Optional;
 
 import groovy.lang.Closure;
+import org.ajoberstar.grgit.Configurable;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -28,14 +29,12 @@ import org.codehaus.groovy.ast.expr.StaticMethodCallExpression;
 import org.codehaus.groovy.ast.expr.VariableExpression;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
-import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
-@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
-public class WithOperationsASTTransformation extends AbstractASTTransformation {
-
+@GroovyASTTransformation
+public final class WithOperationsASTTransformation extends AbstractASTTransformation {
   @Override
   public void visit(ASTNode[] nodes, SourceUnit source) {
     AnnotationNode annotation = (AnnotationNode) nodes[0];
@@ -52,16 +51,35 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
   }
 
   private void makeMethods(ClassNode targetClass, ClassNode opClass, boolean isStatic) {
-    AnnotationNode annotation = opClass.getAnnotations(classFromType(Operation.class)).stream()
-        .findFirst()
-        .orElseThrow(() -> new IllegalArgumentException("Class is not annotated with @Operation: " + opClass));
-    String opName = getMemberStringValue(annotation, "value");
-    ClassNode opReturn = opClass.getDeclaredMethod("call", new Parameter[] {}).getReturnType();
+    String opName = getMemberStringValue(findAnnotationNode(opClass, classFromType(Operation.class)), "value");
+    ClassNode opReturn = findCorrectCallMethod(opClass).getReturnType();
 
     targetClass.addMethod(makeNoArgMethod(targetClass, opName, opClass, opReturn, isStatic));
     targetClass.addMethod(makeMapMethod(targetClass, opName, opClass, opReturn, isStatic));
-    targetClass.addMethod(makeConsumerMethod(targetClass, opName, opClass, opReturn, isStatic));
+    targetClass.addMethod(makeSamMethod(targetClass, opName, opClass, opReturn, isStatic));
     targetClass.addMethod(makeClosureMethod(targetClass, opName, opClass, opReturn, isStatic));
+  }
+
+  private AnnotationNode findAnnotationNode(ClassNode target, ClassNode find) {
+    Optional<AnnotationNode> annotation = target.getAnnotations(find).stream().findFirst();
+    if (annotation.isPresent()) {
+      return annotation.get();
+    } else {
+      ClassNode superClass = target.getSuperClass();
+      if (superClass == null) {
+        throw new IllegalArgumentException("Class is not annotated with " + find + ": " + target);
+      } else {
+        return findAnnotationNode(superClass, find);
+      }
+    }
+  }
+
+  private MethodNode findCorrectCallMethod(ClassNode target) {
+    return target.getDeclaredMethods("call").stream()
+        .filter(methodNode -> !methodNode.isSynthetic())
+        .filter(methodNode -> methodNode.getParameters().length == 0)
+        .findFirst()
+        .orElseThrow(() -> new IllegalStateException("No actual call methods are present."));
   }
 
   private MethodNode makeNoArgMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
@@ -100,8 +118,8 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
   }
 
-  private MethodNode makeConsumerMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
-    ClassNode parmType = classFromType(Consumer.class);
+  private MethodNode makeSamMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
+    ClassNode parmType = classFromType(Configurable.class);
     GenericsType[] generics = new GenericsType[] {new GenericsType(opClass)};
     parmType.setGenericsTypes(generics);
     Parameter[] parms = new Parameter[] {new Parameter(parmType, "arg")};
@@ -109,11 +127,12 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
     Statement code = new ExpressionStatement(
         new StaticMethodCallExpression(
             classFromType(OpSyntax.class),
-            "consumerOperation",
+            "samOperation",
             new ArgumentListExpression(
                 new ClassExpression(opClass),
                 new ArrayExpression(
-                    classFromType(Object.class), opConstructorParms(targetClass, isStatic)),
+                    classFromType(Object.class),
+                    opConstructorParms(targetClass, isStatic)),
                 new VariableExpression("arg"))));
 
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
@@ -137,7 +156,7 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
   }
 
-  public ClassNode classFromType(Type type) {
+  private ClassNode classFromType(Type type) {
     if (type instanceof Class) {
       Class<?> clazz = (Class<?>) type;
       if (clazz.isPrimitive()) {
@@ -156,23 +175,23 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
     }
   }
 
-  public GenericsType[] genericsFromTypes(Type... types) {
+  private GenericsType[] genericsFromTypes(Type... types) {
     return Arrays.stream(types)
         .map(this::classFromType)
         .map(GenericsType::new)
-        .toArray(size -> new GenericsType[size]);
+        .toArray(GenericsType[]::new);
   }
 
-  public List<Expression> opConstructorParms(ClassNode targetClass, boolean isStatic) {
+  private List<Expression> opConstructorParms(ClassNode targetClass, boolean isStatic) {
     if (isStatic) {
       return Collections.emptyList();
     } else {
       FieldNode repo = targetClass.getField("repository");
-      return Arrays.asList(new FieldExpression(repo));
+      return Collections.singletonList(new FieldExpression(repo));
     }
   }
 
-  public int modifiers(boolean isStatic) {
+  private int modifiers(boolean isStatic) {
     int modifiers = Modifier.PUBLIC | Modifier.FINAL;
     if (isStatic) {
       modifiers |= Modifier.STATIC;

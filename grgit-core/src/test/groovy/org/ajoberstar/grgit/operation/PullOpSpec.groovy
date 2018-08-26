@@ -4,7 +4,6 @@ import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
-import org.eclipse.jgit.api.errors.GitAPIException
 
 class PullOpSpec extends MultiGitOpSpec {
   Grgit localGrgit

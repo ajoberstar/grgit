@@ -1,14 +1,12 @@
 package org.ajoberstar.grgit.gradle
 
-import spock.lang.Specification
-import spock.lang.Unroll
-
 import org.ajoberstar.grgit.Grgit
-import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.BuildResult
+import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import spock.lang.Specification
 
 class BaseCompatTest extends Specification {
   @Rule TemporaryFolder tempDir = new TemporaryFolder()
@@ -89,7 +87,6 @@ task doStuff {
     def result = build('doStuff', '--info')
     then:
     result.task(':doStuff').outcome == TaskOutcome.SUCCESS
-    result.output.contains('Closing Git repo')
   }
 
   private BuildResult build(String... args) {

@@ -3,7 +3,6 @@ package org.ajoberstar.grgit.operation
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
-import org.ajoberstar.grgit.operation.FetchOp.TagMode
 import org.eclipse.jgit.api.errors.GitAPIException
 
 import spock.lang.Unroll

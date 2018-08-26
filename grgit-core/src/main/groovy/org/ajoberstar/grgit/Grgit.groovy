@@ -2,7 +2,10 @@ package org.ajoberstar.grgit
 
 import org.ajoberstar.grgit.internal.WithOperations
 import org.ajoberstar.grgit.operation.*
-import org.ajoberstar.grgit.service.*
+import org.ajoberstar.grgit.service.BranchService
+import org.ajoberstar.grgit.service.RemoteService
+import org.ajoberstar.grgit.service.ResolveService
+import org.ajoberstar.grgit.service.TagService
 import org.ajoberstar.grgit.util.JGitUtil
 
 /**
@@ -13,15 +16,15 @@ import org.ajoberstar.grgit.util.JGitUtil
  *
  * <ul>
  *   <li>
- *	 <p>{@link org.ajoberstar.grgit.operation.OpenOp Open} an existing repository.</p>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.OpenOp Open} an existing repository.</p>
  *	 <pre>def grgit = Grgit.open(dir: 'path/to/my/repo')</pre>
  *   </li>
  *   <li>
- *	 <p>{@link org.ajoberstar.grgit.operation.InitOp Initialize} a new repository.</p>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.InitOp Initialize} a new repository.</p>
  *	 <pre>def grgit = Grgit.init(dir: 'path/to/my/repo')</pre>
  *   </li>
  *   <li>
- *	 <p>{@link org.ajoberstar.grgit.operation.CloneOp Clone} an existing repository.</p>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.CloneOp Clone} an existing repository.</p>
  *	 <pre>def grgit = Grgit.clone(dir: 'path/to/my/repo', uri: 'git@github.com:ajoberstar/grgit.git')</pre>
  *   </li>
  * </ul>
@@ -95,7 +98,7 @@ import org.ajoberstar.grgit.util.JGitUtil
  *
  * @since 0.1.0
  */
-@WithOperations(staticOperations=[InitOp, CloneOp, OpenOp], instanceOperations=[CleanOp, StatusOp, AddOp, RmOp, ResetOp, ApplyOp, PullOp, PushOp, FetchOp, LsRemoteOp, CheckoutOp, LogOp, CommitOp, RevertOp, MergeOp, DescribeOp, ShowOp])
+@WithOperations(staticOperations = [InitOp, CloneOp, OpenOp], instanceOperations = [CleanOp, StatusOp, AddOp, RmOp, ResetOp, ApplyOp, PullOp, PushOp, FetchOp, LsRemoteOp, CheckoutOp, LogOp, CommitOp, RevertOp, MergeOp, DescribeOp, ShowOp])
 class Grgit implements AutoCloseable {
   /**
    * The repository opened by this object.

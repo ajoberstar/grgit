@@ -1,6 +1,5 @@
 package org.ajoberstar.grgit.operation
 
-import org.ajoberstar.grgit.Commit
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
@@ -20,7 +19,7 @@ class BranchListOpSpec extends MultiGitOpSpec {
 
     repoFile(remoteGrgit, '2.txt') << '2'
     remoteGrgit.commit(message: 'another', all: true)
-    remoteGrgit.tag.add(name: 'test-tag');
+    remoteGrgit.tag.add(name: 'test-tag')
 
     localGrgit = clone('local', remoteGrgit)
   }
@@ -33,11 +32,11 @@ class BranchListOpSpec extends MultiGitOpSpec {
     expect:
     localGrgit.branch.list(arguments) == expectedBranches
     where:
-    arguments											  | expected
-    [:]													| [['refs/heads/master', 'refs/remotes/origin/master']]
-    [mode: BranchListOp.Mode.LOCAL]						| [['refs/heads/master', 'refs/remotes/origin/master']]
-    [mode: BranchListOp.Mode.REMOTE]					   | [['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
-    [mode: BranchListOp.Mode.ALL]						  | [['refs/heads/master', 'refs/remotes/origin/master'], ['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
+    arguments                                              | expected
+    [:]                                                    | [['refs/heads/master', 'refs/remotes/origin/master']]
+    [mode: BranchListOp.Mode.LOCAL]                        | [['refs/heads/master', 'refs/remotes/origin/master']]
+    [mode: BranchListOp.Mode.REMOTE]                       | [['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
+    [mode: BranchListOp.Mode.ALL]                          | [['refs/heads/master', 'refs/remotes/origin/master'], ['refs/remotes/origin/master'], ['refs/remotes/origin/my-branch']]
     [mode: BranchListOp.Mode.REMOTE, contains: 'test-tag'] | [['refs/remotes/origin/master']]
   }
 

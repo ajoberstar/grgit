@@ -1,7 +1,8 @@
 package org.ajoberstar.grgit.internal
 
 import java.util.concurrent.Callable
-import java.util.function.Consumer
+
+import org.ajoberstar.grgit.Configurable
 
 class OpSyntax {
   static def noArgOperation(Class<Callable> opClass, Object[] classArgs) {
@@ -19,9 +20,9 @@ class OpSyntax {
     return op.call()
   }
 
-  static def consumerOperation(Class<Callable> opClass, Object[] classArgs, Consumer arg) {
+  static def samOperation(Class<Callable> opClass, Object[] classArgs, Configurable arg) {
     def op = opClass.newInstance(classArgs)
-    arg.accept(op)
+    arg.configure(op)
     return op.call()
   }
 
