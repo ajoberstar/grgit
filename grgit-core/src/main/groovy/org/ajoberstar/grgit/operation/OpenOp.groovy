@@ -65,4 +65,14 @@ class OpenOp implements Callable<Grgit> {
       return new Grgit(repo)
     }
   }
+
+  @Deprecated
+  Credentials getCreds(){
+    return credentials
+  }
+
+  @Deprecated
+  void setCreds(Credentials creds){
+    this.credentials = creds
+  }
 }
