@@ -10,7 +10,7 @@ repositories {
 
 dependencies {
   // groovy
-  implementation 'org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)'
+  compileOnly 'org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)'
 
   // jgit
   compile 'org.eclipse.jgit:org.eclipse.jgit:latest.release'
@@ -21,9 +21,7 @@ dependencies {
 
   // testing
   testImplementation 'junit:junit:latest.release'
-  testImplementation('org.spockframework:spock-core:1.2-groovy-2.5-SNAPSHOT') {
-    exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
-  }
+  testImplementation 'org.spockframework:spock-core:1.2-groovy-2.5'
 }
 
 jar {
