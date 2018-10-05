@@ -25,7 +25,7 @@ import org.ajoberstar.grgit.operation.TagRemoveOp
  * @since 0.2.0
  * @see <a href="http://ajoberstar.org/grgit/grgit-tag.html">grgit-tag</a>
  */
-@WithOperations(instanceOperations=[TagListOp, TagAddOp, TagRemoveOp])
+@WithOperations(instanceOperations = [TagListOp, TagAddOp, TagRemoveOp])
 class TagService {
   private final Repository repository
 

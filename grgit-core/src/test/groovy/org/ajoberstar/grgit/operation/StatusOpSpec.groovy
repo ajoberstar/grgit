@@ -2,7 +2,6 @@ package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
-import org.eclipse.jgit.api.errors.GitAPIException
 
 class StatusOpSpec extends SimpleGitOpSpec {
   def setup() {

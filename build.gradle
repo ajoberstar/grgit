@@ -19,6 +19,10 @@ allprojects {
   }
 }
 
+tasks.withType(Wrapper.class) {
+  distributionType "all"
+}
+
 jbake {
   srcDirName = 'docs'
 }

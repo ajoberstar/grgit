@@ -5,8 +5,6 @@ import org.ajoberstar.grgit.Ref
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
 import org.eclipse.jgit.api.errors.GitAPIException
 
-import spock.lang.Unroll
-
 class LsRemoteOpSpec extends MultiGitOpSpec {
   Grgit localGrgit
   Grgit remoteGrgit

@@ -56,7 +56,7 @@ class OpenOp implements Callable<Grgit> {
       }
 
       if(builder.getGitDir() == null){
-        throw new IllegalStateException('No .git directory found!');
+        throw new IllegalStateException('No .git directory found!')
       }
 
       FileRepository jgitRepo = builder.build()

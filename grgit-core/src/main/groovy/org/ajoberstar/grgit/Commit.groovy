@@ -7,7 +7,7 @@ import java.time.ZonedDateTime
  * A commit.
  * @since 0.1.0
  */
- @Immutable(knownImmutableClasses=[ZonedDateTime])
+@Immutable(knownImmutableClasses = [ZonedDateTime])
 class Commit {
   /**
    * The full hash of the commit.
