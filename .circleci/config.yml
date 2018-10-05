@@ -95,5 +95,4 @@ workflows:
             - build-java-8
             - build-java-9
             - build-java-10
-            - build-java-11
           context: ajoberstar
