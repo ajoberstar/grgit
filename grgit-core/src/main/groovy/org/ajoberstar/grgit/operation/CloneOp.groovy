@@ -58,7 +58,7 @@ class CloneOp implements Callable<Grgit> {
   /**
    * The username and credentials to use when checking out the
    * repository and for subsequent remote operations on the
-   * repository. This is only needed if hardcoded creds
+   * repository. This is only needed if hardcoded credentials
    * should be used.
    * @see {@link org.ajoberstar.gradle.auth.AuthConfig}
    */
