@@ -14,7 +14,7 @@ without being surrounded by a lot of cruft.
 Grgit is a wrapper over JGit that provides a fluent API for interacting with Git repositories in Groovy-based
 tooling.
 
-With the tooling focus, "porcelain" commands are the primary scope of what is included. Features that require
+"porcelain" commands are the primary scope of what is included. Features that require
 more user interaction (such as resolving merge conflicts) are intentionally excluded.
 
 It also provides a Gradle plugin to easily get a Grgit instance for the build's repository.
@@ -23,8 +23,8 @@ It also provides a Gradle plugin to easily get a Grgit instance for the build's 
 
 **NOTE:** grgit is available from JCenter or the Gradle Plugin Portal. It is not published to Maven Central.
 
-* [Documentation Site](http://ajoberstar.org/grgit/index.html)
-* [Release Notes](https://github.com/ajoberstar/grgit/releases)
+- [Documentation Site](http://ajoberstar.org/grgit/index.html)
+- [Release Notes](https://github.com/ajoberstar/grgit/releases)
 
 ## Questions, Bugs, and Features
 
