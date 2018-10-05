@@ -1,11 +1,10 @@
 package org.ajoberstar.grgit.operation
 
-import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Commit
+import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
-
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.errors.RepositoryNotFoundException
 import spock.util.environment.RestoreSystemProperties
@@ -80,10 +79,10 @@ class OpenOpSpec extends SimpleGitOpSpec {
     File gitDir = tempDir.newFolder()
 
     Git.cloneRepository()
-      .setDirectory(workDir)
-      .setGitDir(gitDir)
-      .setURI(repoDir('.').toURI().toString())
-      .call()
+        .setDirectory(workDir)
+        .setGitDir(gitDir)
+        .setURI(repoDir('.').toURI().toString())
+        .call()
 
     new File(workDir, FILE_PATH) << '1.2'
     System.setProperty('user.dir', workDir.absolutePath)
