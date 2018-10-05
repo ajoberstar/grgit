@@ -16,8 +16,8 @@ class GrgitPlugin implements Plugin<Project> {
     Grgit grgit
     try {
       grgit = Grgit.open(currentDir: project.rootDir)
-    } catch (Exception ignored) {
-      project.logger.error("No git repository found for ${project.path}. Accessing grgit will cause an NPE.")
+    } catch (Exception e) {
+      project.logger.error("No git repository found for ${project.path}. Accessing grgit will cause an NPE.", e)
       project.ext.grgit = null
       return
     }
