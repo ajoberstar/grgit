@@ -1,5 +1,7 @@
 package org.ajoberstar.grgit.operation
 
+import org.ajoberstar.grgit.Credentials
+
 import java.nio.file.Files
 
 import org.ajoberstar.grgit.Commit
@@ -134,5 +136,19 @@ class OpenOpSpec extends SimpleGitOpSpec {
     opened.close()
     then:
     opened.repository.rootDir.deleteDir()
+  }
+
+  def 'credentials as param name should work'() {
+    when:
+    Grgit opened = Grgit.open(dir: repoDir('.'), credentials: new Credentials())
+    then:
+    opened.head() == commit
+  }
+
+  def 'creds as param name should work'() {
+    when:
+    Grgit opened = Grgit.open(dir: repoDir('.'), creds: new Credentials())
+    then:
+    opened.head() == commit
   }
 }
