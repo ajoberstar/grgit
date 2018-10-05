@@ -8,16 +8,16 @@ defaults: &defaults
         keys:
           - v2-gradle-caches-{{ checksum "gradle/dependency-locks/runtimeClasspath.lockfile" }}
     - attach_workspace:
-        at: '.'
+        at: "."
     - run:
         name: Compile and test
         command: ./gradlew clean check --continue
     - save_cache:
         paths:
-          - '~/.gradle/caches'
+          - "~/.gradle/caches"
         key: v2-gradle-caches-{{ checksum "gradle/dependency-locks/runtimeClasspath.lockfile" }}
     - store_test_results:
-        path: '~/gradle-test-results'
+        path: "~/gradle-test-results"
         when: always
 branches-and-tags: &branches-and-tags
   filters:
@@ -38,27 +38,6 @@ tags-only: &tags-only
 ###############################################################################
 version: 2
 jobs:
-  update-dependencies:
-    docker:
-      - image: ajoberstar/circleci-openjdk-gradle:8-jdk
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v2-gradle-caches-{{ checksum "gradle/dependency-locks/runtimeClasspath.lockfile" }}
-      - run:
-          name: Update locks
-          command: ./gradlew stutterWriteLocks dependencies --write-locks
-      - run:
-          name: Diff lock files
-          command: git --no-pager diff
-      - persist_to_workspace:
-          root: '.'
-          paths:
-            - 'gradle/dependency-locks'
-            - '.stutter/'
-            - '*/.stutter/'
-            - '*/*/.stutter/'
   build-java-8:
     <<: *defaults
     docker:
@@ -71,6 +50,10 @@ jobs:
     <<: *defaults
     docker:
       - image: ajoberstar/circleci-openjdk-gradle:10-jdk
+  build-java-11:
+    <<: *defaults
+    docker:
+      - image: ajoberstar/circleci-openjdk-gradle:11-jdk
   publish:
     docker:
       - image: ajoberstar/circleci-openjdk-gradle:8-jdk
@@ -102,28 +85,15 @@ workflows:
           <<: *branches-and-tags
           requires:
             - build-java-8
+      - build-java-11:
+          <<: *branches-and-tags
+          requires:
+            - build-java-8
       - publish:
           <<: *tags-only
           requires:
             - build-java-8
             - build-java-9
             - build-java-10
+            - build-java-11
           context: ajoberstar
-  weekly-deps:
-    triggers:
-      - schedule:
-          cron: "0 8 * * 5"
-          filters:
-            branches:
-              only: master
-    jobs:
-      - update-dependencies
-      - build-java-8:
-          requires:
-            - update-dependencies
-      - build-java-9:
-          requires:
-            - build-java-8
-      - build-java-10:
-          requires:
-            - build-java-8
