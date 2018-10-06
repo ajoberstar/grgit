@@ -7,9 +7,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import groovy.lang.Closure;
+import org.ajoberstar.grgit.Configurable;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -60,7 +60,7 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
 
     targetClass.addMethod(makeNoArgMethod(targetClass, opName, opClass, opReturn, isStatic));
     targetClass.addMethod(makeMapMethod(targetClass, opName, opClass, opReturn, isStatic));
-    targetClass.addMethod(makeConsumerMethod(targetClass, opName, opClass, opReturn, isStatic));
+    targetClass.addMethod(makeSamMethod(targetClass, opName, opClass, opReturn, isStatic));
     targetClass.addMethod(makeClosureMethod(targetClass, opName, opClass, opReturn, isStatic));
   }
 
@@ -100,8 +100,8 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
     return new MethodNode(opName, modifiers(isStatic), opReturn, parms, new ClassNode[] {}, code);
   }
 
-  private MethodNode makeConsumerMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
-    ClassNode parmType = classFromType(Consumer.class);
+  private MethodNode makeSamMethod(ClassNode targetClass, String opName, ClassNode opClass, ClassNode opReturn, boolean isStatic) {
+    ClassNode parmType = classFromType(Configurable.class);
     GenericsType[] generics = new GenericsType[] {new GenericsType(opClass)};
     parmType.setGenericsTypes(generics);
     Parameter[] parms = new Parameter[] {new Parameter(parmType, "arg")};
@@ -109,7 +109,7 @@ public class WithOperationsASTTransformation extends AbstractASTTransformation {
     Statement code = new ExpressionStatement(
         new StaticMethodCallExpression(
             classFromType(OpSyntax.class),
-            "consumerOperation",
+            "samOperation",
             new ArgumentListExpression(
                 new ClassExpression(opClass),
                 new ArrayExpression(
