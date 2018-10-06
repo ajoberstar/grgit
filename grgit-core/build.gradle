@@ -10,7 +10,7 @@ repositories {
 
 dependencies {
   // groovy
-  compileOnly 'org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)'
+  compileOnly 'org.codehaus.groovy:groovy-all:[2.5.0, 2.6.0-alpha)'
 
   // jgit
   compile 'org.eclipse.jgit:org.eclipse.jgit:latest.release'
