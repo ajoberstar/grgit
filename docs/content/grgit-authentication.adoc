@@ -9,7 +9,7 @@
 ====
 JSCH authentication (and its agent proxy) are not supported in Grgit 3.x.
 
-If you're using Grgit 2.x, see the link:grgit-authentication-2.adoc[documentation] for that version.
+If you're using Grgit 2.x, see the link:grgit-authentication-2.html[documentation] for that version.
 ====
 
 Grgit communicates with remote repositories in one of three ways:
