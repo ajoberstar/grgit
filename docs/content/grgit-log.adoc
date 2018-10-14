@@ -51,9 +51,9 @@ A special notation (in the Closure syntax only) `range(<commit1>, <commit2>)` ca
 
 [source, groovy]
 ----
-grgit.log(includes: ['HEAD'], excludes: ['origin'])
+grgit.log(includes: ['HEAD'], excludes: ['origin/master'])
 grgit.log {
-  range('origin', 'HEAD')
+  range('origin/master', 'HEAD')
 }
 ----
 
