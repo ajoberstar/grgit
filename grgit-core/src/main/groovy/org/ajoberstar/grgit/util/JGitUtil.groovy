@@ -127,7 +127,7 @@ class JGitUtil {
    * @return the resolved tag
    */
   static Tag resolveTag(Repository repo, String name) {
-    Ref ref = repo.jgit.repository.getRef(name)
+    Ref ref = repo.jgit.repository.findRef(name)
     return resolveTag(repo, ref)
   }
 
