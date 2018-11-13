@@ -10,11 +10,23 @@ allprojects {
   group = 'org.ajoberstar.grgit'
   description = 'The Groovy way to use Git.'
 
-  plugins.withId('java') {
+  plugins.withId('java-library') {
     sourceCompatibility = 8
 
     repositories {
       mavenCentral()
+    }
+  }
+
+  // workaround for groovy plugin not supporting java-library
+  plugins.withId('groovy') {
+    configurations {
+      apiElements {
+          outgoing.variants.getByName('classes').artifact(
+              file: compileGroovy.destinationDir,
+              type: ArtifactTypeDefinition.JVM_CLASS_DIRECTORY,
+              builtBy: compileGroovy)
+      }
     }
   }
 }
