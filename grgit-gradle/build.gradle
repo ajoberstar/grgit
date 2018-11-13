@@ -1,5 +1,6 @@
 plugins {
   id 'java-gradle-plugin'
+  id 'java-library'
   id 'groovy'
 }
 
@@ -14,7 +15,7 @@ sourceSets {
 dependencies {
   compileOnly gradleApi()
 
-  implementation project(':grgit-core')
+  api project(':grgit-core')
   compatTestImplementation project(':grgit-core')
 
   compatTestCompile 'junit:junit:latest.release'
