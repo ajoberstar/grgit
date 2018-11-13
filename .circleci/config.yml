@@ -85,10 +85,6 @@ workflows:
           <<: *branches-and-tags
           requires:
             - build-java-8
-      - build-java-11:
-          <<: *branches-and-tags
-          requires:
-            - build-java-8
       - publish:
           <<: *tags-only
           requires:
