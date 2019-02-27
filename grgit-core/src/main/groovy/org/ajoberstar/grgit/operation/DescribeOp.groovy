@@ -27,6 +27,11 @@ class DescribeOp implements Callable<String> {
   Object commit
 
   /**
+   * Whether to show a uniquely abbreviated commit if no tags match.
+   */
+  boolean always
+
+  /**
    * Whether to always use long output format or not.
    */
   boolean longDescr
@@ -43,14 +48,17 @@ class DescribeOp implements Callable<String> {
 
   String call(){
     DescribeCommand cmd = repo.jgit.describe()
-    if (commit) {
-      cmd.setTarget(new ResolveService(repo).toRevisionString(commit))
+    if (commit == null) {
+      commit = 'HEAD'
     }
+    ResolveService resolver = new ResolveService(repo)
+    cmd.setTarget(resolver.toRevisionString(commit))
     cmd.setLong(longDescr)
     cmd.setTags(tags)
     if (match) {
       cmd.setMatch(match as String[])
     }
-    return cmd.call()
+    String description = cmd.call()
+    return description == null && always ? resolver.toCommit(commit).abbreviatedId : description
   }
 }
