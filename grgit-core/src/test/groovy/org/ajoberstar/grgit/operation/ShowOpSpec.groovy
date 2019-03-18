@@ -91,7 +91,8 @@ class ShowOpSpec extends SimpleGitOpSpec {
     expect:
     grgit.show(commit: renameCommit) == new CommitDiff(
       commit: renameCommit,
-      renamed: ['mammoth.txt']
+      renamed: ['mammoth.txt'],
+      renamings: [('elephant.txt'):'mammoth.txt']
     )
   }
 

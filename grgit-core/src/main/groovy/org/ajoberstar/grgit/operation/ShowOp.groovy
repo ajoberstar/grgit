@@ -61,7 +61,8 @@ class ShowOp implements Callable<CommitDiff> {
         copied: entriesByType[ChangeType.COPY].collect { it.newPath },
         modified: entriesByType[ChangeType.MODIFY].collect { it.newPath },
         removed: entriesByType[ChangeType.DELETE].collect { it.oldPath },
-        renamed: entriesByType[ChangeType.RENAME].collect { it.newPath }
+        renamed: entriesByType[ChangeType.RENAME].collect { it.newPath },
+        renamings: entriesByType[ChangeType.RENAME]?.collectEntries { [(it.oldPath): it.newPath] } ?: [:]
       )
     } else {
       walk.addTree(commitId.tree)
