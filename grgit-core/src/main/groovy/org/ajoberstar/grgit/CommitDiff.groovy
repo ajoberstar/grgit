@@ -18,6 +18,8 @@ class CommitDiff {
 
   Set<String> renamed = []
 
+  Map<String,String> renamings = [:]
+
   /**
    * Gets all changed files.
    * @return all changed files
