@@ -1,6 +1,7 @@
 package org.ajoberstar.grgit.operation
 
 import org.ajoberstar.grgit.Credentials
+import spock.lang.IgnoreIf
 
 import java.nio.file.Files
 
@@ -42,6 +43,7 @@ class OpenOpSpec extends SimpleGitOpSpec {
   }
 
   @RestoreSystemProperties
+  @IgnoreIf({ Integer.parseInt(System.properties['java.version'].split('\\.')[0]) >= 11})
   def 'open without dir fails if there is no repo in the current dir'() {
     given:
     File workingDir = tempDir.newFolder('no_repo')
@@ -53,6 +55,7 @@ class OpenOpSpec extends SimpleGitOpSpec {
   }
 
   @RestoreSystemProperties
+  @IgnoreIf({ Integer.parseInt(System.properties['java.version'].split('\\.')[0]) >= 11})
   def 'open without dir succeeds if current directory is repo dir'() {
     given:
     File dir = repoDir('.')
@@ -67,6 +70,7 @@ class OpenOpSpec extends SimpleGitOpSpec {
   }
 
   @RestoreSystemProperties
+  @IgnoreIf({ Integer.parseInt(System.properties['java.version'].split('\\.')[0]) >= 11})
   def 'open without dir succeeds if current directory is subdir of a repo'() {
     given:
     System.setProperty('user.dir', subdir.absolutePath)
@@ -79,6 +83,7 @@ class OpenOpSpec extends SimpleGitOpSpec {
   }
 
   @RestoreSystemProperties
+  @IgnoreIf({ Integer.parseInt(System.properties['java.version'].split('\\.')[0]) >= 11})
   def 'open without dir succeeds if .git in current dir has gitdir'() {
     given:
     File workDir = tempDir.newFolder()
@@ -100,6 +105,7 @@ class OpenOpSpec extends SimpleGitOpSpec {
   }
 
   @RestoreSystemProperties
+  @IgnoreIf({ Integer.parseInt(System.properties['java.version'].split('\\.')[0]) >= 11})
   def 'open without dir succeeds if .git in parent dir has gitdir'() {
     given:
     File workDir = tempDir.newFolder()
