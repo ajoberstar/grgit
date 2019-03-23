@@ -67,6 +67,13 @@ class LogOpSpec extends SimpleGitOpSpec {
     } == [4, 3, 1].collect(intToCommit)
   }
 
+  def 'log with non-existing commit fails'() {
+    when:
+    grgit.log(includes: ['garbage', intToCommit(1)])
+    then:
+    thrown(IllegalArgumentException)
+  }
+
   def 'log with path includes only commits with changes for that path'() {
     expect:
     grgit.log(paths:['2.txt']).collect { it.id } == [5, 0].collect(intToCommit).collect { it.id }

@@ -53,9 +53,13 @@ class JGitUtil {
    */
   static RevObject resolveRevObject(Repository repo, String revstr, boolean peel = false) {
     ObjectId id = resolveObject(repo, revstr)
-    RevWalk walk = new RevWalk(repo.jgit.repository)
-    RevObject rev = walk.parseAny(id)
-    return peel ? walk.peel(rev) : rev
+    if (id) {
+      RevWalk walk = new RevWalk(repo.jgit.repository)
+      RevObject rev = walk.parseAny(id)
+      return peel ? walk.peel(rev) : rev
+    } else {
+      return null
+    }
   }
 
   /**
