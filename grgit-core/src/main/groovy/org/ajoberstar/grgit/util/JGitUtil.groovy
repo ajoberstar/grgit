@@ -106,8 +106,11 @@ class JGitUtil {
   static Commit convertCommit(Repository repo, RevCommit rev) {
     Map props = [:]
     props.id = ObjectId.toString(rev)
-    repo.jgit.repository.newObjectReader().withCloseable { reader ->
+    def reader = repo.jgit.repository.newObjectReader()
+    try {
       props.abbreviatedId = reader.abbreviate(rev).name()
+    } finally {
+      reader.close()
     }
     PersonIdent committer = rev.committerIdent
     props.committer = new Person(committer.name, committer.emailAddress)
