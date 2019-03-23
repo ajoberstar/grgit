@@ -56,6 +56,11 @@ class PushOp implements Callable<Void> {
    */
   boolean dryRun = false
 
+  /**
+   * The push options to send to the receiving remote
+   */
+  List pushOptions = []
+
   PushOp(Repository repo) {
     this.repo = repo
   }
@@ -69,6 +74,9 @@ class PushOp implements Callable<Void> {
     if (tags) { cmd.setPushTags() }
     cmd.force = force
     cmd.dryRun = dryRun
+    if (pushOptions) {
+      cmd.pushOptions = pushOptions
+    }
 
     def failures = []
     cmd.call().each { result ->

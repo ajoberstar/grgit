@@ -53,9 +53,13 @@ class JGitUtil {
    */
   static RevObject resolveRevObject(Repository repo, String revstr, boolean peel = false) {
     ObjectId id = resolveObject(repo, revstr)
-    RevWalk walk = new RevWalk(repo.jgit.repository)
-    RevObject rev = walk.parseAny(id)
-    return peel ? walk.peel(rev) : rev
+    if (id) {
+      RevWalk walk = new RevWalk(repo.jgit.repository)
+      RevObject rev = walk.parseAny(id)
+      return peel ? walk.peel(rev) : rev
+    } else {
+      return null
+    }
   }
 
   /**
@@ -102,7 +106,9 @@ class JGitUtil {
   static Commit convertCommit(Repository repo, RevCommit rev) {
     Map props = [:]
     props.id = ObjectId.toString(rev)
-    props.abbreviatedId = repo.jgit.repository.newObjectReader().abbreviate(rev).name()
+    repo.jgit.repository.newObjectReader().withCloseable { reader ->
+      props.abbreviatedId = reader.abbreviate(rev).name()
+    }
     PersonIdent committer = rev.committerIdent
     props.committer = new Person(committer.name, committer.emailAddress)
     PersonIdent author = rev.authorIdent

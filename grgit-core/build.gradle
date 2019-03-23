@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
   // groovy
-  compileOnly 'org.codehaus.groovy:groovy-all:[2.5.0, 2.6.0-alpha)'
+  compileOnly 'org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)'
 
   // jgit
   api 'org.eclipse.jgit:org.eclipse.jgit:latest.release'
@@ -22,7 +22,7 @@ dependencies {
 
   // testing
   testImplementation 'junit:junit:latest.release'
-  testImplementation 'org.spockframework:spock-core:1.2-groovy-2.5'
+  testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
 }
 
 jar {

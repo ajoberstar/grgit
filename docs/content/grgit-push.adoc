@@ -17,7 +17,8 @@ grgit.push()
 [source, groovy]
 ----
 grgit.push(remote: '<name or uri>', refsOrSpecs: [<ref or refspec>, ...],
-  all: <boolean>, tags: <boolean>, force: <boolean>, dryRun: <boolean>)
+  all: <boolean>, tags: <boolean>, force: <boolean>, dryRun: <boolean>),
+  pushOptions: [<string>, ...]
 ----
 
 [source, groovy]
@@ -29,6 +30,7 @@ grgit.push {
   tags = <boolean>
   force = <boolean>
   dryRun = <boolean>
+  pushOptions = [<string>, ...]
 }
 ----
 
@@ -58,6 +60,7 @@ all:: (`boolean`, default `false`) Push all branches (i.e. refs under `refs/head
 tags:: (`boolean`, default `false`) All refs under refs/tags are pushed, in addition to refspecs explicitly listed in `refsOrSpecs`.
 force:: (`boolean`, default `false`) Usually, the command refuses to update a remote ref that is not an ancestor of the local ref used to overwrite it. Note that `force` applies to all the refs that are pushed, hence using it with `push.default` set to `matching` or with multiple push destinations configured with `remote.*.push` may overwrite refs other than the current branch (including local refs that are strictly behind their remote counterpart). To force a push to only one branch, use a + in front of the refspec to push (e.g git push origin +master to force a push to the master branch). See the <refspec>... section above for details.
 dryRun:: (`boolean`, default `false`) Do everything except actually send the updates.
+pushOptions:: (`List<String>`, default `[]`) Transmit the given string to the server, which passes them to the pre-receive as well as the post-receive hook. The given string must not contain a NUL or LF character. When multiple `pushOptions` are given, they are all sent to the other side in the order listed. When no `pushOptions` is given, the values of configuration variable `push.pushOption` are used instead.
 
 == Examples
 
