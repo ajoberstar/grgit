@@ -22,15 +22,14 @@ class GrgitPlugin implements Plugin<Project> {
         grgit.close()
       }
 
-      project.allprojects { prj ->
-        if (prj.ext.has('grgit')) {
+      project.allprojects { Project prj ->
+        if (prj.extensions.hasProperty('grgit')) {
           prj.logger.warn("Project ${prj.path} already has a grgit property. Remove org.ajoberstar.grgit from either ${prj.path} or ${project.path}.")
         }
-        prj.ext.grgit = grgit
+        prj.extensions.add(Grgit,"grgit", grgit)
       }
     } catch (Exception e) {
       project.logger.debug("Failed trying to find git repository for ${project.path}", e)
-      project.ext.grgit = null
     }
   }
 }
