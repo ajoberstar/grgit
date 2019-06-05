@@ -42,3 +42,8 @@ gitPublish {
 }
 
 gitPublishCopy.dependsOn bake
+
+tasks.withType(Wrapper).configureEach {
+  gradleVersion = "5.3"
+  distributionType = Wrapper.DistributionType.ALL
+}
