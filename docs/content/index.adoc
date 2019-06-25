@@ -42,7 +42,7 @@ dependencies {
 <!-- make sure you've specified JCenter in your repositories -->
 <dependencies>
   <dependency>
-    <group>org.ajoberstar.grgit</group>
+    <groupId>org.ajoberstar.grgit</groupId>
     <artifactId>grgit-core</artifactId>
     <version>...</version>
   </dependency>
