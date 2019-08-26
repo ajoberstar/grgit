@@ -61,6 +61,12 @@ class CommitOp implements Callable<Commit> {
    */
   boolean amend = false
 
+  /**
+   * {@code true} to sign, {@code false} to not sign, and
+   * {@code null} for default behavior (read from configuration).
+   */
+  Boolean sign
+
   CommitOp(Repository repo) {
     this.repo = repo
   }
@@ -74,6 +80,7 @@ class CommitOp implements Callable<Commit> {
     paths.each { cmd.setOnly(it) }
     if (all) { cmd.all = all }
     cmd.amend = amend
+    cmd.sign = sign
     RevCommit commit = cmd.call()
     return JGitUtil.convertCommit(repo, commit)
   }

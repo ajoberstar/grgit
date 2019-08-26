@@ -4,6 +4,7 @@ import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
+import org.eclipse.jgit.api.errors.JGitInternalException
 
 class CommitOpSpec extends SimpleGitOpSpec {
   def setup() {
@@ -99,5 +100,27 @@ class CommitOpSpec extends SimpleGitOpSpec {
     grgit.log().size() == 2
     grgit.status() == new Status(
       unstaged: [added: ['folderB/2.txt'], modified: ['1.txt', 'folderB/1.txt']])
+  }
+
+  def 'commit with sign=true tries to sign the commit'() {
+    given:
+      grgit.add(patterns:['folderA'])
+    when:
+      grgit.commit(message:'Rest (signed)', sign: true)
+    then:
+      def ex = thrown(JGitInternalException)
+      ex.message.contains("Unable to find a public-key")
+  }
+
+  def 'commit with sign=false overrides "[commit] gpgSign=true" from .gitconfig'() {
+    given:
+      GitTestUtil.configure(grgit) {
+        setBoolean('commit', null, 'gpgSign', true)
+      }
+      grgit.add(patterns:['.'])
+    when:
+      grgit.commit(message:'Rest (unsigned)', sign: false)
+    then:
+      grgit.log().size() == 2
   }
 }
