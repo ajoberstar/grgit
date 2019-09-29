@@ -31,7 +31,7 @@ jar {
 stutter {
   sparse = true
   java(8) {
-    compatibleRange '3.0'
+    compatibleRange '4.0'
   }
   java(9) {
     compatibleRange '4.2.1'
