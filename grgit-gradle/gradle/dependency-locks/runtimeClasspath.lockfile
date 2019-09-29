@@ -2,10 +2,10 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 com.googlecode.javaewah:JavaEWAH:1.1.6
-com.jcraft:jsch:0.1.54
+com.jcraft:jsch:0.1.55
 com.jcraft:jzlib:1.1.1
-org.bouncycastle:bcpg-jdk15on:1.60
-org.bouncycastle:bcpkix-jdk15on:1.60
-org.bouncycastle:bcprov-jdk15on:1.60
-org.eclipse.jgit:org.eclipse.jgit:5.3.0.201903130848-r
+org.bouncycastle:bcpg-jdk15on:1.61
+org.bouncycastle:bcpkix-jdk15on:1.61
+org.bouncycastle:bcprov-jdk15on:1.61
+org.eclipse.jgit:org.eclipse.jgit:5.5.0.201909110433-r
 org.slf4j:slf4j-api:1.7.2

@@ -109,7 +109,7 @@ class CommitOpSpec extends SimpleGitOpSpec {
       grgit.commit(message:'Rest (signed)', sign: true)
     then:
       def ex = thrown(JGitInternalException)
-      ex.message.contains("Unable to find a public-key")
+      ex.message.contains("Unable to find a public-key") || ex.message.contains("neither pubring.kbx nor secring.gpg files found")
   }
 
   def 'commit with sign=false overrides "[commit] gpgSign=true" from .gitconfig'() {

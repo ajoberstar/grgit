@@ -157,5 +157,6 @@ class Grgit implements AutoCloseable {
   @Override
   void close() {
     repository.jgit.close()
+    repository.jgit.repository.close()
   }
 }
