@@ -38,6 +38,7 @@ Describe only shows annotated tags. For more information about creating annotate
 == Options
 
 commit:: (`Object`, default `null`) Commit-ish object names to describe. Defaults to HEAD if omitted. For a more complete list of ways to spell commit names, see link:grgit-resolve.html[grgit-resolve] (specifically the `toCommit` method).
+always:: (`boolean`, default `false`) When `true`, always describe a commit in some way and fall back to a uniquely abbreviated commit if no tags match.
 longDescr:: (`boolean`, default `false`) Always output the long format (the tag, the number of commits and the abbreviated commit name) even when it matches a tag. This is useful when you want to see parts of the commit object name in "describe" output, even when the commit in question happens to be a tagged version. Instead of just emitting the tag name, it will describe such a commit as v1.2-0-gdeadbee (0th commit since tag v1.2 that points at object deadbee…​.).
 tags:: (`boolean`, default `false`) Instead of using only the annotated tags, use any tag found in `refs/tags` namespace. This option enables matching a lightweight (non-annotated) tag.
 match:: (`List<String>`, default `[]`) Only consider tags matching the given glob(7) pattern, excluding the "refs/tags/" prefix. This can be used to avoid leaking private tags from the repository. If multiple patterns are given they will be accumulated, and tags matching any of the patterns will be considered.
