@@ -5,12 +5,23 @@ import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
 class DescribeOpSpec extends SimpleGitOpSpec {
   def setup() {
     grgit.commit(message:'initial commit')
-    grgit.tag.add(name:'initial')
+
+    grgit.commit(message:'second commit')
+    grgit.tag.add(name:'second')
+
     grgit.commit(message:'another commit')
     grgit.tag.add(name:'another')
+
     grgit.commit(message:'other commit')
     grgit.tag.add(name:'other', annotate: false)
+  }
 
+  def 'without tag'() {
+    given:
+    grgit.reset(commit: 'HEAD~3', mode: 'hard')
+    expect:
+    grgit.describe() == null
+    grgit.describe(always: true) == grgit.head().abbreviatedId
   }
 
   def 'with tag'() {
@@ -35,7 +46,7 @@ class DescribeOpSpec extends SimpleGitOpSpec {
     grgit.add(patterns:['1.txt'])
     grgit.commit(message:  'another commit')
     expect:
-    grgit.describe(commit: 'HEAD~3') == 'initial'
+    grgit.describe(commit: 'HEAD~3') == 'second'
   }
 
   def 'with long description'() {
@@ -50,6 +61,6 @@ class DescribeOpSpec extends SimpleGitOpSpec {
 
   def 'with match'() {
     expect:
-    grgit.describe(match: ['initial*']).startsWith('initial-2-')
+    grgit.describe(match: ['second*']).startsWith('second-2-')
   }
 }
