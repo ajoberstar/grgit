@@ -16,7 +16,7 @@ grgit.describe()
 
 [source, groovy]
 ----
-grgit.describe(commit: <commit>, longDescr: <boolean>, tags: <boolean>, match: [<string>])
+grgit.describe(commit: <commit>, longDescr: <boolean>, tags: <boolean>, match: [<string>], always: <boolean>)
 ----
 
 [source, groovy]
@@ -26,6 +26,7 @@ grgit.describe {
   longDescr = <boolean>
   tags = <boolean>
   match = [<string>]
+  always = <boolean>
 }
 ----
 
