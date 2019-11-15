@@ -15,4 +15,5 @@ jobs:
       - uses: "actions/setup-java@master"
         with:
           java-version: ${{ matrix.java }}
-      - run: "./gradlew check"
+      - name: "Gradle check"
+        run: "./gradlew check"
