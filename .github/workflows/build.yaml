@@ -1,0 +1,18 @@
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [8, 11, 13]
+      fail-fast: false
+    steps:
+      - uses: "actions/checkout@master"
+      - uses: "actions/setup-java@master"
+        with:
+          java-version: ${{ matrix.java }}
+      - run: "./gradlew check"
