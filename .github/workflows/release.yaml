@@ -1,0 +1,31 @@
+on:
+  push:
+    tags:
+      - "*"
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [8, 11]
+      fail-fast: false
+    steps:
+      - uses: "actions/checkout@master"
+      - uses: "actions/setup-java@master"
+        with:
+          java-version: ${{ matrix.java }}
+      - run: "./gradlew check --continue"
+  publish:
+    runs-on: ubuntu-latest
+    needs: check
+    steps:
+      - uses: "actions/checkout@master"
+      - uses: "actions/setup-java@master"
+        with:
+          java-version: 11
+      - name: "Gradle publish"
+        env:
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          GRADLE_OPTS: "-Dorg.gradle.project.gradle.publish.key=${{ secrets.GRADLE_PLUGIN_KEY }} -Dorg.gradle.project.gradle.publish.secret=${{ secrets.GRADLE_PLUGIN_SECRET }}"
+        run: "./gradlew publish publishPlugins"
