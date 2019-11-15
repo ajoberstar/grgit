@@ -4,11 +4,11 @@
 com.googlecode.javaewah:JavaEWAH:1.1.6
 com.jcraft:jsch:0.1.55
 com.jcraft:jzlib:1.1.1
-junit:junit:4.13-beta-3
+junit:junit:4.13-rc-1
 org.bouncycastle:bcpg-jdk15on:1.61
 org.bouncycastle:bcpkix-jdk15on:1.61
 org.bouncycastle:bcprov-jdk15on:1.61
-org.eclipse.jgit:org.eclipse.jgit:5.5.0.201909110433-r
+org.eclipse.jgit:org.eclipse.jgit:5.5.1.201910021850-r
 org.hamcrest:hamcrest-core:1.3
 org.slf4j:slf4j-api:1.7.2
 org.spockframework:spock-core:1.3-groovy-2.5

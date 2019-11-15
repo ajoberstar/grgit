@@ -7,5 +7,5 @@ com.jcraft:jzlib:1.1.1
 org.bouncycastle:bcpg-jdk15on:1.61
 org.bouncycastle:bcpkix-jdk15on:1.61
 org.bouncycastle:bcprov-jdk15on:1.61
-org.eclipse.jgit:org.eclipse.jgit:5.5.0.201909110433-r
+org.eclipse.jgit:org.eclipse.jgit:5.5.1.201910021850-r
 org.slf4j:slf4j-api:1.7.2
