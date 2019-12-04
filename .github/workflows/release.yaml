@@ -22,7 +22,7 @@ jobs:
       - uses: "actions/checkout@master"
       - uses: "actions/setup-java@master"
         with:
-          java-version: 11
+          java-version: 8
       - name: "Gradle publish"
         env:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
