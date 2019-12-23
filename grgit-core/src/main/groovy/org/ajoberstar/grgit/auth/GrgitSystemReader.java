@@ -50,6 +50,11 @@ public class GrgitSystemReader extends SystemReader {
   }
 
   @Override
+  public FileBasedConfig openJGitConfig(Config parent, FS fs) {
+    return delegate.openJGitConfig(parent, fs);
+  }
+
+  @Override
   public FileBasedConfig openUserConfig(Config parent, FS fs) {
     return delegate.openUserConfig(parent, fs);
   }
