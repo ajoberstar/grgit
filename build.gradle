@@ -1,6 +1,5 @@
 plugins {
-  id 'org.ajoberstar.defaults' version '0.15.1'
-  id 'org.ajoberstar.stutter' version '0.5.1'
+  id 'org.ajoberstar.defaults' version '0.16.0-beta.2'
   id 'org.jbake.site' version '5.0.0'
 }
 

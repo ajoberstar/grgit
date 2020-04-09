@@ -36,8 +36,8 @@ stutter {
   java(11) {
     compatibleRange '5.0'
   }
-  java(13) {
-    compatibleRange '6.0'
+  java(14) {
+    compatibleRange '6.3'
   }
 }
 
