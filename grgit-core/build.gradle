@@ -1,6 +1,7 @@
 plugins {
   id 'java-library'
   id 'groovy'
+  id 'org.gradle.test-retry' version '1.0.0'
 }
 
 repositories {
@@ -34,5 +35,12 @@ dependencies {
 jar {
   manifest {
     attributes 'Automatic-Module-Name': 'org.ajoberstar.grgit'
+  }
+}
+
+test {
+  retry {
+    maxFailures = 1
+    maxRetries = 1
   }
 }
