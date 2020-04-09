@@ -40,8 +40,12 @@ class JGitUtil {
    * @return the resolved object
    */
   static ObjectId resolveObject(Repository repo, String revstr) {
-    ObjectId object = repo.jgit.repository.resolve(revstr)
-    return object
+    if (revstr) {
+      ObjectId object = repo.jgit.repository.resolve(revstr)
+      return object
+    } else {
+      return null
+    }
   }
 
   /**
@@ -83,8 +87,12 @@ class JGitUtil {
    * @return the resolved commit
    */
   static Commit resolveCommit(Repository repo, String revstr) {
-    ObjectId id = resolveObject(repo, revstr)
-    return resolveCommit(repo, id)
+    if (revstr) {
+      ObjectId id = resolveObject(repo, revstr)
+      return resolveCommit(repo, id)
+    } else {
+      return null
+    }
   }
 
   /**
@@ -94,8 +102,12 @@ class JGitUtil {
    * @return the resolved commit
    */
   static Commit resolveCommit(Repository repo, ObjectId id) {
-    RevWalk walk = new RevWalk(repo.jgit.repository)
-    return convertCommit(repo, walk.parseCommit(id))
+    if (id) {
+      RevWalk walk = new RevWalk(repo.jgit.repository)
+      return convertCommit(repo, walk.parseCommit(id))
+    } else {
+      return null
+    }
   }
 
   /**
