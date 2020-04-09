@@ -23,6 +23,12 @@ dependencies {
   // testing
   testImplementation 'junit:junit:latest.release'
   testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
+
+  constraints {
+    testImplementation('org.codehaus.groovy:groovy:2.5.10') {
+      because 'Needed to support Java 14'
+    }
+  }
 }
 
 jar {
