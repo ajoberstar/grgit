@@ -18,7 +18,7 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.treewalk.filter.PathFilter
 
 /**
- * Diff between commits.
+ * Show changed files between commits.
  * Returns changes made in commit in the form of {@link org.ajoberstar.grgit.DiffEntry}.
  * @since 4.1.0
  * @see <a href="http://ajoberstar.org/grgit/grgit-diff.html">grgit-diff</a>
@@ -29,12 +29,12 @@ class DiffOp implements Callable<List<DiffEntry>> {
   private final Repository repo
 
   /**
-   * The commit to diff against
+   * The commit to diff against, default HEAD.
    * @see {@link org.ajoberstar.grgit.service.ResolveService#toRevisionString(Object)}
    */
   Object oldCommit
   /**
-   * The commit to diff against
+   * The commit to diff against, default HEAD.
    * @see {@link org.ajoberstar.grgit.service.ResolveService#toRevisionString(Object)}
    */
   Object newCommit
