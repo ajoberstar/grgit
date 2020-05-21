@@ -35,7 +35,7 @@ class Manifests {
      * <p>Opens an input stream for the manifest resource of the jar the
      * parameter class belongs to.</p>
      *
-     * <p></p>Throws <code>UnsupportedOperationException</code> if the class
+     * <p>Throws <code>UnsupportedOperationException</code> if the class
      * does not belong to a jar.</p>
      *
      * @param clss The class to open the jar manifest strea for

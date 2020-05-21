@@ -47,7 +47,7 @@ task clone {
 
 task log(dependsOn: clone) {
   group = 'Grgit Example'
-  description = 'Prints the test repository commit log'
+  description = 'Prints the test repository commit log.'
   doLast {
     Grgit.open(dir: destinationDir).log(maxCommits: project.maxCommits).each { 
       logger.lifecycle("""commit ${it.id}
@@ -63,7 +63,7 @@ Date:   ${it.dateTime}
 
 task clean {
   group = 'Grgit Example'
-  description = 'Removes a previously created repository clone, if present'
+  description = 'Removes a previously created repository clone, if present.'
   doLast {
     if (destinationDir.exists())
       delete(destinationDir)

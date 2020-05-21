@@ -33,6 +33,8 @@ jar {
 // Use the runJar task instead -
 
 task runJar(type: JavaExec) {
+  group = 'Grgit Example'
+  description = 'Runs the sample application to print repository information.'
   classpath = files(jar)
 }
 
