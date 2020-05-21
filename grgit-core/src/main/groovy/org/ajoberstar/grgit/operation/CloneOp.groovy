@@ -49,6 +49,10 @@ class CloneOp implements Callable<Grgit> {
    */
   boolean bare = false
 
+  /**
+   * The list of full refs to be cloned when {@code all = false}. Defaults to
+   * all available branches.
+   */
   List<String> branches = []
 
   /**
