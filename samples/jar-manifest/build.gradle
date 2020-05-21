@@ -1,0 +1,38 @@
+
+/*
+ * Grgit can extend a Gradle project to support direct interaction with the 
+ * git repository the Gradle project is part of. This minimal example shows 
+ * how the common use case of including repository information in jar manifests
+ * can be implemented. 
+ */
+
+plugins {
+  id 'application'
+  // Apply the grgit plugin to create project.grgit:
+  id 'org.ajoberstar.grgit' version '4.0.2' 
+}
+
+version = '1.0.0'
+group = 'org.ajoberstar.grgit.sample'
+
+application {
+  mainClassName = 'org.ajoberstar.grgit.samples.Main'
+}
+
+jar {
+  manifest {
+    attributes(
+      'Build-Date': new Date(),
+      'Git-Branch': grgit.branch.current.fullName,
+      'Git-Commit': grgit.log(maxCommits: 1).get(0).id,
+      'Main-Class': application.mainClassName)
+  }
+}
+
+// The run task results in an exception because no jar is generated.
+// Use the runJar task instead -
+
+task runJar(type: JavaExec) {
+  classpath = files(jar)
+}
+
