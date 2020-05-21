@@ -122,7 +122,7 @@ class Grgit implements AutoCloseable {
    */
   final TagService tag
 
-  private Grgit(Repository repository) {
+  Grgit(Repository repository) {
     this.repository = repository
     this.branch = new BranchService(repository)
     this.remote = new RemoteService(repository)

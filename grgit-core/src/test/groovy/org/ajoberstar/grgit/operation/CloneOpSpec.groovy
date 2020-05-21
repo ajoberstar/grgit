@@ -117,6 +117,34 @@ class CloneOpSpec extends MultiGitOpSpec {
     GitTestUtil.remotes(grgit) == ['origin']
   }
 
+  def 'clone with all true works'() {
+    when:
+    def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, all: true)
+    then:
+    grgit.head() == remoteGrgit.resolve.toCommit('master')
+    GitTestUtil.branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == GitTestUtil.branches(remoteGrgit).collect(lastName)
+    GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['master']
+  }
+
+  def 'clone with all false has the same effect as all true'() {
+    when:
+    def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, all: false)
+    then:
+    grgit.head() == remoteGrgit.resolve.toCommit('master')
+    GitTestUtil.branches(grgit).findAll(remoteBranchesFilter).collect(lastName) == GitTestUtil.branches(remoteGrgit).collect(lastName)
+    GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['master']
+  }
+
+  def 'clone with all false and explicitly set branches works'() {
+    when:
+    def branches = ['refs/heads/master', 'refs/heads/branch1']
+    def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, all: false, branches: branches)
+    then:
+    grgit.head() == remoteGrgit.resolve.toCommit('master')
+    GitTestUtil.branches(grgit).findAll(remoteBranchesFilter).collect(lastName).sort() == ['master', 'branch1'].sort()
+    GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['master']
+  }
+
   def 'cloned repo can be deleted'() {
     given:
     def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, refToCheckout: 'refs/heads/branch2')
