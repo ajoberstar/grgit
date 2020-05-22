@@ -1,16 +1,23 @@
 
 /*
- * Grgit can extend a Gradle project to support direct interaction with the 
- * git repository the Gradle project is part of, but it can also be used to 
- * create clones and carry out operations on any repository in the local 
- * file system. This example shows how a clone can be created and manipulated 
- * without applying the Grgit Gradle plugin.
- */
+ Grgit can extend a Gradle project to support direct interaction with the
+ git repository the Gradle project is part of, but it can also be used to
+ create clones and carry out operations on any repository in the local
+ file system. This example shows how a clone can be created and manipulated
+ without applying the Grgit Gradle plugin.
+ 
+ The destination directory we're cloning into is the project build
+ directory by default, or can be set with -PdestinationDir=<path>.
+
+ The remote origin we're cloning from is a small test repository by default
+ or can be set with -Porigin=<URI>.
+
+ Set the number of commits to print from the git commit log; this is 10
+ commits by default or can be set with -PmaxCommits=<integer>.
+*/
 
 plugins {
-  // Include grgit on the class path without applying the plugin, so 
-  // project.grgit is not available and the repository we're working in is not 
-  // interacted with: 
+  // Include grgit on the class path without applying the plugin:
   id 'org.ajoberstar.grgit' version '4.0.2' apply false
 }
 
@@ -18,16 +25,10 @@ plugins {
 import org.ajoberstar.grgit.Grgit
 
 ext {
-  // The destination directory we're cloning into is the project build 
-  // directory by default, or can be set with -PdestinationDir=<path>:
   destinationDir = project.hasProperty('destinationDir') ? destinationDir : buildDir
-  // The remote origin we're cloning from is a small test repository by default
-  // or can be set with -Porigin=<URI>:
-  origin = (project.hasProperty('origin') 
-    ? origin 
+  origin = (project.hasProperty('origin')
+    ? origin
     : 'https://github.com/ajoberstar/test-repo.git')
-  // Set the number of commits to print from the git commit log; this is 10 
-  // commits by default or can be set with -PmaxCommits=<integer>:
   maxCommits = project.hasProperty('maxCommits') ? maxCommits : 10
 }
 
@@ -39,7 +40,7 @@ task clone {
   onlyIf { !new File(destinationDir, '.git').exists() }
   doLast {
     Grgit.clone(
-      dir: destinationDir, 
+      dir: destinationDir,
       uri: origin)
     logger.lifecycle("Cloned ${origin} into ${destinationDir}")
   }
@@ -49,13 +50,13 @@ task log(dependsOn: clone) {
   group = 'Grgit Example'
   description = 'Prints the test repository commit log.'
   doLast {
-    Grgit.open(dir: destinationDir).log(maxCommits: project.maxCommits).each { 
+    Grgit.open(dir: destinationDir).log(maxCommits: project.maxCommits).each {
       logger.lifecycle("""commit ${it.id}
 Author: ${it.author}
 Date:   ${it.dateTime}
 
     ${it.shortMessage}
-    
+
 """)
     }
   }
@@ -69,4 +70,3 @@ task clean {
       delete(destinationDir)
   }
 }
-
