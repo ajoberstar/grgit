@@ -1,3 +1,4 @@
+name: Build
 on:
   push:
     branches:
@@ -8,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [8, 11, 14]
+        java: [8, 11, 15]
       fail-fast: false
     steps:
       - name: "Checkout repo"
