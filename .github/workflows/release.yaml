@@ -71,4 +71,5 @@ jobs:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
           GRADLE_OPTS: "-Dorg.gradle.project.gradle.publish.key=${{ secrets.GRADLE_PLUGIN_KEY }} -Dorg.gradle.project.gradle.publish.secret=${{ secrets.GRADLE_PLUGIN_SECRET }}"
+          GRGIT_USER: ${{ secrets.GITHUB_TOKEN }} # Remove this when grgit supports GITHUB_TOKEN directly
         run: "./gradlew reckonTagPush gitPublishPush publish publishPlugins  -Preckon.scope=${{ github.event.inputs.scope }} -Preckon.stage=${{ github.event.inputs.stage }}"
