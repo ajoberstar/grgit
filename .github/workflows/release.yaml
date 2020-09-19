@@ -1,21 +1,27 @@
+name: Release
 on:
-  push:
-    tags:
-      - "*"
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: "Scope to use for reckoning version"
+        required: true
+        default: "minor"
+      stage:
+        description: "Stage to use for reckoning version"
+        required: true
+        default: "rc"
 jobs:
   check:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [8, 11, 14]
+        java: [8, 11, 15]
       fail-fast: false
     steps:
       - name: "Checkout repo"
         uses: "actions/checkout@v2"
         with:
           fetch-depth: 0
-      - name: "Fetch all tags"
-        run: "git fetch origin +refs/tags/*:refs/tags/*"
       - name: "Setup Java ${{ matrix.java }}"
         uses: "actions/setup-java@v1"
         with:
@@ -23,22 +29,19 @@ jobs:
       - name: "Validate Gradle Wrapper"
         uses: gradle/wrapper-validation-action@v1
       - name: "Cache Gradle wrapper"
-        uses: "actions/cache@v1"
+        uses: "actions/cache@v2"
         with:
-          path: "~/.gradle/wrapper"
+          path: |
+            ~/.gradle/wrapper
+            ~/.gradle/notifications
           key: "gradle-wrapper-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}"
-      - name: "Cache Gradle welcome message"
-        uses: "actions/cache@v1"
-        with:
-          path: "~/.gradle/notifications"
-          key: "gradle-notifications-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}"
       - name: "Cache Gradle dependencies"
-        uses: "actions/cache@v1"
+        uses: "actions/cache@v2"
         with:
           path: "~/.gradle/caches"
           key: "gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle/dependency-locks/*.lockfile') }}"
       - name: "Gradle check"
-        run: "./gradlew check --continue"
+        run: "./gradlew check --continue -Preckon.scope=${{ github.event.inputs.scope }} -Preckon.scope=${{ github.event.inputs.stage }}"
   publish:
     runs-on: ubuntu-latest
     needs: check
@@ -47,24 +50,19 @@ jobs:
         uses: "actions/checkout@v2"
         with:
           fetch-depth: 0
-      - name: "Fetch all tags"
-        run: "git fetch origin +refs/tags/*:refs/tags/*"
       - name: "Setup Java"
         uses: "actions/setup-java@v1"
         with:
           java-version: 8
       - name: "Cache Gradle wrapper"
-        uses: "actions/cache@v1"
+        uses: "actions/cache@v2"
         with:
-          path: "~/.gradle/wrapper"
+          path: |
+            ~/.gradle/wrapper
+            ~/.gradle/notifications
           key: "gradle-wrapper-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}"
-      - name: "Cache Gradle welcome message"
-        uses: "actions/cache@v1"
-        with:
-          path: "~/.gradle/notifications"
-          key: "gradle-notifications-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}"
       - name: "Cache Gradle dependencies"
-        uses: "actions/cache@v1"
+        uses: "actions/cache@v2"
         with:
           path: "~/.gradle/caches"
           key: "gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle/dependency-locks/*.lockfile') }}"
@@ -73,4 +71,4 @@ jobs:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
           GRADLE_OPTS: "-Dorg.gradle.project.gradle.publish.key=${{ secrets.GRADLE_PLUGIN_KEY }} -Dorg.gradle.project.gradle.publish.secret=${{ secrets.GRADLE_PLUGIN_SECRET }}"
-        run: "./gradlew publish publishPlugins"
+        run: "./gradlew reckonTagPush gitPublishPush publish publishPlugins  -Preckon.scope=${{ github.event.inputs.scope }} -Preckon.scope=${{ github.event.inputs.stage }}"

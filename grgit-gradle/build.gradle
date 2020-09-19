@@ -2,6 +2,14 @@ plugins {
   id 'java-gradle-plugin'
   id 'java-library'
   id 'groovy'
+
+  id 'com.gradle.plugin-publish'
+  id 'org.ajoberstar.stutter'
+}
+
+// avoid conflict with localGroovy()
+configurations.all {
+  exclude group: 'org.codehaus.groovy'
 }
 
 // compat tests use grgit to set up and verify the tests
@@ -58,3 +66,6 @@ pluginBundle {
         version = project.version
     }
 }
+
+// remove duplicate publication
+gradlePlugin.automatedPublishing = false

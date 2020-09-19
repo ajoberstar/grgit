@@ -4,7 +4,7 @@ import org.ajoberstar.grgit.Person
 import org.ajoberstar.grgit.Status
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.SimpleGitOpSpec
-import org.eclipse.jgit.api.errors.JGitInternalException
+import org.eclipse.jgit.api.errors.ServiceUnavailableException
 
 class CommitOpSpec extends SimpleGitOpSpec {
   def setup() {
@@ -108,8 +108,7 @@ class CommitOpSpec extends SimpleGitOpSpec {
     when:
       grgit.commit(message:'Rest (signed)', sign: true)
     then:
-      def ex = thrown(JGitInternalException)
-      ex.message.contains("Unable to find a public-key") || ex.message.contains("neither pubring.kbx nor secring.gpg files found")
+      thrown(ServiceUnavailableException)
   }
 
   def 'commit with sign=false overrides "[commit] gpgSign=true" from .gitconfig'() {

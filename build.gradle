@@ -1,10 +1,18 @@
 plugins {
-  id 'org.ajoberstar.defaults' version '0.16.0-beta.2'
-  id 'org.jbake.site' version '5.0.0'
+  id 'org.ajoberstar.grgit'
+  id 'org.ajoberstar.git-publish'
+  id 'org.ajoberstar.reckon'
+  id 'org.jbake.site'
 }
 
+apply from: 'gradle/spotless.gradle'
 apply from: 'gradle/locking.gradle'
 apply from: 'gradle/bintray.gradle'
+
+reckon {
+  scopeFromProp()
+  stageFromProp('alpha', 'beta', 'rc', 'final')
+}
 
 allprojects {
   group = 'org.ajoberstar.grgit'
@@ -15,6 +23,19 @@ allprojects {
 
     repositories {
       mavenCentral()
+    }
+
+    java {
+      withSourcesJar()
+      withJavadocJar()
+    }
+  }
+
+  plugins.withId('maven-publish') {
+    publishing {
+      main(MavenPublication) {
+        from project.components.java
+      }
     }
   }
 
@@ -36,6 +57,7 @@ jbake {
 }
 
 gitPublish {
+  branch = 'gh-pages'
   contents {
     from "${buildDir}/${jbake.destDirName}"
   }
