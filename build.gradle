@@ -29,12 +29,14 @@ allprojects {
       withSourcesJar()
       withJavadocJar()
     }
-  }
 
-  plugins.withId('maven-publish') {
-    publishing {
-      main(MavenPublication) {
-        from project.components.java
+    plugins.withId('maven-publish') {
+      publishing {
+        publications {
+          main(MavenPublication) {
+            from components.java
+          }
+        }
       }
     }
   }

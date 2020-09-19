@@ -1,4 +1,5 @@
 plugins {
+  id 'maven-publish'
   id 'java-gradle-plugin'
   id 'java-library'
   id 'groovy'
