@@ -11,8 +11,9 @@ grgit-clone - Clone a repository into a new directory
 
 [source, groovy]
 ----
-grgit.clone(dir: <path>, uri: <path or uri>, remote: <name>, bare: <boolean>,
-  checkout: <boolean>, refToCheckout: <name>, credentials: <credentials>)
+grgit.clone(dir: <path>, uri: <path or uri>, remote: <name>, all: <boolean>,
+  bare: <boolean>, branches: <full refs>, checkout: <boolean>,
+  refToCheckout: <name>, credentials: <credentials>)
 ----
 
 [source, groovy]
@@ -21,7 +22,9 @@ grgit.clone {
   dir = <path>
   uri = <path or uri>
   remote = <name>
+  all = <boolean>
   bare = <boolean>
+  branches = <full refs>
   checkout = <boolean>
   refToCheckout = <name>
   credentials = <credentials>
@@ -43,7 +46,9 @@ Returns a link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajobers
 dir:: (`Object`, default `null`) The directory the repository should be cloned into. Can be a `File`, `Path`, or `String`.
 uri:: (`String`, default `null`) The URI to the repository to be cloned.
 remote:: (`String`, default `origin`) Instead of using the remote name `origin` to keep track of the upstream repository, use `<name>`.
+all:: (`boolean`, default `false`) Clone all branches.
 bare:: (`boolean`, default `false`) Create a bare repository.
+branches:: (`List<String>`, `[]`) Select full refs to use with `all = false`.
 checkout:: (`boolean`, default `true`) Set to `false` to skip checking out a `HEAD`.
 refToCheckout:: (`String`, default `null`) Instead of pointing the newly created `HEAD` to the branch pointed to by the cloned repository’s `HEAD`, point to `<name>` branch instead. In a non-bare repository, this is the branch that will be checked out. This can also take tags and detaches the `HEAD` at that commit in the resulting repository.
 credentials:: (`Credentials`, default `null`) An instance of link:http://ajoberstar.org/grgit/docs/grgit-core/groovydoc/org/ajoberstar/grgit/Credentials.html[Credentials] containing username/password to be used in operations that require authentication. See link:grgit-authentication.html[grgit-authentication] for preferred ways to configure this.

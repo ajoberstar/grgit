@@ -38,10 +38,22 @@ class CloneOp implements Callable<Grgit> {
   String remote = 'origin'
 
   /**
+   * {@code true} when all branches have to be fetched,
+   * {@code false} (the default) otherwise.
+   */
+  boolean all = false
+
+  /**
    * {@code true} if the resulting repository should be bare,
    * {@code false} (the default) otherwise.
    */
   boolean bare = false
+
+  /**
+   * The list of full refs to be cloned when {@code all = false}. Defaults to
+   * all available branches.
+   */
+  List<String> branches = []
 
   /**
    * {@code true} (the default) if a working tree should be checked out,
@@ -60,7 +72,7 @@ class CloneOp implements Callable<Grgit> {
    * repository and for subsequent remote operations on the
    * repository. This is only needed if hardcoded credentials
    * should be used.
-   * @see {@link org.ajoberstar.gradle.auth.AuthConfig}
+   * @see {@link org.ajoberstar.grgit.auth.AuthConfig}
    */
   Credentials credentials
 
@@ -73,11 +85,13 @@ class CloneOp implements Callable<Grgit> {
     TransportOpUtil.configure(cmd, credentials)
 
     cmd.directory = CoercionUtil.toFile(dir)
-    cmd.uri = uri
+    cmd.setURI(uri)
     cmd.remote = remote
     cmd.bare = bare
     cmd.noCheckout = !checkout
     if (refToCheckout) { cmd.branch = refToCheckout }
+    if (all) cmd.cloneAllBranches = all
+    if (!branches.isEmpty()) cmd.branchesToClone = branches
 
     Git jgit = cmd.call()
     Repository repo = new Repository(CoercionUtil.toFile(dir), jgit, credentials)
