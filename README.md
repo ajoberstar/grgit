@@ -1,7 +1,7 @@
 # grgit
 
 [![Download](https://api.bintray.com/packages/ajoberstar/maven/grgit/images/download.svg)](https://bintray.com/ajoberstar/maven/grgit/_latestVersion)
-![](https://github.com/ajoberstar/grgit/workflows/.github/workflows/build.yaml/badge.svg)
+![Build](https://github.com/ajoberstar/grgit/workflows/Build/badge.svg)
 
 ## Why do you care?
 
