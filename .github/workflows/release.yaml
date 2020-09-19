@@ -1,15 +1,8 @@
 name: Release
 on:
-  workflow_dispatch:
-    inputs:
-      scope:
-        description: "Scope to use for reckoning version"
-        required: true
-        default: "minor"
-      stage:
-        description: "Stage to use for reckoning version"
-        required: true
-        default: "rc"
+  push:
+    tags:
+      - "*"
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -41,7 +34,7 @@ jobs:
           path: "~/.gradle/caches"
           key: "gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle/dependency-locks/*.lockfile') }}"
       - name: "Gradle check"
-        run: "./gradlew check --continue -Preckon.scope=${{ github.event.inputs.scope }} -Preckon.stage=${{ github.event.inputs.stage }}"
+        run: "./gradlew check --continue"
   publish:
     runs-on: ubuntu-latest
     needs: check
@@ -71,4 +64,4 @@ jobs:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
           GRADLE_OPTS: "-Dorg.gradle.project.gradle.publish.key=${{ secrets.GRADLE_PLUGIN_KEY }} -Dorg.gradle.project.gradle.publish.secret=${{ secrets.GRADLE_PLUGIN_SECRET }}"
-        run: "./gradlew reckonTagPush publish publishPlugins  -Preckon.scope=${{ github.event.inputs.scope }} -Preckon.stage=${{ github.event.inputs.stage }}"
+        run: "./gradlew gitPublishPush publish publishPlugins"
