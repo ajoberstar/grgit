@@ -1,7 +1,27 @@
 # grgit
 
-[![Download](https://api.bintray.com/packages/ajoberstar/maven/grgit/images/download.svg)](https://bintray.com/ajoberstar/maven/grgit/_latestVersion)
 ![Build](https://github.com/ajoberstar/grgit/workflows/Build/badge.svg)
+
+## Project News
+
+### Retirement of Bintray/JCenter
+
+This project was previously uploaded to JCenter, which is being retired by JFrog on May 1st 2021.
+
+To allow continued acess to past versions, I've made a Maven repo available in [bintray-backup](https://github.com/ajoberstar/bintray-backup). Add the following to your repositories to use it.
+
+```groovy
+maven {
+  name = 'ajoberstar-backup'
+  url = 'https://ajoberstar.github.io/bintray-backup/'
+}
+```
+
+Made possible by [lacasseio/bintray-helper](https://github.com/lacasseio/bintray-helper) in case you have a similar need to pull your old Bintray artifacts.
+
+### Maintenance
+
+I'm not spending much time on this project anymore. If you're interested in taking over maintenance, please open an issue.
 
 ## Why do you care?
 
