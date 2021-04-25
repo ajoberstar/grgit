@@ -13,7 +13,7 @@ To allow continued acess to past versions, I've made a Maven repo available in [
 ```groovy
 maven {
   name = 'ajoberstar-backup'
-  url = 'https://ajoberstar.github.io/bintray-backup/'
+  url = 'https://ajoberstar.org/bintray-backup/'
 }
 ```
 
