@@ -13,10 +13,11 @@ dependencies {
 
   // logging
   testImplementation("org.slf4j:slf4j-api:latest.release")
-  testRuntime("org.slf4j:slf4j-simple:latest.release")
+  testRuntimeOnly("org.slf4j:slf4j-simple:latest.release")
 
   // testing
-  testImplementation("junit:junit:latest.release")
+  testImplementation("org.junit.jupiter:junit-jupiter-api:latest.release")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:latest.release")
   testImplementation("org.spockframework:spock-core:2.0-groovy-2.5")
 
   constraints {

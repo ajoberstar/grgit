@@ -1,0 +1,29 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+cglib:cglib-nodep:3.3.0=testCompileClasspath,testRuntimeClasspath
+com.googlecode.javaewah:JavaEWAH:1.1.12=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+net.bytebuddy:byte-buddy:1.11.0=testCompileClasspath,testRuntimeClasspath
+org.apiguardian:apiguardian-api:1.1.2=testCompileClasspath
+org.assertj:assertj-core:3.20.2=testCompileClasspath,testRuntimeClasspath
+org.codehaus.groovy:groovy:2.5.14=testCompileClasspath,testRuntimeClasspath
+org.codehaus.groovy:groovy:2.5.15=compileClasspath
+org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827-r=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.hamcrest:hamcrest:2.2=testCompileClasspath,testRuntimeClasspath
+org.jetbrains:annotations:20.1.0=testCompileClasspath,testRuntimeClasspath
+org.junit.jupiter:junit-jupiter-api:5.8.2=testCompileClasspath,testRuntimeClasspath
+org.junit.jupiter:junit-jupiter-engine:5.8.2=testRuntimeClasspath
+org.junit.platform:junit-platform-commons:1.8.2=testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-engine:1.8.2=testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-launcher:1.8.2=testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-testkit:1.8.2=testCompileClasspath,testRuntimeClasspath
+org.junit:junit-bom:5.8.2=testCompileClasspath,testRuntimeClasspath
+org.objenesis:objenesis:3.2=testCompileClasspath,testRuntimeClasspath
+org.opentest4j:opentest4j:1.2.0=testCompileClasspath,testRuntimeClasspath
+org.ow2.asm:asm:9.1=testCompileClasspath,testRuntimeClasspath
+org.slf4j:slf4j-api:1.7.30=compileClasspath,runtimeClasspath
+org.slf4j:slf4j-api:2.0.0-alpha5=testCompileClasspath,testRuntimeClasspath
+org.slf4j:slf4j-simple:2.0.0-alpha5=testRuntimeClasspath
+org.spockframework:spock-core:2.0-groovy-2.5=testCompileClasspath,testRuntimeClasspath
+org.spockframework:spock-groovy2-compat:2.0-groovy-2.5=testCompileClasspath,testRuntimeClasspath
+empty=

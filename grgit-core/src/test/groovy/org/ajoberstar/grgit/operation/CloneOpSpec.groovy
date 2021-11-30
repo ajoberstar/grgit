@@ -17,7 +17,7 @@ class CloneOpSpec extends MultiGitOpSpec {
 
   def setup() {
     // TODO: Convert branching and tagging to Grgit.
-    repoDir = tempDir.newFolder('local')
+    repoDir = new File(tempDir, 'local')
 
     remoteGrgit = init('remote')
     remoteUri = remoteGrgit.repository.rootDir.toURI()

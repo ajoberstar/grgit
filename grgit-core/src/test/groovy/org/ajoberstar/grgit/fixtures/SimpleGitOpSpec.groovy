@@ -5,19 +5,20 @@ import org.ajoberstar.grgit.Person
 
 import org.eclipse.jgit.api.Git
 
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
+import spock.lang.TempDir
 
 import spock.lang.Specification
 
 class SimpleGitOpSpec extends Specification {
-  @Rule TemporaryFolder tempDir = new TemporaryFolder()
+  @TempDir
+  File tempDir
+  File repoDir
 
   Grgit grgit
   Person person = new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com')
 
   def setup() {
-    File repoDir = tempDir.newFolder('repo')
+    repoDir = new File(tempDir, 'repo')
     Git git = Git.init()
       .setDirectory(repoDir)
       .setInitialBranch('master') // for compatibility with existing tests
@@ -32,6 +33,10 @@ class SimpleGitOpSpec extends Specification {
       save()
     }
     grgit = Grgit.open(dir: repoDir)
+  }
+
+  def cleanup() {
+    grgit.close()
   }
 
   protected File repoFile(String path, boolean makeDirs = true) {

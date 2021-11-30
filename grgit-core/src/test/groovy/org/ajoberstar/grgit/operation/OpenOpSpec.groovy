@@ -46,7 +46,7 @@ class OpenOpSpec extends SimpleGitOpSpec {
   @IgnoreIf({ Integer.parseInt(System.properties['java.version'].split('\\.')[0]) >= 11})
   def 'open without dir fails if there is no repo in the current dir'() {
     given:
-    File workingDir = tempDir.newFolder('no_repo')
+    File workingDir = new File(tempDir, 'no_repo')
     System.setProperty('user.dir', workingDir.absolutePath)
     when:
     Grgit.open()
@@ -86,8 +86,8 @@ class OpenOpSpec extends SimpleGitOpSpec {
   @IgnoreIf({ Integer.parseInt(System.properties['java.version'].split('\\.')[0]) >= 11})
   def 'open without dir succeeds if .git in current dir has gitdir'() {
     given:
-    File workDir = tempDir.newFolder()
-    File gitDir = tempDir.newFolder()
+    File workDir = new File(tempDir, 'temp1')
+    File gitDir = new File(tempDir, 'temp2')
 
     Git.cloneRepository()
       .setDirectory(workDir)
@@ -108,8 +108,8 @@ class OpenOpSpec extends SimpleGitOpSpec {
   @IgnoreIf({ Integer.parseInt(System.properties['java.version'].split('\\.')[0]) >= 11})
   def 'open without dir succeeds if .git in parent dir has gitdir'() {
     given:
-    File workDir = tempDir.newFolder()
-    File gitDir = tempDir.newFolder()
+    File workDir = new File(tempDir, 'temp1')
+    File gitDir = new File(tempDir, 'temp2')
 
     Git.cloneRepository()
         .setDirectory(workDir)

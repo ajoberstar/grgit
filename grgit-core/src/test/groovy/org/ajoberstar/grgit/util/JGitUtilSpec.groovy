@@ -18,13 +18,13 @@ import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.merge.MergeStrategy
 import org.eclipse.jgit.revwalk.RevTag
 import org.eclipse.jgit.revwalk.RevWalk
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
+import spock.lang.TempDir
 
 import spock.lang.Specification
 
 class JGitUtilSpec extends Specification {
-  @Rule TemporaryFolder tempDir = new TemporaryFolder()
+  @TempDir
+  File tempDir
 
   Repository repo
   List commits = []
@@ -165,9 +165,8 @@ class JGitUtilSpec extends Specification {
   }
 
   def setup() {
-    File repoDir = tempDir.newFolder('repo')
     Git git = Git.init()
-      .setDirectory(repoDir)
+      .setDirectory(tempDir)
       .setInitialBranch('master') // for compatibility with existing tests
       .call()
 
@@ -177,7 +176,7 @@ class JGitUtilSpec extends Specification {
       save()
     }
 
-    File testFile = new File(repoDir, '1.txt')
+    File testFile = new File(tempDir, '1.txt')
     testFile << '1\n'
     git.add().addFilepattern(testFile.name).call()
     commits << git.commit().setMessage('first commit\ntesting').call()
@@ -194,6 +193,6 @@ class JGitUtilSpec extends Specification {
     commits << git.merge().include(commits[2]).setStrategy(MergeStrategy.OURS).call().newHead
     RevTag tagV1 = new RevWalk(git.repository).parseTag(annotatedTag.objectId)
     taggedAnnotatedTag = git.tag().setName('v1.1.0').setObjectId(tagV1).setMessage('testing').call()
-    repo = Grgit.open(dir: repoDir).repository
+    repo = Grgit.open(dir: tempDir).repository
   }
 }

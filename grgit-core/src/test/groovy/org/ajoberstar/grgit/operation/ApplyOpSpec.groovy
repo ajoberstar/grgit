@@ -16,7 +16,7 @@ class ApplyOpSpec extends SimpleGitOpSpec {
     repoFile('2.txt') << 'something else\n'
     grgit.add(patterns:['.'])
     grgit.commit(message: 'Test')
-    def patch = tempDir.newFile()
+    def patch = new File(tempDir, 'temp.patch')
     this.class.getResourceAsStream('/org/ajoberstar/grgit/operation/sample.patch').withStream { stream ->
       patch << stream
     }
