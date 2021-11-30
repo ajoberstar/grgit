@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [8, 11, 17]
+        java: [11, 17]
       fail-fast: false
     steps:
       - name: Checkout repo
@@ -47,7 +47,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: zulu
-          java-version: 8
+          java-version: 11
       - name: Cache Gradle wrapper
         uses: actions/cache@v2
         with:

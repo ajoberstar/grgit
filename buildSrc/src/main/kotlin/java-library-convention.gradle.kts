@@ -14,7 +14,7 @@ repositories {
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_1_8
+  sourceCompatibility = JavaVersion.VERSION_11
   withSourcesJar()
   withJavadocJar()
 }
