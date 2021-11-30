@@ -2,11 +2,11 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 cglib:cglib-nodep:3.3.0=compatTestCompileClasspath,compatTestRuntimeClasspath
-com.googlecode.javaewah:JavaEWAH:1.1.12=compatTestCompileClasspath,compatTestRuntimeClasspath,compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.googlecode.javaewah:JavaEWAH:1.1.13=compatTestCompileClasspath,compatTestRuntimeClasspath,compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 net.bytebuddy:byte-buddy:1.11.0=compatTestCompileClasspath,compatTestRuntimeClasspath
 org.apiguardian:apiguardian-api:1.1.0=compatTestCompileClasspath,compatTestRuntimeClasspath
 org.assertj:assertj-core:3.16.1=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827-r=compatTestCompileClasspath,compatTestRuntimeClasspath,compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r=compatTestCompileClasspath,compatTestRuntimeClasspath,compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.hamcrest:hamcrest:2.2=compatTestCompileClasspath,compatTestRuntimeClasspath
 org.jetbrains:annotations:20.1.0=compatTestCompileClasspath,compatTestRuntimeClasspath
 org.junit.platform:junit-platform-commons:1.7.2=compatTestCompileClasspath,compatTestRuntimeClasspath

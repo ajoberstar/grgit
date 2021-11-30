@@ -9,7 +9,7 @@ dependencies {
   compileOnly("org.codehaus.groovy:groovy:[3.0, 4.0)")
 
   // jgit
-  api("org.eclipse.jgit:org.eclipse.jgit:[5.9, 6.0)")
+  api("org.eclipse.jgit:org.eclipse.jgit:[6.0, 7.0)")
 
   // logging
   testImplementation("org.slf4j:slf4j-api:latest.release")

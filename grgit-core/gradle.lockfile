@@ -2,13 +2,13 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 cglib:cglib-nodep:3.3.0=testCompileClasspath,testRuntimeClasspath
-com.googlecode.javaewah:JavaEWAH:1.1.12=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.googlecode.javaewah:JavaEWAH:1.1.13=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 net.bytebuddy:byte-buddy:1.11.0=testCompileClasspath,testRuntimeClasspath
 org.apiguardian:apiguardian-api:1.1.2=testCompileClasspath
 org.assertj:assertj-core:3.20.2=testCompileClasspath,testRuntimeClasspath
 org.codehaus.groovy:groovy:3.0.8=testCompileClasspath,testRuntimeClasspath
 org.codehaus.groovy:groovy:3.0.9=compileClasspath
-org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827-r=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.hamcrest:hamcrest:2.2=testCompileClasspath,testRuntimeClasspath
 org.jetbrains:annotations:20.1.0=testCompileClasspath,testRuntimeClasspath
 org.junit.jupiter:junit-jupiter-api:5.8.2=testCompileClasspath,testRuntimeClasspath
