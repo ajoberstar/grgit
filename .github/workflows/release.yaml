@@ -32,7 +32,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.gradle/caches
-          key: gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle/dependency-locks/*.lockfile') }}
+          key: gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle.lockfile') }}
       - name: Gradle check
         run: ./gradlew check --continue
   publish:
@@ -59,7 +59,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.gradle/caches
-          key: gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle/dependency-locks/*.lockfile') }}
+          key: gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle.lockfile') }}
       - name: Gradle publish
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}

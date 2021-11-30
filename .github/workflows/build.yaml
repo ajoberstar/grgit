@@ -33,6 +33,6 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.gradle/caches
-          key: gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle/dependency-locks/*.lockfile') }}
+          key: gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle.lockfile') }}
       - name: Gradle check
         run: ./gradlew check --continue
