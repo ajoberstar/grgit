@@ -1,3 +1,15 @@
+buildscript {
+    configurations.all{
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            if(details.requested.group == "org.eclipse.jgit" && details.requested.name == "org.eclipse.jgit"
+                    && details.requested.version == "latest.release") {
+                details.useVersion "5.13.0.202109080827-r"
+                details.because "version latest.release includes 6.+ which is built with java 11 is not compatible with java 8"
+            }
+        }
+    }
+}
+
 plugins {
   id 'org.ajoberstar.grgit'
   id 'org.ajoberstar.git-publish'
