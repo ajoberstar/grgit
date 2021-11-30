@@ -16,7 +16,7 @@ dependencies {
   compileOnly 'org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)'
 
   // jgit
-  api 'org.eclipse.jgit:org.eclipse.jgit:latest.release'
+  api 'org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827'
 
   // logging
   testImplementation 'org.slf4j:slf4j-api:latest.release'
