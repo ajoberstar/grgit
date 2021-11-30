@@ -54,6 +54,7 @@ publishing {
       }
 
       pom {
+        name.set("GrGit")
         description.set("The Groovy way to use Git.")
         url.set("https://github.com/ajoberstar/grgit")
 
