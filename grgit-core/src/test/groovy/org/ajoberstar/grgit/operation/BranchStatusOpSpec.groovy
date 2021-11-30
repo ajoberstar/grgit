@@ -25,6 +25,7 @@ class BranchStatusOpSpec extends MultiGitOpSpec {
 
     remoteGrgit.checkout(branch: 'master')
     remoteGrgit.checkout(branch: 'out-of-date', createBranch: true)
+    remoteGrgit.checkout(branch: 'master')
 
     localGrgit = clone('local', remoteGrgit)
 
@@ -32,6 +33,7 @@ class BranchStatusOpSpec extends MultiGitOpSpec {
     localGrgit.branch.add(name: 'out-of-date', startPoint: 'origin/out-of-date')
     localGrgit.checkout(branch: 'out-of-date')
 
+    remoteGrgit.checkout(branch: 'out-of-date')
     repoFile(remoteGrgit, '1.txt') << '3'
     remoteGrgit.commit(message: 'do', all: true)
 

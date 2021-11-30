@@ -9,7 +9,7 @@ dependencies {
   compileOnly("org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)")
 
   // jgit
-  api("org.eclipse.jgit:org.eclipse.jgit:latest.release")
+  api("org.eclipse.jgit:org.eclipse.jgit:[5.9, 6.0)")
 
   // logging
   testImplementation("org.slf4j:slf4j-api:latest.release")
@@ -17,7 +17,7 @@ dependencies {
 
   // testing
   testImplementation("junit:junit:latest.release")
-  testImplementation("org.spockframework:spock-core:1.3-groovy-2.5")
+  testImplementation("org.spockframework:spock-core:2.0-groovy-2.5")
 
   constraints {
     testImplementation("org.codehaus.groovy:groovy:2.5.10") {

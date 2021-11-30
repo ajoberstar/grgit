@@ -23,8 +23,8 @@ class ApplyOpSpec extends SimpleGitOpSpec {
     when:
     grgit.apply(patch: patch)
     then:
-    repoFile('1.txt').text == 'something'
-    repoFile('2.txt').text == 'something else\nis being added\n'
-    repoFile('3.txt').text == 'some new stuff\n'
+    repoFile('1.txt').text.normalize() == 'something'
+    repoFile('2.txt').text.normalize() == 'something else\nis being added\n'
+    repoFile('3.txt').text.normalize() == 'some new stuff\n'
   }
 }

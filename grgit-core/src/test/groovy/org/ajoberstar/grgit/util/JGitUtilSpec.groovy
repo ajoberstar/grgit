@@ -166,12 +166,17 @@ class JGitUtilSpec extends Specification {
 
   def setup() {
     File repoDir = tempDir.newFolder('repo')
-    Git git = Git.init().setDirectory(repoDir).call()
+    Git git = Git.init()
+      .setDirectory(repoDir)
+      .setInitialBranch('master') // for compatibility with existing tests
+      .call()
+
     git.repo.config.with {
       setString('user', null, 'name', 'Bruce Wayne')
       setString('user', null, 'email', 'bruce.wayne@wayneindustries.com')
       save()
     }
+
     File testFile = new File(repoDir, '1.txt')
     testFile << '1\n'
     git.add().addFilepattern(testFile.name).call()

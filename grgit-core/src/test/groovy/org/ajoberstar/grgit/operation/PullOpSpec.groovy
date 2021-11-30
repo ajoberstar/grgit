@@ -79,6 +79,10 @@ class PullOpSpec extends MultiGitOpSpec {
       includes = ['HEAD']
       excludes = [localHead.id, remoteHead.id]
     }.size() == 1
+
+    // has state of all changes
+    repoFile(localGrgit, '1.txt').text.normalize() == '1.1\n1.2\n1.3\n'
+    repoFile(localGrgit, '3.txt').text.normalize() == '3.1\n'
   }
 
   def 'pull to local repo with conflicting changes fails'() {

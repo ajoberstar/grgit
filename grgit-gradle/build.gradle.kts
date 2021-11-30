@@ -27,7 +27,7 @@ dependencies {
   compatTestImplementation(project(":grgit-core"))
 
   compatTestCompile("junit:junit:latest.release")
-  compatTestCompile("org.spockframework:spock-core:1.3-groovy-2.5")
+  compatTestCompile("org.spockframework:spock-core:2.0-groovy-2.5")
 }
 
 tasks.named<Jar>("jar") {

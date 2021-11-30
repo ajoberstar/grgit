@@ -90,7 +90,7 @@ class CloneOp implements Callable<Grgit> {
     cmd.bare = bare
     cmd.noCheckout = !checkout
     if (refToCheckout) { cmd.branch = refToCheckout }
-    if (all) cmd.cloneAllBranches = all
+    if (all) { cmd.cloneAllBranches = all }
     if (!branches.isEmpty()) cmd.branchesToClone = branches
 
     Git jgit = cmd.call()
