@@ -18,7 +18,10 @@ class SimpleGitOpSpec extends Specification {
 
   def setup() {
     File repoDir = tempDir.newFolder('repo')
-    Git git = Git.init().setDirectory(repoDir).call()
+    Git git = Git.init()
+      .setDirectory(repoDir)
+      .setInitialBranch('master') // for compatibility with existing tests
+      .call()
 
     // Don't want the user's git config to conflict with test expectations
     git.repo.FS.userHome = null
