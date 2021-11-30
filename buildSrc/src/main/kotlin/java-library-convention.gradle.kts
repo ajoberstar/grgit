@@ -83,6 +83,8 @@ publishing {
 
 signing {
   setRequired(System.getenv("CI"))
-  useGpgCmd()
+  val signingKey: String? by project
+  val signingPassphrase: String? by project
+  useInMemoryPgpKeys(signingKey, signingPassphrase)
   sign(publishing.publications["main"])
 }
