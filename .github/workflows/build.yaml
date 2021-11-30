@@ -20,6 +20,11 @@ jobs:
         with:
           distribution: zulu
           java-version: ${{ matrix.java }}
+      - name: Setup Java 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: zulu
+          java-version: 17
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Cache Gradle wrapper
