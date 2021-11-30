@@ -4,11 +4,15 @@
 
 ## Project News
 
+### Newest versions are on Maven Central
+
+As of 4.1.1, grgit is published to Maven Central and the Gradle Plugin Portal.
+
 ### Retirement of Bintray/JCenter
 
 This project was previously uploaded to JCenter, which is being retired by JFrog on May 1st 2021.
 
-To allow continued acess to past versions, I've made a Maven repo available in [bintray-backup](https://github.com/ajoberstar/bintray-backup). Add the following to your repositories to use it.
+To allow continued acess to past versions (4.1.0 and earlier), I've made a Maven repo available in [bintray-backup](https://github.com/ajoberstar/bintray-backup). Add the following to your repositories to use it.
 
 ```groovy
 maven {
