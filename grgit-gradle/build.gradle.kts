@@ -26,7 +26,7 @@ dependencies {
   api(project(":grgit-core"))
   compatTestImplementation(project(":grgit-core"))
 
-  compatTestImplementation("org.spockframework:spock-core:2.0-groovy-2.5")
+  compatTestImplementation("org.spockframework:spock-core:2.0-groovy-3.0")
 }
 
 tasks.named<Jar>("jar") {

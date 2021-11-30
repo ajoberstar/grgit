@@ -6,7 +6,7 @@ plugins {
 
 dependencies {
   // groovy
-  compileOnly("org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)")
+  compileOnly("org.codehaus.groovy:groovy:[3.0, 4.0)")
 
   // jgit
   api("org.eclipse.jgit:org.eclipse.jgit:[5.9, 6.0)")
@@ -18,7 +18,7 @@ dependencies {
   // testing
   testImplementation("org.junit.jupiter:junit-jupiter-api:latest.release")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:latest.release")
-  testImplementation("org.spockframework:spock-core:2.0-groovy-2.5")
+  testImplementation("org.spockframework:spock-core:2.0-groovy-3.0")
 
   constraints {
     testImplementation("org.codehaus.groovy:groovy:2.5.10") {
