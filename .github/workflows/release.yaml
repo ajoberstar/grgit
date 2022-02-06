@@ -17,27 +17,18 @@ jobs:
       - name: Setup Java ${{ matrix.java }}
         uses: actions/setup-java@v2
         with:
-          distribution: zulu
+          distribution: temurin
           java-version: ${{ matrix.java }}
       - name: Setup Java 17
         uses: actions/setup-java@v2
         with:
-          distribution: zulu
+          distribution: temurin
           java-version: 17
+
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
-      - name: Cache Gradle wrapper
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/wrapper
-            ~/.gradle/notifications
-          key: gradle-wrapper-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle.lockfile') }}
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
       - name: Gradle check
         run: ./gradlew check --continue
   publish:
@@ -58,18 +49,9 @@ jobs:
         with:
           distribution: zulu
           java-version: 17
-      - name: Cache Gradle wrapper
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/wrapper
-            ~/.gradle/notifications
-          key: gradle-wrapper-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle.lockfile') }}
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
       - name: Gradle publish
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}

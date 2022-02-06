@@ -1,43 +1,37 @@
-name: Build
+name: CI
 on:
   push:
     branches: [main]
   pull_request:
 jobs:
-  check:
+  ci:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         java: [11, 17]
       fail-fast: false
+    env:
+      GRADLE_OPTS: -Dorg.gradle.java.installations.fromEnv=JAVA_HOME_8_x64,JAVA_HOME_11_x64,JAVA_HOME_17_x64
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
       - name: Setup Java ${{ matrix.java }}
         uses: actions/setup-java@v2
         with:
-          distribution: zulu
+          distribution: temurin
           java-version: ${{ matrix.java }}
       - name: Setup Java 17
         uses: actions/setup-java@v2
         with:
-          distribution: zulu
+          distribution: temurin
           java-version: 17
+
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
-      - name: Cache Gradle wrapper
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/wrapper
-            ~/.gradle/notifications
-          key: gradle-wrapper-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: gradle-caches-${{ runner.os }}-${{ hashFiles('**/gradle.lockfile') }}
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
       - name: Gradle check
         run: ./gradlew check --continue
