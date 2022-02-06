@@ -42,6 +42,9 @@ tasks.named<Jar>("jar") {
 stutter {
   setSparse(true)
   java(11) {
+    compatibleRange("5.0")
+  }
+  java(17) {
     compatibleRange("7.3")
   }
 }
