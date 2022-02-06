@@ -29,6 +29,10 @@ dependencies {
   compatTestImplementation("org.spockframework:spock-core:2.0-groovy-3.0")
 }
 
+tasks.withType<Test>() {
+  useJUnitPlatform()
+}
+
 tasks.named<Jar>("jar") {
   manifest {
     attributes.put("Automatic-Module-Name", "org.ajoberstar.grgit.gradle")

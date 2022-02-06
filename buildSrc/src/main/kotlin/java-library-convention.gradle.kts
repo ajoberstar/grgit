@@ -21,10 +21,6 @@ java {
   withJavadocJar()
 }
 
-tasks.withType<Test>() {
-  useJUnitPlatform {}
-}
-
 publishing {
   repositories {
     maven {
