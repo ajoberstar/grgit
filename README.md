@@ -1,6 +1,6 @@
 # grgit
 
-![Build](https://github.com/ajoberstar/grgit/workflows/Build/badge.svg)
+![CI](https://github.com/ajoberstar/grgit/workflows/CI/badge.svg)
 
 ## Project News
 
