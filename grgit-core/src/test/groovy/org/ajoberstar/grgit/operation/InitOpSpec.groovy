@@ -3,19 +3,13 @@ package org.ajoberstar.grgit.operation
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
+import spock.lang.TempDir
 
 import spock.lang.Specification
 
 class InitOpSpec extends Specification {
-  @Rule TemporaryFolder tempDir = new TemporaryFolder()
-
+  @TempDir
   File repoDir
-
-  def setup() {
-    repoDir = tempDir.newFolder('repo')
-  }
 
   def 'init with bare true does not have a working tree'() {
     when:

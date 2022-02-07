@@ -6,22 +6,24 @@ plugins {
 
 dependencies {
   // groovy
-  compileOnly("org.codehaus.groovy:groovy:[2.5.0, 2.6.0-alpha)")
+  compileOnly("org.codehaus.groovy:groovy:[3.0, 4.0)")
 
   // jgit
-  api("org.eclipse.jgit:org.eclipse.jgit:[5.9, 6.0)")
+  api("org.eclipse.jgit:org.eclipse.jgit:[6.0, 7.0)")
+}
 
-  // logging
-  testImplementation("org.slf4j:slf4j-api:latest.release")
-  testRuntime("org.slf4j:slf4j-simple:latest.release")
+testing {
+  suites {
+    val test by getting(JvmTestSuite::class) {
+      useSpock("2.0-groovy-3.0")
 
-  // testing
-  testImplementation("junit:junit:latest.release")
-  testImplementation("org.spockframework:spock-core:2.0-groovy-2.5")
+      dependencies {
+        implementation("org.junit.jupiter:junit-jupiter-api:latest.release")
 
-  constraints {
-    testImplementation("org.codehaus.groovy:groovy:2.5.10") {
-      because("Needed to support Java 14")
+        // logging
+        implementation("org.slf4j:slf4j-api:latest.release")
+        runtimeOnly("org.slf4j:slf4j-simple:latest.release")
+      }
     }
   }
 }

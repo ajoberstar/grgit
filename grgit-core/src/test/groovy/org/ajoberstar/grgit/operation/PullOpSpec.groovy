@@ -51,6 +51,7 @@ class PullOpSpec extends MultiGitOpSpec {
     then:
     localGrgit.head() == remoteGrgit.resolve.toCommit('master')
     localGrgit.resolve.toCommit('test-branch') == localTestBranchHead
+    repoFile(localGrgit, '1.txt').text.normalize() == '1.1\n1.2\n1.3\n'
   }
 
   def 'pull to local repo with clean changes merges branches from origin'() {

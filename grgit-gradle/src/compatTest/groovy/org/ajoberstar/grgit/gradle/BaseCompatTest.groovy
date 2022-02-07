@@ -7,16 +7,15 @@ import org.ajoberstar.grgit.Grgit
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
+import spock.lang.TempDir
 
 class BaseCompatTest extends Specification {
-  @Rule TemporaryFolder tempDir = new TemporaryFolder()
+  @TempDir File tempDir
   File projectDir
   File buildFile
 
   def setup() {
-    projectDir = tempDir.newFolder('project')
+    projectDir = new File(tempDir, 'project')
     buildFile = projectFile('build.gradle')
 
   }

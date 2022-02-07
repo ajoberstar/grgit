@@ -26,8 +26,11 @@ dependencies {
   api(project(":grgit-core"))
   compatTestImplementation(project(":grgit-core"))
 
-  compatTestCompile("junit:junit:latest.release")
-  compatTestCompile("org.spockframework:spock-core:2.0-groovy-2.5")
+  compatTestImplementation("org.spockframework:spock-core:2.0-groovy-3.0")
+}
+
+tasks.withType<Test>() {
+  useJUnitPlatform()
 }
 
 tasks.named<Jar>("jar") {
@@ -37,16 +40,26 @@ tasks.named<Jar>("jar") {
 }
 
 stutter {
-  setSparse(true)
-  java(8) {
-    compatibleRange("4.0")
+  val java11 by matrices.creating {
+    javaToolchain {
+      languageVersion.set(JavaLanguageVersion.of(11))
+    }
+    gradleVersions {
+      compatibleRange("7.0")
+    }
   }
-  java(11) {
-    compatibleRange("5.0")
+  val java17 by matrices.creating {
+    javaToolchain {
+      languageVersion.set(JavaLanguageVersion.of(17))
+    }
+    gradleVersions {
+      compatibleRange("7.3")
+    }
   }
-  java(14) {
-    compatibleRange("6.3")
-  }
+}
+
+tasks.named("check") {
+  dependsOn(tasks.named("compatTest"))
 }
 
 pluginBundle {
