@@ -50,6 +50,78 @@ It also provides a Gradle plugin to easily get a Grgit instance for the build's 
 - [Documentation Site](http://ajoberstar.org/grgit/index.html)
 - [Release Notes](https://github.com/ajoberstar/grgit/releases)
 
+## Simple Usage in Gradle
+
+Apply the `org.ajoberstar.grgit` plugin in any project that needs to access a `Grgit` instance.
+
+NOTE: This plugin eagerly opens a Grgit instance, which may not be needed depending on the tasks you want to run. If this is not desired, see the next section.
+
+```
+plugins {
+  id 'org.ajoberstar.grgit' version '<version>'
+}
+
+// adds a grgit property to the project (will silently be null if there's no git repo)
+tasks.register("describe") {
+  doFirst {
+    println grgit.describe()
+  }
+}
+```
+
+## More Performant Usage in Gradle
+
+Apply the `org.ajoberstar.grgit-service` plugin instead of `org.ajoberstar.grgit` to avoid eagerly resolving the `Grgit` instance. This works best with custom tasks that accept a `Property<GrgitService>`.
+
+This approach ensures you only open a `Grgit` instance when a task is run that uses it.
+
+```
+import org.ajoberstar.grgit.gradle.GrgitService
+
+plugins {
+  id 'org.ajoberstar.grgit-service' version '<version>'
+}
+
+tasks.register("describe", DescribeTask) {
+  service = grgitService.service
+}
+
+class DescribeTask extends DefaultTask {
+    @Input
+    final Property<GrgitService> service
+
+    @Inject
+    DoStuffTask(ObjectFactory objectFactory) {
+        this.service = objectFactory.property(GrgitService.class);
+    }
+
+    @TaskAction
+    void execute() {
+        println service.get().grgit.describe()
+    }
+}
+```
+
+### Custom Gradle Plugins
+
+If you are writing a custom Gradle plugin, you'll want to use one or both of the following approaches:
+
+- If you need a `Grgit` instance representing the repository the project is in, use `org.ajoberstar.grgit-service` and use the `GrgitServiceExtension` to access the shared `GrgitService`. Wire this into any tasks or whatever needs to use the service via `Property<GrgitService>` for full lazy evaluation benefits.
+- If you need a `Grgit` instance that's separate from the project's repository, declare your own `GrgitService` naming it something _not_ prefixed with `grgit*`.
+
+  ```
+  Provider<GrgitService> serviceProvider = project.getGradle().getSharedServices().registerIfAbsent("grgit", GrgitService.class, spec -> {
+      // use getCurrentDirectory() if you need to search upwards from the provided directory
+      spec.getParameters().getCurrentDirectory().set(project.getLayout().getProjectDirectory());
+      // or use getDirectory() if you want to specify a specific directory and not search
+      spec.getParameters().getDirectory().set(project.getLayout().getBuildDirectory().dir("my-custom-repo"));
+      // generally, this should be false, unless you're using getDirectory() choose to have the repo initialized if the directory does not exist
+      spec.getParameters().getInitIfNotExists().set(false);
+      // I recommend setting this to 1 unless you know better, this will avoid multiple parallel tasks editing the repo at the same time
+      spec.getMaxParallelUsages().set(1);
+    });
+  ```
+
 ## Questions, Bugs, and Features
 
 Please use the repo's [issues](https://github.com/ajoberstar/grgit/issues)
