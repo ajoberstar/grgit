@@ -72,6 +72,11 @@ pluginBundle {
       displayName = "The Groovy way to use Git"
       tags = listOf("git", "groovy")
     }
+    create("grgitServicePlugin") {
+      id = "org.ajoberstar.grgit-service"
+      displayName = "The Groovy way to use Git (BuildService edition)"
+      tags = listOf("git", "groovy")
+    }
   }
   mavenCoordinates {
     groupId = project.group as String

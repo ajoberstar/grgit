@@ -1,7 +1,6 @@
 package org.ajoberstar.grgit.gradle
 
 import spock.lang.Specification
-import spock.lang.Unroll
 
 import org.ajoberstar.grgit.Grgit
 import org.gradle.testkit.runner.GradleRunner
@@ -9,7 +8,7 @@ import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import spock.lang.TempDir
 
-class BaseCompatTest extends Specification {
+class GrgitPluginCompatTest extends Specification {
   @TempDir File tempDir
   File projectDir
   File buildFile
@@ -17,7 +16,6 @@ class BaseCompatTest extends Specification {
   def setup() {
     projectDir = new File(tempDir, 'project')
     buildFile = projectFile('build.gradle')
-
   }
 
   def 'with no repo, plugin sets grgit to null'() {
@@ -34,7 +32,7 @@ task doStuff {
 }
 '''
     when:
-    def result = build('doStuff')
+    def result = build('doStuff', '--configuration-cache')
     then:
     result.task(':doStuff').outcome == TaskOutcome.SUCCESS
   }
@@ -59,7 +57,7 @@ task doStuff {
 }
 '''
     when:
-    def result = build('doStuff', '--quiet')
+    def result = build('doStuff', '--quiet', '--configuration-cache')
     then:
     result.task(':doStuff').outcome == TaskOutcome.SUCCESS
     result.output.normalize() == '1.0.0\n'
@@ -85,7 +83,7 @@ task doStuff {
 }
 '''
     when:
-    def result = build('doStuff', '--info')
+    def result = build('doStuff', '--info', '--configuration-cache')
     then:
     result.task(':doStuff').outcome == TaskOutcome.SUCCESS
     result.output.contains('Closing Git repo')
