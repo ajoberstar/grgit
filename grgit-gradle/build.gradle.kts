@@ -1,9 +1,7 @@
 plugins {
-  id("java-library-convention")
-  id("java-gradle-plugin")
+  id("org.ajoberstar.defaults.gradle-plugin")
   groovy
 
-  id("com.gradle.plugin-publish")
   id("org.ajoberstar.stutter")
 }
 
@@ -62,30 +60,19 @@ tasks.named("check") {
   dependsOn(tasks.named("compatTest"))
 }
 
-pluginBundle {
-  website = "https://github.com/ajoberstar/grgit"
-  vcsUrl = "https://github.com/ajoberstar/grgit.git"
-  description = "The Groovy way to use Git"
+gradlePlugin {
   plugins {
     create("grgitPlugin") {
       id = "org.ajoberstar.grgit"
       displayName = "The Groovy way to use Git"
-      tags = listOf("git", "groovy")
+      description = "The Groovy way to use Git"
+      implementationClass = "org.ajoberstar.grgit.gradle.GrgitPlugin"
     }
     create("grgitServicePlugin") {
       id = "org.ajoberstar.grgit-service"
       displayName = "The Groovy way to use Git (BuildService edition)"
-      tags = listOf("git", "groovy")
+      description = "The Groovy way to use Git (BuildService edition)"
+      implementationClass = "org.ajoberstar.grgit.gradle.GrgitServicePlugin"
     }
   }
-  mavenCoordinates {
-    groupId = project.group as String
-    artifactId = project.name as String
-    version = project.version.toString()
-  }
-}
-
-// remove duplicate publication
-gradlePlugin {
-  setAutomatedPublishing(false)
 }

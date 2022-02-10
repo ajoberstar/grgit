@@ -1,5 +1,5 @@
 plugins {
-  id("java-library-convention")
+  id("org.ajoberstar.defaults.java-library")
   groovy
   id("org.gradle.test-retry")
 }

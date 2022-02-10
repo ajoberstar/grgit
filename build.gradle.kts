@@ -7,7 +7,7 @@ plugins {
 
 reckon {
   scopeFromProp()
-  stageFromProp("alpha", "beta", "rc", "final")
+  stageFromProp("beta", "rc", "final")
 }
 
 jbake {
