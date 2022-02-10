@@ -4,6 +4,7 @@ import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.internal.WithOperations
 import org.ajoberstar.grgit.operation.RemoteAddOp
 import org.ajoberstar.grgit.operation.RemoteListOp
+import org.ajoberstar.grgit.operation.RemoteRemoveOp
 
 /**
  * Provides support for remote-related operations on a Git repository.
@@ -17,9 +18,10 @@ import org.ajoberstar.grgit.operation.RemoteListOp
  * <ul>
  *   <li>{@link org.ajoberstar.grgit.operation.RemoteAddOp add}</li>
  *   <li>{@link org.ajoberstar.grgit.operation.RemoteListOp list}</li>
+ *   <li>{@link org.ajoberstar.grgit.operation.RemoteRemoveOp remove}</li>
  * </ul>
  */
-@WithOperations(instanceOperations=[RemoteListOp, RemoteAddOp])
+@WithOperations(instanceOperations=[RemoteListOp, RemoteAddOp, RemoteRemoveOp])
 class RemoteService {
   private final Repository repository
 
