@@ -8,6 +8,8 @@
 
 As of 4.1.1, grgit is published to Maven Central and the Gradle Plugin Portal.
 
+As of 5.0.0, this project is no longer directly published to the Gradle Plugin Portal, but since the portal proxies Maven Central you can still access it through the portal. The only side effect is that [the portal](https://plugins.gradle.org/plugin/org.ajoberstar.grgit) will no longer list the latest version. Use this repo or [search.maven.org](https://search.maven.org/search?q=g:org.ajoberstar.grgit) to find the latest version.
+
 ### Retirement of Bintray/JCenter
 
 This project was previously uploaded to JCenter, which is being retired by JFrog on May 1st 2021.
