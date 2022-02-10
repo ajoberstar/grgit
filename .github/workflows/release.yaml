@@ -30,4 +30,4 @@ jobs:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.PGP_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassphrase: ${{ secrets.PGP_SIGNING_PASSPHRASE }}
           GRADLE_OPTS: "-Dorg.gradle.project.gradle.publish.key=${{ secrets.GRADLE_PLUGIN_KEY }} -Dorg.gradle.project.gradle.publish.secret=${{ secrets.GRADLE_PLUGIN_SECRET }}"
-        run: ./gradlew publishAllPublicationsToCentralReleasesRepository publishPlugins
+        run: ./gradlew publishAllPublicationsToCentralReleasesRepository
