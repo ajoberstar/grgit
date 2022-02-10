@@ -32,7 +32,7 @@ public abstract class GrgitService implements BuildService<GrgitService.Params>,
       return;
     }
 
-    var dir = getParameters().getCurrentDirectory().get().getAsFile();
+    var dir = getParameters().getDirectory().get().getAsFile();
     if (dir.exists()) {
       this.grgit = Grgit.open(op -> {
         op.setDir(dir);
