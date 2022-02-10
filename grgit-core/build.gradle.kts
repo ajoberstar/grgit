@@ -7,6 +7,13 @@ plugins {
 group = "org.ajoberstar.grgit"
 description = "The Groovy way to use Git"
 
+mavenCentral {
+  developerName.set("Andrew Oberstar")
+  developerEmail.set("ajoberstar@gmail.com")
+  githubOwner.set("ajoberstar")
+  githubRepository.set("grgit")
+}
+
 java {
   toolchain {
     languageVersion.set(JavaLanguageVersion.of(11))

@@ -71,7 +71,7 @@ tasks.register("describe") {
 
 ## More Performant Usage in Gradle
 
-Apply the `org.ajoberstar.grgit-service` plugin instead of `org.ajoberstar.grgit` to avoid eagerly resolving the `Grgit` instance. This works best with custom tasks that accept a `Property<GrgitService>`.
+Apply the `org.ajoberstar.grgit.service` plugin instead of `org.ajoberstar.grgit` to avoid eagerly resolving the `Grgit` instance. This works best with custom tasks that accept a `Property<GrgitService>`.
 
 This approach ensures you only open a `Grgit` instance when a task is run that uses it.
 
@@ -79,7 +79,7 @@ This approach ensures you only open a `Grgit` instance when a task is run that u
 import org.ajoberstar.grgit.gradle.GrgitService
 
 plugins {
-  id 'org.ajoberstar.grgit-service' version '<version>'
+  id 'org.ajoberstar.grgit.service' version '<version>'
 }
 
 tasks.register("describe", DescribeTask) {
@@ -106,7 +106,7 @@ class DescribeTask extends DefaultTask {
 
 If you are writing a custom Gradle plugin, you'll want to use one or both of the following approaches:
 
-- If you need a `Grgit` instance representing the repository the project is in, use `org.ajoberstar.grgit-service` and use the `GrgitServiceExtension` to access the shared `GrgitService`. Wire this into any tasks or whatever needs to use the service via `Property<GrgitService>` for full lazy evaluation benefits.
+- If you need a `Grgit` instance representing the repository the project is in, use `org.ajoberstar.grgit.service` and use the `GrgitServiceExtension` to access the shared `GrgitService`. Wire this into any tasks or whatever needs to use the service via `Property<GrgitService>` for full lazy evaluation benefits.
 - If you need a `Grgit` instance that's separate from the project's repository, declare your own `GrgitService` naming it something _not_ prefixed with `grgit*`.
 
   ```

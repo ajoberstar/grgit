@@ -20,7 +20,7 @@ class GrgitServicePluginCompatTest extends Specification {
 import org.ajoberstar.grgit.gradle.GrgitService
 
 plugins {
-  id 'org.ajoberstar.grgit-service'
+  id 'org.ajoberstar.grgit.service'
 }
 
 tasks.register("doStuff", DoStuffTask.class) {

@@ -8,6 +8,13 @@ plugins {
 group = "org.ajoberstar.grgit"
 description = "The Groovy way to use Git"
 
+mavenCentral {
+  developerName.set("Andrew Oberstar")
+  developerEmail.set("ajoberstar@gmail.com")
+  githubOwner.set("ajoberstar")
+  githubRepository.set("grgit")
+}
+
 java {
   toolchain {
     languageVersion.set(JavaLanguageVersion.of(11))
@@ -65,7 +72,7 @@ gradlePlugin {
       implementationClass = "org.ajoberstar.grgit.gradle.GrgitPlugin"
     }
     create("grgitServicePlugin") {
-      id = "org.ajoberstar.grgit-service"
+      id = "org.ajoberstar.grgit.service"
       displayName = "The Groovy way to use Git (BuildService edition)"
       description = "The Groovy way to use Git (BuildService edition)"
       implementationClass = "org.ajoberstar.grgit.gradle.GrgitServicePlugin"
