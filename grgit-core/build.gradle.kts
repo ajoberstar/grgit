@@ -4,6 +4,9 @@ plugins {
   id("org.gradle.test-retry")
 }
 
+group = "org.ajoberstar.grgit"
+description = "The Groovy way to use Git"
+
 java {
   toolchain {
     languageVersion.set(JavaLanguageVersion.of(11))

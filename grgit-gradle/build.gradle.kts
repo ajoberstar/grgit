@@ -5,6 +5,9 @@ plugins {
   id("org.ajoberstar.stutter")
 }
 
+group = "org.ajoberstar.grgit"
+description = "The Groovy way to use Git"
+
 java {
   toolchain {
     languageVersion.set(JavaLanguageVersion.of(11))
