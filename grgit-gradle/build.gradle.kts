@@ -5,23 +5,16 @@ plugins {
   id("org.ajoberstar.stutter")
 }
 
-// avoid conflict with localGroovy()
-configurations.configureEach {
-  exclude(group = "org.codehaus.groovy")
-}
-
-// compat tests use grgit to set up and verify the tests
-sourceSets {
-  compatTest {
-    compileClasspath += sourceSets["main"].output
-    runtimeClasspath += sourceSets["main"].output
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(11))
   }
 }
 
 dependencies {
-  compileOnly(gradleApi())
-
-  api(project(":grgit-core"))
+  api(project(":grgit-core")) {
+    exclude(group = "org.codehaus.groovy")
+  }
   compatTestImplementation(project(":grgit-core"))
 
   compatTestImplementation("org.spockframework:spock-core:2.0-groovy-3.0")

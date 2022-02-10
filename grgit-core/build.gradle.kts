@@ -4,9 +4,15 @@ plugins {
   id("org.gradle.test-retry")
 }
 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(11))
+  }
+}
+
 dependencies {
   // groovy
-  compileOnly("org.codehaus.groovy:groovy:[3.0, 4.0)")
+  api("org.codehaus.groovy:groovy:[3.0.9, 4.0)")
 
   // jgit
   api("org.eclipse.jgit:org.eclipse.jgit:[6.0, 7.0)")
@@ -18,6 +24,7 @@ testing {
       useSpock("2.0-groovy-3.0")
 
       dependencies {
+        implementation("org.codehaus.groovy:groovy:[3.0.9, 4.0)")
         implementation("org.junit.jupiter:junit-jupiter-api:latest.release")
 
         // logging
