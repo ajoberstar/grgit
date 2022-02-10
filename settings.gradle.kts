@@ -14,6 +14,12 @@ pluginManagement {
   }
 }
 
+dependencyResolutionManagement {
+  repositories {
+    mavenCentral()
+  }
+}
+
 rootProject.name = "grgit"
 
 include("grgit-core")
