@@ -159,6 +159,9 @@ class JGitUtil {
    * @return the resolved tag
    */
   static Tag resolveTag(Repository repo, Ref ref) {
+    if (ref == null) {
+      return null
+    }
     Map props = [:]
     props.fullName = ref.name
     try {

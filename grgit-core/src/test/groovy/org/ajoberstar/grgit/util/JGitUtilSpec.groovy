@@ -164,6 +164,13 @@ class JGitUtilSpec extends Specification {
     tag.dateTime.isBefore(after)
   }
 
+  def 'resolveTag returns null if non-existent tag'() {
+    when:
+    def tag = JGitUtil.resolveTag(repo, 'i-dont-exist')
+    then:
+    tag == null
+  }
+
   def setup() {
     Git git = Git.init()
       .setDirectory(tempDir)
