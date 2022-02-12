@@ -22,13 +22,13 @@ As of Grgit 3, the coordinates for the library have changed.
 The Gradle plugin ID **has not** changed. It is still `org.ajoberstar.grgit`.
 ====
 
-To use Grgit as a library, add a dependency on it to link:https://bintray.com/bintray/jcenter[JCenter]. Available versions can be found in the link:https://github.com/ajoberstar/grgit/releases[release notes].
+To use Grgit as a library, use it as a dependency from Maven Central. Available versions can be found in the link:https://github.com/ajoberstar/grgit/releases[release notes].
 
 [source, groovy]
 .build.gradle
 ----
 repositories {
-  jcenter()
+  mavenCentral()
 }
 
 dependencies {
@@ -39,7 +39,6 @@ dependencies {
 [source, xml]
 .pom.xml
 ----
-<!-- make sure you've specified JCenter in your repositories -->
 <dependencies>
   <dependency>
     <groupId>org.ajoberstar.grgit</groupId>

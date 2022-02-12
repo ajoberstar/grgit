@@ -42,7 +42,7 @@ For details on the available operations, see the link:grgit-reference.html[refer
 
 ## Just getting the library
 
-If you don't want to interact with the project's repository, but still want to
+If you don't want to interact with the project's repository, but still want to use Grgit.
 
 ```groovy
 plugins {
