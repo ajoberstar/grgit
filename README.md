@@ -25,10 +25,6 @@ maven {
 
 Made possible by [lacasseio/bintray-helper](https://github.com/lacasseio/bintray-helper) in case you have a similar need to pull your old Bintray artifacts.
 
-### Maintenance
-
-I'm not spending much time on this project anymore. If you're interested in taking over maintenance, please open an issue.
-
 ## Why do you care?
 
 [JGit](https://eclipse.org/jgit/) provides a powerful Java API for interacting with Git repositories. However,
