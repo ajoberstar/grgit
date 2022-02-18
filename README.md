@@ -10,11 +10,11 @@ As of 4.1.1, grgit is published to Maven Central and the Gradle Plugin Portal.
 
 As of 5.0.0, this project is no longer directly published to the Gradle Plugin Portal, but since the portal proxies Maven Central you can still access it through the portal. The only side effect is that [the portal](https://plugins.gradle.org/plugin/org.ajoberstar.grgit) will no longer list the latest version. Use this repo or [search.maven.org](https://search.maven.org/search?q=g:org.ajoberstar.grgit) to find the latest version.
 
-### Retirement of Bintray/JCenter
+### Old versions from Bintray/JCenter
 
-This project was previously uploaded to JCenter, which is being retired by JFrog on May 1st 2021.
+This project was previously uploaded to JCenter, which was deprecated in 2021.
 
-To allow continued acess to past versions (4.1.0 and earlier), I've made a Maven repo available in [bintray-backup](https://github.com/ajoberstar/bintray-backup). Add the following to your repositories to use it.
+In the event that JCenter is unavailable and acess to past versions (4.1.0 and earlier) is needed, I've made a Maven repo available in [bintray-backup](https://github.com/ajoberstar/bintray-backup). Add the following to your repositories to use it.
 
 ```groovy
 maven {
