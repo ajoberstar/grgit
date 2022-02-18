@@ -91,6 +91,7 @@ class DescribeTask extends DefaultTask {
     @Inject
     DoStuffTask(ObjectFactory objectFactory) {
         this.service = objectFactory.property(GrgitService.class);
+        usesService(this.service);
     }
 
     @TaskAction
@@ -116,6 +117,7 @@ If you are writing a custom Gradle plugin, you'll want to use one or both of the
       // generally, this should be false, unless you're using getDirectory() choose to have the repo initialized if the directory does not exist
       spec.getParameters().getInitIfNotExists().set(false);
       // I recommend setting this to 1 unless you know better, this will avoid multiple parallel tasks editing the repo at the same time
+      // This should be coupled with tasks that use the service calling "usesService()" to register their usage of the service
       spec.getMaxParallelUsages().set(1);
     });
   ```
