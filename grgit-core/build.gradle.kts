@@ -1,7 +1,6 @@
 plugins {
   id("org.ajoberstar.defaults.java-library")
   groovy
-  id("org.gradle.test-retry")
 }
 
 group = "org.ajoberstar.grgit"
@@ -48,12 +47,5 @@ testing {
 tasks.named<Jar>("jar") {
   manifest {
     attributes.put("Automatic-Module-Name", "org.ajoberstar.grgit")
-  }
-}
-
-tasks.named<Test>("test") {
-  retry {
-    maxFailures.set(1)
-    maxRetries.set(1)
   }
 }
