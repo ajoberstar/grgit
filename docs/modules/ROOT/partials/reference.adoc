@@ -1,0 +1,37 @@
+* Setup and Config
+** xref:grgit-authentication.adoc[]
+** xref:grgit-gradle.adoc[]
+* Getting and Creating Projects
+** xref:grgit-init.adoc[]
+** xref:grgit-clone.adoc[]
+** xref:grgit-open.adoc[]
+* Basic Snapshotting
+** xref:grgit-add.adoc[]
+** xref:grgit-status.adoc[]
+** xref:grgit-commit.adoc[]
+** xref:grgit-reset.adoc[]
+** xref:grgit-remove.adoc[]
+* Branching and Merging
+** xref:grgit-branch.adoc[]
+** xref:grgit-checkout.adoc[]
+** xref:grgit-merge.adoc[]
+** xref:grgit-tag.adoc[]
+* Sharing and Updating Projects
+** xref:grgit-fetch.adoc[]
+** xref:grgit-pull.adoc[]
+** xref:grgit-push.adoc[]
+** xref:grgit-remote.adoc[]
+* Inspection and Comparison
+** xref:grgit-head.adoc[]
+** xref:grgit-show.adoc[]
+** xref:grgit-log.adoc[]
+** xref:grgit-describe.adoc[]
+** xref:grgit-resolve.adoc[]
+** xref:grgit-isAncestorOf.adoc[]
+* Patching
+** xref:grgit-apply.adoc[]
+** xref:grgit-revert.adoc[]
+* Administration
+** xref:grgit-clean.adoc[]
+* Plumbing
+** xref:grgit-lsremote.adoc[]

@@ -1,0 +1,57 @@
+= grgit-remote
+
+== Name
+
+grgit-remote - Manage set of tracked repositories
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.remote.list()
+----
+
+[source, groovy]
+----
+grgit.remote.add(name: <name>, url: <url>, pushUrl: <url>,
+  fetchRefSpecs: [<refspec>, ...], pushRefSpecs: [<refspecs>, ...],
+  mirror: <boolean>)
+----
+
+[source, groovy]
+----
+grgit.remote.add {
+  name = <name>
+  url = <url>
+  pushUrl = <url>
+  fetchRefSpecs = [<refspec>, ...]
+  pushRefSpecs = [<refspecs>, ...]
+  mirror = <boolean>
+}
+----
+
+== Description
+
+Manage the set of repositories ("remotes") whose branches you track.
+
+`list()` returns a `List<Remote>` (link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Remote.groovy[Remote]) of all remotes configured for the repo.
+`add()` returns the newly configured link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Remote.groovy[Remote]
+
+== Options
+
+=== add
+
+name:: (`String`, default `null`) Name of the new remote
+url:: (`String`, default `null`) URL to fetch the remote repository from.
+pushUrl:: (`String`, default `null`) URL to push to for this remote. If omitted, `url` is used for push.
+fetchRefSpecs:: (`List<String>`, default `[+refs/heads/*:refs/remotes/<name>/*]`) default refspecs to use when fetching from this remote.
+pushRefSpecs:: (`List<String>`, default `[]`) default refspecs to use when pushing to this remote.
+mirror:: (`boolean`, default `false`) If `true` makes xref:grgit-push.adoc[grgit-push] always behave as if `mirror` is specified.
+
+== Examples
+
+== See Also
+
+- link:https://git-scm.com/docs/git-remote[git-remote]
+- xref:grgit-push.adoc[grgit-push]
+- xref:grgit-pull.adoc[grgit-pull]

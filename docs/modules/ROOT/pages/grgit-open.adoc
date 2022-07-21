@@ -1,0 +1,45 @@
+= grgit-open
+
+== Name
+
+grgit-open - Open an existing Git repository
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.open()
+----
+
+[source, groovy]
+----
+grgit.open(dir: <path>, currentDir: <path>, credentials: <credentials>)
+----
+
+[source, groovy]
+----
+grgit.open {
+  dir = <path>
+  currentDir = <path>
+  credentials = <credentals>
+}
+----
+
+== Description
+
+This command opens an existing Git repository. If both `dir` and `currentDir` are `null`, acts as if the `currentDir` is the JVM's working directory.
+
+Returns a link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Grgit.groovy[Grgit] instance.
+
+== Options
+
+dir:: (`Object`, default `null`) The directory the repository is in. Can be a `File`, `Path`, or `String`.
+currentDir:: (`Object`, default `null`) The directory to start searching for the repository from. Can be a `File`, `Path`, or `String`.
+credentials:: (`Credentials`, default `null`) An instance of link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Credentials.groovy[Credentials] containing username/password to be used in operations that require authentication. See xref:grgit-authentication.adoc[grgit-authentication] for preferred ways to configure this.
+
+== Examples
+
+== See Also
+
+- xref:grgit-init.adoc[grgit-init]
+- xref:grgit-clone.adoc[grgit-clone]

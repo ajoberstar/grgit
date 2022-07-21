@@ -1,0 +1,40 @@
+= grgit-apply
+
+== Name
+
+grgit-apply -  Apply a patch to files.
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.apply(patch: <patch file)
+----
+
+[source, groovy]
+----
+grgit.apply {
+  patch = <patch file>
+}
+----
+
+== Description
+
+Reads the supplied diff output (i.e. "a patch") and applies it to files in the repository.
+
+This command applies the patch but does not create a commit.
+
+== Options
+
+patch:: (`Object`, default: `null`) The file to read the patch from. This can be a `java.io.File`, `java.nio.file.Path`, or a `String`.
+
+== Examples
+
+[source, groovy]
+----
+grgit.apply(patch: '/some/file.patch')
+----
+
+== See Also
+
+- link:https://git-scm.com/docs/git-apply[git-apply]

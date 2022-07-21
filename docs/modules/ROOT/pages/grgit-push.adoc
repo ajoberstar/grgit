@@ -1,0 +1,69 @@
+= grgit-push
+
+== Name
+
+grgit-push - Update remote refs along with associated objects
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.push()
+----
+
+[source, groovy]
+----
+grgit.push(remote: '<name or uri>', refsOrSpecs: [<ref or refspec>, ...],
+  all: <boolean>, tags: <boolean>, force: <boolean>, dryRun: <boolean>),
+  pushOptions: [<string>, ...]
+----
+
+[source, groovy]
+----
+grgit.push {
+  remote = '<name or uri>'
+  refsOrSpecs = [<ref or refspec>, ...]
+  all = <boolean>
+  tags = <boolean>
+  force = <boolean>
+  dryRun = <boolean>
+  pushOptions = [<string>, ...]
+}
+----
+
+== Description
+
+Updates remote refs using local refs, while sending objects necessary to complete the given refs.
+
+When the `remote` is not specified, `branch.*.remote` configuration for the current branch is consulted to determine where to push. If the configuration is missing, it defaults to `origin`.
+
+When the `refsOrSpecs` or `all` or `tags` options are not specified, the command finds the default `<refspec>` by consulting `remote.*.push` configuration, and if it is not found, honors `push.default` configuration to decide what to push (See link:https://git-scm.com/docs/git-config[git-config] for the meaning of `push.default`).
+
+== Options
+
+remote:: (`String`, default `null`) The "remote" repository that is destination of a push operation. This parameter can be either a URL or the name of a remote.
+refsOrSpecs:: (`List<String>`, default `[]`) Specify what destination ref to update with what source object. The format of a <refspec> parameter is an optional plus +, followed by the source object <src>, followed by a colon :, followed by the destination ref <dst>.
++
+The <src> is often the name of the branch you would want to push, but it can be any arbitrary "SHA-1 expression", such as `master~4` or `HEAD` (see link:https://git-scm.com/docs/gitrevisions[gitrevisions]).
++
+The <dst> tells which ref on the remote side is updated with this push. Arbitrary expressions cannot be used here, an actual ref must be named. If `grgit.push(remote: '<repositor>')` without any `refsOrSpecs` argument is set to update some ref at the destination with <src> with `remote.<repository>.push` configuration variable, :<dst> part can be omitted—​such a push will update a ref that <src> normally updates without any <refspec> on the command line. Otherwise, missing :<dst> means to update the same ref as the <src>.
++
+The object referenced by <src> is used to update the <dst> reference on the remote side. By default this is only allowed if <dst> is not a tag (annotated or lightweight), and then only if it can fast-forward <dst>. By having the optional leading +, you can tell Git to update the <dst> ref even if it is not allowed by default (e.g., it is not a fast-forward.) This does not attempt to merge <src> into <dst>.
++
+Pushing an empty <src> allows you to delete the <dst> ref from the remote repository.
++
+The special refspec : (or +: to allow non-fast-forward updates) directs Git to push "matching" branches: for every branch that exists on the local side, the remote side is updated if a branch of the same name already exists on the remote side.
+all:: (`boolean`, default `false`) Push all branches (i.e. refs under `refs/heads/`); cannot be used with other `refsOrSpecs`.
+tags:: (`boolean`, default `false`) All refs under refs/tags are pushed, in addition to refspecs explicitly listed in `refsOrSpecs`.
+force:: (`boolean`, default `false`) Usually, the command refuses to update a remote ref that is not an ancestor of the local ref used to overwrite it. Note that `force` applies to all the refs that are pushed, hence using it with `push.default` set to `matching` or with multiple push destinations configured with `remote.*.push` may overwrite refs other than the current branch (including local refs that are strictly behind their remote counterpart). To force a push to only one branch, use a + in front of the refspec to push (e.g git push origin +master to force a push to the master branch). See the <refspec>... section above for details.
+dryRun:: (`boolean`, default `false`) Do everything except actually send the updates.
+pushOptions:: (`List<String>`, default `[]`) Transmit the given string to the server, which passes them to the pre-receive as well as the post-receive hook. The given string must not contain a NUL or LF character. When multiple `pushOptions` are given, they are all sent to the other side in the order listed. When no `pushOptions` is given, the values of configuration variable `push.pushOption` are used instead.
+
+== Examples
+
+== See Also
+
+- link:https://git-scm.com/docs/git-push[git-push]
+- xref:grgit-fetch.adoc[grgit-fetch]
+- xref:grgit-pull.adoc[grgit-pull]
+- xref:grgit-authentication.adoc[grgit-authentication]

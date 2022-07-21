@@ -1,0 +1,90 @@
+= grgit-reset
+
+== Name
+
+grgit-reset - Reset current HEAD to the specified state
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.reset(commit: <commit>, paths: [<path>, ...])
+grgit.reset(mode: <mode>, commit: <commit>)
+----
+
+[source, groovy]
+----
+grgit.reset {
+  commit = <commit>
+  paths = [<path>, ...]
+}
+
+grgit.reset {
+  mode = <mode>
+  commit = <commit>
+}
+----
+
+== Description
+
+In the first form, copy entries from `commit` to the index. In the second form, set the current branch head (HEAD) to `commit`, optionally modifying index and working tree to match. The `commit` defaults to `HEAD` in all forms.
+
+`grgit.reset(commit: <commit>, paths: [<path>, ...])`::
++
+This form resets the index entries for all `<paths>` to their state at `<commit>`. (It does not affect the working tree or the current branch.)
++
+This means that `grgit.reset(paths: [<paths>])` is the opposite of `grgit.add(patterns: [<paths>])`.
++
+After running `reset` to update the index entry, you can use xref:grgit-checkout.adoc[grgit-checkout] to check the contents out of the index to the working tree. Alternatively, using xref:grgit-checkout.adoc[grgit-checkout] and specifying a commit, you can copy the contents of a path out of a commit to the index and to the working tree in one go.
+`grgit.reset(mode: <mode>, commit: <commit>)`::
++
+This form resets the current branch head to `<commit>` and possibly updates the index (resetting it to the tree of `<commit>`) and the working tree depending on <mode>. If `mode` is omitted, defaults to `mixed`. The <mode> must be one of the following:
++
+`soft`:::: Does not touch the index file or the working tree at all (but resets the head to `<commit>`, just like all modes do). This leaves all your changed files `staged`, as `grgit.status()` would put it.
+`mixed`:::: Resets the index but not the working tree (i.e., the changed files are preserved but not marked for commit) and reports what has not been updated. This is the default action.
+`hard`:::: Resets the index and working tree. Any changes to tracked files in the working tree since `<commit>` are discarded.
+
+If you want to undo a commit other than the latest on a branch, xref:grgit-revert.adoc[grgit-revert] is your friend.
+
+== Options
+
+commit:: (`Object`, default `null`) Commit to reset to. For a more complete list of ways to spell commit names, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toCommit` method).
+paths:: (`Set<String>`, default `[]`) Paths to reset.
+mode:: (`String`, default `mixed`) Must be one of `hard`, `mixed`, `soft`.
+
+== Examples
+
+Reset the HEAD to a different commit.
+
+[source, groovy]
+----
+grgit.reset(commit: 'HEAD~1', mode: 'soft')
+----
+
+Reset the HEAD, index, and working tree to a different commit.
+
+[source, groovy]
+----
+grgit.reset(commit: 'other-branch', mode: 'hard')
+----
+
+Reset the HEAD and index to a different commit.
+
+[source, groovy]
+----
+grgit.reset(commit: 'HEAD~2')
+grgit.reset(commit: 'HEAD~2', mode: 'mixed')
+----
+
+Reset the index for specific paths back to the HEAD
+
+[source, groovy]
+----
+grgit.reset(paths: ['some/file.txt'])
+----
+
+== See Also
+
+- link:https://git-scm.com/docs/git-reset[git-reset]
+- xref:grgit-add.adoc[grgit-add]
+- xref:grgit-remove.adoc[grgit-remove]

@@ -1,0 +1,4 @@
+name: grgit
+version: true
+nav:
+  - modules/ROOT/nav.adoc

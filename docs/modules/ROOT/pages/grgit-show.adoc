@@ -1,0 +1,40 @@
+= grgit-show
+
+== Name
+
+grgit-show - Show a commit
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.show()
+----
+
+[source, groovy]
+----
+grgit.show(commit: <revstr>)
+----
+
+[source, groovy]
+----
+grgit.show {
+  commit = <revstr>
+}
+----
+
+== Description
+
+Shows a commit including it's message and diff.
+
+Returns a link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/CommitDiff.groovy[CommitDiff] for the given commit.
+
+== Options
+
+commit:: (`Object`, default: `HEAD`) A revstring-ish object naming the commit to be shown. Commit-ish object names to include the history of in the output. For a more complete list of ways to specify a revstring, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toRevisionString` method).
+
+== Examples
+
+== See Also
+
+- link:https://git-scm.com/docs/git-show[git-show]

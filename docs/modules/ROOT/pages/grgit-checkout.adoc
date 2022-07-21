@@ -1,0 +1,90 @@
+= grgit-checkout
+
+== Name
+
+grgit-checkout - Switch branches
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.checkout(branch: <branch>)
+grgit.checkout(branch: <branch>, createBranch: true, orphan: <boolean>, startPoint: <startPoint>)
+----
+
+[source, groovy]
+----
+grgit.checkout {
+  branch = <branch>
+}
+
+grgit.checkout {
+  branch = <branch>
+  createBranch = true
+  orphan = <boolean>
+  startPoint = <startPoint>
+}
+----
+
+== Description
+
+Updates files in the working tree to match the version in the index or the specified tree. If no paths are given, git checkout will also update HEAD to set the specified branch as the current branch.
+
+`grgit.checkout(branch: <branch>)`:: To prepare for working on `<branch>`, switch to it by updating the index and the files in the working tree, and by pointing `HEAD` at the branch. Local modifications to the files in the working tree are kept, so that they can be committed to the `<branch>`.
+`grgit.checkout(branch: <new_branch>, createBranch: true, startPoint: <startPoint>, orphan: <boolean>)`:: Causes a new branch to be created as if xref:grgit-branch.adoc[grgit-branch] were called and then checked out.
+
+== Options
+
+branch:: (`Object`, default `null`) Name of new branch to create or branch to checkout; if it refers to a branch (i.e., a name that, when prepended with "refs/heads/", is a valid ref), then that branch is checked out. Otherwise, if it refers to a valid commit, your  HEAD becomes "detached" and you are no longer on any branch (see below for details). For a more complete list of acceptable inputs, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toBranchName` method).
+startPoint:: (`Object`, default `null`) Start the new branch at this commit. For a more complete list of acceptable inputs, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toRevisionString` method).
+createBranch:: (`boolean`, default `false`) Create a new branch named `<branch>` and start it at `<startPoint>`.
+orphan:: (`boolean`, default `false`) Create a new orphan branch, named `branch`, started from `startPoint` and switch to it. The first commit made on this new branch will have no parents and it will be the root of a new history totally disconnected from all the other branches and commits.
++
+The index and the working tree are adjusted as if you had previously run `grgit.checkout(branch: <startPoint>)`. This allows you to start a new history that records a set of paths similar to `startPoint` by easily running `grgit.commit(message: <msg>, all: true)`.
++
+This can be useful when you want to publish the tree from a commit without exposing its full history. You might want to do this to publish an open source branch of a project whose current tree is "clean", but whose full history contains proprietary or otherwise encumbered bits of code.
++
+If you want to start a disconnected history that records a set of paths that is totally different from the one of `startPoint`, then you should clear the index and the working tree right after creating the orphan branch by running `grgit.remove(patterns: ['.'])` from the top level of the working tree. Afterwards you will be ready to prepare your new files, repopulating the working tree, by copying them from elsewhere, extracting a tarball, etc.
+
+== Examples
+
+To checkout an existing branch.
+
+[source, groovy]
+----
+grgit.checkout(branch: 'existing-branch')
+grgit.checkout(branch: 'existing-branch', createBranch: false)
+----
+
+To checkout a new branch starting at, but not tracking, the current HEAD.
+
+[source, groovy]
+----
+grgit.checkout(branch: 'new-branch', createBranch: true)
+----
+
+To checkout a new branch starting at, but not tracking, a start point.
+
+[source, groovy]
+----
+grgit.checkout(branch: 'new-branch', startPoint: 'any-branch', createBranch: true)
+----
+
+To checkout a new orphan branch starting at, but not tracking, the current HEAD.
+
+[source, groovy]
+----
+grgit.checkout(branch: 'new-branch', orphan: true)
+----
+
+To checkout a new orphan branch starting at, but not tracking, a start point.
+
+[source, groovy]
+----
+grgit.checkout(branch: 'new-branch', startPoint: 'any-branch', orphan: true)
+----
+
+== See Also
+
+- link:https://git-scm.com/docs/git-checkout[git-checkout]
+- xref:grgit-reset.adoc[grgit-reset]

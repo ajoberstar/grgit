@@ -1,0 +1,186 @@
+= grgit-branch
+
+== Name
+
+grgit-branch - List, create, or delete branches
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.branch.current()
+----
+
+[source, groovy]
+----
+grgit.branch.list()
+grgit.branch.list(mode: <mode>, contains: <commit>)
+----
+
+[source, groovy]
+----
+grgit.branch.add(name: <name>, startPoint: <startPoint>, mode: <mode>)
+----
+
+[source, groovy]
+----
+grgit.branch.change(name: <name>, startPoint: <startPoint>, mode: <mode>)
+----
+
+[source, groovy]
+----
+grgit.branch.remove(names: [<name>, ...], force: <boolean>)
+----
+
+== Description
+
+
+`grgit.branch.current()`:: Returns the current link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Branch.groovy[Branch].
+`grgit.branch.list()`:: Returns a list of branches (link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Branch.groovy[Branch]). The branches returned can be filtered using `mode` and `contains`.
+`grgit.branch.add(name: <name>, startPoint: <startPoint>, mode: <mode>)`:: Creates a new branch named `<name>` pointing at `<startPoint>`, possibly tracking a remote depending on `<mode>`. Returns the created link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Branch.groovy[Branch].
+`grgit.branch.change(name: <name>, startPoint: <startPoint>, mode: <mode>)`:: Modify an existing branch named `<name>` pointing at `<startPoint>`, possibly tracking a remote depending on `<mode>`. Returns the modified link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Branch.groovy[Branch].
+`grgit.branch.remove(names: [<name>, ...], force: <boolean>)`:: Removes one or more branches. Returns a `List<String>` of branch names removed.
+
+== Options
+
+=== list
+
+mode:: (`String`, default `local`) Must be one of `local`, `remote`, `all`.
+`local`:::: Only list local branches (i.e. those under `refs/heads`)
+`remote`:::: Only list remote branches (i.e. those under `refs/remotes`)
+`all`:::: List all branches
+contains:: (`Object`, default `null`) Only list branches which contain the specified commit.  (`Object`, default `null`) Start the new branch at this commit. For a more complete list of acceptable inputs, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toRevisionString` method).
+
+=== add or change
+
+name:: (`String`, default `null`) Name of the branch
+startPoint:: (`Object`, default `null`) Start the new branch at this commit. For a more complete list of acceptable inputs, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toRevisionString` method).
+mode:: (`String`, default `null`) Must be one of `'track'` or `'no-track'` or `null`
+`track`:::: When creating a new branch, set up `branch.<name>.remote` and `branch.<name>.merge` configuration entries to mark the start-point branch as "upstream" from the new branch. It directs xref:grgit-pull.adoc[grgit-pull] without arguments to pull from the upstream when the new branch is checked out.
++
+This behavior is the default when the start point is a remote-tracking branch. Set the `branch.autoSetupMerge` configuration variable to `false` if you want xref:grgit-checkout.adoc[grgit-checkout] and `grgit-branch` to always behave as if `no-track` were given. Set it to `always` if you want this behavior when the start-point is either a local or remote-tracking branch.
+`no-track`:::: Do not set up "upstream" configuration, even if the branch.autoSetupMerge configuration variable is true.
+
+=== remove
+
+names:: (`List<Object>`, default `[]`) Names of the branches. For a more complete list of acceptable inputs, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toBranchName` method).
+force:: (`boolean`, default `false`) Set to `true` to allow deleting branches that are not merged into another branch already.
+
+== Examples
+
+To add a branch starting at the current HEAD.
+
+[source, groovy]
+----
+grgit.branch.add(name: 'new-branch')
+----
+
+To add a branch starting at, but not tracking, a local start point.
+
+[source, groovy]
+----
+grgit.branch.add(name: 'new-branch', startPoint: 'local-branch')
+grgit.branch.add(name: 'new-branch', startPoint: 'local-branch', mode: BranchAddOp.Mode.NO_TRACK)
+----
+
+To add a branch starting at and tracking a local start point.
+
+[source, groovy]
+----
+grgit.branch.add(name: 'new-branch', startPoint: 'local-branch', mode: BranchAddOp.Mode.TRACK)
+----
+
+To add a branch starting from and tracking a remote branch.
+
+[source, groovy]
+----
+grgit.branch.add(name: 'new-branch', startPoint: 'origin/remote-branch')
+grgit.branch.add(name: 'new-branch', startPoint: 'origin/remote-branch', mode: BranchAddOp.Mode.TRACK)
+----
+
+To add a branch starting from, but not tracking, a remote branch.
+
+[source, groovy]
+----
+grgit.branch.add(name: 'new-branch', startPoint: 'origin/remote-branch', mode: BranchAddOp.Mode.NO_TRACK)
+----
+
+To change the branch to start at, but not track, a local start point.
+
+[source, groovy]
+----
+grgit.branch.change(name: 'existing-branch', startPoint: 'local-branch')
+grgit.branch.change(name: 'existing-branch', startPoint: 'local-branch', mode: BranchChangeOp.Mode.NO_TRACK)
+----
+
+To change the branch to start at and track a local start point.
+
+[source, groovy]
+----
+grgit.branch.change(name: 'existing-branch', startPoint: 'local-branch', mode: BranchChangeOp.Mode.TRACK)
+----
+
+To change the branch to start from and track a remote start point.
+
+[source, groovy]
+----
+grgit.branch.change(name: 'existing-branch', startPoint: 'origin/remote-branch')
+grgit.branch.change(name: 'existing-branch', startPoint: 'origin/remote-branch', mode: BranchChangeOp.Mode.TRACK)
+----
+
+To change the branch to start from, but not track, a remote start point.
+
+[source, groovy]
+----
+grgit.branch.change(name: 'existing-branch', startPoint: 'origin/remote-branch', mode: BranchChangeOp.Mode.NO_TRACK)
+----
+
+Remove branches that have been merged.
+
+[source, groovy]
+----
+def removedBranches = grgit.branch.remove(names: ['the-branch'])
+def removedBranches = grgit.branch.remove(names: ['the-branch', 'other-branch'], force: false)
+----
+
+Remove branches, even if they haven't been merged.
+
+[source, groovy]
+----
+def removedBranches = grgit.branch.remove(names: ['the-branch'], force: true)
+----
+
+To list local branches only.
+
+[source, groovy]
+----
+def branches = grgit.branch.list()
+def branches = grgit.branch.list(mode: BranchListOp.Mode.LOCAL)
+----
+
+To list remote branches only.
+
+[source, groovy]
+----
+def branches = grgit.branch.list(mode: BranchListOp.Mode.REMOTE)
+----
+
+To list all branches.
+
+[source, groovy]
+----
+def branches = grgit.branch.list(mode: BranchListOp.Mode.ALL)
+----
+
+To list all branches contains specified commit
+
+[source, groovy]
+----
+def branches = grgit.branch.list(contains: %Commit hash or tag name%)
+----
+
+== See Also
+
+- link:https://git-scm.com/docs/git-branch[git-branch]
+- xref:grgit-push.adoc[grgit-push]
+- xref:grgit-pull.adoc[grgit-pull]

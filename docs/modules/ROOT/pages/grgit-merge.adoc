@@ -1,0 +1,60 @@
+= grgit-merge
+
+== Name
+
+grgit-merge - Join two or more development histories together
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.merge(head: <revstr>, mode: <mode>, message: <message>)
+----
+
+[source, groovy]
+----
+grgit.merge {
+  head = <revstr>
+  mode = <mode>
+  message = <message>
+}
+----
+
+== Description
+
+Incorporates changes from the named commits (since the time their histories diverged from the current branch) into the current branch. This command is used by xref:grgit-pull.adoc[grgit-pull] to incorporate changes from another repository and can be used by hand to merge changes from one branch into another.
+
+Assume the following history exists and the current branch is "master":
+
+----
+	  A---B---C topic
+	 /
+    D---E---F---G master
+----
+
+Then `grgit.merge(head: 'topic')` will replay the changes made on the topic branch since it diverged from master (i.e., `E`) until its current commit `C` on top of master, and record the result in a new commit along with the names of the two parent commits and a log message from the user describing the changes.
+
+----
+	  A---B---C topic
+	 /         \
+    D---E---F---G---H master
+----
+
+This is a simplified version of merge. If any conflict occurs the merge will throw an exception. The conflicting files can be identified with xref:grgit-status.adoc[grgit-status].
+
+== Options
+
+head:: (`Object`, default `null`) Commit, usually another branch head, to merge into our branch.  For a more complete list of acceptable inputs, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toRevisionString` method).
+mode:: (`String`, default `default`) Must be one of `default`, `only-ff`, `create-commit`, `squash`, `no-commit`.
+`default`:::: When the merge resolves as a fast-forward, only update the branch pointer, without creating a merge commit.
+`only-ff`:::: Refuse to merge and fail with an exception unless the current `HEAD` is already up-to-date or the merge can be resolved as a fast-forward.
+`create-commit`:::: Create a merge commit even when the merge resolves as a fast-forward.
+`squash`:::: Produce the working tree and index state as if a real merge happened (except for the merge information), but do not actually make a commit, move the `HEAD`, or record `$GIT_DIR/MERGE_HEAD` (to cause the next git commit command to create a merge commit). This allows you to create a single commit on top of the current branch whose effect is the same as merging another branch (or more in case of an octopus).
+`no-commit`:::: Perform the merge but pretend the merge failed and do not autocommit, to give the user a chance to inspect and further tweak the merge result before committing.
+message:: (`String`, default `null`) Use the given <msg> as the merge commit message.
+
+== Examples
+
+== See Also
+
+- link:https://git-scm.com/docs/git-merge[git-merge]

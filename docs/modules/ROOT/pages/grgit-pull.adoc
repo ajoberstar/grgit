@@ -1,0 +1,67 @@
+= grgit-pull
+
+== Name
+
+grgit-pull - Fetch from and integrate with another repository or a local branch
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.pull()
+----
+
+[source, groovy]
+----
+grgit.pull(remote: '<name or uri>', branch: '<name>', rebase: <boolean>)
+----
+
+[source, groovy]
+----
+grgit.pull {
+  remote = '<name or uri>'
+  branch = '<name>'
+  rebase = <boolean>
+}
+----
+
+== Description
+
+Incorporates changes from a remote repository into the current branch. In its default mode, git pull is shorthand for fetch followed by merge.
+
+More precisely, pull runs fetch with the given parameters and calls merge to merge the retrieved branch heads into the current branch. With `rebase`, it runs rebase instead of merge.
+
+Default values for `remote` and `branch` are read from the "remote" and "merge" configuration for the current branch.
+
+Assume the following history exists and the current branch is "master":
+
+----
+	  A---B---C master on origin
+	 /
+    D---E---F---G master
+	^
+	origin/master in your repository
+----
+
+Then "git pull" will fetch and replay the changes from the remote master branch since it diverged from the local master (i.e., E) until its current commit `C` on top of master and record the result in a new commit along with the names of the two parent commits and a log message from the user describing the changes.
+
+----
+	  A---B---C origin/master
+	 /         \
+    D---E---F---G---H master
+----
+
+== Options
+
+remote:: (`String`, default `null`) The "remote" repository that is source of a pull operation. This parameter can be either a URL or the name of a remote.
+branch:: (`String`, default `null`) The remote branch to pull.
+rebase:: (`boolean`, default `false`) When true, rebase the current branch on top of the upstream branch after fetching. If there is a remote-tracking branch corresponding to the upstream branch and the upstream branch was rebased since last fetched, the rebase uses that information to avoid rebasing non-local changes.
+
+== Examples
+
+== See Also
+
+- link:https://git-scm.com/docs/git-pull[git-pull]
+- xref:grgit-fetch.adoc[grgit-fetch]
+- xref:grgit-push.adoc[grgit-push]
+- xref:grgit-authentication.adoc[grgit-authentication]
