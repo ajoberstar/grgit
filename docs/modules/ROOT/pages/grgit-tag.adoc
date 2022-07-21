@@ -1,0 +1,95 @@
+= grgit-tag
+
+== Name
+
+grgit-tag - Create, list, or delete tag object
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.tag.list()
+----
+
+[source, groovy]
+----
+grgit.tag.add(name: <name>, pointsTo: <commit>, force: <boolean>,
+  annotate: <boolean>, message: <msg>, tagger: <person>)
+----
+
+[source, groovy]
+----
+grgit.tag.remove(names: [<name>, ...])
+----
+
+== Description
+
+
+`grgit.tag.list()`:: Returns a list of tags (link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Tag.groovy[Tag]).
+`grgit.tag.add(name: <name>, pointsTo: <commit>, force: <boolean>, annotate: <boolean>, message: <msg>, tagger: <person>)`:: Creates a new tag named `<name>` pointing at `<pointsTo>`. Returns the created link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Tag.groovy[Tag].
+`grgit.tag.remove(names: [<name>, ...])`:: Removes one or more tages. Returns a `List<String>` of tag names removed.
+
+== Options
+
+=== add
+
+name:: (`String`, default `null`) Name of the tag
+message:: (`String`, default `null`) Use the given <msg> as the commit message.
+tagger:: (`Person`, default `null`) Override the tagger recorded in the tag. This must be a link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Person.groovy[Person].
+annotate:: (`boolean`, default `true`) Make an unsigned, annotated tag object
+force:: (`boolean`, default `false`) Replace an existing tag with the given name (instead of failing)
+pointsTo:: (`Object`, default `null`) Point new tag at this commit. For a more complete list of acceptable inputs, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toRevisionString` method).
+
+=== remove
+
+names:: (`List<Object>`, default `[]`) Names of the tags. For a more complete list of acceptable inputs, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toTagName` method).
+
+== Examples
+
+To list all tags.
+
+[source, groovy]
+----
+def tags = grgit.tag.list()
+----
+
+Add an annotated tag.
+
+[source, groovy]
+----
+grgit.tag.add(name: 'new-tag')
+grgit.tag.add(name: 'new-tag', message: 'Some message')
+grgit.tag.add(name: 'new-tag', annotate: true)
+----
+
+Add an unannotated tag.
+
+[source, groovy]
+----
+grgit.tag.add(name: 'new-tag', annotate: false)
+----
+
+Add a tag starting at a specific commit.
+
+[source, groovy]
+----
+grgit.tag.add(name: 'new-tag', pointsTo: 'other-branch')
+----
+
+Overwrite an existing tag.
+
+[source, groovy]
+----
+grgit.tag.add(name: 'existing-tag', force: true)
+----
+
+Remove tags.
+
+[source, groovy]
+----
+def removedTags = grgit.tag.remove(names: ['the-tag'])
+----
+
+== See Also
+
+- link:https://git-scm.com/docs/git-tag[git-tag]

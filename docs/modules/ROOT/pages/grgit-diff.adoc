@@ -1,0 +1,74 @@
+= grgit-diff
+
+== Name
+
+grgit-diff - Show changed files between commits
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.diff()
+----
+
+[source, groovy]
+----
+grgit.diff(oldCommit: <revstr>, newCommit: <revstr>, pathFilter: <pathFilterStr>)
+----
+
+[source, groovy]
+----
+grgit.diff {
+  oldCcommit = <revstr>
+  newCommit = <revstr>
+  pathFilter = <pathFilterStr>
+}
+----
+
+== Description
+
+Show changed files between commits.
+
+Returns a `List<DiffEntry>` link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/DiffEntry.groovy[DiffEntry] that matches pathFilter or all.
+
+== Options
+
+oldCommit:: (`Object`, default: `HEAD`) A revstring-ish object naming the commit. For a more complete list of ways to specify a revstring, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toRevisionString` method).
+
+newCommit:: (`Object`, default: `HEAD`) A revstring-ish object naming the commit. For a more complete list of ways to specify a revstring, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toRevisionString` method).
+
+pathFilter::  (`String`, default: `null`) Limit the output to only files matching pathFilter. If omitted all files are returned.
+
+== Examples
+
+To get a list of changes between a commit and HEAD
+
+[source, groovy]
+----
+List<DiffEntry> l = grgit.diff(oldCommit: 'b920cb5a16b8020568b77019e9abc77683037271')
+----
+
+To get a list of changes for files with file path starting with foo/bar between a commit and HEAD
+
+[source, groovy]
+----
+List<DiffEntry> l = grgit.diff(oldCommit: 'b920cb5a16b8020568b77019e9abc77683037271', pathFilter: 'foo/bar')
+----
+
+To get a list of changes between a tag and HEAD
+
+[source, groovy]
+----
+List<DiffEntry> l = grgit.diff(oldCommit: 'Foo_release')
+----
+
+To get a list of changes between two tags
+
+[source, groovy]
+----
+List<DiffEntry> l = grgit.diff(oldCommit: 'Foo_1.0_release', newCommit: 'Foo_2.0_release')
+----
+
+== See Also
+
+- link:https://git-scm.com/docs/git-diff[git-diff]

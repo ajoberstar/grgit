@@ -1,0 +1,129 @@
+= grgit-authentication
+
+== Description
+
+Grgit communicates with remote repositories in one of three ways:
+
+. HTTP(S) protocol with basic auth credentials (i.e. username/password).
++
+TIP: Where possible, use of HTTPS urls is preferred over the SSH options. This has been far more reliable than JSch. The SSH support via directy commands is newer and still opt-in.
+. SSH protocol using JSch (a Java implementation of the SSH protocol). This approach can use JSch Agent Proxy as a way to get SSH keys from ssh-agent or Pageant.
++
+WARNING: There have been numerous issues with JSch authentication. It may work for you, but you could run into issues from conflicting JNA libraries, host key authentication issues, algorithm negotiation. Additionally, the JSch Agent Proxy library hasn't been maintained since 2014 (as of April 2018).
+. SSH protocol using `ssh` or `plink` directly. This approach should work as long as you can push/pull on your machine
++
+NOTE: This is intended to replace JSch, but is new as of Grgit 2.2.0. If it proves to be reliable, it will be on by default in 3.0.0.
++
+TIP: This support must be explicitly enabled with the system property `org.ajoberstar.grgit.auth.command.allow=true`.
+
+== Options
+
+=== Authentication Method
+
+The following system properties can be set to configure which authentication options are available when performing a _transport_ command. Generally, you shouldn't need to modify any of these unless you are having an issue and need to bypass or force or particular method.
+
+org.ajoberstar.grgit.auth.force:: (one of `hardcoded`, `interactive`, `sshagent`, `pageant`)
+org.ajoberstar.grgit.auth.hardcoded.allow:: (`true` or `false`, default `true`)
+org.ajoberstar.grgit.auth.interactive.allow:: (`true` or `false`, default `true`)
+org.ajoberstar.grgit.auth.sshagent.allow:: (`true` or `false`, default `true`)
+org.ajoberstar.grgit.auth.pageant.allow:: (`true` or `false`, default `true`)
+org.ajoberstar.grgit.auth.command.allow:: (`true` or `false`, default `false`)
+
+When credentials/input are needed, they will be selected in the following precedence, if available:
+
+. Hardcoded (i.e. username/password) credentials, if provided.
+. Interactive credentials provided via a dialog prompt. This is only available in non-headless JVMs, and will only display if the input couldn't be retrieved in another manner.
+
+For SSH URLs using JSch, a key may be used from one of the following sources:
+
+. SSH key in a default location (e.g. `~/.ssh/id_rsa`)
+. SSH key from a user-specified location
+. Keys loaded into a running ssh-agent
+. Keys loaded into a running Pageant
+
+For SSH using _command_ mode, any keys your `ssh` or `plink` can natively pick up by default will be used. This should include keys in default locations (e.g. `~/`) and any compatible SSH agent or OS keychain. If your key is password protected and not loaded in an agent, authentication will fail. Grgit cannot provide credentials to the external commands.
+
+=== Hardcoded Credentials
+
+These are presented in precedence order (direct parameter in code, system properties, environment variables).
+
+==== Parameter to Grgit operations
+
+Some Grgit operations, such as xref:grgit-clone.adoc[grgit-clone] allow you to provide credentials programmatically.
+
+[source, groovy]
+----
+import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.Credentials
+
+def grgit = Grgit.clone(dir: '...', url: '...', credentials: new Credentials(username, password))
+----
+
+==== System Properties
+
+org.ajoberstar.grgit.auth.username:: Username to provide when basic authentication credentials are needed. Username can be specified without a password (e.g. using a GitHub auth token as the user and providing no password).
+org.ajoberstar.grgit.auth.password:: Password to provide when basic authentication credentials are needed.
+
+==== Environment Variables
+
+GRGIT_USER:: Username to provide when basic authentication credentials are needed. Username can be specified without a password (e.g. using a GitHub auth token as the user and providing no password).
+GRGIT_PASS:: Password to provide when basic authentication credentials are needed.
+
+=== SSH Credentials
+
+IMPORTANT: This is not used when `org.ajoberstar.grgit.auth.command.allow=true` is set.
+
+Generally, these will be detected for you, whether they're in a default location or provided from an agent. If you want to specify a specific SSH key (and passphrase), you can do so via system properties.
+
+org.ajoberstar.grgit.auth.ssh.private:: Path to the SSH key to use
+org.ajoberstar.grgit.auth.ssh.passphrase:: Passphrase to use the key, if any needed
+
+== Customizing the JSch Session
+
+IMPORTANT: This is not used when `org.ajoberstar.grgit.auth.command.allow=true` is set.
+
+JGit uses JSch for it's SSH layer. To customize this from it's defaults, you can use the following system properties (see available keys/values in link:https://epaul.github.io/jsch-documentation/javadoc/com/jcraft/jsch/JSch.html#setConfig-java.util.Hashtable-[JSch's docs]):
+
+org.ajoberstar.grgit.auth.session.config.<key>:: <value>
+
+For example: `org.ajoberstar.grgit.auth.session.config.StrictHostKeyChecking=no`
+
+== Customizing the SSH command used
+
+IMPORTANT: Requires the system property `org.ajoberstar.grgit.auth.command.allow=true` to be set.
+
+If the `GIT_SSH` environment variable is set, that will be used. If not, Grgit will scan your `PATH` for an `ssh` (preferred) or `plink` command.
+
+== Examples
+
+This is a non-exhaustive list of examples of how to configure authentication in common scenarios.
+
+=== Using a GitHub auth token with HTTPS URLs
+
+Set the environment variable `GRGIT_USER` to your authentication token from GitHub.
+
+=== Using a Username and Password with HTTPS URLs
+
+Set the system properties:
+
+----
+groovy -Dorg.ajoberstar.grgit.auth.username=someone -Dorg.ajoberstar.grgit.auth.password=mysecretpassword myscript.groovy
+----
+
+=== Using a specific SSH key
+
+IMPORTANT: This is not used when `org.ajoberstar.grgit.auth.command.allow=true` is set.
+
+Set the system properties:
+
+----
+groovy -Dorg.ajoberstar.grgit.auth.ssh.private=/my/secret/key -Dorg.ajoberstar.grgit.auth.ssh.passphrase=mysecretpassword myscript.groovy
+----
+
+=== Using ssh-agent
+
+Make sure your ssh-agent is started and your key is loaded. Then just run your application or script.
+
+=== Using Pageant
+
+Make sure your Pageant is started and your key is loaded. Then just run your application or script.

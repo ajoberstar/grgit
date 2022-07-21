@@ -1,0 +1,30 @@
+= grgit-isAncestorOf
+
+== Name
+
+grgit-isAncestorOf - Tell if a commit is an ancestor of another.
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.isAncestorOf(<base commit>,  <tip commit>)
+----
+
+== Description
+
+Given a base commit and a tip commit, return `true` if the base commit can be reached by walking back from the tip.
+
+== Options
+
+. (`Object`) base commit. For a more complete list of objects you can pass in, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toCommit` method).
+. (`Object`) tip commit. For a more complete list of objects you can pass in, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toCommit` method).
+
+== Examples
+
+[source, groovy]
+----
+grgit.isAncestorOf('v1.2.3', 'master')
+----
+
+== See Also

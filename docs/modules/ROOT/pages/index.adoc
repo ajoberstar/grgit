@@ -1,0 +1,112 @@
+= grgit
+:jbake-title: index
+:jbake-type: page
+:jbake-status: published
+
+== What is Grgit?
+
+A library providing a wrapper around link:https://eclipse.org/jgit/[Eclipse's JGit] for more fluent usage from Groovy. This allows you to interact easily with link:https://git-scm.com[Git] repositories from general applications using Groovy or from Gradle builds.
+
+== Where do I get Grgit?
+
+[IMPORTANT]
+====
+As of Grgit 3, the coordinates for the library have changed.
+
+* Instead of:
+** `org.ajoberstar:grgit:<version>`
+* Use one of:
+** org.ajoberstar.grgit:grgit-core:<version>
+** org.ajoberstar.grgit:grgit-gradle:<version>
+
+The Gradle plugin ID **has not** changed. It is still `org.ajoberstar.grgit`.
+====
+
+To use Grgit as a library, use it as a dependency from Maven Central. Available versions can be found in the link:https://github.com/ajoberstar/grgit/releases[release notes].
+
+[source, groovy]
+.build.gradle
+----
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile 'org.ajoberstar.grgit:grgit-core:<version>'
+}
+----
+
+[source, xml]
+.pom.xml
+----
+<dependencies>
+  <dependency>
+    <groupId>org.ajoberstar.grgit</groupId>
+    <artifactId>grgit-core</artifactId>
+    <version>...</version>
+  </dependency>
+</dependencies>
+----
+
+To use Grgit in a Gradle build, see the documentation for xref:grgit-gradle.adoc[org.ajoberstar.grgit].
+
+== How do I use Grgit?
+
+First you need to get an instance of Grgit, by either xref:grgit-init.adoc[initializing] a new repo or xref:grgit-open.adoc[opening] or xref:grgit-clone.adoc[cloning] an existing repo.
+
+Once you have a Grgit instance, you can use the available operations to inspect or modify the repo. Each operation has 3 variants, depending on your preference:
+
+[source, groovy]
+----
+// no arg variant, only applies to operations that don't require input
+grgit.log()
+
+// map argument variant
+grgit.log(includes: ['master', 'other-branch'], excludes: ['old-stuff'], skipCommits: 5)
+
+// closure argument variant
+grgit.log {
+  range('1.0.0', '1.5.1')
+  maxCommits = 2
+}
+----
+
+Look in the xref:grgit-reference.adoc[grgit-reference] documentation for information on each available operation, it's options, and example usage. Additionally, see the xref:grgit-authentication.adoc[authentication] documentation if you plan to interact with a remote repository.
+
+== Example Usage
+
+In an example like this, using the HTTP protocol, you'll likely need to specify basic auth credentials. This can be done via system properties or environment variables. SSH access (including ssh-agent and Pageant) are also supported. (Again, see the xref:grgit-authentication.adoc[authentication] documentation.)
+
+[source]
+.Environment Variables
+----
+GRGIT_USER=somebody
+GRGIT_PASS=myauthtoken
+----
+
+[source, groovy]
+.grgitSample.groovy
+----
+// get a grgit instance
+def grgit = Grgit.clone(dir: 'test-repo', uri: 'https://github.com/ajoberstar/test-repo.git')
+
+// make some changes
+new File('test-repo/file.txt') << 'making some changes'
+grgit.add(patterns: ['test-repo/file.txt'])
+
+// make a commit
+grgit.commit(message: 'Adding a new file')
+
+// view the commits
+grgit.log {
+  range('origin/master', 'master')
+}.each { commit ->
+  println "${commit.id} ${commit.shortMessage}"
+}
+
+// push to the remote
+grgit.push()
+
+// cleanup after yourself
+grgit.close()
+----

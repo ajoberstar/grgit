@@ -1,0 +1,39 @@
+= grgit-init
+
+== Name
+
+grgit-init - Create an empty Git repository
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.init(dir: <path>, bare: <boolean>)
+----
+
+[source, groovy]
+----
+grgit.init {
+  dir = <path>
+  bare = <boolean>
+}
+----
+
+== Description
+
+This command creates an empty Git repository - basically a `.git` directory with subdirectories for `objects`, `refs/heads`, `refs/tags`, and template files. An initial `HEAD` file that references the HEAD of the master branch is also created.
+
+Returns a link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Grgit.groovy[Grgit] instance.
+
+== Options
+
+dir:: (`Object`, default `null`) The directory the repository should be initialized in. Can be a `File`, `Path`, or `String`.
+bare:: (`boolean`, default `false`) Create a bare repository.
+
+== Examples
+
+== See Also
+
+- link:https://git-scm.com/docs/git-init[git-init]
+- xref:grgit-open.adoc[grgit-open]
+- xref:grgit-clone.adoc[grgit-clone]

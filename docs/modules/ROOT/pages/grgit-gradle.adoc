@@ -1,0 +1,65 @@
+= grgit-gradle
+
+## Applying the Plugin
+
+Get the available versions from the link:https://github.com/ajoberstar/grgit/releases[releases] page. Generally, you should only apply the plugin to the root project of your build.
+
+```groovy
+plugins {
+  id 'org.ajoberstar.grgit' version '<version>'
+}
+```
+
+## What does the plugin do?
+
+The `org.ajoberstar.grgit` plugin adds a `grgit` property to your build, which is an instance of link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Grgit.groovy[Grgit] opened to the repository visible from your project's root dir. This will check the project directory and its parents for a `.git` directory. If no repository is found, the `grgit` property is `null`.
+
+```groovy
+version = "1.0.0-${grgit.head().abbreviatedId}"
+
+task tagRelease {
+  description = 'Tags the current head with the project\'s version.'
+  doLast {
+    grgit.tag.add {
+      name = version
+      message = "Release of ${version}"
+    }
+  }
+}
+
+task pushToOrigin {
+  description = 'Pushes current branch\'s committed changes to origin repo.'
+  doLast {
+    grgit.push()
+  }
+}
+```
+
+For details on the available operations, see the xref:grgit-reference.adoc[reference]. Examples are provided there.
+
+## Just getting the library
+
+If you don't want to interact with the project's repository, but still want to use Grgit.
+
+```groovy
+plugins {
+  id 'org.ajoberstar.grgit' version '<version>' apply false
+}
+```
+
+Then you can import Grgit and continue from there:
+
+```groovy
+import org.ajoberstar.grgit.Grgit
+
+task cloneSomeRepo {
+  doLast {
+    def grgit = Grgit.clone(dir: "$buildDir/my-repo", uri: "https://github.com/ajoberstar/grgit.git")
+    println grgit.describe()
+  }
+}
+```
+
+## Authentication
+
+If you will be doing a clone, fetch, push, or pull, review the xref:grgit-authentication.adoc[grgit-authentication] page for details on how to configure credentials for these commands.

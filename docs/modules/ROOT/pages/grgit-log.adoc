@@ -1,0 +1,71 @@
+= grgit-log
+
+== Name
+
+grgit-log - Show commit logs
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.log()
+----
+
+[source, groovy]
+----
+grgit.log(includes: [<revstr>, ...], excludes: [<revstr>, ...], paths: [<path>, ...],
+  skipCommits: <int>, maxCommits: <int>)
+----
+
+[source, groovy]
+----
+grgit.log {
+  includes = [<revstr>, ...]
+  excludes = [<revstr>, ...]
+  paths = [<path>, ...]
+  skipCommits = <int>
+  maxCommits = <int>
+  range(<revstr since>, <revstr until>)
+}
+----
+
+== Description
+
+Shows the commit logs.
+
+List commits that are reachable by following the parent links from the given  `includes` commit(s), but exclude commits that are reachable from the one(s) given with the `excludes` option. The output is given in reverse chronological order.
+
+You can think of this as a set operation. Commits given in `includes` form a set of commits that are reachable from any of them, and then commits reachable from any of the ones given with `excludes` are subtracted from that set. The remaining commits are what comes out in the result. Various other options and paths parameters can be used to further limit the result.
+
+Thus, the following command means "list all the commits which are reachable from foo or bar, but not from baz".
+
+[source, groovy]
+----
+grgit.log(includes: ['foo', 'bar'], excludes: ['baz'])
+----
+
+A special notation (in the Closure syntax only) `range(<commit1>, <commit2>)` can be used as a short-hand for `excludes: [<commit2>], includes: [<commit1>]`. For example, either of the following may be used interchangeably:
+
+[source, groovy]
+----
+grgit.log(includes: ['HEAD'], excludes: ['origin/master'])
+grgit.log {
+  range('origin/master', 'HEAD')
+}
+----
+
+Returns a `List<Commit>` (link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Commit.groovy[Commit]) with the commits matching the criteria given.
+
+== Options
+
+includes:: (`List<Object>`, default `[]`) Commit-ish object names to include the history of in the output. For a more complete list of ways to spell commit names, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toCommit` method).
+excludes:: (`List<Object>`, default `[]`) Commit-ish object names to exclude the history of in the output. For a more complete list of ways to spell commit names, see xref:grgit-resolve.adoc[grgit-resolve] (specifically the `toCommit` method).
+skipCommits:: (`int`, default `-1`) Skip `skipCommits` commits before starting to show the commit output. A negative value ignores this option.
+maxCommits:: (`int`, default `-1`) Limit the number of commits to output. A negative value ignores this option.
+paths:: (`List<String>`, defaul: `[]`) Commits modifying the given paths are selected. Omitting this will include all reachable commits.
+
+== Examples
+
+== See Also
+
+- link:https://git-scm.com/docs/git-log[git-log]

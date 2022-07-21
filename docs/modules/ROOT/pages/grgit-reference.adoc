@@ -1,0 +1,3 @@
+= Grgit Reference
+
+include::partial$reference.adoc[]

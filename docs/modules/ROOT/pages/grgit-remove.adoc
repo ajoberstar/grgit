@@ -1,0 +1,52 @@
+= grgit-remove
+
+== Name
+
+grgit-remove - Remove files from the working tree and from the index
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.remove(patterns: ['<path>', ...], cached: <boolean>)
+----
+
+[source, groovy]
+----
+grgit.remove {
+  patterns = ['<path>', ...]
+  cached = <boolean>
+}
+----
+
+== Description
+
+Remove files from the index, or from the working tree and the index. `remove` will not remove a file from just your working directory.  The files being removed have to be identical to the tip of the branch, and no updates to their contents can be staged in the index. When `cached` is given, the staged content has to match either the tip of the branch or the file on disk, allowing the file to be removed from just the index.
+
+== Options
+
+patterns:: (`Set<String>`, default `[]`) Files to remove. A leading directory name (e.g. `dir` to remove `dir/file1` and `dir/file2`) can be given to remove all files in the directory, and recursively all sub-directories.
+cached:: (`boolean`, default `false`) Use this option to unstage and remove paths only from the index. Working tree files, whether modified or not, will be left alone.
+
+== Examples
+
+Remove specific file or directory from both the index and working tree.
+
+[source, groovy]
+----
+grgit.remove(patterns: ['1.txt', 'some/dir'])
+----
+
+Remove specific file or directory from the index, but leave the in the working tree.
+
+[source, groovy]
+----
+grgit.remove(patterns: ['1.txt', 'some/dir'], cached: true)
+----
+
+== See Also
+
+- link:https://git-scm.com/docs/git-rm[git-rm]
+- xref:grgit-add.adoc[grgit-add]
+- xref:grgit-commit.adoc[grgit-commit]
+- xref:grgit-status.adoc[grgit-status]

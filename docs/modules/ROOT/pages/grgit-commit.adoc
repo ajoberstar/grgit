@@ -1,0 +1,85 @@
+= grgit-commit
+
+== Name
+
+grgit-commit - Record changes to the repository
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.commit(message: <message>, paths: [<path>, ...], all: <boolean>, amend: <boolean>,
+  reflogComment: <message>, committer: <person>, author: <person>)
+----
+
+[source, groovy]
+----
+grgit.commit {
+  message = <message>
+  paths = [<path>, ...]
+  all = <boolean>
+  amend = <boolean>
+  reflogComment = <message>
+  committer = <person>
+  author = <person>
+}
+----
+
+== Description
+
+Stores the current contents of the index in a new commit along with a log message from the user describing the changes.
+
+The content to be added can be specified in several ways:
+
+. by using xref:grgit-add.adoc[grgit-add] to incrementally "add" changes to the index before using the commit command (Note: even modified files must be "added");
+. by using xref:grgit-remove.adoc[grgit-remove] to remove files from the working tree and the index, again before using the commit command;
+. by listing `paths` as arguments to the `commit` command, in which case the commit will ignore changes staged in the index, and instead record the current content of the listed files (which must already be known to Git);
+. by using the `all` switch with the commit command to automatically "add" changes from all known files (i.e. all files that are already listed in the index) and to automatically "rm" files in the index that have been removed from the working tree, and then perform the actual commit;
+
+If you make a commit and then find a mistake immediately after that, you can recover from it with xref:grgit-reset.adoc[grgit-reset].
+
+Returns a link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Commit.groovy[Commit] representing the new `HEAD`.
+
+== Options
+
+message:: (`String`, default `null`) Use the given <msg> as the commit message.
+paths:: (`Set<String>`, default `[]`) When files are given on the command line, the command commits the contents of the named files, without recording the changes already staged. The contents of these files are also staged for the next commit on top of what have been staged before.
+all:: (`boolean`, default `false`) Tell the command to automatically stage files that have been modified and deleted, but new files you have not told Git about are not affected.
+amend:: (`boolean`, default `false`) Replace the tip of the current branch by creating a new commit. The recorded tree is prepared as usual, and the message from the original commit is used as the starting point, instead of an empty message, when no other message is specified from the command line. The new commit has the same parents and author as the current one.
+reflogComment:: (`String`, default `null`) Use a different comment in the reflog for this commit.
+committer:: (`Person`, default `null`) Override the committer recorded in the commit. This must be a link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Person.groovy[Person].
+author:: (`Person`, default `null`) Override the author recorded in the commit. This must be a link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Person.groovy[Person].
+
+== Examples
+
+To commit all staged changes.
+
+[source, groovy]
+----
+def commit = grgit.commit(message: 'something about the change')
+----
+
+To commit changes to all previously tracked files.
+
+[source, groovy]
+----
+def commit = grgit.commit(message: 'something about the change', all: true)
+----
+
+To amend the previous commit.
+
+[source, groovy]
+----
+def commit = grgit.commit(message: 'something about the change', amend: true)
+----
+
+To commit changes authored by another person.
+
+[source, groovy]
+----
+def commit = grgit.commit(message: 'something about the change', author: new Person('Bruce Wayne', 'bruce.wayne@wayneindustries.com'))
+----
+
+== See Also
+
+- link:https://git-scm.com/docs/git-commit[git-commit]

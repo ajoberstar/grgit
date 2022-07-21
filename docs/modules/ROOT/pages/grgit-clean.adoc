@@ -1,0 +1,85 @@
+= grgit-clean
+
+== Name
+
+grgit-clean - Remove untracked files from the working tree
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.clean()
+----
+
+[source, groovy]
+----
+grgit.clean(paths: ['<path>', ...], directories: <boolean>, dryRun: <boolean>, ignore: <boolean>)
+----
+
+[source, groovy]
+----
+grgit.clean {
+  paths = ['<path>', ...]
+  directories = <boolean>
+  dryRun = <boolean>
+  ignore = <boolean>
+}
+----
+
+== Description
+
+Cleans the working tree by removing files that are not under version control.
+
+Normally, only files uknown to Git are removed, but if `ignore` is `false`, ignored files are also removed. This can, for example, be useful to remove all build products.
+
+If any optional `paths` are given, only those paths are affected.
+
+Returns a `Set<String>` of the paths that were deleted.
+
+== Options
+
+directories:: (`boolean`, default `false`) Remove untracked directories in addition to untracked files.
+dryRun:: (`boolean`, default `false`) Don’t actually remove anything, just show what would be done.
+ignore:: (`boolean`, default `true`) Don’t use the standard ignore rules read from .gitignore (per directory) and $GIT_DIR/info/exclude. This allows removing all untracked files, including build products. This can be used (possibly in conjunction with git reset) to create a pristine working directory to test a clean build.
+paths:: (`Set<String>`, default `null`) Only remove files in the given paths.
+
+== Examples
+
+To clean all untracked files, but not ignored ones or untracked directories.
+
+[source, groovy]
+----
+def cleanedPaths = grgit.clean()
+----
+
+To clean all untracked files and directories.
+
+[source, groovy]
+----
+def cleanedPaths = grgit.clean(directories: true)
+----
+
+To clean all untracked files, including ignored ones.
+
+[source, groovy]
+----
+def cleanedPaths = grgit.clean(ignore: false)
+----
+
+To only return files that would be cleaned.
+
+[source, groovy]
+----
+def cleanedPaths = grgit.clean(dryRun: true)
+----
+
+To clean specific untracked files.
+
+[source, groovy]
+----
+def cleanedPaths = grgit.clean(paths: ['specific/file.txt'])
+----
+
+== See Also
+
+- link:https://git-scm.com/docs/git-clean[git-clean]

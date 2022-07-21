@@ -1,0 +1,22 @@
+= grgit-head
+
+== Name
+
+grgit-head - Gets the current `HEAD` commit.
+
+== Synopsis
+
+[source, groovy]
+----
+grgit.head()
+----
+
+== Description
+
+Returns the link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Commit.groovy[Commit] that the current `HEAD` points to.
+
+== Options
+
+== Examples
+
+== See Also
