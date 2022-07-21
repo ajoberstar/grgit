@@ -45,7 +45,7 @@ It also provides a Gradle plugin to easily get a Grgit instance for the build's 
 
 **NOTE:** grgit is available from Maven Central or the Gradle Plugin Portal
 
-- [Documentation Site](http://ajoberstar.org/grgit/index.html)
+- [Documentation Site](https://ajoberstar.org/grgit/main/index.html)
 - [Release Notes](https://github.com/ajoberstar/grgit/releases)
 
 ## Simple Usage in Gradle
