@@ -10,7 +10,7 @@ description = "The Groovy way to use Git"
 
 mavenCentral {
   developerName.set("Andrew Oberstar")
-  developerEmail.set("ajoberstar@gmail.com")
+  developerEmail.set("andrew@ajoberstar.org")
   githubOwner.set("ajoberstar")
   githubRepository.set("grgit")
 }
