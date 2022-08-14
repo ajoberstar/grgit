@@ -7,7 +7,7 @@ pluginManagement {
     id("org.ajoberstar.reckon") version "0.16.1"
     id("org.ajoberstar.stutter") version "0.7.1"
 
-    id("com.diffplug.spotless") version "6.3.0"
+    id("com.diffplug.spotless") version "6.9.1"
   }
 
   repositories {
@@ -19,6 +19,7 @@ dependencyResolutionManagement {
   repositories {
     mavenCentral()
   }
+  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 }
 
 rootProject.name = "grgit"
