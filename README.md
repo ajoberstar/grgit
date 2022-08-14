@@ -2,28 +2,13 @@
 
 ![CI](https://github.com/ajoberstar/grgit/workflows/CI/badge.svg)
 
-## Project News
+**NOTE:** As of 5.0.0, grgit is published to Maven Central
 
-### Newest versions are on Maven Central
+## Getting Help or Contributing
 
-As of 4.1.1, grgit is published to Maven Central and the Gradle Plugin Portal.
+**IMPORANT:** I consider this plugin feature complete and don't spend a lot of time on maintenance due to other time commitments. While, I will eventually get to issues or PRs raised, **do not** expect a timely response. I'm not trying to be rude or dismissive, I only get back to this project periodically (on the order of _months_, in many cases). Please set your expectations appropriately as you file issues or open PRs.
 
-As of 5.0.0, this project is no longer directly published to the Gradle Plugin Portal, but since the portal proxies Maven Central you can still access it through the portal. The only side effect is that [the portal](https://plugins.gradle.org/plugin/org.ajoberstar.grgit) will no longer list the latest version. Use this repo or [search.maven.org](https://search.maven.org/search?q=g:org.ajoberstar.grgit) to find the latest version.
-
-### Old versions from Bintray/JCenter
-
-This project was previously uploaded to JCenter, which was deprecated in 2021.
-
-In the event that JCenter is unavailable and acess to past versions (4.1.0 and earlier) is needed, I've made a Maven repo available in [bintray-backup](https://github.com/ajoberstar/bintray-backup). Add the following to your repositories to use it.
-
-```groovy
-maven {
-  name = 'ajoberstar-backup'
-  url = 'https://ajoberstar.org/bintray-backup/'
-}
-```
-
-Made possible by [lacasseio/bintray-helper](https://github.com/lacasseio/bintray-helper) in case you have a similar need to pull your old Bintray artifacts.
+Please use the repo's [issues](https://github.com/ajoberstar/grgit/issues) for all questions, bug reports, and feature requests.
 
 ## Why do you care?
 
@@ -122,21 +107,28 @@ If you are writing a custom Gradle plugin, you'll want to use one or both of the
     });
   ```
 
-## Questions, Bugs, and Features
+## Finding versions of grgit
 
-Please use the repo's [issues](https://github.com/ajoberstar/grgit/issues)
-for all questions, bug reports, and feature requests.
+### Newest versions are on Maven Central
 
-## Contributing
+As of 4.1.1, grgit is published to Maven Central and the Gradle Plugin Portal.
 
-Contributions are very welcome and are accepted through pull requests.
+As of 5.0.0, this project is no longer directly published to the Gradle Plugin Portal, but since the portal proxies Maven Central you can still access it through the portal. The only side effect is that [the portal](https://plugins.gradle.org/plugin/org.ajoberstar.grgit) will no longer list the latest version. Use this repo or [search.maven.org](https://search.maven.org/search?q=g:org.ajoberstar.grgit) to find the latest version.
 
-Smaller changes can come directly as a PR, but larger or more complex
-ones should be discussed in an issue first to flesh out the approach.
+### Old versions from Bintray/JCenter
 
-If you're interested in implementing a feature on the
-[issues backlog](https://github.com/ajoberstar/grgit/issues), add a comment
-to make sure it's not already in progress and for any needed discussion.
+This project was previously uploaded to JCenter, which was deprecated in 2021.
+
+In the event that JCenter is unavailable and acess to past versions (4.1.0 and earlier) is needed, I've made a Maven repo available in [bintray-backup](https://github.com/ajoberstar/bintray-backup). Add the following to your repositories to use it.
+
+```groovy
+maven {
+  name = 'ajoberstar-backup'
+  url = 'https://ajoberstar.org/bintray-backup/'
+}
+```
+
+Made possible by [lacasseio/bintray-helper](https://github.com/lacasseio/bintray-helper) in case you have a similar need to pull your old Bintray artifacts.
 
 ## Acknowledgements
 
