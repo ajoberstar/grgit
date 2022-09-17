@@ -8,17 +8,17 @@ grgit-open - Open an existing Git repository
 
 [source, groovy]
 ----
-grgit.open()
+Grgit.open()
 ----
 
 [source, groovy]
 ----
-grgit.open(dir: <path>, currentDir: <path>, credentials: <credentials>)
+Grgit.open(dir: <path>, currentDir: <path>, credentials: <credentials>)
 ----
 
 [source, groovy]
 ----
-grgit.open {
+Grgit.open {
   dir = <path>
   currentDir = <path>
   credentials = <credentals>

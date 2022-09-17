@@ -8,14 +8,14 @@ grgit-clone - Clone a repository into a new directory
 
 [source, groovy]
 ----
-grgit.clone(dir: <path>, uri: <path or uri>, remote: <name>, all: <boolean>,
+Grgit.clone(dir: <path>, uri: <path or uri>, remote: <name>, all: <boolean>,
   bare: <boolean>, branches: <full refs>, checkout: <boolean>,
   refToCheckout: <name>, credentials: <credentials>)
 ----
 
 [source, groovy]
 ----
-grgit.clone {
+Grgit.clone {
   dir = <path>
   uri = <path or uri>
   remote = <name>

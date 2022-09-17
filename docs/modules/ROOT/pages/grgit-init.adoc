@@ -8,12 +8,12 @@ grgit-init - Create an empty Git repository
 
 [source, groovy]
 ----
-grgit.init(dir: <path>, bare: <boolean>)
+Grgit.init(dir: <path>, bare: <boolean>)
 ----
 
 [source, groovy]
 ----
-grgit.init {
+Grgit.init {
   dir = <path>
   bare = <boolean>
 }
