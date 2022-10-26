@@ -31,6 +31,7 @@ class UpdateSubmodulesOp implements Callable<Void> {
         SubmoduleSyncCommand syncCmd = repo.jgit.submoduleSync()
         syncCmd.call()
         Map<String, SubmoduleStatus> modules = repo.jgit.submoduleStatus().call()
+        println("Modules size is " + modules.size())
         modules.forEach({
             println(it + " " + modules[it])
         })
