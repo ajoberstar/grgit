@@ -13,16 +13,16 @@ import org.ajoberstar.grgit.util.JGitUtil
  *
  * <ul>
  *   <li>
- *	 <p>{@link org.ajoberstar.grgit.operation.OpenOp Open} an existing repository.</p>
- *	 <pre>def grgit = Grgit.open(dir: 'path/to/my/repo')</pre>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.OpenOp Open} an existing repository.</p>
+ * 	 <pre>def grgit = Grgit.open(dir: 'path/to/my/repo')</pre>
  *   </li>
  *   <li>
- *	 <p>{@link org.ajoberstar.grgit.operation.InitOp Initialize} a new repository.</p>
- *	 <pre>def grgit = Grgit.init(dir: 'path/to/my/repo')</pre>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.InitOp Initialize} a new repository.</p>
+ * 	 <pre>def grgit = Grgit.init(dir: 'path/to/my/repo')</pre>
  *   </li>
  *   <li>
- *	 <p>{@link org.ajoberstar.grgit.operation.CloneOp Clone} an existing repository.</p>
- *	 <pre>def grgit = Grgit.clone(dir: 'path/to/my/repo', uri: 'git@github.com:ajoberstar/grgit.git')</pre>
+ * 	 <p>{@link org.ajoberstar.grgit.operation.CloneOp Clone} an existing repository.</p>
+ * 	 <pre>def grgit = Grgit.clone(dir: 'path/to/my/repo', uri: 'git@github.com:ajoberstar/grgit.git')</pre>
  *   </li>
  * </ul>
  *
@@ -32,17 +32,17 @@ import org.ajoberstar.grgit.util.JGitUtil
  *
  * <ul>
  *   <li>
- *	 <p>Map syntax. Any public property on the {@code *Op} class can be provided as a Map entry.</p>
- *	 <pre>grgit.commit(message: 'Committing my code.', amend: true)</pre>
+ * 	 <p>Map syntax. Any public property on the {@code *Op} class can be provided as a Map entry.</p>
+ * 	 <pre>grgit.commit(message: 'Committing my code.', amend: true)</pre>
  *   </li>
  *   <li>
- *	 <p>Closure syntax. Any public property or method on the {@code *Op} class can be used.</p>
- *	 <pre>
+ * 	 <p>Closure syntax. Any public property or method on the {@code *Op} class can be used.</p>
+ * 	 <pre>
  * grgit.log {
  *   range 'master', 'my-new-branch'
  *   maxCommits = 5
  * }
- *	 </pre>
+ * 	 </pre>
  *   </li>
  * </ul>
  *
@@ -96,67 +96,67 @@ import org.ajoberstar.grgit.util.JGitUtil
  *
  * @since 0.1.0
  */
-@WithOperations(staticOperations=[InitOp, CloneOp, OpenOp], instanceOperations=[CleanOp, StatusOp, AddOp, RmOp, ResetOp, ApplyOp, PullOp, PushOp, FetchOp, LsRemoteOp, CheckoutOp, LogOp, CommitOp, RevertOp, MergeOp, DescribeOp, ShowOp, DiffOp])
+@WithOperations(staticOperations = [InitOp, CloneOp, OpenOp], instanceOperations = [CleanOp, StatusOp, AddOp, RmOp, ResetOp, ApplyOp, PullOp, PushOp, FetchOp, LsRemoteOp, CheckoutOp, LogOp, CommitOp, RevertOp, MergeOp, DescribeOp, ShowOp, DiffOp, UpdateSubmodulesOp])
 class Grgit implements AutoCloseable {
-  /**
-   * The repository opened by this object.
-   */
-  final Repository repository
+    /**
+     * The repository opened by this object.
+     */
+    final Repository repository
 
-  /**
-   * Supports operations on branches.
-   */
-  final BranchService branch
+    /**
+     * Supports operations on branches.
+     */
+    final BranchService branch
 
-  /**
-   * Supports operations on remotes.
-   */
-  final RemoteService remote
+    /**
+     * Supports operations on remotes.
+     */
+    final RemoteService remote
 
-  /**
-   * Convenience methods for resolving various objects.
-   */
-  final ResolveService resolve
+    /**
+     * Convenience methods for resolving various objects.
+     */
+    final ResolveService resolve
 
-  /**
-   * Supports operations on tags.
-   */
-  final TagService tag
+    /**
+     * Supports operations on tags.
+     */
+    final TagService tag
 
-  Grgit(Repository repository) {
-    this.repository = repository
-    this.branch = new BranchService(repository)
-    this.remote = new RemoteService(repository)
-    this.tag = new TagService(repository)
-    this.resolve = new ResolveService(repository)
-  }
+    Grgit(Repository repository) {
+        this.repository = repository
+        this.branch = new BranchService(repository)
+        this.remote = new RemoteService(repository)
+        this.tag = new TagService(repository)
+        this.resolve = new ResolveService(repository)
+    }
 
-  /**
-   * Returns the commit located at the current HEAD of the repository.
-   * @return the current HEAD commit
-   */
-  Commit head() {
-    return resolve.toCommit('HEAD')
-  }
+    /**
+     * Returns the commit located at the current HEAD of the repository.
+     * @return the current HEAD commit
+     */
+    Commit head() {
+        return resolve.toCommit('HEAD')
+    }
 
-  /**
-   * Checks if {@code base} is an ancestor of {@code tip}.
-   * @param base the version that might be an ancestor
-   * @param tip the tip version
-   * @since 0.2.2
-   */
-  boolean isAncestorOf(Object base, Object tip) {
-    Commit baseCommit = resolve.toCommit(base)
-    Commit tipCommit = resolve.toCommit(tip)
-    return JGitUtil.isAncestorOf(repository, baseCommit, tipCommit)
-  }
+    /**
+     * Checks if {@code base} is an ancestor of {@code tip}.
+     * @param base the version that might be an ancestor
+     * @param tip the tip version
+     * @since 0.2.2
+     */
+    boolean isAncestorOf(Object base, Object tip) {
+        Commit baseCommit = resolve.toCommit(base)
+        Commit tipCommit = resolve.toCommit(tip)
+        return JGitUtil.isAncestorOf(repository, baseCommit, tipCommit)
+    }
 
-  /**
-   * Release underlying resources used by this instance. After calling close
-   * you should not use this instance anymore.
-   */
-  @Override
-  void close() {
-    repository.jgit.repository.close()
-  }
+    /**
+     * Release underlying resources used by this instance. After calling close
+     * you should not use this instance anymore.
+     */
+    @Override
+    void close() {
+        repository.jgit.repository.close()
+    }
 }
