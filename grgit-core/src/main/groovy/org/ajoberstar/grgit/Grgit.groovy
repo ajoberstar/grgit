@@ -98,65 +98,65 @@ import org.ajoberstar.grgit.util.JGitUtil
  */
 @WithOperations(staticOperations=[InitOp, CloneOp, OpenOp], instanceOperations=[CleanOp, StatusOp, AddOp, RmOp, ResetOp, ApplyOp, PullOp, PushOp, FetchOp, LsRemoteOp, CheckoutOp, LogOp, CommitOp, RevertOp, MergeOp, DescribeOp, ShowOp, DiffOp, UpdateSubmodulesOp])
 class Grgit implements AutoCloseable {
-    /**
-     * The repository opened by this object.
-     */
-    final Repository repository
+  /**
+   * The repository opened by this object.
+   */
+  final Repository repository
 
-    /**
-     * Supports operations on branches.
-     */
-    final BranchService branch
+  /**
+   * Supports operations on branches.
+   */
+  final BranchService branch
 
-    /**
-     * Supports operations on remotes.
-     */
-    final RemoteService remote
+  /**
+   * Supports operations on remotes.
+   */
+  final RemoteService remote
 
-    /**
-     * Convenience methods for resolving various objects.
-     */
-    final ResolveService resolve
+  /**
+   * Convenience methods for resolving various objects.
+   */
+  final ResolveService resolve
 
-    /**
-     * Supports operations on tags.
-     */
-    final TagService tag
+  /**
+   * Supports operations on tags.
+   */
+  final TagService tag
 
-    Grgit(Repository repository) {
-        this.repository = repository
-        this.branch = new BranchService(repository)
-        this.remote = new RemoteService(repository)
-        this.tag = new TagService(repository)
-        this.resolve = new ResolveService(repository)
-    }
+  Grgit(Repository repository) {
+    this.repository = repository
+    this.branch = new BranchService(repository)
+    this.remote = new RemoteService(repository)
+    this.tag = new TagService(repository)
+    this.resolve = new ResolveService(repository)
+  }
 
-    /**
-     * Returns the commit located at the current HEAD of the repository.
-     * @return the current HEAD commit
-     */
-    Commit head() {
-        return resolve.toCommit('HEAD')
-    }
+  /**
+   * Returns the commit located at the current HEAD of the repository.
+   * @return the current HEAD commit
+   */
+  Commit head() {
+    return resolve.toCommit('HEAD')
+  }
 
-    /**
-     * Checks if {@code base} is an ancestor of {@code tip}.
-     * @param base the version that might be an ancestor
-     * @param tip the tip version
-     * @since 0.2.2
-     */
-    boolean isAncestorOf(Object base, Object tip) {
-        Commit baseCommit = resolve.toCommit(base)
-        Commit tipCommit = resolve.toCommit(tip)
-        return JGitUtil.isAncestorOf(repository, baseCommit, tipCommit)
-    }
+  /**
+   * Checks if {@code base} is an ancestor of {@code tip}.
+   * @param base the version that might be an ancestor
+   * @param tip the tip version
+   * @since 0.2.2
+   */
+  boolean isAncestorOf(Object base, Object tip) {
+    Commit baseCommit = resolve.toCommit(base)
+    Commit tipCommit = resolve.toCommit(tip)
+    return JGitUtil.isAncestorOf(repository, baseCommit, tipCommit)
+  }
 
-    /**
-     * Release underlying resources used by this instance. After calling close
-     * you should not use this instance anymore.
-     */
-    @Override
-    void close() {
-        repository.jgit.repository.close()
-    }
+  /**
+   * Release underlying resources used by this instance. After calling close
+   * you should not use this instance anymore.
+   */
+  @Override
+  void close() {
+    repository.jgit.repository.close()
+  }
 }
