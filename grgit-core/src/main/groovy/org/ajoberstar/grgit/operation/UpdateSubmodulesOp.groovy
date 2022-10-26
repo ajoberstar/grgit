@@ -10,8 +10,8 @@ import org.eclipse.jgit.submodule.SubmoduleStatus
 import java.util.concurrent.Callable
 
 /**
- * FSynchronization of the submodule status with the declared one.
- * @since 5.0.0
+ * Synchronization of the submodule status with the declared one.
+ * @since 5.1.0
  * @see <a href="https://git-scm.com/docs/git-submodule">git-submodule Manual Reference.</a>
  */
 @Operation('submodule')
@@ -24,17 +24,9 @@ class UpdateSubmodulesOp implements Callable<Void> {
 
     @Override
     Void call() throws Exception {
-        SubmoduleInitCommand initCommand = repo.jgit.submoduleInit()
-        initCommand.call()
-        SubmoduleUpdateCommand updateCmd = repo.jgit.submoduleUpdate()
-        updateCmd.call()
-        SubmoduleSyncCommand syncCmd = repo.jgit.submoduleSync()
-        syncCmd.call()
-        Map<String, SubmoduleStatus> modules = repo.jgit.submoduleStatus().call()
-        println("Modules size is " + modules.size())
-        modules.forEach({
-            println(it + " " + modules[it])
-        })
+        repo.jgit.submoduleInit().call()
+        repo.jgit.submoduleUpdate().call()
+        repo.jgit.submoduleSync().call()
         return null
     }
 }
