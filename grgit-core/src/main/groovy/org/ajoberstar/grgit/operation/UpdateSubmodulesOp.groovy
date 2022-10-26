@@ -3,7 +3,9 @@ package org.ajoberstar.grgit.operation
 import org.ajoberstar.grgit.Repository
 import org.ajoberstar.grgit.internal.Operation
 import org.eclipse.jgit.api.SubmoduleInitCommand
+import org.eclipse.jgit.api.SubmoduleSyncCommand
 import org.eclipse.jgit.api.SubmoduleUpdateCommand
+import org.eclipse.jgit.submodule.SubmoduleStatus
 
 import java.util.concurrent.Callable
 
@@ -26,6 +28,12 @@ class UpdateSubmodulesOp implements Callable<Void> {
         initCommand.call()
         SubmoduleUpdateCommand updateCmd = repo.jgit.submoduleUpdate()
         updateCmd.call()
+        SubmoduleSyncCommand syncCmd = repo.jgit.submoduleSync()
+        syncCmd.call()
+        Map<String, SubmoduleStatus> modules = repo.jgit.submoduleStatus().call()
+        modules.forEach({
+            println(it + " " + modules[it])
+        })
         return null
     }
 }
