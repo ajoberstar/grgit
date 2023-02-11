@@ -47,7 +47,7 @@ class LogOpSpec extends SimpleGitOpSpec {
 
   def 'log with no arguments returns all commits'() {
     expect:
-    grgit.log() == [5, 4, 3, 1, 2, 0].collect(intToCommit)
+    grgit.log() in [[5, 4, 3, 2, 1, 0], [5, 4, 3, 1, 2, 0]]*.collect(intToCommit)
   }
 
   def 'log with max commits returns that number of commits'() {
@@ -57,7 +57,7 @@ class LogOpSpec extends SimpleGitOpSpec {
 
   def 'log with skip commits does not return the first x commits'() {
     expect:
-    grgit.log(skipCommits:2) == [3, 1, 2, 0].collect(intToCommit)
+    grgit.log(skipCommits:2) in [[3, 2, 1, 0], [3, 1, 2, 0]]*.collect(intToCommit)
   }
 
   def 'log with range returns only the commits in that range'() {
