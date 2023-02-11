@@ -1,19 +1,15 @@
 package org.ajoberstar.grgit.gradle;
 
-import javax.inject.Inject;
-
-import org.gradle.api.model.ObjectFactory;
-import org.gradle.api.provider.Property;
+import org.gradle.api.provider.Provider;
 
 public class GrgitServiceExtension {
-  private Property<GrgitService> service;
+  private final Provider<GrgitService> service;
 
-  @Inject
-  public GrgitServiceExtension(ObjectFactory objectFactory) {
-    this.service = objectFactory.property(GrgitService.class);
+  public GrgitServiceExtension(Provider<GrgitService> service) {
+    this.service = service;
   }
 
-  public Property<GrgitService> getService() {
+  public Provider<GrgitService> getService() {
     return service;
   }
 }
