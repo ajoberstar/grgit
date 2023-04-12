@@ -145,6 +145,15 @@ class CloneOpSpec extends MultiGitOpSpec {
     GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['master']
   }
 
+  def 'clone with all false and 1 depth'() {
+    when:
+    def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, all: false, depth: 1)
+    then:
+    grgit.head().id == remoteGrgit.resolve.toCommit('master').id
+    grgit.head().parentIds.isEmpty()
+    GitTestUtil.branches(grgit).findAll(localBranchesFilter).collect(lastName) == ['master']
+  }
+
   def 'cloned repo can be deleted'() {
     given:
     def grgit = Grgit.clone(dir: repoDir, uri: remoteUri, refToCheckout: 'refs/heads/branch2')
