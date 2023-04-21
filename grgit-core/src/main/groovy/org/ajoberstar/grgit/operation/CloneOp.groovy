@@ -68,6 +68,11 @@ class CloneOp implements Callable<Grgit> {
   String refToCheckout
 
   /**
+   * The depth of the clone. Defaults to full history.
+   */
+  Integer depth = null
+
+  /**
    * The username and credentials to use when checking out the
    * repository and for subsequent remote operations on the
    * repository. This is only needed if hardcoded credentials
@@ -89,6 +94,9 @@ class CloneOp implements Callable<Grgit> {
     cmd.remote = remote
     cmd.bare = bare
     cmd.noCheckout = !checkout
+    if (depth != null) {
+      cmd.depth = depth
+    }
     if (refToCheckout) { cmd.branch = refToCheckout }
     if (all) { cmd.cloneAllBranches = all }
     if (!branches.isEmpty()) cmd.branchesToClone = branches
