@@ -33,17 +33,15 @@ plugins {
   id 'org.ajoberstar.grgit.service' version '${System.properties['compat.plugin.version']}'
 }
 
-tasks.register("doStuff", DoStuffTask.class) {
-    service = grgitService.service
-}
+tasks.register("doStuff", DoStuffTask, grgitService.service)
 
 class DoStuffTask extends DefaultTask {
-    @Input
-    final Property<GrgitService> service
+    private final Provider<GrgitService> service
 
     @Inject
-    DoStuffTask(ObjectFactory objectFactory) {
-        this.service = objectFactory.property(GrgitService.class);
+    DoStuffTask(Provider<GrgitService> service) {
+        this.service = service
+        usesService(service)
     }
 
     @TaskAction

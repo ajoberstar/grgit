@@ -65,18 +65,15 @@ plugins {
   id 'org.ajoberstar.grgit.service' version '<version>'
 }
 
-tasks.register("describe", DescribeTask) {
-  service = grgitService.service
-}
+tasks.register("describe", DescribeTask, grgitService.service)
 
 class DescribeTask extends DefaultTask {
-    @Input
-    final Property<GrgitService> service
+    private final Provider<GrgitService> service
 
     @Inject
-    DoStuffTask(ObjectFactory objectFactory) {
-        this.service = objectFactory.property(GrgitService.class);
-        usesService(this.service);
+    DescribeTask(Provider<GrgitService> service) {
+        this.service = service
+        usesService(service)
     }
 
     @TaskAction
