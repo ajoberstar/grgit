@@ -10,7 +10,7 @@ grgit-clone - Clone a repository into a new directory
 ----
 Grgit.clone(dir: <path>, uri: <path or uri>, remote: <name>, all: <boolean>,
   bare: <boolean>, branches: <full refs>, checkout: <boolean>,
-  refToCheckout: <name>, credentials: <credentials>)
+  refToCheckout: <name>, depth: <integer>, credentials: <credentials>)
 ----
 
 [source, groovy]
@@ -24,6 +24,7 @@ Grgit.clone {
   branches = <full refs>
   checkout = <boolean>
   refToCheckout = <name>
+  depth = <integer>
   credentials = <credentials>
 }
 ----
@@ -48,6 +49,7 @@ bare:: (`boolean`, default `false`) Create a bare repository.
 branches:: (`List<String>`, `[]`) Select full refs to use with `all = false`.
 checkout:: (`boolean`, default `true`) Set to `false` to skip checking out a `HEAD`.
 refToCheckout:: (`String`, default `null`) Instead of pointing the newly created `HEAD` to the branch pointed to by the cloned repository’s `HEAD`, point to `<name>` branch instead. In a non-bare repository, this is the branch that will be checked out. This can also take tags and detaches the `HEAD` at that commit in the resulting repository.
+depth:: (`Integer`, default `null`) If set, does a shallow clone to the specified depth
 credentials:: (`Credentials`, default `null`) An instance of link:https://github.com/ajoberstar/grgit/blob/{page-component-version}/grgit-core/src/main/groovy/org/ajoberstar/grgit/Credentials.groovy[Credentials] containing username/password to be used in operations that require authentication. See xref:grgit-authentication.adoc[grgit-authentication] for preferred ways to configure this.
 
 == Examples

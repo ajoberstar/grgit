@@ -11,11 +11,25 @@ import spock.lang.TempDir
 class GrgitPluginCompatTest extends Specification {
   @TempDir File tempDir
   File projectDir
+  File settingsFile
   File buildFile
 
   def setup() {
     projectDir = new File(tempDir, 'project')
+    settingsFile = projectFile('settings.gradle')
     buildFile = projectFile('build.gradle')
+
+    settingsFile << """\
+pluginManagement {
+  repositories {
+    mavenCentral()
+    mavenLocal()
+  }
+  plugins {
+    id 'org.ajoberstar.grgit' version '${System.properties['compat.plugin.version']}\'
+  }
+}
+"""
   }
 
   def 'with no repo, plugin sets grgit to null'() {
@@ -32,7 +46,7 @@ task doStuff {
 }
 '''
     when:
-    def result = build('doStuff', '--configuration-cache')
+    def result = build('doStuff', '--no-configuration-cache')
     then:
     result.task(':doStuff').outcome == TaskOutcome.SUCCESS
   }
@@ -57,7 +71,7 @@ task doStuff {
 }
 '''
     when:
-    def result = build('doStuff', '--quiet', '--configuration-cache')
+    def result = build('doStuff', '--quiet', '--no-configuration-cache')
     then:
     result.task(':doStuff').outcome == TaskOutcome.SUCCESS
     result.output.normalize() == '1.0.0\n'
@@ -83,7 +97,7 @@ task doStuff {
 }
 '''
     when:
-    def result = build('doStuff', '--info', '--configuration-cache')
+    def result = build('doStuff', '--info', '--no-configuration-cache')
     then:
     result.task(':doStuff').outcome == TaskOutcome.SUCCESS
     result.output.contains('Closing Git repo')
