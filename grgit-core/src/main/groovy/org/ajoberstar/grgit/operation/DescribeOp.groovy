@@ -46,6 +46,11 @@ class DescribeOp implements Callable<String> {
    */
   List<String> match = []
 
+  /**
+   * Abbreviate resulting object name to use at least n hexadecimal digits
+   */
+  Integer abbrev
+
   String call(){
     DescribeCommand cmd = repo.jgit.describe()
     if (commit) {
@@ -56,6 +61,9 @@ class DescribeOp implements Callable<String> {
     cmd.setTags(tags)
     if (match) {
       cmd.setMatch(match as String[])
+    }
+    if(abbrev != null) {
+      cmd.setAbbrev(abbrev)
     }
     return cmd.call()
   }

@@ -13,7 +13,7 @@ grgit.describe()
 
 [source, groovy]
 ----
-grgit.describe(commit: <commit>, longDescr: <boolean>, tags: <boolean>, match: [<string>], always: <boolean>)
+grgit.describe(commit: <commit>, longDescr: <boolean>, tags: <boolean>, match: [<string>], always: <boolean>, abbrev <Integer>)
 ----
 
 [source, groovy]
@@ -24,6 +24,7 @@ grgit.describe {
   tags = <boolean>
   match = [<string>]
   always = <boolean>
+  abbrev = <Integer>
 }
 ----
 
@@ -40,6 +41,7 @@ always:: (`boolean`, default `false`) When `true`, always describe a commit in s
 longDescr:: (`boolean`, default `false`) Always output the long format (the tag, the number of commits and the abbreviated commit name) even when it matches a tag. This is useful when you want to see parts of the commit object name in "describe" output, even when the commit in question happens to be a tagged version. Instead of just emitting the tag name, it will describe such a commit as v1.2-0-gdeadbee (0th commit since tag v1.2 that points at object deadbee…​.).
 tags:: (`boolean`, default `false`) Instead of using only the annotated tags, use any tag found in `refs/tags` namespace. This option enables matching a lightweight (non-annotated) tag.
 match:: (`List<String>`, default `[]`) Only consider tags matching the given glob(7) pattern, excluding the "refs/tags/" prefix. This can be used to avoid leaking private tags from the repository. If multiple patterns are given they will be accumulated, and tags matching any of the patterns will be considered.
+abbrev:: (`Integer`, default `null`) Instead of using the default number of hexadecimal digits (which will vary according to the number of objects in the repository with a default of 7) of the abbreviated object name, use <n> digits, or as many digits as needed to form a unique object name. An <n> of 0 will suppress long format, only showing the closest tag.
 
 == Examples
 
@@ -64,6 +66,12 @@ Always output the long format (the tag, the number of commits and the abbreviate
 grgit.describe(longDescr: true) == '2.0.0-rc.1-7-g91fda36'
 ----
 
+Abbreviate object name to at least 2 digits, or as many digits as needed to form a unique object name.
+
+[source, groovy]
+----
+grgit.describe(abbrev: 2) == '2.0.0-rc.1-7-g91fd'
+----
 
 == See Also
 

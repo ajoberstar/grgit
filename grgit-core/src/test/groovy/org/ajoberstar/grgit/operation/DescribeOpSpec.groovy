@@ -63,4 +63,14 @@ class DescribeOpSpec extends SimpleGitOpSpec {
     expect:
     grgit.describe(match: ['second*']).startsWith('second-2-')
   }
+
+  def 'with abbrev'() {
+    expect:
+    grgit.describe(abbrev: abbrev) ==~ expectedPattern
+
+    where:
+    abbrev | expectedPattern
+    0      | /^another$/
+    30     | /^another-1-g.{30}$/
+  }
 }
