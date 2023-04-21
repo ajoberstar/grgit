@@ -11,16 +11,26 @@ import spock.lang.TempDir
 class GrgitServicePluginCompatTest extends Specification {
     @TempDir File tempDir
     File projectDir
+    File settingsFile
     File buildFile
 
     def setup() {
         projectDir = new File(tempDir, 'project')
+        settingsFile = projectFile('settings.gradle')
+        settingsFile << '''\
+pluginManagement {
+  repositories {
+    mavenCentral()
+    mavenLocal()
+  }
+}
+'''
         buildFile = projectFile('build.gradle')
-        buildFile << '''\
+        buildFile << """\
 import org.ajoberstar.grgit.gradle.GrgitService
 
 plugins {
-  id 'org.ajoberstar.grgit.service'
+  id 'org.ajoberstar.grgit.service' version '${System.properties['compat.plugin.version']}'
 }
 
 tasks.register("doStuff", DoStuffTask.class) {
@@ -41,7 +51,7 @@ class DoStuffTask extends DefaultTask {
         println service.get().grgit.describe()
     }
 }
-'''
+"""
     }
 
     def 'with no repo, accessing service fails'() {
@@ -84,7 +94,6 @@ class DoStuffTask extends DefaultTask {
     private BuildResult build(String... args) {
         return GradleRunner.create()
                 .withGradleVersion(System.properties['compat.gradle.version'])
-                .withPluginClasspath()
                 .withProjectDir(projectDir)
                 .forwardOutput()
                 .withArguments((args + '--stacktrace') as String[])
@@ -94,7 +103,6 @@ class DoStuffTask extends DefaultTask {
     private BuildResult buildAndFail(String... args) {
         return GradleRunner.create()
                 .withGradleVersion(System.properties['compat.gradle.version'])
-                .withPluginClasspath()
                 .withProjectDir(projectDir)
                 .forwardOutput()
                 .withArguments((args + '--stacktrace') as String[])

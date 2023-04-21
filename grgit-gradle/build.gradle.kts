@@ -79,3 +79,11 @@ gradlePlugin {
     }
   }
 }
+
+tasks.withType<Test> {
+  if (name.startsWith("compatTest")) {
+    dependsOn(tasks.named("publishToMavenLocal"))
+    dependsOn(project(":grgit-core").tasks.named("publishToMavenLocal"))
+    systemProperty("compat.plugin.version", project.version.toString())
+  }
+}

@@ -11,11 +11,25 @@ import spock.lang.TempDir
 class GrgitPluginCompatTest extends Specification {
   @TempDir File tempDir
   File projectDir
+  File settingsFile
   File buildFile
 
   def setup() {
     projectDir = new File(tempDir, 'project')
+    settingsFile = projectFile('settings.gradle')
     buildFile = projectFile('build.gradle')
+
+    settingsFile << """\
+pluginManagement {
+  repositories {
+    mavenCentral()
+    mavenLocal()
+  }
+  plugins {
+    id 'org.ajoberstar.grgit' version '${System.properties['compat.plugin.version']}\'
+  }
+}
+"""
   }
 
   def 'with no repo, plugin sets grgit to null'() {
