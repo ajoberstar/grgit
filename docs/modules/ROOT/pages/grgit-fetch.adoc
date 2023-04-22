@@ -13,7 +13,7 @@ grgit.fetch()
 
 [source, groovy]
 ----
-grgit.fetch(remote: '<name or uri>', refSpecs: [<refspec>, ...], prune: <boolean>, tagMode: <mode>)
+grgit.fetch(remote: '<name or uri>', refSpecs: [<refspec>, ...], prune: <boolean>, depth: <int>, tagMode: <mode>)
 ----
 
 [source, groovy]
@@ -22,6 +22,7 @@ grgit.fetch {
   remote = '<name or uri>'
   refspecs = [<refspec>, ...]
   prune = <boolean>
+  depth = <int>
   tagMode = <mode>
 }
 ----
@@ -43,6 +44,7 @@ The format of a <refspec> parameter is an optional plus +, followed by the sourc
 +
 The remote ref that matches <src> is fetched, and if <dst> is not empty string, the local ref that matches it is fast-forwarded using <src>. If the optional plus + is used, the local ref is updated even if it does not result in a fast-forward update.
 prune:: (`boolean`, default `false`) Before fetching, remove any remote-tracking references that no longer exist on the remote. Tags are not subject to pruning if they are fetched only because of the default tag auto-following or due to a `tagMode` option. However, if tags are fetched due to an explicit refspec, then they are also subject to pruning.
+depth: (`Integer`, default `null`) If set, limits fetching to the specified number of commits from the tip each remote branch history
 tagMode:: (`String`, default `auto`) Must be one of `'auto'`, `'all'`, `'none'`.
 +
 `'auto'` - tags that point at objects that are downloaded from the remote repository are fetched and stored locally.
