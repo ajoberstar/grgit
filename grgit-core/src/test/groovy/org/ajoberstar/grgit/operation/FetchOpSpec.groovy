@@ -3,9 +3,7 @@ package org.ajoberstar.grgit.operation
 import org.ajoberstar.grgit.Grgit
 import org.ajoberstar.grgit.fixtures.GitTestUtil
 import org.ajoberstar.grgit.fixtures.MultiGitOpSpec
-import org.ajoberstar.grgit.operation.FetchOp.TagMode
 import org.eclipse.jgit.api.errors.GitAPIException
-
 import spock.lang.Unroll
 
 class FetchOpSpec extends MultiGitOpSpec {
@@ -105,5 +103,17 @@ class FetchOpSpec extends MultiGitOpSpec {
       'refs/remotes/origin/banana/mine2',
       'refs/remotes/origin/master',
       'refs/remotes/origin/my-branch']
+  }
+
+  def 'fetch with depth does a shallow fetch'() {
+    given:
+    def shallowGrgit = init('shallow')
+    shallowGrgit.remote.add(name: 'origin', url: remoteGrgit.repository.rootDir.toURI())
+    when:
+    shallowGrgit.fetch(remote: 'origin', depth: 1)
+    shallowGrgit.checkout(branch: 'master', createBranch: true, startPoint: 'origin/master')
+    then:
+    shallowGrgit.head().id == remoteGrgit.resolve.toCommit('master').id
+    shallowGrgit.head().parentIds.isEmpty()
   }
 }

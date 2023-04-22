@@ -36,6 +36,11 @@ class FetchOp implements Callable<Void> {
   boolean prune = false
 
   /**
+   * The depth of the clone. Defaults to full history.
+   */
+  Integer depth = null
+
+  /**
    * How should tags be handled.
    */
   TagMode tagMode = TagMode.AUTO
@@ -58,6 +63,7 @@ class FetchOp implements Callable<Void> {
     cmd.refSpecs = refSpecs.collect { new RefSpec(it) }
     cmd.removeDeletedRefs = prune
     cmd.tagOpt = tagMode.jgit
+    if (depth) { cmd.depth = depth }
     cmd.call()
     return null
   }
