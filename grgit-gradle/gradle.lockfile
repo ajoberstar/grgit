@@ -1,23 +1,15 @@
 # This is a Gradle generated file for dependency locking.
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
-cglib:cglib-nodep:3.3.0=compatTestCompileClasspath,compatTestRuntimeClasspath
-com.googlecode.javaewah:JavaEWAH:1.1.13=compatTestCompileClasspath,compatTestRuntimeClasspath,compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
-net.bytebuddy:byte-buddy:1.11.0=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.apiguardian:apiguardian-api:1.1.0=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.assertj:assertj-core:3.16.1=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.codehaus.groovy:groovy:3.0.17=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r=compatTestCompileClasspath,compatTestRuntimeClasspath,compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.googlecode.javaewah:JavaEWAH:1.1.13=compatTestCompileClasspath,compatTestRuntimeClasspath,compileClasspath,default,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.apiguardian:apiguardian-api:1.1.2=compatTestCompileClasspath
+org.codehaus.groovy:groovy:3.0.12=compatTestCompileClasspath,compatTestRuntimeClasspath
+org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r=compatTestCompileClasspath,compatTestRuntimeClasspath,compileClasspath,default,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.hamcrest:hamcrest:2.2=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.jetbrains:annotations:20.1.0=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.junit.platform:junit-platform-commons:1.7.2=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.junit.platform:junit-platform-engine:1.7.2=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.junit.platform:junit-platform-launcher:1.7.2=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.junit.platform:junit-platform-testkit:1.7.2=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.junit:junit-bom:5.7.2=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.objenesis:objenesis:3.2=compatTestCompileClasspath,compatTestRuntimeClasspath
+org.junit.platform:junit-platform-commons:1.9.0=compatTestCompileClasspath,compatTestRuntimeClasspath
+org.junit.platform:junit-platform-engine:1.9.0=compatTestCompileClasspath,compatTestRuntimeClasspath
+org.junit:junit-bom:5.9.0=compatTestCompileClasspath,compatTestRuntimeClasspath
 org.opentest4j:opentest4j:1.2.0=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.ow2.asm:asm:9.1=compatTestCompileClasspath,compatTestRuntimeClasspath
-org.slf4j:slf4j-api:1.7.30=compatTestCompileClasspath,compatTestRuntimeClasspath,compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
-org.spockframework:spock-core:2.0-groovy-3.0=compatTestCompileClasspath,compatTestRuntimeClasspath
-empty=
+org.slf4j:slf4j-api:1.7.30=compatTestCompileClasspath,compatTestRuntimeClasspath,compileClasspath,default,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.spockframework:spock-core:2.3-groovy-3.0=compatTestCompileClasspath,compatTestRuntimeClasspath
+empty=annotationProcessor,archives,compatTestAnnotationProcessor,signatures,testAnnotationProcessor

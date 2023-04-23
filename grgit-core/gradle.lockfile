@@ -1,26 +1,19 @@
 # This is a Gradle generated file for dependency locking.
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
-cglib:cglib-nodep:3.3.0=testCompileClasspath,testRuntimeClasspath
-com.googlecode.javaewah:JavaEWAH:1.1.13=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
-net.bytebuddy:byte-buddy:1.12.10=testCompileClasspath,testRuntimeClasspath
+com.googlecode.javaewah:JavaEWAH:1.1.13=compileClasspath,default,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.apiguardian:apiguardian-api:1.1.2=testCompileClasspath
-org.assertj:assertj-core:3.23.1=testCompileClasspath,testRuntimeClasspath
-org.codehaus.groovy:groovy:3.0.17=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
-org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.codehaus.groovy:groovy:3.0.12=testCompileClasspath,testRuntimeClasspath
+org.codehaus.groovy:groovy:3.0.17=compileClasspath,default,runtimeClasspath
+org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r=compileClasspath,default,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.hamcrest:hamcrest:2.2=testCompileClasspath,testRuntimeClasspath
-org.jetbrains:annotations:20.1.0=testCompileClasspath,testRuntimeClasspath
 org.junit.jupiter:junit-jupiter-api:5.9.2=testCompileClasspath,testRuntimeClasspath
 org.junit.platform:junit-platform-commons:1.9.2=testCompileClasspath,testRuntimeClasspath
 org.junit.platform:junit-platform-engine:1.9.2=testCompileClasspath,testRuntimeClasspath
-org.junit.platform:junit-platform-launcher:1.9.2=testCompileClasspath,testRuntimeClasspath
-org.junit.platform:junit-platform-testkit:1.9.2=testCompileClasspath,testRuntimeClasspath
 org.junit:junit-bom:5.9.2=testCompileClasspath,testRuntimeClasspath
-org.objenesis:objenesis:3.2=testCompileClasspath,testRuntimeClasspath
 org.opentest4j:opentest4j:1.2.0=testCompileClasspath,testRuntimeClasspath
-org.ow2.asm:asm:9.1=testCompileClasspath,testRuntimeClasspath
-org.slf4j:slf4j-api:1.7.30=compileClasspath,runtimeClasspath
+org.slf4j:slf4j-api:1.7.30=compileClasspath,default,runtimeClasspath
 org.slf4j:slf4j-api:2.0.7=testCompileClasspath,testRuntimeClasspath
 org.slf4j:slf4j-simple:2.0.7=testRuntimeClasspath
-org.spockframework:spock-core:2.0-groovy-3.0=testCompileClasspath,testRuntimeClasspath
-empty=
+org.spockframework:spock-core:2.3-groovy-3.0=testCompileClasspath,testRuntimeClasspath
+empty=annotationProcessor,archives,signatures,testAnnotationProcessor

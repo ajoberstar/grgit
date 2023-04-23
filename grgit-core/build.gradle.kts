@@ -1,6 +1,6 @@
 plugins {
   id("org.ajoberstar.defaults.java-library")
-  groovy
+  id("groovy")
 }
 
 group = "org.ajoberstar.grgit"
@@ -30,7 +30,7 @@ dependencies {
 testing {
   suites {
     val test by getting(JvmTestSuite::class) {
-      useSpock("2.0-groovy-3.0")
+      useSpock("2.3-groovy-3.0")
 
       dependencies {
         implementation("org.codehaus.groovy:groovy:[3.0.9, 4.0)")
