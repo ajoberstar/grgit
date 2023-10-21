@@ -6,11 +6,9 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
-    env:
-      GRADLE_OPTS: -Dorg.gradle.java.installations.fromEnv=JAVA_HOME_11_x64,JAVA_HOME_17_x64
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -20,6 +18,7 @@ jobs:
           distribution: temurin
           java-version: |
             11
+            21
             17
 
       - name: Validate Gradle Wrapper

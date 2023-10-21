@@ -6,7 +6,7 @@ pluginManagement {
     id("org.ajoberstar.reckon.settings") version "0.18.0"
     id("org.ajoberstar.stutter") version "0.7.2"
 
-    id("com.diffplug.spotless") version "6.18.0"
+    id("com.diffplug.spotless") version "6.22.0"
   }
 
   repositories {
