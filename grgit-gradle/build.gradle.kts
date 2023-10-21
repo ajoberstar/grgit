@@ -57,6 +57,14 @@ stutter {
       compatibleRange("7.3")
     }
   }
+  val java21 by matrices.creating {
+    javaToolchain {
+      languageVersion.set(JavaLanguageVersion.of(21))
+    }
+    gradleVersions {
+      compatibleRange("8.4")
+    }
+  }
 }
 
 tasks.named("check") {
