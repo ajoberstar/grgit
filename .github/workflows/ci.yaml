@@ -18,8 +18,8 @@ jobs:
           distribution: temurin
           java-version: |
             11
-            21
             17
+            21
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
