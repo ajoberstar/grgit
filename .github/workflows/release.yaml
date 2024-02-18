@@ -26,6 +26,7 @@ jobs:
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingKeyId: ${{ secrets.PGP_SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.PGP_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassphrase: ${{ secrets.PGP_SIGNING_PASSPHRASE }}
           GRADLE_OPTS: "-Dorg.gradle.project.gradle.publish.key=${{ secrets.GRADLE_PLUGIN_KEY }} -Dorg.gradle.project.gradle.publish.secret=${{ secrets.GRADLE_PLUGIN_SECRET }}"
