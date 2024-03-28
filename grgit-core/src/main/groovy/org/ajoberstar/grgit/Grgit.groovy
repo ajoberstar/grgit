@@ -116,7 +116,7 @@ class Grgit implements AutoCloseable {
   /**
    * Convenience methods for resolving various objects.
    */
-  final ResolveService resolve
+  public final ResolveService resolve
 
   /**
    * Supports operations on tags.
