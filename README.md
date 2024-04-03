@@ -4,6 +4,16 @@
 
 **NOTE:** As of 5.0.0, grgit is published to Maven Central
 
+## Project Status
+
+My opinion is that grgit no longer serves a useful purpose in the Gradle ecosystem, given the evolution towards Kotlin DSL and the stronger preference to move build logic into plugins.
+
+However, I understand the backwards compatibility need, so I'm not immediately stopping maintenance. I do consider the plugin feature frozen, and don't anticipate doing any work outside of updating dependencies and limited work to maintain compatibility with new versions of Gradle.
+
+For my own sake, I've already decoupled reckon (which I don't plan to deprecate/archive) from grgit. I anticipate doing the same with gradle-git-publish, but I haven't had the time yet.
+
+For more background on this see my [Don't commit to grgit](https://andrewoberstar.com/posts/2024-04-02-dont-commit-to-grgit/) blog post.
+
 ## Getting Help or Contributing
 
 **IMPORANT:** I consider this plugin feature complete and don't spend a lot of time on maintenance due to other time commitments. While, I will eventually get to issues or PRs raised, **do not** expect a timely response. I'm not trying to be rude or dismissive, I only get back to this project periodically (on the order of _months_, in many cases). Please set your expectations appropriately as you file issues or open PRs.
