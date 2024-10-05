@@ -1,99 +1,76 @@
 package org.ajoberstar.grgit.gradle
 
-import spock.lang.Specification
-
 import org.ajoberstar.grgit.Grgit
-import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.BuildResult
+import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
+import spock.lang.Specification
 import spock.lang.TempDir
 
-class GrgitServicePluginMultiProjectCompatTest extends Specification {
+class GrgitServiceCompatTest extends Specification {
     @TempDir File tempDir
     File projectDir
     File settingsFile
-    File build1File
-    File build2File
+    File buildFile
 
     def setup() {
         projectDir = new File(tempDir, 'project')
         settingsFile = projectFile('settings.gradle')
-        settingsFile << """\
+        settingsFile << '''\
 pluginManagement {
   repositories {
     mavenCentral()
     mavenLocal()
   }
 }
-
-include 'sub1', 'sub2'
-"""
-
-        build1File = projectFile('sub1/build.gradle')
-        build1File << """\
+'''
+        buildFile = projectFile('build.gradle')
+        buildFile << """\
 import org.ajoberstar.grgit.gradle.GrgitService
+import org.eclipse.jgit.api.errors.RefNotFoundException
 
 plugins {
-  id 'org.ajoberstar.grgit.service' version '${System.properties['compat.plugin.version']}'
+  id 'org.ajoberstar.grgit.service' version '${System.properties['compat.plugin.version']}' apply false
 }
-  
-tasks.register("doStuff", DoStuffTask.class) {
-    service = grgitService.service
+
+def customService = gradle.sharedServices.registerIfAbsent('customGrgit', GrgitService.class) {
+    parameters {
+        directory = layout.projectDirectory
+        initIfNotExists = true
+    }
 }
+
+tasks.register("doStuff", DoStuffTask, customService)
 
 class DoStuffTask extends DefaultTask {
-    @Input
-    final Property<GrgitService> service
+    private final Provider<GrgitService> service
 
     @Inject
-    DoStuffTask(ObjectFactory objectFactory) {
-        this.service = objectFactory.property(GrgitService.class);
+    DoStuffTask(Provider<GrgitService> service) {
+        this.service = service
+        usesService(service)
     }
 
     @TaskAction
     void execute() {
-        println service.get().grgit.describe()
-    }
-}
-"""
-
-        build2File = projectFile('sub2/build.gradle')
-        build2File << """\
-import org.ajoberstar.grgit.gradle.GrgitService
-
-plugins {
-  id 'org.ajoberstar.grgit.service' version '${System.properties['compat.plugin.version']}'
-}
-
-tasks.register("doStuff", DoStuffTask.class) {
-    service = grgitService.service
-}
-
-class DoStuffTask extends DefaultTask {
-    @Input
-    final Property<GrgitService> service
-
-    @Inject
-    DoStuffTask(ObjectFactory objectFactory) {
-        this.service = objectFactory.property(GrgitService.class);
-    }
-
-    @TaskAction
-    void execute() {
-        println service.get().grgit.describe()
+        try {
+          println service.get().grgit.describe()
+        } catch (RefNotFoundException e) {
+          println 'null'
+        }
     }
 }
 """
     }
 
-    def 'with no repo, accessing service fails'() {
+    def 'with no repo but initIfNotExists true, accessing service works'() {
         given:
         // nothing
         when:
-        def result = buildAndFail('doStuff', '--no-configuration-cache')
+        def result = build('doStuff', '--quiet', '--no-configuration-cache')
         then:
-        result.task(':sub1:doStuff')?.outcome in [null, TaskOutcome.FAILED]
-        result.task(':sub2:doStuff')?.outcome in [null, TaskOutcome.FAILED]
+        result.task(':doStuff')?.outcome == TaskOutcome.SUCCESS
+        result.output.normalize() == 'null\n'
     }
 
     def 'with repo, plugin opens the repo as grgit'() {
@@ -106,9 +83,8 @@ class DoStuffTask extends DefaultTask {
         when:
         def result = build('doStuff', '--quiet', '--no-configuration-cache')
         then:
-        result.task(':sub1:doStuff')?.outcome == TaskOutcome.SUCCESS
-        result.task(':sub2:doStuff')?.outcome == TaskOutcome.SUCCESS
-        result.output.normalize() == '1.0.0\n1.0.0\n'
+        result.task(':doStuff')?.outcome == TaskOutcome.SUCCESS
+        result.output.normalize() == '1.0.0\n'
     }
 
     def 'with repo, plugin closes the repo after build is finished'() {
@@ -121,8 +97,7 @@ class DoStuffTask extends DefaultTask {
         when:
         def result = build('doStuff', '--info', '--no-configuration-cache')
         then:
-        result.task(':sub1:doStuff')?.outcome == TaskOutcome.SUCCESS
-        result.task(':sub2:doStuff')?.outcome == TaskOutcome.SUCCESS
+        result.task(':doStuff')?.outcome == TaskOutcome.SUCCESS
         result.output.contains('Closing Git repo')
     }
 

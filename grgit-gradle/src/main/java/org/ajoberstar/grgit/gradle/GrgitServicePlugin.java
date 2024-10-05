@@ -9,7 +9,6 @@ public class GrgitServicePlugin implements Plugin<Project> {
   public void apply(Project project) {
     Provider<GrgitService> serviceProvider = project.getGradle().getSharedServices().registerIfAbsent("grgit", GrgitService.class, spec -> {
       spec.getParameters().getCurrentDirectory().set(project.getLayout().getProjectDirectory());
-      spec.getParameters().getInitIfNotExists().set(false);
       spec.getMaxParallelUsages().set(1);
     });
 

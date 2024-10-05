@@ -1,5 +1,7 @@
 package org.ajoberstar.grgit.gradle;
 
+import java.io.File;
+
 import javax.inject.Inject;
 
 import org.ajoberstar.grgit.Grgit;
@@ -33,11 +35,12 @@ public abstract class GrgitService implements BuildService<GrgitService.Params>,
     }
 
     var dir = getParameters().getDirectory().get().getAsFile();
-    if (dir.exists()) {
+    var gitDir = new File(dir, ".git");
+    if (gitDir.exists()) {
       this.grgit = Grgit.open(op -> {
         op.setDir(dir);
       });
-    } else if (getParameters().getInitIfNotExists().get()) {
+    } else if (getParameters().getInitIfNotExists().getOrElse(false)) {
       this.grgit = Grgit.init(op -> {
         op.setDir(dir);
       });
