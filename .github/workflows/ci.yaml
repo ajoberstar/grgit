@@ -28,5 +28,6 @@ jobs:
       - name: Gradle check
         run: ./gradlew check --continue
         env:
+          ORG_GRADLE_PROJECT_signingKeyId: ${{ secrets.PGP_SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.PGP_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassphrase: ${{ secrets.PGP_SIGNING_PASSPHRASE }}
