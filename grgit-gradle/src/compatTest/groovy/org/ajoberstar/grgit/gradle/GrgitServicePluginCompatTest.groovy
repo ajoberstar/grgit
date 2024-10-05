@@ -49,6 +49,23 @@ class DoStuffTask extends DefaultTask {
         println service.get().grgit.describe()
     }
 }
+
+tasks.register("doStuffSafe", DoStuffSafeTask, grgitService.service)
+
+class DoStuffSafeTask extends DefaultTask {
+    private final Provider<GrgitService> service
+
+    @Inject
+    DoStuffSafeTask(Provider<GrgitService> service) {
+        this.service = service
+        usesService(service)
+    }
+
+    @TaskAction
+    void execute() {
+        println service.get().findGrgit().map { it.describe() }.orElse(null)
+    }
+}
 """
     }
 
@@ -59,6 +76,16 @@ class DoStuffTask extends DefaultTask {
         def result = buildAndFail('doStuff', '--no-configuration-cache')
         then:
         result.task(':doStuff').outcome == TaskOutcome.FAILED
+    }
+
+    def 'with no repo, accessing service with safe method works'() {
+        given:
+        // nothing
+        when:
+        def result = build('doStuffSafe', '--quiet', '--no-configuration-cache')
+        then:
+        result.task(':doStuffSafe')?.outcome == TaskOutcome.SUCCESS
+        result.output.normalize() == 'null\n'
     }
 
     def 'with repo, plugin opens the repo as grgit'() {
