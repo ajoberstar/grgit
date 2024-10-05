@@ -62,7 +62,7 @@ Apply the `org.ajoberstar.grgit` plugin in any project that needs to access a `G
 > [!NOTE]
 > This plugin eagerly opens a Grgit instance, which may not be needed depending on the tasks you want to run. If this is not desired, see the next section.
 
-```
+``` groovy
 plugins {
   id 'org.ajoberstar.grgit' version '<version>'
 }
@@ -81,7 +81,7 @@ Apply the `org.ajoberstar.grgit.service` plugin instead of `org.ajoberstar.grgit
 
 This approach ensures you only open a `Grgit` instance when a task is run that uses it.
 
-```
+``` groovy
 import org.ajoberstar.grgit.gradle.GrgitService
 
 plugins {
@@ -113,7 +113,7 @@ If you are writing a custom Gradle plugin, you'll want to use one or both of the
 - If you need a `Grgit` instance representing the repository the project is in, use `org.ajoberstar.grgit.service` and use the `GrgitServiceExtension` to access the shared `GrgitService`. Wire this into any tasks or whatever needs to use the service via `Property<GrgitService>` for full lazy evaluation benefits.
 - If you need a `Grgit` instance that's separate from the project's repository, declare your own `GrgitService` naming it something _not_ prefixed with `grgit*`.
 
-  ```
+  ``` groovy
   Provider<GrgitService> serviceProvider = project.getGradle().getSharedServices().registerIfAbsent("grgit", GrgitService.class, spec -> {
       // use getCurrentDirectory() if you need to search upwards from the provided directory
       spec.getParameters().getCurrentDirectory().set(project.getLayout().getProjectDirectory());
