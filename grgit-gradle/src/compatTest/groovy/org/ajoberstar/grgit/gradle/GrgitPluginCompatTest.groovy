@@ -106,7 +106,6 @@ task doStuff {
   private BuildResult build(String... args) {
     return GradleRunner.create()
       .withGradleVersion(System.properties['compat.gradle.version'])
-      .withPluginClasspath()
       .withProjectDir(projectDir)
       .forwardOutput()
       .withArguments((args + '--stacktrace') as String[])
