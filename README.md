@@ -2,29 +2,34 @@
 
 ![CI](https://github.com/ajoberstar/grgit/workflows/CI/badge.svg)
 
-**NOTE:** As of 5.0.0, grgit is published to Maven Central
+> [!NOTE]
+> * As of 5.0.0, grgit is only published to Maven Central
 
 ## Project Status
 
 My opinion is that grgit no longer serves a useful purpose in the Gradle ecosystem, given the evolution towards Kotlin DSL and the stronger preference to move build logic into plugins.
 
-However, I understand the backwards compatibility need, so I'm not immediately stopping maintenance. I do consider the plugin feature frozen, and don't anticipate doing any work outside of updating dependencies and limited work to maintain compatibility with new versions of Gradle.
+However, I understand the backwards compatibility need, so I'm not immediately stopping maintenance. I do consider the plugin **feature frozen**, and don't anticipate doing any work outside of updating dependencies and limited work to maintain compatibility with new versions of Gradle.
 
 For my own sake, I've already decoupled reckon (which I don't plan to deprecate/archive) from grgit. I anticipate doing the same with gradle-git-publish, but I haven't had the time yet.
 
 For more background on this see my [Don't commit to grgit](https://andrewoberstar.com/posts/2024-04-02-dont-commit-to-grgit/) blog post.
 
-## Getting Help or Contributing
+## Getting Help
 
-**IMPORANT:** I consider this plugin feature complete and don't spend a lot of time on maintenance due to other time commitments. While, I will eventually get to issues or PRs raised, **do not** expect a timely response. I'm not trying to be rude or dismissive, I only get back to this project periodically (on the order of _months_, in many cases). Please set your expectations appropriately as you file issues or open PRs.
+> [!IMPORTANT]
+> I consider this plugin feature frozen. Requests for new features _will be closed_.
 
-Please use the repo's [issues](https://github.com/ajoberstar/grgit/issues) for all questions, bug reports, and feature requests.
+If updating grgit versions or Gradle versions causes a bug in **existing grgit behavior** in your build, feel free to open an issue.
 
 ## Why do you care?
 
 [JGit](https://eclipse.org/jgit/) provides a powerful Java API for interacting with Git repositories. However,
 in a Groovy context it feels very cumbersome, making it harder to express the operations you want to perform
 without being surrounded by a lot of cruft.
+
+> [!CAUTION]
+> See the "Project Status" section above and consider if you really need grgit's functionality. I strongly advise against using it in new Groovy projects or Gradle builds.
 
 ## What is it?
 
@@ -38,16 +43,21 @@ It also provides a Gradle plugin to easily get a Grgit instance for the build's 
 
 ## Documentation
 
-**NOTE:** grgit is available from Maven Central or the Gradle Plugin Portal
+> [!NOTE]
+> grgit is only available from Maven Central
 
 - [Documentation Site](https://ajoberstar.org/grgit/main/index.html)
 - [Release Notes](https://github.com/ajoberstar/grgit/releases)
 
 ## Simple Usage in Gradle
 
+> [!IMPORTANT]
+> grgit **is not compatible** with Gradle's configuration cache and is **out of scope** for future work on grgit.
+
 Apply the `org.ajoberstar.grgit` plugin in any project that needs to access a `Grgit` instance.
 
-NOTE: This plugin eagerly opens a Grgit instance, which may not be needed depending on the tasks you want to run. If this is not desired, see the next section.
+> [!NOTE]
+> This plugin eagerly opens a Grgit instance, which may not be needed depending on the tasks you want to run. If this is not desired, see the next section.
 
 ```
 plugins {
@@ -139,5 +149,4 @@ Made possible by [lacasseio/bintray-helper](https://github.com/lacasseio/bintray
 
 ## Acknowledgements
 
-Thanks to [everyone](https://github.com/ajoberstar/grgit/graphs/contributors)
-who has contributed to the library.
+Thanks to [everyone](https://github.com/ajoberstar/grgit/graphs/contributors) who has contributed to the library.
