@@ -49,10 +49,13 @@ It also provides a Gradle plugin to easily get a Grgit instance for the build's 
 - [Documentation Site](https://ajoberstar.org/grgit/main/index.html)
 - [Release Notes](https://github.com/ajoberstar/grgit/releases)
 
-## Simple Usage in Gradle
-
 > [!IMPORTANT]
 > grgit **is not compatible** with Gradle's configuration cache and is **out of scope** for future work on grgit.
+
+## Simple Usage in Gradle
+
+> [!NOTE]
+> `org.ajoberstar.grgit` has poor compatibility with Kotlin scripts. See #361 for an example. 
 
 Apply the `org.ajoberstar.grgit` plugin in any project that needs to access a `Grgit` instance.
 
