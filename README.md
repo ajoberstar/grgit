@@ -3,7 +3,7 @@
 ![CI](https://github.com/ajoberstar/grgit/workflows/CI/badge.svg)
 
 > [!NOTE]
-> * As of 5.0.0, grgit is only published to Maven Central
+> As of 5.0.0, grgit is only published to Maven Central
 
 ## Project Status
 
