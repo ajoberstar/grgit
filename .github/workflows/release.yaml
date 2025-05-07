@@ -10,9 +10,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: |
@@ -20,14 +19,26 @@ jobs:
             17
             21
 
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v4
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v4
       - name: Gradle publish
         env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          BUNDLE_REPO: .bundle
           ORG_GRADLE_PROJECT_signingKeyId: ${{ secrets.PGP_SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.PGP_SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassphrase: ${{ secrets.PGP_SIGNING_PASSPHRASE }}
           GRADLE_OPTS: "-Dorg.gradle.project.gradle.publish.key=${{ secrets.GRADLE_PLUGIN_KEY }} -Dorg.gradle.project.gradle.publish.secret=${{ secrets.GRADLE_PLUGIN_SECRET }}"
-        run: ./gradlew publishAllPublicationsToCentralReleasesRepository
+        run: ./gradlew publishAllPublicationsToCentralRepository --stacktrace
+      - name: Create bundle
+        run: |
+          cd .bundle
+          zip -r ../bundle.zip *
+      - name: Publish to Maven Central
+        uses: ajoberstar/maven-central-publish@main
+        with:
+          username: ${{ secrets.CENTRAL_USERNAME }}
+          token: ${{ secrets.CENTRAL_TOKEN }}
+          bundle-path: bundle.zip
+          name: ${{ github.repository }}@${{ github.ref }}
