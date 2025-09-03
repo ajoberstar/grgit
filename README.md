@@ -1,5 +1,8 @@
 # grgit
 
+> [!IMPORTANT]
+> This project is now maintained on [SourceHut](https://git.sr.ht/~ajoberstar/grgit)
+
 ![CI](https://github.com/ajoberstar/grgit/workflows/CI/badge.svg)
 
 > [!NOTE]
